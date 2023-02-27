@@ -37,7 +37,7 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-       <Text style={styles.sectionTitle}>'Hello'</Text>
+       <Text style={styles.sectionTitle}>'HI'</Text>
       </ScrollView>
     </SafeAreaView>
   );
