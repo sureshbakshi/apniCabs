@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.FirstLearn"
+    namespace "com.Captain"
     defaultConfig {
-        applicationId "com.FirstLearn"
+        applicationId "com.Captain"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
