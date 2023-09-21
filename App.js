@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TextInput, Button, ScrollView } from 'react-native';
+import GeoLocation from './src/GeoLocation';
 
 
 
@@ -11,7 +12,7 @@ export default function App() {
   const [serverMessages, setServerMessages] = React.useState([]);
 
   let ws = React.useRef(new WebSocket('ws://localhost:8080')).current;
-  console.log('ws====',ws)
+  console.log('ws====',ws);
 
   React.useEffect(() => {
     const serverMessagesList = [];
@@ -46,11 +47,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={{
-        height: 30,
         backgroundColor: '#eeceff',
         padding: 5
       }}>
         <Text>{serverState}</Text>
+       <GeoLocation/>
       </View>
 
       <View style={{
