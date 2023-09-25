@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, PermissionsAndroid} from 'react-native';
+import {Button,Text, View, PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 const requestLocationPermission = async () => {
@@ -27,7 +27,7 @@ const requestLocationPermission = async () => {
   }
 };
 
-export default function GeoLocation() {
+const GeoLocationScreen = ({navigation}) => {
   const [location, setLocation] = React.useState(false);
 
   const getLocation = () => {
@@ -62,8 +62,13 @@ export default function GeoLocation() {
         backgroundColor: '#eeceff',
         padding: 5,
       }}>
+      <Button
+        title="Go to Home"
+        onPress={() => navigation.navigate('Home')}
+      />
       <Text>Latitude: {location ? location.coords.latitude : null}</Text>
       <Text>Longitude: {location ? location.coords.longitude : null}</Text>
     </View>
   );
-}
+};
+export default GeoLocationScreen;
