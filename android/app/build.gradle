@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.Captain"
+    namespace "com.apnicabs"
     defaultConfig {
-        applicationId "com.Captain"
+        applicationId "com.apnicabs"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

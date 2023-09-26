@@ -1,4 +1,4 @@
-package com.Captain;
+package com.apnicabs;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

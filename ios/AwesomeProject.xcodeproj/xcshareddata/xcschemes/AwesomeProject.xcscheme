@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Captain.app"
-               BlueprintName = "Captain"
-               ReferencedContainer = "container:Captain.xcodeproj">
+               BuildableName = "apnicabs.app"
+               BlueprintName = "apnicabs"
+               ReferencedContainer = "container:apnicabs.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CaptainTests.xctest"
-               BlueprintName = "CaptainTests"
-               ReferencedContainer = "container:Captain.xcodeproj">
+               BuildableName = "apnicabsTests.xctest"
+               BlueprintName = "apnicabsTests"
+               ReferencedContainer = "container:apnicabs.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Captain.app"
-            BlueprintName = "Captain"
-            ReferencedContainer = "container:Captain.xcodeproj">
+            BuildableName = "apnicabs.app"
+            BlueprintName = "apnicabs"
+            ReferencedContainer = "container:apnicabs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Captain.app"
-            BlueprintName = "Captain"
-            ReferencedContainer = "container:Captain.xcodeproj">
+            BuildableName = "apnicabs.app"
+            BlueprintName = "apnicabs"
+            ReferencedContainer = "container:apnicabs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
