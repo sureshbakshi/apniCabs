@@ -1,12 +1,16 @@
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useContext} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import TabNavigator from './tabNavigation';
-
+import LoginNavigator from './loginNavigation';
+import {AuthContext} from '../context/Auth.context';
 function App() {
-    return (
+  const {state} = useContext(AuthContext);
+  return (
       <NavigationContainer>
-        <TabNavigator/>
+        {!state.isLoggedIn && <LoginNavigator />}
+        {state.isLoggedIn && <TabNavigator />}
       </NavigationContainer>
-    );
-  }
-  
-  export default App;
+  );
+}
+
+export default App;
