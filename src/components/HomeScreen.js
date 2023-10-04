@@ -7,8 +7,9 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
+import { navigate } from '../util/navigationService';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = () => {
   const [serverState, setServerState] = React.useState('Loading...');
   const [messageText, setMessageText] = React.useState('');
   const [disableButton, setDisableButton] = React.useState(true);
@@ -57,7 +58,7 @@ const HomeScreen = ({navigation}) => {
         }}>
         <Text>{serverState}</Text>
       </View>
-      <Button onPress={() => navigation.navigate('Geolocation')} title={'Go to Geolocation'} />
+      <Button onPress={() => navigate('Geolocation')} title={'Go to Geolocation'} />
       <View
         style={{
           backgroundColor: '#ffeece',

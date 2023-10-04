@@ -2,16 +2,19 @@ import React from 'react';
 import {Text, View, TextInput, Pressable, ImageBackground} from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
+import ScreenContainer from '../components/ScreenContainer';
+import { navigate } from '../util/navigationService';
 
-const SignUpPage = ({navigation}) => {
+const SignUpPage = () => {
   return (
+    <ScreenContainer>
     <View style={LoginStyles.container}>
       <ImageBackground
         source={require('../assets/images/bg.jpeg')}
         resizeMode="cover"
         style={LoginStyles.image}>
         <View style={LoginStyles.logoSection}>
-          <Text style={LoginStyles.logoTxt}>{'Apni Cabs'.toUpperCase()}</Text>
+          <Text style={LoginStyles.logoTxt}>{'Apni cabi'.toUpperCase()}</Text>
         </View>
       </ImageBackground>
 
@@ -43,7 +46,7 @@ const SignUpPage = ({navigation}) => {
           <Pressable
             style={LoginStyles.button}
             android_ripple={{color: '#fff'}}
-            onPress={() => navigation.navigate('SignIn')}>
+            onPress={() => navigate('SignIn')}>
             <Text style={LoginStyles.text}>{'Sign Up Now'.toUpperCase()}</Text>
           </Pressable>
         </View>
@@ -51,7 +54,7 @@ const SignUpPage = ({navigation}) => {
           <Text style={LoginStyles.headerText}>Already Registered?</Text>
           <Pressable
             android_ripple={{color: '#fff'}}
-            onPress={() => navigation.navigate('SignIn')}>
+            onPress={() => navigate('SignIn')}>
             <Text style={LoginStyles.greenTxt}>Sign in</Text>
           </Pressable>
         </View>
@@ -59,6 +62,7 @@ const SignUpPage = ({navigation}) => {
       </View>
       
     </View>
+    </ScreenContainer>
   );
 };
 export default SignUpPage;

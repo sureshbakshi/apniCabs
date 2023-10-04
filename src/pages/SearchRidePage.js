@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Text, View, TextInput, Pressable, ImageBackground} from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
-const SearchRidePage = ({navigation}) => {
+import { navigate } from '../util/navigationService';
+const SearchRidePage = () => {
   return (
     <ImageBackground
       source={require('../assets/images/bg.jpeg')}
@@ -23,7 +24,7 @@ const SearchRidePage = ({navigation}) => {
             <Pressable
               style={SearchRideStyles.button}
               android_ripple={{color: '#fff'}}
-              onPress={() => navigation.navigate('FindRide')}>
+              onPress={() => navigate('FindRide')}>
               <Text style={SearchRideStyles.text}>{'Search Rides'}</Text>
             </Pressable>
           </View>

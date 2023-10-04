@@ -2,7 +2,8 @@ import React, {useContext} from 'react';
 import {Text, View, Pressable, ScrollView} from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import {AuthContext} from '../context/Auth.context';
-const MorePage = ({navigation}) => {
+import { navigate } from '../util/navigationService';
+const MorePage = () => {
   const {logout} = useContext(AuthContext);
   return (
     <View style={MoreStyles.container}>
@@ -23,7 +24,7 @@ const MorePage = ({navigation}) => {
             <Pressable
               style={MoreStyles.list}
               android_ripple={{color: '#ccc'}}
-              onPress={() => navigation.navigate('MyProfile')}>
+              onPress={() => navigate('MyProfile')}>
               <View style={MoreStyles.listIcon}></View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
@@ -34,7 +35,7 @@ const MorePage = ({navigation}) => {
             <Pressable
               style={MoreStyles.list}
               android_ripple={{color: '#ccc'}}
-              onPress={() => navigation.navigate('TermsAndConditions')}>
+              onPress={() => navigate('TermsAndConditions')}>
               <View style={MoreStyles.listIcon}></View>
               <Text style={MoreStyles.name}>Terms and Conditions</Text>
             </Pressable>
