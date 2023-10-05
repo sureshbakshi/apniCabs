@@ -4,11 +4,23 @@ import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import {useSetState} from 'react-use';
 import {AuthContext} from '../context/Auth.context';
-import { navigate } from '../util/navigationService';
+import {navigate} from '../util/navigationService';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 const initialState = {
   email: '',
   password: '',
 };
+
+GoogleSignin.configure({
+  androidClientId:
+    '393986381460-35bfecvib0g66i2dgpr9htaa1vb3s563.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+});
+
 const LoginPage = () => {
   const {state: ContextState, login} = useContext(AuthContext);
   const {isLoginPending, isLoggedIn, loginError} = ContextState;
@@ -21,6 +33,27 @@ const LoginPage = () => {
       password: '',
     });
   };
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      const userInfo = await GoogleSignin.signIn();
+      const {email} = userInfo.user;
+      login(email);
+      setState({userInfo});
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
   return (
     <View style={LoginStyles.container}>
       <ImageBackground
@@ -82,11 +115,19 @@ const LoginPage = () => {
           <Text style={[LoginStyles.headerText, CommonStyles.mb10]}>
             {'or continue with '.toUpperCase()}
           </Text>
-          <Pressable
-            style={LoginStyles.googleBtn}
-            android_ripple={{color: '#ccc'}}>
-            <Text style={LoginStyles.googleTxt}>{'Google'}</Text>
-          </Pressable>
+          <GoogleSigninButton
+            style={{width: '100%', height: 48}}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={signIn}
+          />
+          {false && (
+            <Pressable
+              style={LoginStyles.googleBtn}
+              android_ripple={{color: '#ccc'}}>
+              <Text style={LoginStyles.googleTxt}>{'Google'}</Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </View>

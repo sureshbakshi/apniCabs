@@ -2,9 +2,20 @@ import React, {useContext} from 'react';
 import {Text, View, Pressable, ScrollView} from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import {AuthContext} from '../context/Auth.context';
-import { navigate } from '../util/navigationService';
+import {navigate} from '../util/navigationService';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 const MorePage = () => {
   const {logout} = useContext(AuthContext);
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      logout();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <View style={MoreStyles.container}>
       <View style={MoreStyles.section}>
@@ -52,7 +63,7 @@ const MorePage = () => {
           <Pressable
             android_ripple={{color: '#ccc'}}
             style={MoreStyles.button}
-            onPress={() => logout()}>
+            onPress={signOut}>
             <Text style={MoreStyles.greenTxt}>{'Logout'}</Text>
           </Pressable>
         </ScrollView>
