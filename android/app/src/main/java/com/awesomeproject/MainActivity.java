@@ -1,9 +1,10 @@
 package com.apnicabi;
-
+import android.os.Bundle; // Add this here
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import org.devio.rn.splashscreen.SplashScreen; // Add this here
 
 public class MainActivity extends ReactActivity {
 
@@ -23,6 +24,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
+    SplashScreen.show(this);
     return new DefaultReactActivityDelegate(
         this,
         getMainComponentName(),

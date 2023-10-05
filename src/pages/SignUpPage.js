@@ -14,7 +14,7 @@ const SignUpPage = () => {
         resizeMode="cover"
         style={LoginStyles.image}>
         <View style={LoginStyles.logoSection}>
-          <Text style={LoginStyles.logoTxt}>{'Apni cabi'.toUpperCase()}</Text>
+          <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
         </View>
       </ImageBackground>
 

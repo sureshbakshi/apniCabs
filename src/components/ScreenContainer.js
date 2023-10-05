@@ -4,7 +4,8 @@ import React from 'react';
 const ScreenContainer = props => {
   const { children } = props;
   return (
-    <SafeAreaView style={ { flex: 1 } }>
+    <SafeAreaView style={ { flex: 1 ,     backgroundColor: '#fff',
+  } }>
       <KeyboardAvoidingView
         behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
         style={ { flex: 1 } }
