@@ -4,11 +4,12 @@ import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import {useSetState} from 'react-use';
 import {AuthContext} from '../context/Auth.context';
+import { navigate } from '../util/navigationService';
 const initialState = {
   email: '',
   password: '',
 };
-const LoginPage = ({navigation}) => {
+const LoginPage = () => {
   const {state: ContextState, login} = useContext(AuthContext);
   const {isLoginPending, isLoggedIn, loginError} = ContextState;
   const [state, setState] = useSetState(initialState);
@@ -27,7 +28,7 @@ const LoginPage = ({navigation}) => {
         resizeMode="cover"
         style={LoginStyles.image}>
         <View style={LoginStyles.logoSection}>
-          <Text style={LoginStyles.logoTxt}>{'Apni Cabs'.toUpperCase()}</Text>
+          <Text style={LoginStyles.logoTxt}>{'Apni cabi'.toUpperCase()}</Text>
         </View>
       </ImageBackground>
 
@@ -67,7 +68,7 @@ const LoginPage = ({navigation}) => {
               <Text style={LoginStyles.headerText}>New user?</Text>
               <Pressable
                 android_ripple={{color: '#fff'}}
-                onPress={() => navigation.navigate('SignUp')}>
+                onPress={() => navigate('SignUp')}>
                 <Text style={LoginStyles.greenTxt}>SignUp</Text>
               </Pressable>
             </View>

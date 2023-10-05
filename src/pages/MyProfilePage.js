@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Text, View, Pressable, ScrollView} from 'react-native';
 import MyProfileStyles from '../styles/MyProfilePageStyles';
-const MyProfilePage = ({navigation}) => {
+import { navigate } from '../util/navigationService';
+const MyProfilePage = () => {
   return (
     <View style={MyProfileStyles.container}>
       <View style={MyProfileStyles.section}>
@@ -41,7 +42,7 @@ const MyProfilePage = ({navigation}) => {
       <Pressable
         android_ripple={{color: '#ccc'}}
         style={MyProfileStyles.button}
-        onPress={() => navigation.navigate('SearchRide')}>
+        onPress={() => navigate('SearchRide')}>
         <Text style={MyProfileStyles.buttonTxt}>{'Update Info'}</Text>
       </Pressable>
     </View>

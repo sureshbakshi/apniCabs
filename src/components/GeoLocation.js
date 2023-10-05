@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Button,Text, View, PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import { navigate } from '../util/navigationService';
 
 const requestLocationPermission = async () => {
   try {
@@ -27,7 +28,7 @@ const requestLocationPermission = async () => {
   }
 };
 
-const GeoLocationScreen = ({navigation}) => {
+const GeoLocationScreen = () => {
   const [location, setLocation] = React.useState(false);
 
   const getLocation = () => {
@@ -64,7 +65,7 @@ const GeoLocationScreen = ({navigation}) => {
       }}>
       <Button
         title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigate('Home')}
       />
       <Text>Latitude: {location ? location.coords.latitude : null}</Text>
       <Text>Longitude: {location ? location.coords.longitude : null}</Text>

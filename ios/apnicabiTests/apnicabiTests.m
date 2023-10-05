@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface apnicabsTests : XCTestCase
+@interface apnicabiTests : XCTestCase
 
 @end
 
-@implementation apnicabsTests
+@implementation apnicabiTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
