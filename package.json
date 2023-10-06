@@ -11,6 +11,7 @@
     "server": "nodemon src/index.js"
   },
   "dependencies": {
+    "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/drawer": "^6.6.4",
     "@react-navigation/native": "^6.1.8",

@@ -54,7 +54,7 @@ export const ContextProvider = props => {
 // fake login
 const fetchLogin = (email, password, callback) => 
   setTimeout(() => {
-    if (email === 'admin' && password === 'admin') {
+    if (email) {
       return callback(null);
     } else {
       return callback(new Error('Invalid email and password'));
