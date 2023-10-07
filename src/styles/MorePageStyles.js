@@ -37,9 +37,8 @@ const MoreStyles = StyleSheet.create({
   listIcon:{
     width:20,
     height:20,
-    backgroundColor:'#ccc',
-    marginLeft:40,
-    marginRight:20
+    marginLeft:20,
+    marginRight:40
   },
   card: {
     backgroundColor: '#fff',

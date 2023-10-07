@@ -1,9 +1,11 @@
 import * as React from 'react';
-import {Text, View, Button, Pressable, ScrollView} from 'react-native';
+import { View, Button, Pressable, ScrollView} from 'react-native';
+import {ImageView, Text} from '../components/common'
 import FindRideStyles from '../styles/FindRidePageStyles';
 import styles from '../styles/MyRidePageStyles';
+import images from '../util/images';
 
-const FindRidePage = ({navigation}) => {
+const FindCaptainPage = ({navigation}) => {
   return (
     <View style={FindRideStyles.container}>
       <View style={FindRideStyles.section}>
@@ -13,7 +15,7 @@ const FindRidePage = ({navigation}) => {
               <View style={FindRideStyles.card} key={i}>
                 <View style={FindRideStyles.cardtop}>
                   <View style={FindRideStyles.left}>
-                    <View style={FindRideStyles.profileIcon}></View>
+                    <ImageView source={images[`captain${i}`]} style={[styles.avatar]}/>
                   </View>
                   <View style={FindRideStyles.middle}>
                     <Text style={FindRideStyles.name}>David Johson</Text>
@@ -51,4 +53,4 @@ const FindRidePage = ({navigation}) => {
     </View>
   );
 };
-export default FindRidePage;
+export default FindCaptainPage;

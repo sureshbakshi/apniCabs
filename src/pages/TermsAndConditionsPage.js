@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {Text, View, Pressable, ScrollView, ImageBackground} from 'react-native';
+import { View, Pressable, ScrollView, ImageBackground} from 'react-native';
 import TermsAndConditionsStyles from '../styles/TermsAndConditionsPageStyles';
+import { Text } from '../components/common';
 
 const TermsAndConditionsPage = ({navigation}) => {
   return (

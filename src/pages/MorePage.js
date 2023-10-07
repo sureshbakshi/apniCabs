@@ -1,9 +1,13 @@
 import React, {useContext} from 'react';
-import {Text, View, Pressable, ScrollView} from 'react-native';
+import {View, Pressable, ScrollView} from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import {AuthContext} from '../context/Auth.context';
 import {navigate} from '../util/navigationService';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { Icon, ImageView, Text } from '../components/common';
+import styles from '../styles/MyRidePageStyles';
+import images from '../util/images';
+import { COLORS } from '../constants';
 
 const MorePage = () => {
   const {logout} = useContext(AuthContext);
@@ -23,7 +27,9 @@ const MorePage = () => {
           <View style={MoreStyles.card}>
             <View style={MoreStyles.cardtop}>
               <View style={MoreStyles.left}>
-                <View style={MoreStyles.profileIcon}></View>
+                {/* <View style={MoreStyles.profileIcon}></View> */}
+                <ImageView source={images[`captain4`]} style={[styles.avatar]}/>
+
               </View>
               <View style={MoreStyles.middle}>
                 <Text style={MoreStyles.name}>David Johnson</Text>
@@ -36,27 +42,37 @@ const MorePage = () => {
               style={MoreStyles.list}
               android_ripple={{color: '#ccc'}}
               onPress={() => navigate('MyProfile')}>
-              <View style={MoreStyles.listIcon}></View>
+              <View style={MoreStyles.listIcon}>
+                  <Icon name='account' size='large' color={COLORS.primary}/>
+              </View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
             <View style={MoreStyles.list}>
-              <View style={MoreStyles.listIcon}></View>
+            <View style={MoreStyles.listIcon}>
+                  <Icon name='bell-ring' size='large' color={COLORS.primary}/>
+              </View>
               <Text style={MoreStyles.name}>Notifications</Text>
             </View>
             <Pressable
               style={MoreStyles.list}
               android_ripple={{color: '#ccc'}}
               onPress={() => navigate('TermsAndConditions')}>
-              <View style={MoreStyles.listIcon}></View>
+              <View style={MoreStyles.listIcon}>
+                  <Icon name='notebook' size='large' color={COLORS.primary}/>
+              </View>
               <Text style={MoreStyles.name}>Terms and Conditions</Text>
             </Pressable>
 
             <View style={MoreStyles.list}>
-              <View style={MoreStyles.listIcon}></View>
+            <View style={MoreStyles.listIcon}>
+                  <Icon name='account-tie-voice' size='large' color={COLORS.primary}/>
+              </View>
               <Text style={MoreStyles.name}>Refer and Earn</Text>
             </View>
             <View style={MoreStyles.list}>
-              <View style={MoreStyles.listIcon}></View>
+            <View style={MoreStyles.listIcon}>
+                  <Icon name='help' size='large' color={COLORS.primary}/>
+              </View>
               <Text style={MoreStyles.name}>Help</Text>
             </View>
           </View>

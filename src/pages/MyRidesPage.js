@@ -1,26 +1,28 @@
 import * as React from 'react';
-import {Text, View, Button, Pressable, ScrollView} from 'react-native';
+import {View, Button, Pressable, ScrollView} from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS } from '../constants';
+import { ImageView, Text } from '../components/common';
+import images from '../util/images';
 const dummyObj = [
   {
     id: 1,
     name: 'Rajesh',
-    bg: COLORS.pending_bg,
+    bg: COLORS.brand_blue,
     color: COLORS.white,
     status: 'On Going',
   },
   {
     id: 2,
     name: 'Suresh',
-    bg: COLORS.approved_bg,
+    bg: COLORS.green,
     color: COLORS.white,
     status: 'Completed',
   },
   {
     id: 3,
     name: 'Rajesh',
-    bg: COLORS.cancelled_bg,
+    bg: COLORS.brand_yellow,
     color: COLORS.black,
     status: 'Cancelled',
   },
@@ -33,7 +35,8 @@ const list = dummyObj.map((item, i) => {
       </Pressable>
       <View style={styles.cardtop}>
         <View style={styles.left}>
-          <View style={styles.profileIcon}></View>
+          {/* <View style={styles.profileIcon}></View> */}
+          <ImageView source={images[`captain${i}`]} style={[styles.avatar]}/>
         </View>
         <View style={styles.middle}>
           <Text style={styles.name}>{item.name}</Text>

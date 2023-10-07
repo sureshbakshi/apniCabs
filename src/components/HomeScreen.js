@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   TextInput,
@@ -8,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { navigate } from '../util/navigationService';
+import { Text } from './common';
 
 const HomeScreen = () => {
   const [serverState, setServerState] = React.useState('Loading...');

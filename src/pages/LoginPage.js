@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Text, View, TextInput, Pressable, ImageBackground} from 'react-native';
+import { View, TextInput, Pressable, ImageBackground} from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import {useSetState} from 'react-use';
@@ -10,6 +10,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {  Text } from '../components/common';
 const initialState = {
   email: '',
   password: '',

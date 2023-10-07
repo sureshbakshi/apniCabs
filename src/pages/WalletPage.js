@@ -1,6 +1,9 @@
 import * as React from 'react';
-import {Text, View, Button, Pressable, ScrollView} from 'react-native';
+import { View, Button, Pressable, ScrollView} from 'react-native';
 import WalletStyles from '../styles/WalletPageStyles';
+import styles from '../styles/MyRidePageStyles';
+import { ImageView, Text } from '../components/common';
+import images from '../util/images';
 const WalletPage = ({navigation}) => {
   console.log(navigation);
   return (
@@ -22,7 +25,8 @@ const WalletPage = ({navigation}) => {
               <View style={WalletStyles.card} key={i}>
                 <View style={WalletStyles.cardtop}>
                   <View style={WalletStyles.left}>
-                    <View style={WalletStyles.profileIcon}></View>
+                    {/* <View style={WalletStyles.profileIcon}></View> */}
+                    <ImageView source={images[`captain${i}`]} style={[styles.avatar]}/>
                   </View>
                   <View style={WalletStyles.middle}>
                     <Text style={WalletStyles.name}>Ride Payment</Text>

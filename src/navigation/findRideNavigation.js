@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 import SearchRidePage from '../pages/SearchRidePage';
-import FindCaptain from '../pages/FindRidePage';
+import FindCaptain from '../pages/FindCaptainPage';
 import { COLORS } from '../constants';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = ['FindCaptain'];

@@ -1,6 +1,7 @@
 import React,{createContext} from 'react';
 import { useSetState } from 'react-use';
 import { navigate } from '../util/navigationService';
+import { ROUTES_NAMES } from '../constants';
 
 export const AuthContext = createContext(null);
 
@@ -27,7 +28,7 @@ export const ContextProvider = props => {
 
       if (!error) {
         setLoginSuccess(true);
-        navigate('FindRide')
+        navigate(ROUTES_NAMES.findRide)
       } else {
         setLoginError(error);
       }

@@ -49,3 +49,22 @@ export const COLORS = {
       active: "#f85c70",
     },
   };
+
+  export const ROUTES_NAMES = {
+    findRide: 'FindRide',
+    findCaptain: 'FindCaptain',
+    myRides: 'MyRides',
+    wallet: 'Wallet',
+    profile: 'Profile',
+    moreDetails: 'MoreDetails',
+    terms:'Terms',
+    signIn: 'SignIn',
+    signUp:'SignUp'
+  } 
+
+  export const TAB_BAR_ICONS = {
+    [ROUTES_NAMES.findRide]: ['map-search', 'map-search-outline'],
+    [ROUTES_NAMES.myRides]: ['account-reactivate', 'account-reactivate-outline'],
+    [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
+    [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
+  }

@@ -1,23 +1,33 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FindRideNavigator from './findRideNavigation';
 import WalletPage from '../pages/WalletPage';
 import MyRidePage from '../pages/MyRidesPage';
 import MoreNavigator from './moreNavigation';
+import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
+import { Icon } from '../components/common';
 const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          const iconName = focused ? TAB_BAR_ICONS[route.name][0] : TAB_BAR_ICONS[route.name][1]
+          return <Icon name={iconName} size={'large'} color={color} />;
+        },
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.gray,
         headerShown: false,
-      }}>
-      <Tab.Screen name="My Rides" component={MyRidePage} />
+        tabBarLabelStyle: {fontSize: 12}
+      })}
+    >
       <Tab.Screen
-        name="FindRide"
-        options={{title: 'Find a Ride'}}
+        name={ROUTES_NAMES.findRide}
+        options={{ title: 'Find a Ride' }}
         component={FindRideNavigator}
       />
-      <Tab.Screen name="Wallet" component={WalletPage} />
-      <Tab.Screen name="More" component={MoreNavigator} />
+      <Tab.Screen name={ROUTES_NAMES.myRides} component={MyRidePage} />
+      <Tab.Screen name={ROUTES_NAMES.wallet} component={WalletPage} />
+      <Tab.Screen name={ROUTES_NAMES.moreDetails} component={MoreNavigator} />
     </Tab.Navigator>
   );
 }

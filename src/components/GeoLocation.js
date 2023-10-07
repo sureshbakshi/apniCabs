@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Button,Text, View, PermissionsAndroid} from 'react-native';
+import {Button, View, PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { navigate } from '../util/navigationService';
+import { Text } from './common';
 
 const requestLocationPermission = async () => {
   try {

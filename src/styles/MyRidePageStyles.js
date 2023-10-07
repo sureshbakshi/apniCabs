@@ -109,7 +109,7 @@ const MyRideStyles = StyleSheet.create({
     bottom:80,
     left:-20,
     paddingVertical: 0,
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     borderBottomLeftRadius:10,
     borderBottomRightRadius:10,
   },
@@ -120,5 +120,10 @@ const MyRideStyles = StyleSheet.create({
     color: 'white',
     textAlign:'center'
   },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 100
+  }
 });
 export default MyRideStyles;

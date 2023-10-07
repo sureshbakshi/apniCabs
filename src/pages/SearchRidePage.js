@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Text, View, TextInput, Pressable, ImageBackground} from 'react-native';
+import {View, TextInput, Pressable, ImageBackground} from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
+import { Text } from '../components/common';
 const SearchRidePage = () => {
   return (
     <ImageBackground
@@ -18,6 +19,12 @@ const SearchRidePage = () => {
             <TextInput
               placeholder="Drop Location"
               style={SearchRideStyles.textInputDrop}
+            />
+            <TextInput
+              placeholder="No of seats: 1 - 6"
+              style={SearchRideStyles.textInputDrop}
+              maxLength={1}
+              keyboardType='numeric'
             />
           </View>
           <View>

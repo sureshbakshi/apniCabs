@@ -1,7 +1,10 @@
 import * as React from 'react';
-import {Text, View, Pressable, ScrollView} from 'react-native';
+import { View, Pressable, ScrollView} from 'react-native';
 import MyProfileStyles from '../styles/MyProfilePageStyles';
+import styles from '../styles/MyRidePageStyles';
 import { navigate } from '../util/navigationService';
+import { ImageView, Text } from '../components/common';
+import images from '../util/images';
 const MyProfilePage = () => {
   return (
     <View style={MyProfileStyles.container}>
@@ -10,7 +13,7 @@ const MyProfilePage = () => {
           <View style={MyProfileStyles.card}>
             <View style={MyProfileStyles.cardtop}>
               <View style={MyProfileStyles.left}>
-                <View style={MyProfileStyles.profileIcon}></View>
+              <ImageView source={images[`captain4`]} style={[styles.avatar]}/>
               </View>
               <View style={MyProfileStyles.middle}>
                 <Text style={MyProfileStyles.name}>Rajesh babu</Text>
