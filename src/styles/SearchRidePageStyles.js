@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const SearchRideStyles = StyleSheet.create({
   container: {
@@ -41,7 +42,7 @@ const SearchRideStyles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
   },
   text: {
     fontSize: 16,

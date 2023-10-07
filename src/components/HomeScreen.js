@@ -16,38 +16,38 @@ const HomeScreen = () => {
   const [inputFieldEmpty, setInputFieldEmpty] = React.useState(true);
   const [serverMessages, setServerMessages] = React.useState([]);
 
-  let ws = React.useRef(new WebSocket('ws://localhost:8080')).current;
-  console.log('ws====', ws);
+  // let ws = React.useRef(new WebSocket('ws://localhost:8080')).current;
+  // console.log('ws====', ws);
 
-  React.useEffect(() => {
-    const serverMessagesList = [];
+  // React.useEffect(() => {
+  //   const serverMessagesList = [];
 
-    ws.onopen = () => {
-      console.log('WebSocket Client Connected');
-      setServerState('Connected to the server');
-      setDisableButton(false);
-    };
+  //   ws.onopen = () => {
+  //     console.log('WebSocket Client Connected');
+  //     setServerState('Connected to the server');
+  //     setDisableButton(false);
+  //   };
 
-    ws.onclose = e => {
-      setServerState('Disconnected. Check internet or server.');
-      setDisableButton(true);
-    };
+  //   ws.onclose = e => {
+  //     setServerState('Disconnected. Check internet or server.');
+  //     setDisableButton(true);
+  //   };
 
-    ws.onerror = e => {
-      setServerState(e.message);
-    };
+  //   ws.onerror = e => {
+  //     setServerState(e.message);
+  //   };
 
-    ws.onmessage = e => {
-      serverMessagesList.push(e.data);
-      setServerMessages([...serverMessagesList]);
-    };
-  }, []);
+  //   ws.onmessage = e => {
+  //     serverMessagesList.push(e.data);
+  //     setServerMessages([...serverMessagesList]);
+  //   };
+  // }, []);
 
-  const submitMessage = () => {
-    ws.send(messageText);
-    setMessageText('');
-    setInputFieldEmpty(true);
-  };
+  // const submitMessage = () => {
+  //   ws.send(messageText);
+  //   setMessageText('');
+  //   setInputFieldEmpty(true);
+  // };
 
   return (
     <View style={styles.container}>

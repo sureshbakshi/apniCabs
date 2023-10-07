@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const WalletStyles = StyleSheet.create({
   container: {
@@ -7,7 +8,7 @@ const WalletStyles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     height: 200,
     padding: 10,
     width: '100%',
@@ -94,7 +95,7 @@ const WalletStyles = StyleSheet.create({
     marginBottom: 20,
   },
   greenTxt: {
-    color: '#11c874',
+    color: COLORS.primary,
     fontSize: 18,
     fontWeight: '500',
     alignSelf: 'flex-end',
@@ -105,14 +106,14 @@ const WalletStyles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 4,
-    backgroundColor: '#ffce00',
+    backgroundColor: COLORS.brand_yellow,
   },
   buttonTxt: {
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
     fontWeight: '500',
-    color: '#fff',
+    color: COLORS.black,
   },
 });
 export default WalletStyles;

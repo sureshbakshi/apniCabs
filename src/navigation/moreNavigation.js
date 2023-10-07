@@ -3,6 +3,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import MorePage from '../pages/MorePage';
 import MyProfilePage from '../pages/MyProfilePage';
 import TermsAndConditionsPage from '../pages/TermsAndConditionsPage';
+import { COLORS } from '../constants';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = ['MyProfile', 'TermsAndConditions'];
 
@@ -16,7 +17,7 @@ export default function MoreNavigator({navigation, route}) {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#11c874',
+          backgroundColor: COLORS.primary,
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const MoreStyles = StyleSheet.create({
   container: {
@@ -6,7 +7,7 @@ const MoreStyles = StyleSheet.create({
     backgroundColor: '#f2f4f6',
   },
   header: {
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     height: 60,
     padding: 10,
     width: '100%',
@@ -107,7 +108,7 @@ const MoreStyles = StyleSheet.create({
     marginBottom: 20,
   },
   greenTxt: {
-    color: '#11c874',
+    color: COLORS.primary,
     fontSize: 18,
     fontWeight: '500',
     alignSelf: 'center',

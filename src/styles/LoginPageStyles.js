@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const LoginStyles = StyleSheet.create({
   container: {
@@ -44,7 +45,7 @@ const LoginStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
   },
   text: {
     fontSize: 16,
@@ -68,7 +69,7 @@ const LoginStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
   greenTxt: {
-    color: '#11c874',
+    color: COLORS.primary,
     fontSize: 16,
     fontWeight: '500',
     marginLeft:10

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const MyProfileStyles = StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ const MyProfileStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     height: 60,
     padding: 10,
     width: '100%',
@@ -106,7 +107,7 @@ const MyProfileStyles = StyleSheet.create({
     fontSize: 13,
   },
   greenTxt: {
-    color: '#11c874',
+    color: COLORS.primary,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -115,7 +116,7 @@ const MyProfileStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 20,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     position:'absolute',
     bottom:0,
     width:'100%'

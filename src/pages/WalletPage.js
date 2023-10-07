@@ -8,7 +8,7 @@ const WalletPage = ({navigation}) => {
       <View style={WalletStyles.header}>
         <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text>
         <Text style={WalletStyles.whitetxt}>{'Total Balance'}</Text>
-        <Text style={WalletStyles.balTxt}>{'$120'}</Text>
+        <Text style={WalletStyles.balTxt}>{'\u20B9'}{'120'}</Text>
         <View style={WalletStyles.right}>
           <Pressable style={WalletStyles.button}>
             <Text style={WalletStyles.buttonTxt}>{'Add Money'.toUpperCase()}</Text>
@@ -34,7 +34,7 @@ const WalletPage = ({navigation}) => {
                     </Text>
                   </View>
                   <View style={WalletStyles.right}>
-                    <Text style={WalletStyles.greenTxt}>$15</Text>
+                    <Text style={WalletStyles.greenTxt}>{'\u20B9'}15</Text>
                     <Text style={[WalletStyles.smallTxt]}>David Johnson</Text>
                   </View>
                 </View>

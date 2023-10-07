@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const MyRideStyles = StyleSheet.create({
   container: {
@@ -6,7 +7,7 @@ const MyRideStyles = StyleSheet.create({
     backgroundColor: '#f2f4f6',
   },
   header: {
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     height:60,
     padding:10,
     justifyContent:'center'
@@ -73,11 +74,23 @@ const MyRideStyles = StyleSheet.create({
     fontSize: 13,
     marginBottom: 20,
   },
-  greenTxt:{
-    color: '#11c874',
-    fontSize: 14,
+  text:{
+    fontSize: 13,
     fontWeight: '500',
-    alignSelf:'center'
+    alignSelf:'center',
+    color: COLORS.gray
+  },
+  primaryColor:{
+    color: COLORS.primary,
+  },
+  whiteColor: {
+    color: COLORS.white
+  },
+  greenColor:{
+    color: COLORS.green
+  },
+  bold:{
+    fontWeight: 'bold'
   },
   button: {
     alignItems: 'center',
@@ -85,7 +98,7 @@ const MyRideStyles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 4,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
   },
   status: {
     ...StyleSheet.button,
@@ -100,7 +113,7 @@ const MyRideStyles = StyleSheet.create({
     borderBottomLeftRadius:10,
     borderBottomRightRadius:10,
   },
-  text: {
+  buttonText: {
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,

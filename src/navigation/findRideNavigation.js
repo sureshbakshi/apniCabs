@@ -2,9 +2,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 import SearchRidePage from '../pages/SearchRidePage';
-import FindRidePage from '../pages/FindRidePage';
+import FindCaptain from '../pages/FindRidePage';
+import { COLORS } from '../constants';
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = ['Find A Ride'];
+const tabHiddenRoutes = ['FindCaptain'];
 
 export default function FindRideNavigator({navigation, route}) {
   if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
@@ -16,7 +17,7 @@ export default function FindRideNavigator({navigation, route}) {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#11c874',
+          backgroundColor: COLORS.primary,
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -29,9 +30,9 @@ export default function FindRideNavigator({navigation, route}) {
         component={SearchRidePage}
       />
       <Stack.Screen
-        name="FindRide"
-        options={{title: 'Find A Ride'}}
-        component={FindRidePage}
+        name="FindCaptain"
+        options={{title: 'Captains'}}
+        component={FindCaptain}
       />
     </Stack.Navigator>
   );

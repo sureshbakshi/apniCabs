@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const FindRideStyles = StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ const FindRideStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     height:60,
     padding:10
   },
@@ -75,7 +76,7 @@ const FindRideStyles = StyleSheet.create({
     marginBottom: 20,
   },
   greenTxt:{
-    color: '#11c874',
+    color: COLORS.gray,
     fontSize: 16,
     fontWeight: '500',
     alignSelf:'center'
@@ -86,7 +87,7 @@ const FindRideStyles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 4,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
   },
   text: {
     fontSize: 14,

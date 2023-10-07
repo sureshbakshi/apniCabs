@@ -12,7 +12,7 @@ function App() {
   const {state} = useContext(AuthContext);
   useEffect(() =>{
     SplashScreen.hide();
-  },[])
+  })
   return (
       <NavigationContainer ref={navigationRef} fallback={<ActivityIndicator color="blue" size="large" />}>
         {!state.isLoggedIn && <LoginNavigator />}

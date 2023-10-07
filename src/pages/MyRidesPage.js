@@ -1,57 +1,62 @@
 import * as React from 'react';
 import {Text, View, Button, Pressable, ScrollView} from 'react-native';
-import MyRideStyles from '../styles/MyRidePageStyles';
+import styles from '../styles/MyRidePageStyles';
+import { COLORS } from '../constants';
 const dummyObj = [
   {
     id: 1,
     name: 'Rajesh',
-    color: '#d73eff',
+    bg: COLORS.pending_bg,
+    color: COLORS.white,
     status: 'On Going',
   },
   {
     id: 2,
     name: 'Suresh',
-    color: '#11c874',
-    status: 'Approved',
+    bg: COLORS.approved_bg,
+    color: COLORS.white,
+    status: 'Completed',
   },
   {
     id: 3,
     name: 'Rajesh',
-    color: '#ffce00',
-    status: 'Pending',
+    bg: COLORS.cancelled_bg,
+    color: COLORS.black,
+    status: 'Cancelled',
   },
 ];
 const list = dummyObj.map((item, i) => {
   return (
-    <View style={MyRideStyles.card} key={item.id}>
-      <Pressable style={[MyRideStyles.status, {backgroundColor: item.color}]}>
-        <Text style={MyRideStyles.text}>{'Pending'}</Text>
+    <View style={styles.card} key={item.id}>
+      <Pressable style={[styles.status, {backgroundColor: item.bg}]}>
+        <Text style={[styles.text,styles.whiteColor, {color: item.color}]}>{item.status}</Text>
       </Pressable>
-      <View style={MyRideStyles.cardtop}>
-        <View style={MyRideStyles.left}>
-          <View style={MyRideStyles.profileIcon}></View>
+      <View style={styles.cardtop}>
+        <View style={styles.left}>
+          <View style={styles.profileIcon}></View>
         </View>
-        <View style={MyRideStyles.middle}>
-          <Text style={MyRideStyles.name}>{item.name}</Text>
-          <Text style={MyRideStyles.review}>({item.id} Reviews)</Text>
-          <Text style={MyRideStyles.address}>Bheeramguda</Text>
-          <Text style={MyRideStyles.address}>Hitech knowledge Park</Text>
+        <View style={styles.middle}>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.review}>({item.id} Reviews)</Text>
+          <Text style={styles.address}>Bheeramguda</Text>
+          <Text style={styles.address}>Hitech knowledge Park</Text>
         </View>
-        <View style={MyRideStyles.right}>
-          <Text style={MyRideStyles.greenTxt}>$15</Text>
-          <Text style={MyRideStyles.address}>3 Seats left</Text>
+        <View style={styles.right}>
+          <Text style={[styles.greenColor, styles.bold]}>{'\u20B9'}15</Text>
+          <Text style={styles.address}>3 Seats left</Text>
         </View>
       </View>
-      <View style={MyRideStyles.cardBottom}>
-        <View style={MyRideStyles.left}>
-          <Text style={MyRideStyles.greenTxt}>22Feb 10:00 am</Text>
+      <View style={styles.cardBottom}>
+        <View style={styles.left}>
+          <Text style={styles.text}>22Feb </Text>
+          <Text style={styles.text}>10:00 am</Text> 
         </View>
-        <View style={MyRideStyles.middle}>
-          <Text style={MyRideStyles.greenTxt}>Honda Civic | White</Text>
+        <View style={styles.middle}>
+          <Text style={styles.text}>Honda Civic | White</Text>
         </View>
-        <View style={MyRideStyles.right}>
-          <Pressable style={MyRideStyles.button}>
-            <Text style={MyRideStyles.text}>{'Message'}</Text>
+        <View style={styles.right}>
+          <Pressable style={styles.button}>
+            <Text style={styles.buttonText}>{'More Info'}</Text>
           </Pressable>
         </View>
       </View>
@@ -60,11 +65,11 @@ const list = dummyObj.map((item, i) => {
 });
 const MyRidePage = ({navigation}) => {
   return (
-    <View style={MyRideStyles.container}>
-      <View style={MyRideStyles.header}>
-        <Text style={MyRideStyles.headerText}>{'My Rides'.toUpperCase()}</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{'My Rides'.toUpperCase()}</Text>
       </View>
-      <View style={MyRideStyles.section}>
+      <View style={styles.section}>
         <ScrollView>{list}</ScrollView>
       </View>
     </View>

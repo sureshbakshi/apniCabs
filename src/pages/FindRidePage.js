@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Text, View, Button, Pressable, ScrollView} from 'react-native';
 import FindRideStyles from '../styles/FindRidePageStyles';
+import styles from '../styles/MyRidePageStyles';
+
 const FindRidePage = ({navigation}) => {
   return (
     <View style={FindRideStyles.container}>
@@ -22,16 +24,16 @@ const FindRidePage = ({navigation}) => {
                     </Text>
                   </View>
                   <View style={FindRideStyles.right}>
-                    <Text style={FindRideStyles.name}>$15</Text>
+                    <Text style={FindRideStyles.name}>{'\u20B9'}15</Text>
                     <Text style={FindRideStyles.address}>3 Seats left</Text>
                   </View>
                 </View>
                 <View style={FindRideStyles.cardBottom}>
                   <View style={FindRideStyles.left}>
-                    <Text style={FindRideStyles.greenTxt}>10:00 am</Text>
+                    <Text style={[styles.text, styles.bold]}>10:00 am</Text>
                   </View>
                   <View style={FindRideStyles.middle}>
-                    <Text style={FindRideStyles.greenTxt}>
+                    <Text style={[styles.text, styles.bold]}>
                       Honda Civic | White
                     </Text>
                   </View>

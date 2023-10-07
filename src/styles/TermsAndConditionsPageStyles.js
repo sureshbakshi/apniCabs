@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../constants';
 
 const TermsAndConditionsStyles = StyleSheet.create({
   container: {
@@ -107,7 +108,7 @@ const TermsAndConditionsStyles = StyleSheet.create({
     fontSize: 13,
   },
   greenTxt: {
-    color: '#11c874',
+    color: COLORS.primary,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -116,7 +117,7 @@ const TermsAndConditionsStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 20,
-    backgroundColor: '#11c874',
+    backgroundColor: COLORS.primary,
     position:'absolute',
     bottom:0,
     width:'100%'

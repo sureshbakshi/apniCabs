@@ -24,7 +24,7 @@ const SearchRidePage = () => {
             <Pressable
               style={SearchRideStyles.button}
               android_ripple={{color: '#fff'}}
-              onPress={() => navigate('FindRide')}>
+              onPress={() => navigate('FindCaptain')}>
               <Text style={SearchRideStyles.text}>{'Search Rides'}</Text>
             </Pressable>
           </View>
