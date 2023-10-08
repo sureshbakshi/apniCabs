@@ -30,14 +30,14 @@ const LoginStyles = StyleSheet.create({
     borderTopRightRadius: 4,
     borderBottomColor: '#ccc',
     borderBottomWidth: 0.5,
-    padding: 10,
+    padding: 15,
   },
   textInputDrop: {
     backgroundColor: '#f2f4f6',
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
     marginBottom: 20,
-    padding: 10,
+    padding: 15,
   },
   button: {
     alignItems: 'center',

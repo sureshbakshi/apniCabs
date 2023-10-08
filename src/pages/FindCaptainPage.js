@@ -4,6 +4,7 @@ import {ImageView, Text} from '../components/common'
 import FindRideStyles from '../styles/FindRidePageStyles';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
+import Timeline from '../components/common/timeline/Timeline';
 
 const FindCaptainPage = ({navigation}) => {
   return (
@@ -13,6 +14,7 @@ const FindCaptainPage = ({navigation}) => {
           {[1, 2, 3, 4].map((item,i) => {
             return (
               <View style={FindRideStyles.card} key={i}>
+                <Timeline/>
                 <View style={FindRideStyles.cardtop}>
                   <View style={FindRideStyles.left}>
                     <ImageView source={images[`captain${i}`]} style={[styles.avatar]}/>
@@ -20,13 +22,10 @@ const FindCaptainPage = ({navigation}) => {
                   <View style={FindRideStyles.middle}>
                     <Text style={FindRideStyles.name}>David Johson</Text>
                     <Text style={FindRideStyles.review}>({item} Reviews)</Text>
-                    <Text style={FindRideStyles.address}>Bheeramguda</Text>
-                    <Text style={FindRideStyles.address}>
-                      Hitech knowledge Park
-                    </Text>
+                    <Timeline data={['Bheeramguda', 'Hitech knowledge Park']} />
                   </View>
                   <View style={FindRideStyles.right}>
-                    <Text style={FindRideStyles.name}>{'\u20B9'}15</Text>
+                    <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>{'\u20B9'}15</Text>
                     <Text style={FindRideStyles.address}>3 Seats left</Text>
                   </View>
                 </View>
