@@ -25,9 +25,9 @@ export default function TabNavigator() {
         options={{ title: 'Find a Ride' }}
         component={FindRideNavigator}
       />
-      <Tab.Screen name={ROUTES_NAMES.myRides} component={MyRidePage} />
-      <Tab.Screen name={ROUTES_NAMES.wallet} component={WalletPage} />
-      <Tab.Screen name={ROUTES_NAMES.moreDetails} component={MoreNavigator} />
+      <Tab.Screen name={ROUTES_NAMES.myRides}  options={{ title: 'My Rides' }} component={MyRidePage} />
+      <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
+      <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
     </Tab.Navigator>
   );
 }
