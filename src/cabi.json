@@ -13,7 +13,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/world_flights/config_soei4h.json"
     },
     {
-      "id": 0,
+      "id": 1,
       "category":"Auto",
       "label": "California Earthquakes",
       "queryType": "sample",
@@ -26,7 +26,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/earthquakes/config.json"
     },
     {
-      "id": 1,
+      "id": 2,
       "category":"Bike",
       "label": "NYC Taxi Trips",
       "queryType": "sample",
@@ -39,7 +39,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/nyctrips/config.json"
     },
     {
-      "id": 1,
+      "id": 3,
       "category":"Bike",
       "label": "San Francisco Elevation Contour",
       "queryType": "sample",
@@ -52,7 +52,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/sfcontour/config.json"
     },
     {
-      "id": 1,
+      "id": 4,
       "category":"Bike",
       "label": "New York City Population by Census Tract",
       "queryType": "sample",
@@ -64,7 +64,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/nyc_census/config.json"
     },
     {
-      "id": 0,
+      "id": 5,
       "category":"Auto",
       "label": "San Francisco Street Tree Map",
       "queryType": "sample",
@@ -77,7 +77,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/sftrees/config.json"
     },
     {
-      "id": 2,
+      "id": 6,
       "category":"Prime Plus",
       "label": "Commute Pattern in England and Wales",
       "queryType": "sample",
@@ -90,7 +90,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/ukcommute/config.json"
     },
     {
-      "id": 2,
+      "id": 7,
       "category":"Prime Plus",
       "label": "$2+ Million Homes Built in Los Angeles Since 2006",
       "queryType": "sample",
@@ -103,7 +103,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/la_assessorparcels/config.json"
     },
     {
-      "id": 2,
+      "id": 8,
       "category":"Prime Plus",
       "label": "Travel Times From Uber Movement",
       "queryType": "sample",
@@ -116,7 +116,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/movement_pittsburgh/config.json"
     },
     {
-      "id": 2,
+      "id": 9,
       "category":"Prime Plus",
       "label": "2017 Unemployment Rates for U.S. Counties",
       "queryType": "sample",
@@ -129,7 +129,7 @@
       "configUrl": "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/county_unemployment/config.json"
     },
     {
-      "id": 2,
+      "id": 10,
       "category":"Prime Plus",
       "label": "2018 Uber USDOT",
       "queryType": "sample",

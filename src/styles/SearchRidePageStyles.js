@@ -18,7 +18,6 @@ const SearchRideStyles = StyleSheet.create({
   },
   section:{
     flex:1,
-    justifyContent:'space-between',
   },
   textInputPickup:{
     backgroundColor: '#fff',

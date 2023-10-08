@@ -55,6 +55,7 @@ const Card = item => {
     </View>
   );
 };
+const data = _.groupBy(cabiData, 'category');
 
 const FindCaptainPage = () => {
   const [index, setIndex] = React.useState(0);
@@ -63,16 +64,15 @@ const FindCaptainPage = () => {
     setIndex(index);
   };
 
-  const data = _.groupBy(cabiData, 'category');
 
   const autoData = data['Auto'].map(item => {
-    return <Card {...item} key={`Auto ${item.id}`} />;
+    return <Card {...item} key={`Auto_${item.id}`} />;
   });
   const bikeData = data['Bike'].map(item => {
-    return <Card {...item} key={`Bike ${item.id}`} />;
+    return <Card {...item} key={`Bike_${item.id}`} />;
   });
   const primeData = data['Prime Plus'].map(item => {
-    return <Card {...item} key={`Prime ${item.id}`} />;
+    return <Card {...item} key={`Prime_${item.id}`} />;
   });
 
   return (
@@ -81,7 +81,7 @@ const FindCaptainPage = () => {
         <Tabs
           mode="scrollable"
           style={FindRideStyles.tabs}
-          tabBarUnderlineStyle={{ backgroundColor: 'dodgerblue' }}
+          tabBarUnderlineStyle={{ backgroundColor: COLORS.primary }}
           theme={{
             colors: {onSurface: COLORS.primary, onSurfaceVariant: COLORS.black},
           }}>

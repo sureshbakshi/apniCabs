@@ -2,6 +2,7 @@ import React,{createContext} from 'react';
 import { useSetState } from 'react-use';
 import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
+import {delay} from 'lodash';
 
 export const AuthContext = createContext(null);
 
@@ -28,7 +29,7 @@ export const ContextProvider = props => {
 
       if (!error) {
         setLoginSuccess(true);
-        navigate(ROUTES_NAMES.findRide)
+        delay(() => navigate(ROUTES_NAMES.findRide), 10)
       } else {
         setLoginError(error);
       }
@@ -62,4 +63,4 @@ const fetchLogin = (email, password, callback) =>
     } else {
       return callback(new Error('Invalid email and password'));
     }
-  }, 1000);
+  }, 200);

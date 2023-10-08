@@ -4,6 +4,7 @@ import styles from '../styles/MyRidePageStyles';
 import { COLORS } from '../constants';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
+import Timeline from '../components/common/timeline/Timeline';
 const dummyObj = [
   {
     id: 1,
@@ -41,8 +42,7 @@ const list = dummyObj.map((item, i) => {
         <View style={styles.middle}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.review}>({item.id} Reviews)</Text>
-          <Text style={styles.address}>Bheeramguda</Text>
-          <Text style={styles.address}>Hitech knowledge Park</Text>
+          <Timeline data={['Bheeramguda', 'Hitech knowledge Park']}/>
         </View>
         <View style={styles.right}>
           <Text style={[styles.greenColor, styles.bold]}>{'\u20B9'}15</Text>
