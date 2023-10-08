@@ -6,6 +6,7 @@ import { Text } from '../components/common';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geolocation from 'react-native-geolocation-service';
 import GooglePlaces from '../components/GooglePlaces';
+import Timeline from '../components/common/timeline/Timeline';
 
 const SearchRidePage = () => {
   return (
@@ -24,6 +25,9 @@ const SearchRidePage = () => {
               placeholder="Drop Location"
               style={SearchRideStyles.textInputDrop}
             /> */}
+            <View style={{position: 'absolute', zIndex: 3, top: 10, left: 2}}>
+            <Timeline data={['','']} height={25}/>
+            </View>
             <GooglePlaces placeholder={'Pickup Location'} containerStyles={{zIndex: 2}}/>
             <GooglePlaces placeholder={'Drop Location'} containerStyles={{zIndex: 1}}/>
             <TextInput

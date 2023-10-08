@@ -12,7 +12,7 @@ const GooglePlaces = ({ placeholder, containerStyles }) => {
             debounce={250}
             onPress={(data, details = null) => console.log(data, details)}
             enableHighAccuracyLocation={true}
-            query={{ key: 'AIzaSyBWkIzIXkqSvqxMpb4bCtwwX68sDj9OG6g', components: 'country:in', language: 'it' }}
+            query={{ key: '', components: 'country:in', language: 'it' }}
             fetchDetails={true}
             onFail={error => console.log(error)}
             onNotFound={() => console.log('no results')}
@@ -49,13 +49,15 @@ const GooglePlaces = ({ placeholder, containerStyles }) => {
                 listView: {
                     position: 'absolute',
                     top: 43,
+                    zIndex: 4
                 },
                 row: {
                     flexDirection: 'row',
                 },
                 textInput: {
                     height: 45,
-                    borderRadius: 0
+                    borderRadius: 0,
+                    paddingLeft: 20
                 },
             }}
         />
