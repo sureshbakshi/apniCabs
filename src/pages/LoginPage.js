@@ -18,7 +18,8 @@ const initialState = {
 
 GoogleSignin.configure({
   androidClientId:
-    '393986381460-35bfecvib0g66i2dgpr9htaa1vb3s563.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    '208090810105-6cp89c7kjkboa02jeedch0n6eqpdo07d.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    iosClientId:'208090810105-iu8l88df74966gbp2nb947p47bc8aocg.apps.googleusercontent.com',
   profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
 
