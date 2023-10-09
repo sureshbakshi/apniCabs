@@ -59,7 +59,8 @@ export const COLORS = {
     moreDetails: 'MoreDetails',
     terms:'Terms',
     signIn: 'SignIn',
-    signUp:'SignUp'
+    signUp:'SignUp',
+    searchRide: 'SearchRide'
   } 
 
   export const TAB_BAR_ICONS = {

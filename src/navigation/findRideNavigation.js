@@ -3,10 +3,14 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
+import AppContainer from '../components/AppContainer';
+
+const SearchRidePageContainer = AppContainer(SearchRidePage);
+
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = ['FindCaptain'];
+const tabHiddenRoutes = [ROUTES_NAMES.findCaptain];
 
 export default function FindRideNavigator({ navigation, route }) {
   useEffect(() => {
@@ -28,12 +32,12 @@ export default function FindRideNavigator({ navigation, route }) {
         },
       }}>
       <Stack.Screen
-        name="SearchRide"
+        name={ROUTES_NAMES.searchRide}
         options={{ title: 'Find A Ride' }}
-        component={SearchRidePage}
+        component={SearchRidePageContainer}
       />
       <Stack.Screen
-        name="FindCaptain"
+        name={ROUTES_NAMES.findCaptain}
         options={{ title: 'Captains' }}
         component={FindCaptain}
       />
