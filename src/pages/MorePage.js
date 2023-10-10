@@ -1,21 +1,22 @@
 import React, {useContext} from 'react';
 import {View, Pressable, ScrollView} from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
-import {AuthContext} from '../context/Auth.context';
 import {navigate} from '../util/navigationService';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { Icon, ImageView, Text } from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import { COLORS } from '../constants';
+import {updateUserData} from '../slices/authSlice';
+import {useDispatch} from 'react-redux';
 
 const MorePage = () => {
-  const {logout} = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const signOut = async () => {
     try {
       await GoogleSignin.signOut();
-      logout();
+      dispatch(updateUserData(null));
     } catch (error) {
       console.error(error);
     }

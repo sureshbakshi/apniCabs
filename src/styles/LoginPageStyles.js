@@ -56,7 +56,7 @@ const LoginStyles = StyleSheet.create({
   },
   googleBtn: {
     ...StyleSheet.button,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.bg_primary,
     elevation: 3,
     paddingVertical: 12,
     paddingHorizontal: 32,
@@ -64,7 +64,7 @@ const LoginStyles = StyleSheet.create({
   },
   googleTxt: {
     ...StyleSheet.text,
-    color: '#000',
+    color:COLORS.white,
     textAlign: 'center',
     fontWeight: 'bold',
   },

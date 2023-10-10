@@ -1,16 +1,26 @@
-import React, {useContext} from 'react';
-import { View, TextInput, Pressable, ImageBackground} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {
+  View,
+  TextInput,
+  Pressable,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
+
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import {useSetState} from 'react-use';
-import {AuthContext} from '../context/Auth.context';
 import {navigate} from '../util/navigationService';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {  Text } from '../components/common';
+import {Text} from '../components/common';
+import {COLORS} from '../constants';
+import {useDispatch} from 'react-redux';
+import {updateUserData} from '../slices/authSlice';
+
 const initialState = {
   email: '',
   password: '',
@@ -19,17 +29,16 @@ const initialState = {
 GoogleSignin.configure({
   androidClientId:
     '208090810105-6cp89c7kjkboa02jeedch0n6eqpdo07d.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-    iosClientId:'208090810105-iu8l88df74966gbp2nb947p47bc8aocg.apps.googleusercontent.com',
+  iosClientId:
+    '208090810105-iu8l88df74966gbp2nb947p47bc8aocg.apps.googleusercontent.com',
   profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
 
 const LoginPage = () => {
-  const {state: ContextState, login} = useContext(AuthContext);
-  const {isLoginPending, isLoggedIn, loginError} = ContextState;
+  const dispatch = useDispatch();
   const [state, setState] = useSetState(initialState);
   const onSubmit = e => {
-    const {email, password} = state;
-    login(email, password);
+    dispatch(updateUserData(state));
     setState({
       email: '',
       password: '',
@@ -40,8 +49,7 @@ const LoginPage = () => {
     try {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const userInfo = await GoogleSignin.signIn();
-      const {email} = userInfo.user;
-      login(email);
+      dispatch(updateUserData(userInfo));
       setState({userInfo});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -66,72 +74,80 @@ const LoginPage = () => {
           <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
         </View>
       </ImageBackground>
-
-      <View style={LoginStyles.section}>
-        <View>
-          <TextInput
-            placeholder="Phone Number"
-            onChangeText={newText => setState({email: newText})}
-            value={state.email}
-            style={LoginStyles.textInputPickup}
-          />
-          <TextInput
-            placeholder="Password"
-            onChangeText={newText => setState({password: newText})}
-            value={state.password}
-            style={LoginStyles.textInputDrop}
-          />
+      <ScrollView>
+        <View style={LoginStyles.section}>
           <View>
-            {isLoginPending && <Text>Please wait...</Text>}
-            {isLoggedIn && <Text>Success.</Text>}
-            {loginError && (
-              <Text style={[CommonStyles.errorTxt, CommonStyles.mb5]}>
-                {loginError.message}
-              </Text>
-            )}
-          </View>
-          <View>
-            <Pressable
-              style={LoginStyles.button}
-              android_ripple={{color: '#fff'}}
-              onPress={() => onSubmit()}>
-              <Text style={LoginStyles.text}>{'Login'.toUpperCase()}</Text>
-            </Pressable>
-          </View>
-          <View style={LoginStyles.signUpContainer}>
-            <View style={LoginStyles.signUpSection}>
-              <Text style={LoginStyles.headerText}>New user?</Text>
+            <TextInput
+              placeholder="Email"
+              onChangeText={newText => setState({email: newText})}
+              value={state.email}
+              style={LoginStyles.textInputPickup}
+            />
+            <TextInput
+              placeholder="Password"
+              onChangeText={newText => setState({password: newText})}
+              value={state.password}
+              style={LoginStyles.textInputDrop}
+            />
+            <View>
               <Pressable
+                style={LoginStyles.button}
                 android_ripple={{color: '#fff'}}
-                onPress={() => navigate('SignUp')}>
-                <Text style={LoginStyles.greenTxt}>SignUp</Text>
+                onPress={() => onSubmit()}>
+                <Text style={LoginStyles.text}>{'Login'.toUpperCase()}</Text>
               </Pressable>
             </View>
-            <View style={LoginStyles.forgotSection}>
-              <Text style={LoginStyles.headerText}>Forgot</Text>
-              <Text style={LoginStyles.greenTxt}>Password?</Text>
+            <View style={LoginStyles.signUpContainer}>
+              <View style={LoginStyles.signUpSection}>
+                <Text style={LoginStyles.headerText}>New user?</Text>
+                <Pressable
+                  android_ripple={{color: '#fff'}}
+                  onPress={() => navigate('SignUp')}>
+                  <Text style={LoginStyles.greenTxt}>SignUp</Text>
+                </Pressable>
+              </View>
+              <View style={LoginStyles.forgotSection}>
+                <Text style={LoginStyles.headerText}>Forgot</Text>
+                <Text style={LoginStyles.greenTxt}>Password?</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View>
-          <Text style={[LoginStyles.headerText, CommonStyles.mb10]}>
-            {'or continue with '.toUpperCase()}
-          </Text>
-          <GoogleSigninButton
-            style={{width: '100%', height: 48}}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={signIn}
-          />
-          {false && (
+          <View>
+            <Text style={[LoginStyles.headerText, CommonStyles.mb10]}>
+              {'or'}
+            </Text>
+            <GoogleSigninButton
+              style={{width: '100%', height: 48}}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={signIn}
+            />
+          </View>
+          <View style={CommonStyles.mtb10}>
+            <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
+              {"Don't have a account"}
+            </Text>
             <Pressable
-              style={LoginStyles.googleBtn}
+              style={[
+                LoginStyles.googleBtn,
+                CommonStyles.mb10,
+                {backgroundColor: COLORS.brand_blue},
+              ]}
               android_ripple={{color: '#ccc'}}>
-              <Text style={LoginStyles.googleTxt}>{'Google'}</Text>
+              <Text style={LoginStyles.googleTxt}>{'Sign in a Driver'}</Text>
             </Pressable>
-          )}
+
+            <Pressable
+              onPress={signIn}
+              style={[LoginStyles.googleBtn, CommonStyles.mb10]}
+              android_ripple={{color: '#ccc'}}>
+              <Text style={[LoginStyles.googleTxt, {color: COLORS.black}]}>
+                {'Sign in a User'}
+              </Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

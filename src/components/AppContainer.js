@@ -12,7 +12,7 @@ function AppContainer(WrappedComponent) {
         }
 
         componentWillUnmount() {
-            navigator.geolocation.clearWatch(this.watchId);
+            // navigator?.geolocation?.clearWatch(this.watchId);
         }
 
         async checkAndroidPermissions() {
