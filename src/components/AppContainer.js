@@ -1,21 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
+import Geolocation from 'react-native-geolocation-service';
 
 function AppContainer(WrappedComponent) {
-    return class extends Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                latitude: null,
-                longitude: null,
-            };
-        }
+    return (props) => {
 
-        componentWillUnmount() {
-            // navigator?.geolocation?.clearWatch(this.watchId);
-        }
+        const [location, setLocation] = useState({
+            latitude: null,
+            longitude: null,
+        })
 
-        async checkAndroidPermissions() {
+        const checkAndroidPermissions = async() => {
             try {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -35,36 +30,44 @@ function AppContainer(WrappedComponent) {
             }
         }
 
-        async componentDidMount() {
+        const watchPosition = () => {
+
+        }
+        
+
+        useEffect(() => {
             //Get current location and set initial region to this
-            let granted = false;
-            if (Platform.OS === "ios") {
-                granted = true;
-            } else {
-                granted = await this.checkAndroidPermissions();
+            let watchId = undefined;
+            const watchPosition = async() =>{
+                let granted = false;
+                if (Platform.OS === "ios") {
+                    granted = true;
+                } else {
+                    granted = await checkAndroidPermissions();
+                }
+                if (granted)
+                    watchId = Geolocation.watchPosition(
+                        position => {
+                            setLocation({
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            });
+                        },
+                        error => console.log(error),
+                        { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
+                    );
             }
-            if (granted)
-                this.watchId = navigator.geolocation.watchPosition(
-                    position => {
-                        this.setState({
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude
-                        });
-                    },
-                    error => console.log(error),
-                    { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
-                );
-        }
+            watchPosition()
+            return () => Geolocation?.clearWatch(watchId);
+        }, [])
 
 
-        render() {
-            return (
-                <WrappedComponent
-                    latitude={this.state.latitude}
-                    longitude={this.state.longitude}
-                />
-            );
-        }
+        return (
+            <WrappedComponent
+                latitude={location.latitude}
+                longitude={location.longitude}
+            />
+        );
     };
 }
 
