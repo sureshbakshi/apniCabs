@@ -30,11 +30,6 @@ function AppContainer(WrappedComponent) {
             }
         }
 
-        const watchPosition = () => {
-
-        }
-        
-
         useEffect(() => {
             //Get current location and set initial region to this
             let watchId = undefined;

@@ -17,8 +17,8 @@ function App() {
   })
   return (
       <NavigationContainer ref={navigationRef} fallback={<ActivityIndicator color="blue" size="large" />}>
-      {_.isEmpty(userData) && <LoginNavigator />}
-      {!_.isEmpty(userData) && <TabNavigator />}
+      {/* {_.isEmpty(userData) && <LoginNavigator />} */}
+      {true && <TabNavigator />}
       </NavigationContainer>
   );
 }

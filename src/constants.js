@@ -1,3 +1,5 @@
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+
 export const COLORS = {
     primary: "#f85c70",
     primary_soft: "#ff8f9d",
@@ -69,3 +71,60 @@ export const COLORS = {
     [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
     [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
   }
+
+  export const toastConfig = {
+    /*
+      Overwrite 'success' type,
+      by modifying the existing `BaseToast` component
+    */
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: 'green' }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '400'
+        }}
+      />
+    ),
+    /*
+      Overwrite 'error' type,
+      by modifying the existing `ErrorToast` component
+    */
+    error: (props) => (
+      <ErrorToast
+        {...props}
+        style={{ borderLeftColor: 'red' }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 14
+        }}
+        text2Style={{
+          fontSize: 15
+        }}
+      />
+    ),
+    /*
+      Or create a completely new type - `tomatoToast`,
+      building the layout from scratch.
+  
+      import Toast from 'react-native-toast-message';
+      const showToast = () => {
+          Toast.show({
+              type: 'tomatoToast',
+              text1: 'This is an info message',
+              position: 'bottom'
+          });
+      }
+  
+      I can consume any custom `props` I want.
+      They will be passed when calling the `show` method (see below)
+    */
+    tomatoToast: ({ text1, props }) => (
+      <View style={{ height: 60, width: '100%', backgroundColor: 'tomato' }}>
+        <Text>{text1}</Text>
+        <Text>{props.uuid}</Text>
+      </View>
+    )
+  };

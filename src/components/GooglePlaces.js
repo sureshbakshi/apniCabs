@@ -4,13 +4,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 navigator.geolocation = require('react-native-geolocation-service');
 import Config from "react-native-config";
 
-const GooglePlaces = ({ placeholder, containerStyles }) => {
+const GooglePlaces = ({ placeholder, containerStyles , locationKey, onSelection}) => {
     return (
 
         <GooglePlacesAutocomplete
             placeholder={placeholder}
-            debounce={250}
-            onPress={(data, details = null) => console.log(data, details)}
+            // debounce={25}
+            onPress={(data, details = null) => onSelection(locationKey, details)}
             enableHighAccuracyLocation={true}
             query={{ key: Config.GOOGLE_PLACES_KEY, components: 'country:in', language: 'it' }}
             fetchDetails={true}
