@@ -2,14 +2,18 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const apiSlice = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://192.168.0.105:3000'}),
+  baseQuery: fetchBaseQuery({baseUrl: 'https://apnicabi.com/api'}),
   endpoints: builder => ({
-    getUsers: builder.query({
-      query: () => '/users',
-      providesTags: ['Users'],
+    login: builder.mutation({
+      query: ({email, password}) => ({
+        method: 'POST',
+        url: `login?email=${email}&password=${password}`,
+      }),
+      transformResponse: response => response.data,
+      invalidatesTags: ['Users'],
     }),
-    tagTypes: ['Users'],
   }),
+  tagTypes: ['Users'],
 });
 
-export const {useGetUsersQuery} = apiSlice;
+export const {useLoginMutation} = apiSlice;

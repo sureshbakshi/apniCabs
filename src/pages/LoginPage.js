@@ -20,7 +20,7 @@ import {Text} from '../components/common';
 import {COLORS} from '../constants';
 import {useDispatch} from 'react-redux';
 import {updateUserData} from '../slices/authSlice';
-
+import {useLoginMutation} from '../slices/apiSlice';
 const initialState = {
   email: '',
   password: '',
@@ -35,15 +35,22 @@ GoogleSignin.configure({
 });
 
 const LoginPage = () => {
+  const [login, {data: logindata, error: loginError, isLoading}] =
+    useLoginMutation();
   const dispatch = useDispatch();
   const [state, setState] = useSetState(initialState);
   const onSubmit = e => {
-    dispatch(updateUserData(state));
+    login(state);
+    // dispatch(updateUserData(state));
     setState({
       email: '',
       password: '',
     });
   };
+  useEffect(() => {
+    console.log('logindata', logindata);
+    console.log('loginError', loginError);
+  }, [loginError,logindata]);
 
   const signIn = async () => {
     try {
@@ -89,6 +96,7 @@ const LoginPage = () => {
               value={state.password}
               style={LoginStyles.textInputDrop}
             />
+            {isLoading && <Text>Please wait...</Text>}
             <View>
               <Pressable
                 style={LoginStyles.button}
