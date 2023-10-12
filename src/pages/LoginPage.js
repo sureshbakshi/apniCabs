@@ -17,31 +17,35 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {Text} from '../components/common';
-import {COLORS} from '../constants';
+import {COLORS, ROUTES_NAMES} from '../constants';
 import {useDispatch} from 'react-redux';
-import {updateUserData} from '../slices/authSlice';
-import {useLoginMutation} from '../slices/apiSlice';
+import {updateGoogleUserInfo, updateUserCheck} from '../slices/authSlice';
+import {useLoginMutation, useUserCheckMutation} from '../slices/apiSlice';
+import { getConfig } from '../util';
 const initialState = {
   email: '',
   password: '',
 };
 
 GoogleSignin.configure({
-  androidClientId:
-    '208090810105-6cp89c7kjkboa02jeedch0n6eqpdo07d.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-  iosClientId:
-    '208090810105-iu8l88df74966gbp2nb947p47bc8aocg.apps.googleusercontent.com',
+  androidClientId:getConfig().ANDROID_GOOGLE_SIGN_IN_KEY, // client ID of type WEB for your server (needed to verify user ID and offline access)
+  iosClientId:getConfig().IOS_GOOGLE_SIGN_IN_KEY,
   profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
 
 const LoginPage = () => {
-  const [login, {data: logindata, error: loginError, isLoading}] =
+  const [login, {data: logindata, error: loginError, isLoginLoading}] =
     useLoginMutation();
+  const [
+    userCheck,
+    {data: userCheckData, error: userCheckError, isUserCheckLoading},
+  ] = useUserCheckMutation();
+
   const dispatch = useDispatch();
   const [state, setState] = useSetState(initialState);
   const onSubmit = e => {
     login(state);
-    // dispatch(updateUserData(state));
+    dispatch(updateGoogleUserInfo(state));
     setState({
       email: '',
       password: '',
@@ -50,13 +54,24 @@ const LoginPage = () => {
   useEffect(() => {
     console.log('logindata', logindata);
     console.log('loginError', loginError);
-  }, [loginError,logindata]);
+  }, [loginError, logindata]);
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      const userInfo = await GoogleSignin.signIn();
-      dispatch(updateUserData(userInfo));
+      const googleUserInfo = await GoogleSignin.signIn();
+      const {email} = googleUserInfo.user;
+      console.log('email', email);
+      dispatch(updateGoogleUserInfo(googleUserInfo));
+
+      userCheck(email);
+      console.log('userCheckData',userCheckData)
+      if (userCheckData.user) {
+        dispatch(updateUserCheck(userCheckData));
+      } else {
+        navigate(ROUTES_NAMES.signUp);
+      }
+
       setState({userInfo});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -96,7 +111,7 @@ const LoginPage = () => {
               value={state.password}
               style={LoginStyles.textInputDrop}
             />
-            {isLoading && <Text>Please wait...</Text>}
+            {isLoginLoading && <Text>Please wait...</Text>}
             <View>
               <Pressable
                 style={LoginStyles.button}
