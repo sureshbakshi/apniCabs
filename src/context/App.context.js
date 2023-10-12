@@ -10,7 +10,7 @@ const initialState = {
 
 export const AppProvider = (props) => {
   const [location, setLocation] = useState(initialState.location);
-  const [distance, setDistance] = useState(null)
+  const [route, setRoute] = useState({distance: null, duration: null})
   const [noOfSeats, setNoOfSeats] = useState(null)
 
   const updateLocation = (key, details) => {
@@ -23,23 +23,25 @@ export const AppProvider = (props) => {
     if (!isEmpty(from) && !isEmpty(to)) {
       const origin = from.geometry.location
       const destination = to.geometry.location
-      if (!isEmpty(origin) && !isEmpty(to)) {
+      if (!isEmpty(origin) && !isEmpty(destination)) {
         try {
-          const res = await calculateDistance(origin, destination)
+          const res = await calculateDistance(origin.lat,origin.lng, destination.lat, destination.lng)
           if (res)
-            setDistance(res)
+          setRoute({distance: res.distance, duration: res.duration})
           return res
         } catch (error) {
           showErrorMessage('Failed to calculate distance')
+          return null
         }
       }
     }else{
       showErrorMessage('Please select Pickup and Drop Location')
+      return null
     }
   }
   
 
-  return (<AppContext.Provider value={{ location, distance, updateLocation, getDistance, setNoOfSeats, noOfSeats }}>
+  return (<AppContext.Provider value={{ location, route, updateLocation, getDistance, setNoOfSeats, noOfSeats }}>
     {props.children}
   </AppContext.Provider>);
 };

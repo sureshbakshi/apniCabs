@@ -15,7 +15,7 @@ import {
 import cabiData from '../cabi.json';
 import _ from 'lodash';
 import {COLORS} from '../constants';
-
+import {useAppContext} from '../context/App.context'
 const Card = item => {
   return (
     <View style={FindRideStyles.card} key={item.id}>
@@ -36,7 +36,7 @@ const Card = item => {
           <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
             {'\u20B9'}15
           </Text>
-          <Text style={FindRideStyles.address}>3 Seats left</Text>
+          <Text style={FindRideStyles.address}>{item.distance}</Text>
         </View>
       </View>
       <View style={FindRideStyles.cardBottom}>
@@ -63,16 +63,16 @@ const FindCaptainPage = () => {
   const handleChangeIndex = index => {
     setIndex(index);
   };
-
+const {route} = useAppContext()
 
   const autoData = data['Auto'].map(item => {
-    return <Card {...item} key={`Auto_${item.id}`} />;
+    return <Card {...{...item, ...route}} key={`Auto_${item.id}`} />;
   });
   const bikeData = data['Bike'].map(item => {
-    return <Card {...item} key={`Bike_${item.id}`} />;
+    return <Card {...{...item, ...route}}  key={`Bike_${item.id}`} />;
   });
   const primeData = data['Prime Plus'].map(item => {
-    return <Card {...item} key={`Prime_${item.id}`} />;
+    return <Card {...{...item, ...route}}  key={`Prime_${item.id}`} />;
   });
 
   return (
