@@ -8,11 +8,13 @@ import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import { COLORS } from '../constants';
 import {clearAuthData} from '../slices/authSlice';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 
 const MorePage = () => {
   const dispatch = useDispatch();
+  const profile = useSelector(state => state.auth?.profileInfo);
 
+  console.log('profile',profile)
   const signOut = async () => {
     try {
       await GoogleSignin.signOut();
@@ -33,7 +35,7 @@ const MorePage = () => {
 
               </View>
               <View style={MoreStyles.middle}>
-                <Text style={MoreStyles.name}>David Johnson</Text>
+                <Text style={MoreStyles.name}>{profile.name}</Text>
                 <Text style={MoreStyles.review}>11 Reviews</Text>
               </View>
             </View>

@@ -16,7 +16,9 @@ export const showErrorMessage = (msg) => {
     Toast.show({
         type: 'error',
         text1: msg || 'Something Went Wrong. Please try again!',
-        position: 'bottom'
+        position: 'bottom',
+        visibilityTime: 2000,
+          autoHide: true,
     });
 }
 

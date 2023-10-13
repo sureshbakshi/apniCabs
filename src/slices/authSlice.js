@@ -32,10 +32,13 @@ const authSlice = createSlice({
         state.userInfo = action.payload.data
       }
     },
+    updateProfileInfo(state, action) {
+        state.profileInfo = action.payload.data
+    },
     clearAuthData(state, action) {
       state.token = null
     }
   },
 });
-export const {updateGoogleUserInfo, updateUserCheck, updateUserInfo, updateLoginToken, clearAuthData} = authSlice.actions;
+export const {updateGoogleUserInfo, updateUserCheck, updateUserInfo, updateLoginToken, clearAuthData,updateProfileInfo} = authSlice.actions;
 export default authSlice.reducer;

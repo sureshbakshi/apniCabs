@@ -7,7 +7,7 @@ import {navigate} from '../util/navigationService';
 import {Text} from '../components/common';
 import {useSelector, useDispatch} from 'react-redux';
 import {useSingUpMutation} from '../slices/apiSlice';
-import {updateGoogleUserInfo} from '../slices/authSlice';
+import {updateUserCheck} from '../slices/authSlice';
 import {useSetState} from 'react-use';
 
 const initialState = {
@@ -20,23 +20,28 @@ const SignUpPage = () => {
   const dispatch = useDispatch();
   const [singUp, {data: signUpdata, error: singUpError, isLoading}] =
     useSingUpMutation();
-  const googleInfo = useSelector(state => state.auth.googleInfo);
+  const googleInfo = useSelector(state => state.auth.googleInfo.user);
   const [state, setState] = useSetState(initialState);
-
+  const [error,setError] = useSetState()
   useEffect(() => {
     if (googleInfo) {
       setState({
-        email:googleInfo?.email,
-        name:googleInfo?.name
+        email: googleInfo?.email,
+        name: googleInfo?.name,
       });
     }
   }, [googleInfo]);
 
   const handleSignUp = () => {
     singUp(state);
-    dispatch(updateGoogleUserInfo(state));
   };
-
+  useEffect(() => {
+    if(singUpError){
+      setError(singUpError?.data?.error);
+    }else if (signUpdata) {
+      dispatch(updateUserCheck(signUpdata));
+    }
+  }, [signUpdata,singUpError]);
   return (
     <ScreenContainer>
       <View style={LoginStyles.container}>
@@ -57,24 +62,28 @@ const SignUpPage = () => {
               value={state.name}
               style={LoginStyles.textInputPickup}
             />
+            {error.name&&<Text style={CommonStyles.errorTxt}>{error.name[0]}</Text>}
             <TextInput
               placeholder="Email Address"
               onChangeText={newText => setState({email: newText})}
               value={state.email}
               style={LoginStyles.textInputPickup}
             />
+            {error.email&&<Text style={CommonStyles.errorTxt}>{error.email[0]}</Text>}
             <TextInput
               placeholder="Phone Number"
               onChangeText={newText => setState({phone_number: newText})}
               value={state.phone_number}
               style={LoginStyles.textInputPickup}
             />
+            {error.phone_number&&<Text style={CommonStyles.errorTxt}>{error.phone_number[0]}</Text>}
             <TextInput
               placeholder="Create Password"
               onChangeText={newText => setState({password: newText})}
               value={state.password}
               style={LoginStyles.textInputDrop}
             />
+            {error.password&&<Text style={CommonStyles.errorTxt}>{error.password[0]}</Text>}
           </View>
           <View>
             <View style={CommonStyles.mb10}>

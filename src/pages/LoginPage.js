@@ -19,19 +19,22 @@ import {
 import {Text} from '../components/common';
 import {COLORS, ROUTES_NAMES} from '../constants';
 import {useDispatch} from 'react-redux';
-import { updateGoogleUserInfo, updateLoginToken, updateUserCheck} from '../slices/authSlice';
+import {
+  updateGoogleUserInfo,
+  updateLoginToken,
+  updateUserCheck,
+} from '../slices/authSlice';
 import {useLoginMutation, useUserCheckMutation} from '../slices/apiSlice';
-import { fakeLogin, getConfig, showErrorMessage } from '../util';
+import {getConfig, showErrorMessage} from '../util';
 import {isEmpty} from 'lodash';
-import axios from 'axios'
 const initialState = {
-  email: 'test@r1m.in',
-  password: '9885098850',
+  phone: '',
+  password: '',
 };
 
 GoogleSignin.configure({
-  androidClientId:getConfig().ANDROID_GOOGLE_SIGN_IN_KEY, // client ID of type WEB for your server (needed to verify user ID and offline access)
-  iosClientId:getConfig().IOS_GOOGLE_SIGN_IN_KEY,
+  androidClientId: getConfig().ANDROID_GOOGLE_SIGN_IN_KEY, // client ID of type WEB for your server (needed to verify user ID and offline access)
+  iosClientId: getConfig().IOS_GOOGLE_SIGN_IN_KEY,
   profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
 
@@ -50,28 +53,23 @@ const LoginPage = () => {
     setState(initialState);
   };
   useEffect(() => {
-    if(loginError) {
-      showErrorMessage(loginError?.error)
-    }else if(!isEmpty(logindata)) {
+    if (loginError) {
+      showErrorMessage(loginError?.error);
+    } else if (!isEmpty(logindata)) {
       dispatch(updateLoginToken(logindata));
     }
   }, [loginError, logindata]);
-
-  useEffect(() =>{
+  useEffect(() => {
     if (userCheckData?.user) {
       dispatch(updateUserCheck(userCheckData));
-    } else {
-      // navigate(ROUTES_NAMES.signUp);
     }
-    console.log({userCheckData, userCheckError})
-  },[userCheckData])
+  }, [userCheckData]);
 
   const GoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const googleUserInfo = await GoogleSignin.signIn();
       const {email} = googleUserInfo.user;
-      console.log('email', email);
       dispatch(updateGoogleUserInfo(googleUserInfo));
       userCheck(email);
     } catch (error) {
@@ -101,9 +99,9 @@ const LoginPage = () => {
         <View style={LoginStyles.section}>
           <View>
             <TextInput
-              placeholder="Email"
-              onChangeText={newText => setState({email: newText})}
-              value={state.email}
+              placeholder="Phone Number"
+              onChangeText={newText => setState({phone: newText})}
+              value={state.phone}
               style={LoginStyles.textInputPickup}
             />
             <TextInput
@@ -150,7 +148,9 @@ const LoginPage = () => {
                 {backgroundColor: COLORS.brand_blue},
               ]}
               android_ripple={{color: '#ccc'}}>
-              <Text style={LoginStyles.googleTxt}>{'Register as a Driver'}</Text>
+              <Text style={LoginStyles.googleTxt}>
+                {'Register as a Driver'}
+              </Text>
             </Pressable>
 
             <Pressable
