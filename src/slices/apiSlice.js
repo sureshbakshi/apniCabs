@@ -24,7 +24,7 @@ export const apiSlice = createApi({
     singUp: builder.mutation({
       query: post => ({
         method: 'POST',
-        url: `/register`,
+        url: `register`,
         body: post,
       }),
       transformResponse: response => response,
@@ -33,11 +33,10 @@ export const apiSlice = createApi({
     userCheck: builder.mutation({
       query: email => ({
         method: 'POST',
-        url: `/user_check`,
+        url: `user_check`,
         body: email,
       }),
       transformResponse: response => {
-        console.log(response, response);
         return response;
       },
       invalidatesTags: ['Users'],

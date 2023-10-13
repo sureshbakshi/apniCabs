@@ -61,8 +61,9 @@ const LoginPage = () => {
     if (userCheckData?.user) {
       dispatch(updateUserCheck(userCheckData));
     } else {
-      navigate(ROUTES_NAMES.signUp);
+      // navigate(ROUTES_NAMES.signUp);
     }
+    console.log({userCheckData, userCheckError})
   },[userCheckData])
 
   const GoogleSignIn = async () => {
@@ -120,23 +121,15 @@ const LoginPage = () => {
                 <Text style={LoginStyles.text}>{'Login'.toUpperCase()}</Text>
               </Pressable>
             </View>
-            <View style={LoginStyles.signUpContainer}>
-              <View style={LoginStyles.signUpSection}>
-                <Text style={LoginStyles.headerText}>New user?</Text>
-                <Pressable
-                  android_ripple={{color: '#fff'}}
-                  onPress={() => navigate('SignUp')}>
-                  <Text style={LoginStyles.greenTxt}>SignUp</Text>
-                </Pressable>
-              </View>
+            {/* <View style={LoginStyles.signUpContainer}>
               <View style={LoginStyles.forgotSection}>
                 <Text style={LoginStyles.headerText}>Forgot</Text>
                 <Text style={LoginStyles.greenTxt}>Password?</Text>
               </View>
-            </View>
+            </View> */}
           </View>
           <View>
-            <Text style={[LoginStyles.headerText, CommonStyles.mb10]}>
+            <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
               {'or'}
             </Text>
             <GoogleSigninButton
@@ -146,9 +139,9 @@ const LoginPage = () => {
               onPress={GoogleSignIn}
             />
           </View>
-          <View style={CommonStyles.mtb10}>
+          <View style={[CommonStyles.mtb10, {marginTop: 50}]}>
             <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
-              {"Don't have a account"}
+              {"Don't have an account?"}
             </Text>
             <Pressable
               style={[

@@ -4,7 +4,7 @@ import { COLORS } from '../constants';
 const LoginStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
+    backgroundColor: COLORS.white,
   },
 
   logoSection: {
@@ -22,7 +22,7 @@ const LoginStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   textInputPickup: {
     backgroundColor: '#f2f4f6',
