@@ -1,21 +1,42 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
+import { clearAuthData } from './authSlice';
+
+const baseQuery =  fetchBaseQuery({
+  baseUrl: 'https://www.apnicabi.com/api/',
+  prepareHeaders:( headers,{getState} )=> {
+    headers.set('Access-Control-Allow-Origin', `*`);
+    headers.set('Access-Control-Allow-Headers', `*`);
+    headers.set('Content-Type', `application/json`);
+    if(getState().auth.token){
+      headers.set('Authorization', `Bearer ${getState().auth.token}`)
+    }
+    return headers;
+  },
+})
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions)
+  if (result.error && result.error.status === 401) {
+       api.dispatch(clearAuthData())
+       
+    // try to get a new token
+    // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
+    // if (refreshResult.data) {
+    //   // store the new token
+    //   api.dispatch(tokenReceived(refreshResult.data))
+    //   // retry the initial query
+    //   result = await baseQuery(args, api, extraOptions)
+    // } else {
+    //   api.dispatch(loggedOut())
+    // }
+  }
+  return result
+}
 
 export const apiSlice = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://www.apnicabi.com/api/',
-    prepareHeaders:( headers,{getState} )=> {
-      headers.set('Access-Control-Allow-Origin', `*`);
-      headers.set('Access-Control-Allow-Headers', `*`);
-      headers.set('Content-Type', `application/json`);
-      if(getState().auth.token){
-        headers.set('Authorization', `Bearer ${getState().auth.token}`)
-      }
-      return headers;
-    },
-  }),
+  baseQuery:baseQueryWithReauth,
   endpoints: builder => ({
     login: builder.mutation({
       query: body => ({

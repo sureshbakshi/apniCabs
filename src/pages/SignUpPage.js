@@ -67,6 +67,7 @@ const SignUpPage = () => {
               placeholder="Email Address"
               onChangeText={newText => setState({email: newText})}
               value={state.email}
+              disabled={state.email}
               style={LoginStyles.textInputPickup}
             />
             {error.email&&<Text style={CommonStyles.errorTxt}>{error.email[0]}</Text>}
