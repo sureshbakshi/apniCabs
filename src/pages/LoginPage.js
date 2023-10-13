@@ -19,12 +19,14 @@ import {
 import {Text} from '../components/common';
 import {COLORS, ROUTES_NAMES} from '../constants';
 import {useDispatch} from 'react-redux';
-import {updateGoogleUserInfo, updateUserCheck} from '../slices/authSlice';
+import { updateGoogleUserInfo, updateLoginToken, updateUserCheck} from '../slices/authSlice';
 import {useLoginMutation, useUserCheckMutation} from '../slices/apiSlice';
-import { getConfig } from '../util';
+import { fakeLogin, getConfig, showErrorMessage } from '../util';
+import {isEmpty} from 'lodash';
+import axios from 'axios'
 const initialState = {
-  email: '',
-  password: '',
+  email: 'test@r1m.in',
+  password: '9885098850',
 };
 
 GoogleSignin.configure({
@@ -45,34 +47,32 @@ const LoginPage = () => {
   const [state, setState] = useSetState(initialState);
   const onSubmit = e => {
     login(state);
-    dispatch(updateGoogleUserInfo(state));
-    setState({
-      email: '',
-      password: '',
-    });
+    setState(initialState);
   };
   useEffect(() => {
-    console.log('logindata', logindata);
-    console.log('loginError', loginError);
+    if(loginError) {
+      showErrorMessage(loginError?.error)
+    }else if(!isEmpty(logindata)) {
+      dispatch(updateLoginToken(logindata));
+    }
   }, [loginError, logindata]);
 
-  const signIn = async () => {
+  useEffect(() =>{
+    if (userCheckData?.user) {
+      dispatch(updateUserCheck(userCheckData));
+    } else {
+      navigate(ROUTES_NAMES.signUp);
+    }
+  },[userCheckData])
+
+  const GoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const googleUserInfo = await GoogleSignin.signIn();
       const {email} = googleUserInfo.user;
       console.log('email', email);
       dispatch(updateGoogleUserInfo(googleUserInfo));
-
       userCheck(email);
-      console.log('userCheckData',userCheckData)
-      if (userCheckData.user) {
-        dispatch(updateUserCheck(userCheckData));
-      } else {
-        navigate(ROUTES_NAMES.signUp);
-      }
-
-      setState({userInfo});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -143,7 +143,7 @@ const LoginPage = () => {
               style={{width: '100%', height: 48}}
               size={GoogleSigninButton.Size.Wide}
               color={GoogleSigninButton.Color.Dark}
-              onPress={signIn}
+              onPress={GoogleSignIn}
             />
           </View>
           <View style={CommonStyles.mtb10}>
@@ -157,15 +157,15 @@ const LoginPage = () => {
                 {backgroundColor: COLORS.brand_blue},
               ]}
               android_ripple={{color: '#ccc'}}>
-              <Text style={LoginStyles.googleTxt}>{'Sign in a Driver'}</Text>
+              <Text style={LoginStyles.googleTxt}>{'Register as a Driver'}</Text>
             </Pressable>
 
             <Pressable
-              onPress={signIn}
+              onPress={GoogleSignIn}
               style={[LoginStyles.googleBtn, CommonStyles.mb10]}
               android_ripple={{color: '#ccc'}}>
               <Text style={[LoginStyles.googleTxt, {color: COLORS.black}]}>
-                {'Sign in a User'}
+                {'Register as a User'}
               </Text>
             </Pressable>
           </View>

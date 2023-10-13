@@ -7,7 +7,7 @@ import { Icon, ImageView, Text } from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import { COLORS } from '../constants';
-import {updateUserData} from '../slices/authSlice';
+import {clearAuthData} from '../slices/authSlice';
 import {useDispatch} from 'react-redux';
 
 const MorePage = () => {
@@ -16,7 +16,7 @@ const MorePage = () => {
   const signOut = async () => {
     try {
       await GoogleSignin.signOut();
-      dispatch(updateUserData(null));
+      dispatch(clearAuthData());
     } catch (error) {
       console.error(error);
     }

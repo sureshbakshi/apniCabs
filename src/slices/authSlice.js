@@ -5,6 +5,8 @@ const initialState = {
     user: false,
   },
   googleInfo: null,
+  userInfo: null,
+  token: null
 };
 
 const authSlice = createSlice({
@@ -15,9 +17,25 @@ const authSlice = createSlice({
       state.googleInfo = action.payload;
     },
     updateUserCheck(state, action) {
+      if(action.payload?.token) {
+        state.token = action.payload.token 
+      }
       state.user_check = action.payload;
     },
+    updateLoginToken(state, action) {
+      if(action.payload?.token) {
+        state.token = action.payload.token 
+      }
+    },
+    updateUserInfo(state, action) {
+      if(action.payload?.data) {
+        state.userInfo = action.payload.data
+      }
+    },
+    clearAuthData(state, action) {
+      state.token = null
+    }
   },
 });
-export const {updateGoogleUserInfo, updateUserCheck} = authSlice.actions;
+export const {updateGoogleUserInfo, updateUserCheck, updateUserInfo, updateLoginToken, clearAuthData} = authSlice.actions;
 export default authSlice.reducer;

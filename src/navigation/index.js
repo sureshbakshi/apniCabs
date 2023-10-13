@@ -9,8 +9,7 @@ import {useSelector} from 'react-redux';
 import _ from 'lodash';
 
 function App() {
-  const {user} = useSelector(state => state.auth.user_check);
-  console.log(user);
+  const token = useSelector(state => state.auth.token);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -19,8 +18,8 @@ function App() {
     <NavigationContainer
       ref={navigationRef}
       fallback={<ActivityIndicator color="blue" size="large" />}>
-      {!user && <LoginNavigator />}
-      {user && <TabNavigator />}
+      {!token && <LoginNavigator />}
+      {token && <TabNavigator />}
     </NavigationContainer>
   );
 }

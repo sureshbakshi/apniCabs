@@ -24,7 +24,7 @@ export const showSuccessMessage = (msg) => {
     Toast.show({
         type: 'success',
         text1: msg || 'Success!',
-        position: 'bottom'
+        position: 'bottom',
     })
 }
 
@@ -50,3 +50,26 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
         return new Error('Error calculating distance');
     }
 };
+
+export const fakeLogin = ()=> {
+    axios
+    .post(
+      'https://www.apnicabi.com/api/login',
+      {
+        email: 'test@r1m.in',
+        password: '9885098850',
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    .then((response) => {
+      console.log('fakeLogin data:', response);
+    }).catch((err)=>{
+      console.log('fakeLogin error:', err);
+    });
+}

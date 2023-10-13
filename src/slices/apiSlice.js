@@ -1,15 +1,24 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const apiSlice = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'https://apnicabi.com/api'}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://www.apnicabi.com/api/',
+    prepareHeaders: (headers) => {
+      headers.set('Access-Control-Allow-Origin', `*`)
+      headers.set('Access-Control-Allow-Headers', `*`)
+      headers.set('Content-Type', `application/json`)
+      return headers
+    }
+  }),
   endpoints: builder => ({
     login: builder.mutation({
-      query: ({email, password}) => ({
+      query: (body) => ({
         method: 'POST',
-        url: `/login?email=${email}&password=${password}`,
+        url: `login`,
+        body
       }),
-      transformResponse: response => response.data,
+      transformResponse: response => response,
       invalidatesTags: ['Users'],
     }),
     singUp: builder.mutation({
@@ -18,7 +27,7 @@ export const apiSlice = createApi({
         url: `/register`,
         body: post,
       }),
-      transformResponse: response => response.data,
+      transformResponse: response => response,
       invalidatesTags: ['Users'],
     }),
     userCheck: builder.mutation({
@@ -28,8 +37,8 @@ export const apiSlice = createApi({
         body: email,
       }),
       transformResponse: response => {
-        console.log(response.data,response);
-        return response.data;
+        console.log(response, response);
+        return response;
       },
       invalidatesTags: ['Users'],
     }),
@@ -37,5 +46,5 @@ export const apiSlice = createApi({
   tagTypes: ['Users'],
 });
 
-export const {useLoginMutation, useSingUpMutation, useUserCheckMutation} =
+export const { useLoginMutation, useSingUpMutation, useUserCheckMutation } =
   apiSlice;
