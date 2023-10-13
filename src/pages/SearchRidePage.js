@@ -19,7 +19,7 @@ const SearchRidePage = () => {
     }
   }
   const isSearchDisabled = () => {
-    return isEmpty(location.from) || isEmpty(location.to) || isEmpty(noOfSeats)
+    return isEmpty(location.from) || isEmpty(location.to)
   }
 
 
@@ -45,13 +45,13 @@ const SearchRidePage = () => {
           </View>
           <GooglePlaces placeholder={'Pickup Location'} containerStyles={{ zIndex: 2 }} locationKey='from' onSelection={updateLocation} />
           <GooglePlaces placeholder={'Drop Location'} containerStyles={{ zIndex: 1 }} locationKey='to' onSelection={updateLocation} />
-          <TextInput
+          {/* <TextInput
             placeholder="No of seats: 1 - 6"
             style={SearchRideStyles.textInputDrop}
             maxLength={1}
             keyboardType='numeric'
             onChangeText={val => setNoOfSeats(val)}
-          />
+          /> */}
           <View>
             <Pressable
               style={isSearchDisabled() ? [SearchRideStyles.button, { backgroundColor: COLORS.gray }] : [SearchRideStyles.button]}

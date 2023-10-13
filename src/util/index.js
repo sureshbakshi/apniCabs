@@ -41,9 +41,7 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
 
         if (rows && rows.length > 0 && rows[0].elements.length && status === "OK") {
             const firstRoute = rows[0].elements[0]
-            const distance = firstRoute.distance.text;
-            const duration = firstRoute.duration.text;
-            return {distance, duration};
+            return {distance: firstRoute.distance, duration: firstRoute.duration};
         } else {
             return new Error('Distance calculation error');
         }

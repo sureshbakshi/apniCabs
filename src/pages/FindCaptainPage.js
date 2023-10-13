@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, Button, Pressable, ScrollView} from 'react-native';
-import {ImageView, Text} from '../components/common';
+import { View, Button, Pressable, ScrollView } from 'react-native';
+import { ImageView, Text } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
@@ -14,8 +14,8 @@ import {
 } from 'react-native-paper-tabs';
 import cabiData from '../cabi.json';
 import _ from 'lodash';
-import {COLORS} from '../constants';
-import {useAppContext} from '../context/App.context'
+import { COLORS } from '../constants';
+import { useAppContext } from '../context/App.context'
 const Card = item => {
   return (
     <View style={FindRideStyles.card} key={item.id}>
@@ -30,13 +30,13 @@ const Card = item => {
         <View style={FindRideStyles.middle}>
           <Text style={FindRideStyles.name}>David Johson</Text>
           <Text style={FindRideStyles.review}>({item.size} Reviews)</Text>
-          <Timeline data={['Bheeramguda', 'Hitech knowledge Park']} />
+          <Timeline data={[item.from, item.to]} />
         </View>
         <View style={FindRideStyles.right}>
-          <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
+          <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
             {'\u20B9'}15
           </Text>
-          <Text style={FindRideStyles.address}>{item.distance}</Text>
+          <Text style={FindRideStyles.address}>{item.distance?.text}</Text>
         </View>
       </View>
       <View style={FindRideStyles.cardBottom}>
@@ -63,16 +63,22 @@ const FindCaptainPage = () => {
   const handleChangeIndex = index => {
     setIndex(index);
   };
-const {route} = useAppContext()
-
+  const { route, location: { from, to } } = useAppContext()
+  const extraProps = {
+    ...route, 
+    from: from?.formatted_address || '',
+    to: to?.formatted_address || ''
+  }
   const autoData = data['Auto'].map(item => {
-    return <Card {...{...item, ...route}} key={`Auto_${item.id}`} />;
+    return <Card {...{
+      ...item, ...extraProps
+    }} key={`Auto_${item.id}`} />;
   });
   const bikeData = data['Bike'].map(item => {
-    return <Card {...{...item, ...route}}  key={`Bike_${item.id}`} />;
+    return <Card {...{ ...item, ...extraProps }} key={`Bike_${item.id}`} />;
   });
   const primeData = data['Prime Plus'].map(item => {
-    return <Card {...{...item, ...route}}  key={`Prime_${item.id}`} />;
+    return <Card {...{ ...item, ...extraProps }} key={`Prime_${item.id}`} />;
   });
 
   return (
@@ -83,7 +89,7 @@ const {route} = useAppContext()
           style={FindRideStyles.tabs}
           tabBarUnderlineStyle={{ backgroundColor: COLORS.primary }}
           theme={{
-            colors: {onSurface: COLORS.primary, onSurfaceVariant: COLORS.black},
+            colors: { onSurface: COLORS.primary, onSurfaceVariant: COLORS.black },
           }}>
           <TabScreen label="Auto" icon="jeepney" >
             <View style={FindRideStyles.section}>

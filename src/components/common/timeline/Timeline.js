@@ -13,7 +13,7 @@ const TimelineItem = ({  value,  isLast, size , customStyles}) => {
     <View style={[styles.timelineItem, isLast && styles.lastItem, {marginBottom: customStyles.marginBottom}]}>
       <Icon name={'google-maps'} size={size} color={isLast ? COLORS.primary : COLORS.brand_blue}/>
       <View style={styles.timelineContent}>
-        <Text>{value}</Text>
+        <Text numberOfLines={1} ellipsizeMode='tail'>{value}</Text>
       </View>
       {!isLast && <View style={[styles.timelineConnector, {height: customStyles.height}]} />}
     </View>

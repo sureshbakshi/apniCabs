@@ -5,7 +5,7 @@ import { calculateDistance, showErrorMessage } from '../util';
 export const AppContext = createContext(null);
 
 const initialState = {
-  location: { from: null, to: null },
+  location: { from: {}, to: null },
 }
 
 export const AppProvider = (props) => {
@@ -27,7 +27,7 @@ export const AppProvider = (props) => {
         try {
           const res = await calculateDistance(origin.lat,origin.lng, destination.lat, destination.lng)
           if (res)
-          setRoute({distance: res.distance, duration: res.duration})
+          setRoute({distance: res.distance , duration: res.duration})
           return res
         } catch (error) {
           showErrorMessage('Failed to calculate distance')

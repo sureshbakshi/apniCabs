@@ -12,8 +12,8 @@ type TextProps = {
   style?: StyleProp<TextStyle>;
 };
 
-export const Text = ({style, children}: TextProps) => {
-  return <ReactText style={[styles.font, style]}>{children}</ReactText>;
+export const Text = ({style, children, ...props}: TextProps) => {
+  return <ReactText style={[styles.font, style]} {...props}>{children}</ReactText>;
 };
 
 const styles = StyleSheet.create({
