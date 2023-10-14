@@ -84,6 +84,15 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       invalidatesTags: ['Token'],
     }),
+    getDriver: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: `drivers`,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      invalidatesTags: ['Token'],
+    }),
   }),
   tagTypes: ['Token'],
 });
@@ -93,4 +102,5 @@ export const {
   useSingUpMutation,
   useUserCheckMutation,
   useProfileMutation,
+  useGetDriverQuery,
 } = apiSlice;

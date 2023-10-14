@@ -128,3 +128,10 @@ export const COLORS = {
       </View>
     )
   };
+
+
+  export const VEHICLE_TYPES = {
+    car: 'car-side',
+    auto: 'golf-cart',//rv-truck,truck
+    bike: 'bike'
+  }

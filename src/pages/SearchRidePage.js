@@ -7,7 +7,7 @@ import GooglePlaces from '../components/GooglePlaces';
 import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 
 const SearchRidePage = () => {
 
@@ -15,7 +15,7 @@ const SearchRidePage = () => {
   const searchHandler = async () => {
     const { distance, duration } = await getDistance()
     if (distance && duration) {
-      navigate('FindCaptain')
+      navigate(ROUTES_NAMES.findCaptain)
     }
   }
   const isSearchDisabled = () => {
@@ -31,15 +31,6 @@ const SearchRidePage = () => {
       style={SearchRideStyles.image}>
       <View style={SearchRideStyles.container}>
         <View style={SearchRideStyles.section}>
-          {/* <TextInput
-              placeholder="Pickup Location"
-              style={SearchRideStyles.textInputPickup}
-            />
-              
-            <TextInput
-              placeholder="Drop Location"
-              style={SearchRideStyles.textInputDrop}
-            /> */}
           <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
             <Timeline data={['', '']} height={25} />
           </View>

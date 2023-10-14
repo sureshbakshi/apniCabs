@@ -29,8 +29,8 @@ import {getConfig, showErrorMessage} from '../util';
 import {isEmpty} from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
 const initialState = {
-  phone: '9885098850',
-  password: '9885098850',
+  phone: '',
+  password: '',
 };
 
 GoogleSignin.configure({

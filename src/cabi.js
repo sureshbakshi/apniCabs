@@ -1,0 +1,145 @@
+import images from './util/images'
+
+export default driverList = [
+  {
+    "vehicle_id": 1,
+    "type": "auto",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.auto,
+    "profile_avatar": images.captain3,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 2,
+    "type": "car",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.car,
+    "profile_avatar": images.captain4,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },{
+    "vehicle_id": 3,
+    "type": "car",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.car,
+    "profile_avatar": images.captain0,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },{
+    "vehicle_id": 4,
+    "type": "car",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.car,
+    "profile_avatar": images.captain2,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },{
+    "vehicle_id": 5,
+    "type": "car",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.car,
+    "profile_avatar": images.captain3,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 6,
+    "type": "auto",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.auto,
+    "profile_avatar": images.captain2,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 7,
+    "type": "bike",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.bike,
+    "profile_avatar": images.captain0,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 8,
+    "type": "bike",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.bike,
+    "profile_avatar": images.captain3,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 9,
+    "type": "auto",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.auto,
+    "profile_avatar": images.captain4,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 10,
+    "type": "car",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.car,
+    "profile_avatar": images.captain4,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 11,
+    "type": "auto",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.auto,
+    "profile_avatar": images.captain0,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+  {
+    "vehicle_id": 12,
+    "type": "bike",
+    "vehicle_model": "Make & Model",
+    "vehicle_color": "Voilet",
+    "distance_away": "20 km",
+    "vehicle_icon": images.bike,
+    "profile_avatar": images.captain2,
+    "price": 650,
+    "seats": 3,
+    "driver_name": "John Wick"
+  },
+]

@@ -12,10 +12,15 @@ import {
   useTabNavigation,
   TabsProvider,
 } from 'react-native-paper-tabs';
-import cabiData from '../cabi.json';
+import cabiData from '../cabi';
 import _ from 'lodash';
-import { COLORS } from '../constants';
+import { COLORS, VEHICLE_TYPES } from '../constants';
 import { useAppContext } from '../context/App.context'
+import { useGetDriverQuery } from '../slices/apiSlice';
+const max=5
+const min=0
+const getRandom = () => Math.floor(Math.random() * (max - min + 1)) + min
+
 const Card = item => {
   return (
     <View style={FindRideStyles.card} key={item.id}>
@@ -23,28 +28,29 @@ const Card = item => {
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
-            source={images[`captain${item.id}`]}
+            source={item.profile_avatar}
             style={[styles.avatar]}
           />
         </View>
         <View style={FindRideStyles.middle}>
-          <Text style={FindRideStyles.name}>David Johson</Text>
-          <Text style={FindRideStyles.review}>({item.size} Reviews)</Text>
+          <Text style={FindRideStyles.name}>{item.driver_name}</Text>
+          {/* <Text style={FindRideStyles.review}>({item.size} Reviews)</Text> */}
           <Timeline data={[item.from, item.to]} />
         </View>
         <View style={FindRideStyles.right}>
           <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
-            {'\u20B9'}15
+            {'\u20B9'}{item.price}
           </Text>
           <Text style={FindRideStyles.address}>{item.distance?.text}</Text>
+          {/* <Text style={FindRideStyles.address}>{item.seats} Seats left</Text> */}
         </View>
       </View>
       <View style={FindRideStyles.cardBottom}>
         <View style={FindRideStyles.left}>
-          <Text style={[styles.text, styles.bold]}>10:00 am</Text>
+          {item?.distance_away && <Text style={[styles.text, styles.bold]}>{item.distance_away} km away </Text>}
         </View>
         <View style={FindRideStyles.middle}>
-          <Text style={[styles.text, styles.bold]}>Honda Civic | White</Text>
+          <Text style={[styles.text, styles.bold]}>{item.vehicle_model} | {item.vehicle_color}</Text>
         </View>
         <View style={FindRideStyles.right}>
           <Pressable style={FindRideStyles.button}>
@@ -55,7 +61,6 @@ const Card = item => {
     </View>
   );
 };
-const data = _.groupBy(cabiData, 'category');
 
 const FindCaptainPage = () => {
   const [index, setIndex] = React.useState(0);
@@ -63,23 +68,26 @@ const FindCaptainPage = () => {
   const handleChangeIndex = index => {
     setIndex(index);
   };
+  const { data: driversList, error, isLoading } = useGetDriverQuery()
+  if (isLoading || error) {
+    return null
+  }
+  const data = _.groupBy(driversList.data, 'type');
+
   const { route, location: { from, to } } = useAppContext()
   const extraProps = {
-    ...route, 
+    ...route,
     from: from?.formatted_address || '',
-    to: to?.formatted_address || ''
+    to: to?.formatted_address || '',
+    profile_avatar: images[`captain${getRandom()}`],
   }
-  const autoData = data['Auto'].map(item => {
+  console.log({extraProps})
+
+  const renderCard = (data, key) => data[key].map(item => {
     return <Card {...{
       ...item, ...extraProps
-    }} key={`Auto_${item.id}`} />;
-  });
-  const bikeData = data['Bike'].map(item => {
-    return <Card {...{ ...item, ...extraProps }} key={`Bike_${item.id}`} />;
-  });
-  const primeData = data['Prime Plus'].map(item => {
-    return <Card {...{ ...item, ...extraProps }} key={`Prime_${item.id}`} />;
-  });
+    }} key={`${key}_${item.vehicle_id}`} />;
+  })
 
   return (
     <View style={FindRideStyles.container}>
@@ -91,21 +99,14 @@ const FindCaptainPage = () => {
           theme={{
             colors: { onSurface: COLORS.primary, onSurfaceVariant: COLORS.black },
           }}>
-          <TabScreen label="Auto" icon="jeepney" >
-            <View style={FindRideStyles.section}>
-              <ScrollView>{autoData}</ScrollView>
-            </View>
-          </TabScreen>
-          <TabScreen label="Bike" icon="motorbike">
-            <View style={FindRideStyles.section}>
-              <ScrollView>{bikeData}</ScrollView>
-            </View>
-          </TabScreen>
-          <TabScreen label="Prime Plus" icon="car">
-            <View style={FindRideStyles.section}>
-              <ScrollView>{primeData}</ScrollView>
-            </View>
-          </TabScreen>
+          {Object.keys(data).map((key, i) => {
+            return <TabScreen label={key} icon={VEHICLE_TYPES[key]} key={`${key}`}>
+              <View style={FindRideStyles.section}>
+                {console.log(data[key])}
+                <ScrollView>{renderCard(data, key)}</ScrollView>
+              </View>
+            </TabScreen>
+          })}
         </Tabs>
       </TabsProvider>
     </View>

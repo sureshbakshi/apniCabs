@@ -5,5 +5,7 @@ export default {
     captain2: require('../assets/images/captains/captain_2.png'),
     captain3: require('../assets/images/captains/captain_3.png'),
     captain4: require('../assets/images/captains/captain_4.png'),
-
-}
+    car: require('../assets/images/captains/vehicles/3d-car.png'),
+    auto: require('../assets/images/captains/vehicles/rickshaw.png'),
+    bike: require('../assets/images/captains/vehicles/motorcycle.png'),
+}   
