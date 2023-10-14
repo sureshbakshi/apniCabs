@@ -11,7 +11,7 @@ const LoginStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.65)',
-    height: 260,
+    height: 360,
   },
   logoTxt: {
     fontSize: 30,

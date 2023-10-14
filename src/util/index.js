@@ -56,7 +56,7 @@ export const fakeLogin = ()=> {
     .post(
       'https://www.apnicabi.com/api/login',
       {
-        email: 'test@r1m.in',
+        phone: '9885098850',
         password: '9885098850',
       },
       {
