@@ -5,6 +5,7 @@ import {
   Pressable,
   ImageBackground,
   ScrollView,
+  Linking,
 } from 'react-native';
 
 import LoginStyles from '../styles/LoginPageStyles';
@@ -16,7 +17,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {Text} from '../components/common';
+import {ImageView, Text} from '../components/common';
 import {COLORS, ROUTES_NAMES} from '../constants';
 import {useDispatch} from 'react-redux';
 import {
@@ -86,6 +87,10 @@ const LoginPage = () => {
     }
   };
 
+  const registerAsDriver =() => {
+    Linking.openURL('https://www.apnicabi.com/register').catch(err => console.error('An error occurred', err));
+  }
+
   return (
     <ScrollView>
       <View style={LoginStyles.container}>
@@ -111,6 +116,7 @@ const LoginPage = () => {
                 onChangeText={newText => setState({password: newText})}
                 value={state.password}
                 style={LoginStyles.textInputDrop}
+                secureTextEntry={true}
               />
               {isLoginLoading && <Text>Please wait...</Text>}
               <View>
@@ -144,6 +150,7 @@ const LoginPage = () => {
                 {"Don't have an account?"}
               </Text>
               <Pressable
+                onPress={registerAsDriver}
                 style={[
                   LoginStyles.googleBtn,
                   CommonStyles.mb10,

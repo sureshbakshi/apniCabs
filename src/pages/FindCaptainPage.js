@@ -17,6 +17,7 @@ import _ from 'lodash';
 import { COLORS, VEHICLE_TYPES } from '../constants';
 import { useAppContext } from '../context/App.context'
 import { useGetDriverQuery } from '../slices/apiSlice';
+import { Capitalize } from '../util';
 const max=5
 const min=0
 const getRandom = () => Math.floor(Math.random() * (max - min + 1)) + min
@@ -79,11 +80,11 @@ const FindCaptainPage = () => {
     ...route,
     from: from?.formatted_address || '',
     to: to?.formatted_address || '',
-    profile_avatar: images[`captain${getRandom()}`],
+    // profile_avatar: images[`captain${getRandom()}`],
   }
-  console.log({extraProps})
+  console.log({extraProps, data})
 
-  const renderCard = (data, key) => data[key].map(item => {
+  const renderCard = (list, key) => list.map(item => {
     return <Card {...{
       ...item, ...extraProps
     }} key={`${key}_${item.vehicle_id}`} />;
@@ -100,10 +101,9 @@ const FindCaptainPage = () => {
             colors: { onSurface: COLORS.primary, onSurfaceVariant: COLORS.black },
           }}>
           {Object.keys(data).map((key, i) => {
-            return <TabScreen label={key} icon={VEHICLE_TYPES[key]} key={`${key}`}>
+            return <TabScreen label={Capitalize(key)} icon={VEHICLE_TYPES[key]} key={`${key}`}>
               <View style={FindRideStyles.section}>
-                {console.log(data[key])}
-                <ScrollView>{renderCard(data, key)}</ScrollView>
+                <ScrollView>{renderCard(data[key], key)}</ScrollView>
               </View>
             </TabScreen>
           })}

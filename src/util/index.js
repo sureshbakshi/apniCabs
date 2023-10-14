@@ -51,6 +51,9 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
     }
 };
 
+export const Capitalize = (str) =>{
+  return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 export const fakeLogin = ()=> {
     axios
     .post(
