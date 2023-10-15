@@ -29,7 +29,7 @@ const Card = item => {
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
-            source={item.profile_avatar}
+            source={images[`captain${item.profile_avatar}`]}
             style={[styles.avatar]}
           />
         </View>
