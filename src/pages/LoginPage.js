@@ -30,8 +30,8 @@ import ScreenContainer from '../components/ScreenContainer';
 import {useAuthContext} from '../context/Auth.context';
 
 const initialState = {
-  phone: '',
-  password: '',
+  phone: '9885098850',
+  password: '9885098850',
 };
 
 GoogleSignin.configure({
@@ -53,7 +53,6 @@ const LoginPage = () => {
   const [state, setState] = useSetState(initialState);
   const onSubmit = e => {
     login(state);
-    setState(initialState);
   };
   const handleLogin = data => {
     const token = data.token;
