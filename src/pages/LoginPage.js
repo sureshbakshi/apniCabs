@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -7,18 +7,16 @@ import {
   ScrollView,
   Linking,
 } from 'react-native';
-
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import {useSetState} from 'react-use';
-import {navigate} from '../util/navigationService';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {ImageView, Text} from '../components/common';
-import {COLORS, ROUTES_NAMES} from '../constants';
+import {Text} from '../components/common';
+import {COLORS} from '../constants';
 import {useDispatch} from 'react-redux';
 import {
   updateGoogleUserInfo,
@@ -29,6 +27,8 @@ import {useLoginMutation, useUserCheckMutation} from '../slices/apiSlice';
 import {getConfig, showErrorMessage} from '../util';
 import {isEmpty} from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
+import {useAuthContext} from '../context/Auth.context';
+
 const initialState = {
   phone: '',
   password: '',
@@ -41,6 +41,7 @@ GoogleSignin.configure({
 });
 
 const LoginPage = () => {
+  const {signIn} = useAuthContext();
   const [login, {data: logindata, error: loginError, isLoginLoading}] =
     useLoginMutation();
   const [
@@ -54,15 +55,24 @@ const LoginPage = () => {
     login(state);
     setState(initialState);
   };
+  const handleLogin = data => {
+    const token = data.token;
+    const username = 'title';
+    signIn(username, token);
+  };
+
   useEffect(() => {
     if (loginError) {
       showErrorMessage(loginError?.error);
     } else if (!isEmpty(logindata)) {
+      handleLogin(logindata);
       dispatch(updateLoginToken(logindata));
     }
   }, [loginError, logindata]);
+
   useEffect(() => {
     if (userCheckData?.user) {
+      handleLogin(userCheckData);
       dispatch(updateUserCheck(userCheckData));
     }
   }, [userCheckData]);
@@ -87,9 +97,11 @@ const LoginPage = () => {
     }
   };
 
-  const registerAsDriver =() => {
-    Linking.openURL('https://www.apnicabi.com/register').catch(err => console.error('An error occurred', err));
-  }
+  const registerAsDriver = () => {
+    Linking.openURL('https://www.apnicabi.com/register').catch(err =>
+      console.error('An error occurred', err),
+    );
+  };
 
   return (
     <ScrollView>

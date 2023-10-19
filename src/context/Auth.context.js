@@ -1,66 +1,46 @@
-import React,{createContext} from 'react';
-import { useSetState } from 'react-use';
-import { navigate } from '../util/navigationService';
-import { ROUTES_NAMES } from '../constants';
-import {delay} from 'lodash';
-
+import React, {createContext, useContext, useState} from 'react';
 export const AuthContext = createContext(null);
-
+import * as Keychain from 'react-native-keychain';
+import {useDispatch} from 'react-redux';
+import {updateLoginToken} from '../slices/authSlice';
 const initialState = {
-  isLoggedIn: false,
-  isLoginPending: false,
-  loginError: null
-}
+  isLoggedIn: '',
+};
 
-export const ContextProvider = props => {
-  const [state, setState] = useSetState(initialState);
+export const AuthProvider = props => {
+  const dispatch = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(initialState.isLoggedIn);
 
-  const setLoginPending = (isLoginPending) => setState({isLoginPending});
-  const setLoginSuccess = (isLoggedIn) => setState({isLoggedIn});
-  const setLoginError = (loginError) => setState({loginError});
-
-  const login = (email, password) => {
-    setLoginPending(true);
-    setLoginSuccess(false);
-    setLoginError(null);
-
-    fetchLogin( email, password, error => {
-      setLoginPending(false);
-
-      if (!error) {
-        setLoginSuccess(true);
-        delay(() => navigate(ROUTES_NAMES.findRide), 10)
+  const signIn = async (username, token) => {
+    await Keychain.setGenericPassword(username, token);
+    getToken();
+  };
+  const getToken = async () => {
+    try {
+      const {password} = await Keychain.getGenericPassword();
+      if (password) {
+        setIsLoggedIn(true);
+        dispatch(updateLoginToken({token: password}));
+        console.log('Credentials successfully loaded for user ' + password);
       } else {
-        setLoginError(error);
+        console.log('No credentials stored');
       }
-    })
-  }
-
-  const logout = () => {
-    setLoginPending(false);
-    setLoginSuccess(false);
-    setLoginError(null);
-  }
+    } catch (error) {
+      console.log("Keychain couldn't be accessed!", error);
+    }
+  };
+  const signOut = async () => {
+    await Keychain.resetGenericPassword();
+    setIsLoggedIn(false);
+  };
 
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{isLoggedIn, signIn, signOut, getToken}}>
       {props.children}
     </AuthContext.Provider>
   );
 };
 
-// fake login
-const fetchLogin = (email, password, callback) => 
-  setTimeout(() => {
-    if (email) {
-      return callback(null);
-    } else {
-      return callback(new Error('Invalid email and password'));
-    }
-  }, 200);
+export const useAuthContext = () => {
+  return useContext(AuthContext);
+};

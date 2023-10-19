@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import TabNavigator from './tabNavigation';
 import LoginNavigator from './loginNavigation';
@@ -9,23 +9,26 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useProfileMutation} from '../slices/apiSlice';
 import {updateProfileInfo} from '../slices/authSlice';
 import _ from 'lodash';
-
+import {useAuthContext} from '../context/Auth.context';
 function App() {
+  const {isLoggedIn, getToken} = useAuthContext();
+  console.log('isLoggedIn', isLoggedIn);
   const dispatch = useDispatch();
-  const token = useSelector(state => state.auth.token);
   const [profile, {data: profileData, error: profileError, isLoading}] =
     useProfileMutation();
-
   useEffect(() => {
-    if (token) {
+    if (isLoggedIn) {
       profile();
+    } else {
+      getToken();
     }
-  }, [token]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (profileError) {
       console.log('profileError', profileError);
     } else if (profileData) {
+      console.log('profileData', profileData);
       dispatch(updateProfileInfo(profileData));
     }
   }, [profileData, profileError]);
@@ -36,8 +39,8 @@ function App() {
     <NavigationContainer
       ref={navigationRef}
       fallback={<ActivityIndicator color="blue" size="large" />}>
-      {!token && <LoginNavigator />}
-      {token && <TabNavigator />}
+      {!isLoggedIn && <LoginNavigator />}
+      {isLoggedIn && <TabNavigator />}
     </NavigationContainer>
   );
 }

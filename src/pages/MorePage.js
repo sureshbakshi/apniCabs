@@ -3,22 +3,26 @@ import {View, Pressable, ScrollView} from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import {navigate} from '../util/navigationService';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import { Icon, ImageView, Text } from '../components/common';
+import {Icon, ImageView, Text} from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
-import { COLORS } from '../constants';
+import {COLORS} from '../constants';
 import {clearAuthData} from '../slices/authSlice';
-import {useDispatch,useSelector} from 'react-redux';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {useAuthContext} from '../context/Auth.context';
 const MorePage = () => {
+  const {signOut} = useAuthContext();
   const dispatch = useDispatch();
   const profile = useSelector(state => state.auth?.profileInfo);
 
-  console.log('profile',profile)
-  const signOut = async () => {
+  console.log('profile', profile);
+  const logOut = async () => {
     try {
-      await GoogleSignin.signOut();
-      dispatch(clearAuthData());
+      const sucess = signOut();
+      if (sucess) {
+        await GoogleSignin.signOut();
+        dispatch(clearAuthData());
+      }
     } catch (error) {
       console.error(error);
     }
@@ -31,8 +35,10 @@ const MorePage = () => {
             <View style={MoreStyles.cardtop}>
               <View style={MoreStyles.left}>
                 {/* <View style={MoreStyles.profileIcon}></View> */}
-                <ImageView source={images[`captain4`]} style={[styles.avatar]}/>
-
+                <ImageView
+                  source={images[`captain4`]}
+                  style={[styles.avatar]}
+                />
               </View>
               <View style={MoreStyles.middle}>
                 <Text style={MoreStyles.name}>{profile.name}</Text>
@@ -46,13 +52,13 @@ const MorePage = () => {
               android_ripple={{color: '#ccc'}}
               onPress={() => navigate('MyProfile')}>
               <View style={MoreStyles.listIcon}>
-                  <Icon name='account' size='large' color={COLORS.primary}/>
+                <Icon name="account" size="large" color={COLORS.primary} />
               </View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
             <View style={MoreStyles.list}>
-            <View style={MoreStyles.listIcon}>
-                  <Icon name='bell-ring' size='large' color={COLORS.primary}/>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="bell-ring" size="large" color={COLORS.primary} />
               </View>
               <Text style={MoreStyles.name}>Notifications</Text>
             </View>
@@ -61,20 +67,24 @@ const MorePage = () => {
               android_ripple={{color: '#ccc'}}
               onPress={() => navigate('TermsAndConditions')}>
               <View style={MoreStyles.listIcon}>
-                  <Icon name='notebook' size='large' color={COLORS.primary}/>
+                <Icon name="notebook" size="large" color={COLORS.primary} />
               </View>
               <Text style={MoreStyles.name}>Terms and Conditions</Text>
             </Pressable>
 
             <View style={MoreStyles.list}>
-            <View style={MoreStyles.listIcon}>
-                  <Icon name='account-tie-voice' size='large' color={COLORS.primary}/>
+              <View style={MoreStyles.listIcon}>
+                <Icon
+                  name="account-tie-voice"
+                  size="large"
+                  color={COLORS.primary}
+                />
               </View>
               <Text style={MoreStyles.name}>Refer and Earn</Text>
             </View>
             <View style={MoreStyles.list}>
-            <View style={MoreStyles.listIcon}>
-                  <Icon name='help' size='large' color={COLORS.primary}/>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="help" size="large" color={COLORS.primary} />
               </View>
               <Text style={MoreStyles.name}>Help</Text>
             </View>
@@ -82,7 +92,7 @@ const MorePage = () => {
           <Pressable
             android_ripple={{color: '#ccc'}}
             style={MoreStyles.button}
-            onPress={signOut}>
+            onPress={logOut}>
             <Text style={MoreStyles.greenTxt}>{'Logout'}</Text>
           </Pressable>
         </ScrollView>
