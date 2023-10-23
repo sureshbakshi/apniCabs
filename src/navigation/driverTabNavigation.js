@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FindRideNavigator from './findRideNavigation';
 import WalletPage from '../pages/WalletPage';
-import MyRidePage from '../pages/MyRidesPage';
+import {PickARide} from '../pages/PickARide';
 import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 const Tab = createBottomTabNavigator();
-export default function TabNavigator() {
+
+export default function DriverTabNavigator() {
   return (
     <AppProvider>
       <Tab.Navigator
@@ -22,12 +22,8 @@ export default function TabNavigator() {
           tabBarLabelStyle: { fontSize: 12 }
         })}
       >
-        <Tab.Screen
-          name={ROUTES_NAMES.findRide}
-          options={{ title: 'Find a Ride' }}
-          component={FindRideNavigator}
-        />
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={MyRidePage} />
+        
+        <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={PickARide} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>

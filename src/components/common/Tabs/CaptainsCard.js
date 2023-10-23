@@ -44,6 +44,7 @@ const Card = (item) => <View style={FindRideStyles.card} key={item.id}>
     </View>
 </View>
 const CaptainsCard = ({ list, keyProp, extraProps }) => list.map(item => {
+    console.log('list',list)
     return <Card {...{
         ...item, ...extraProps
     }} key={`${keyProp}_${item.vehicle_id}`} />;

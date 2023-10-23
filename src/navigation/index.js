@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import TabNavigator from './tabNavigation';
+import UserTabNavigator from './userTabNavigation';
+import DriverTabNavigator from './driverTabNavigation';
 import LoginNavigator from './loginNavigation';
 import {navigationRef} from '../util/navigationService';
 import {ActivityIndicator} from 'react-native';
@@ -10,9 +11,11 @@ import {useProfileMutation} from '../slices/apiSlice';
 import {updateProfileInfo} from '../slices/authSlice';
 import _ from 'lodash';
 import {useAuthContext} from '../context/Auth.context';
+import { isUserOrDriver } from '../util';
+
 function App() {
   const {isLoggedIn, getToken} = useAuthContext();
-  console.log('isLoggedIn', isLoggedIn);
+  console.log('isLoggedIn', isLoggedIn,isUserOrDriver);
   const dispatch = useDispatch();
   const [profile, {data: profileData, error: profileError, isLoading}] =
     useProfileMutation();
@@ -40,7 +43,8 @@ function App() {
       ref={navigationRef}
       fallback={<ActivityIndicator color="blue" size="large" />}>
       {!isLoggedIn && <LoginNavigator />}
-      {isLoggedIn && <TabNavigator />}
+      {isLoggedIn && isUserOrDriver() && <UserTabNavigator />}
+      {isLoggedIn && !isUserOrDriver() && <DriverTabNavigator />}
     </NavigationContainer>
   );
 }

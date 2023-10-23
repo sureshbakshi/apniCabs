@@ -6,6 +6,13 @@ const FindRideStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f4f6',
   },
+  switchBtn:{
+    alignItems:'center',
+    justifyContent:'space-between',
+    flexDirection:'row',
+    backgroundColor:COLORS.primary,
+    padding:10
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -41,7 +48,8 @@ const FindRideStyles = StyleSheet.create({
   },
   cardBottom:{
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems:'center',
+    justifyContent:'space-between'
   },
   left: {
     padding: 10,

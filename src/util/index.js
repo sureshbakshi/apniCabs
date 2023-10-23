@@ -3,6 +3,10 @@ import axios from 'axios';
 import Config from "react-native-config";
 import Toast from 'react-native-toast-message';
 
+export const isUserOrDriver = () => {
+  return false;
+}
+
 export const getScreen = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
     return { screenWidth, screenHeight }

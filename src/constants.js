@@ -54,6 +54,7 @@ export const COLORS = {
 
   export const ROUTES_NAMES = {
     findRide: 'FindRide',
+    pickRide:'PickRide',
     findCaptain: 'FindCaptain',
     myRides: 'MyRides',
     wallet: 'Wallet',
@@ -66,6 +67,7 @@ export const COLORS = {
   } 
 
   export const TAB_BAR_ICONS = {
+    [ROUTES_NAMES.pickRide]: ['map-search', 'map-search-outline'],
     [ROUTES_NAMES.findRide]: ['map-search', 'map-search-outline'],
     [ROUTES_NAMES.myRides]: ['account-reactivate', 'account-reactivate-outline'],
     [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
