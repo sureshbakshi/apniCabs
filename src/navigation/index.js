@@ -6,7 +6,7 @@ import LoginNavigator from './loginNavigation';
 import {navigationRef} from '../util/navigationService';
 import {ActivityIndicator} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useProfileMutation} from '../slices/apiSlice';
 import {updateProfileInfo} from '../slices/authSlice';
 import _ from 'lodash';
@@ -15,7 +15,6 @@ import { isUserOrDriver } from '../util';
 
 function App() {
   const {isLoggedIn, getToken} = useAuthContext();
-  console.log('isLoggedIn', isLoggedIn,isUserOrDriver);
   const dispatch = useDispatch();
   const [profile, {data: profileData, error: profileError, isLoading}] =
     useProfileMutation();

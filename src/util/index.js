@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 import axios from 'axios';
-import Config from "react-native-config";
+import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 
 export const isUserOrDriver = () => {

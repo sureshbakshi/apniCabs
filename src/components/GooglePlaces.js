@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 navigator.geolocation = require('react-native-geolocation-service');
-import Config from "react-native-config";
+import Config from "../util/config";
 
 const GooglePlaces = ({ placeholder, containerStyles , locationKey, onSelection}) => {
     return (
