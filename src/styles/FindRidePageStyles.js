@@ -48,6 +48,7 @@ const FindRideStyles = StyleSheet.create({
   cardBottom:{
     flexDirection: 'row',
     alignItems:'center',
+    justifyContent: 'space-between'
   },
   left: {
     padding: 10,

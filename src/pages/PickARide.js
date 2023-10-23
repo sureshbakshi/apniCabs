@@ -37,12 +37,12 @@ const Card = item => {
       <View style={FindRideStyles.cardBottom}>
         <View style={FindRideStyles.left}>
           {item.distance_away && (
-            <Text style={[styles.text, styles.bold]}>{item.distance_away}</Text>
+            <Text style={[styles.text, styles.bold]}>{item.distance_away} km away</Text>
           )}
         </View>
-        <View style={FindRideStyles.middle}>
+        <View style={FindRideStyles.right}>
           <Text style={[styles.text, styles.bold]}>
-            {item.vehicle_model} | {item.vehicle_color}
+            Distance: {item.ride_distance} km
           </Text>
         </View>
       </View>
@@ -88,6 +88,7 @@ export const PickARide = () => {
       vehicle_icon: 'https://apnicabi.com/assets/icons/car.png',
       vehicle_id: 1,
       vehicle_model: 'Volvo XC60',
+      ride_distance: 53
     },
     {
       distance_away: 2,
@@ -100,6 +101,8 @@ export const PickARide = () => {
       vehicle_icon: 'https://apnicabi.com/assets/icons/car.png',
       vehicle_id: 1,
       vehicle_model: 'Volvo',
+      ride_distance: 48
+
     },
   ];
   return (
