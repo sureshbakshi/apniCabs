@@ -10,8 +10,9 @@ import { COLORS } from '../constants';
 
 const Card = item => {
   return (
-    <View style={FindRideStyles.card} key={item.id}>
-      <Timeline />
+    <>
+    <View  style={FindRideStyles.card} key={item.id}>
+      <View style={{padding: 10}}>
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
@@ -23,7 +24,8 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.middle}>
           <Text style={FindRideStyles.name}>{item.driver_name}</Text>
-          <Timeline data={[item.from, item.to]} />
+            <Timeline data={['Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana', 'Lingampally, Telangana']}/>
+          {/* <Timeline data={[item.from, item.to]} /> */}
         </View>
         <View style={FindRideStyles.right}>
           <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
@@ -44,19 +46,18 @@ const Card = item => {
           </Text>
         </View>
       </View>
+      </View>
       <View style={FindRideStyles.cardBottom}>
-        <View style={FindRideStyles.left}>
-          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.bg_secondary}]}>
-            <Text style={FindRideStyles.text}>{'Cancel'}</Text>
+          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.primary}]}>
+            <Text style={FindRideStyles.text}>{'Decline'}</Text>
           </Pressable>
-        </View>
-        <View style={FindRideStyles.right}>
-          <Pressable style={[FindRideStyles.button]}>
-            <Text style={FindRideStyles.text}>{'Approve'}</Text>
+          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.green}]}>
+            <Text style={FindRideStyles.text}>{'Accept'}</Text>
           </Pressable>
-        </View>
       </View>
     </View>
+    
+    </>
   );
 };
 const DriverCard = ({list}) => {
@@ -73,7 +74,7 @@ const DriverCard = ({list}) => {
 };
 
 export const PickARide = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const list = [
     {
@@ -103,13 +104,13 @@ export const PickARide = () => {
   ];
   return (
     <View style={FindRideStyles.container}>
-      <View style={FindRideStyles.switchBtn}>
+      <View style={[FindRideStyles.switchBtn,{backgroundColor: isEnabled ? COLORS.green : COLORS.primary}]}>
         <Text style={FindRideStyles.headerText}>
-          Switch {isEnabled ? 'ON' : 'OFF'}
+          {isEnabled ? 'Online' : 'Offline'}
         </Text>
         <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          trackColor={{false: COLORS.white, true: COLORS.white}}
+          thumbColor={isEnabled ? COLORS.light_green : COLORS.primary_soft}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
           value={isEnabled}

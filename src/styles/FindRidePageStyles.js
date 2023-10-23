@@ -32,7 +32,6 @@ const FindRideStyles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    padding: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -49,7 +48,6 @@ const FindRideStyles = StyleSheet.create({
   cardBottom:{
     flexDirection: 'row',
     alignItems:'center',
-    justifyContent:'space-between'
   },
   left: {
     padding: 10,
@@ -94,8 +92,8 @@ const FindRideStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 20,
-    borderRadius: 4,
     backgroundColor: COLORS.primary,
+    flex: 1
   },
   text: {
     fontSize: 14,
