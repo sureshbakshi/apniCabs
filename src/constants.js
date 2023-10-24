@@ -56,6 +56,7 @@ export const COLORS = {
     findRide: 'FindRide',
     pickRide:'PickRide',
     findCaptain: 'FindCaptain',
+    activeRide:'ActiveRide',
     myRides: 'MyRides',
     wallet: 'Wallet',
     profile: 'Profile',
