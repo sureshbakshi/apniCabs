@@ -3,10 +3,10 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import MorePage from '../pages/MorePage';
 import MyProfilePage from '../pages/MyProfilePage';
 import TermsAndConditionsPage from '../pages/TermsAndConditionsPage';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = ['MyProfile', 'TermsAndConditions'];
+const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
 export default function MoreNavigator({ navigation, route }) {
   useEffect(() => {

@@ -1,25 +1,41 @@
-import React, {useState} from 'react';
-import {View, Pressable, Modal, Alert} from 'react-native';
+import React, { useState } from 'react';
+import { View, Pressable, Modal, Alert } from 'react-native';
 import _ from 'lodash';
-import {Text} from '../components/common';
+import { Text } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import {ImageView, Icon} from '../components/common';
+import { ImageView, Icon } from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import {COLORS, ROUTES_NAMES} from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
-import {navigate} from '../util/navigationService';
+import { goBack, navigate } from '../util/navigationService';
+import { showErrorMessage } from '../util';
 
 const intialState = [
-  {message: 'Driver Denied to go to destination'},
-  {message: 'Unable to contact driver'},
-  {message: 'My reason is not listed'},
+  { message: 'Driver Denied to go to destination', id: 1 },
+  { message: 'Unable to contact driver', id: 2 },
+  { message: 'My reason is not listed', id: 3 },
 ];
 
-const Modalpopup = ({modalVisible, handleModalVisible}) => {
+const Modalpopup = ({ modalVisible, handleModalVisible }) => {
   const [message, setMessage] = useState(intialState);
+  const [selectedMessage, setSelectedMessage] = useState(null)
+  const [errorMsg, setErrorMessage] = useState(null)
 
+  const handleCancelReason = (message) => {
+    setSelectedMessage(message)
+    setErrorMessage(false)
+  }
+  
+  const handleSubmit = () => {
+    if (selectedMessage?.id) {
+      handleModalVisible(!modalVisible)
+      goBack()
+    } else {
+      setErrorMessage(true)
+    }
+  }
   return (
     <Modal
       animationType="slide"
@@ -28,23 +44,21 @@ const Modalpopup = ({modalVisible, handleModalVisible}) => {
       onPress={() => {
         handleModalVisible(!modalVisible);
       }}>
-      <Pressable
+      <View
         style={ActiveRidePageStyles.centeredView}
-        onPress={() => {
-          handleModalVisible(!modalVisible);
-        }}>
+      >
         <View style={ActiveRidePageStyles.modalView}>
           <View>
-            <Text style={[ActiveRidePageStyles.modalText]}>Cancel</Text>
+            <Text style={[ActiveRidePageStyles.modalText]}>Reasons to cancel</Text>
             <View style={ActiveRidePageStyles.content}>
               {message.map((item, key) => {
                 return (
                   <Pressable
                     key={key}
-                    android_ripple={{color: '#ccc'}}
-                    style={ActiveRidePageStyles.list}>
+                    style={ActiveRidePageStyles.list}
+                    onPress={() => handleCancelReason(item)}>
                     <Icon
-                      name={'radiobox-blank'}
+                      name={selectedMessage?.id === item.id ? 'radiobox-marked' : 'radiobox-blank'}
                       size={'large'}
                       color={COLORS.black}
                     />
@@ -54,18 +68,30 @@ const Modalpopup = ({modalVisible, handleModalVisible}) => {
                   </Pressable>
                 );
               })}
+              {errorMsg && <Text style={{ color: COLORS.primary }}>Please select a reason</Text>}
             </View>
           </View>
-          <Pressable
-            android_ripple={{color: '#fff'}}
-            style={[FindRideStyles.button, {flex: 0}]}
-            onPress={() => handleModalVisible(!modalVisible)}>
-            <Text style={[FindRideStyles.text, {fontWeight: 'bold'}]}>
-              {'Cancel Ride'.toUpperCase()}
-            </Text>
-          </Pressable>
+          <View style={{ flexDirection: 'row' }}>
+            <Pressable
+              android_ripple={{ color: '#fff' }}
+              style={[FindRideStyles.button, { backgroundColor: COLORS.bg_dark }]}
+              onPress={() => handleModalVisible(!modalVisible)}>
+              <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
+                {'Close'}
+              </Text>
+            </Pressable>
+            <Pressable
+              android_ripple={{ color: '#fff' }}
+              style={[FindRideStyles.button]}
+              onPress={() => handleSubmit()}>
+              <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
+                {'Submit'}
+              </Text>
+            </Pressable>
+          </View>
+
         </View>
-      </Pressable>
+      </View>
     </Modal>
   );
 };
@@ -75,7 +101,7 @@ const Card = item => {
 
   return (
     <View style={FindRideStyles.card} key={item.id}>
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
             <ImageView
@@ -95,7 +121,7 @@ const Card = item => {
             />
           </View>
           <View style={FindRideStyles.right}>
-            <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
+            <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
               {item.price}
             </Text>
@@ -123,8 +149,8 @@ const Card = item => {
       <View style={FindRideStyles.cardBottom}>
         <Pressable
           onPress={() => setModalVisible(true)}
-          style={[FindRideStyles.button, {backgroundColor: COLORS.orange}]}>
-          <Text style={[FindRideStyles.text, {fontWeight: 'bold'}]}>
+          style={[FindRideStyles.button, { backgroundColor: COLORS.brand_yellow }]}>
+          <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
             {'Cancel Ride'}
           </Text>
         </Pressable>

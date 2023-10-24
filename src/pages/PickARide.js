@@ -6,7 +6,8 @@ import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import _ from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
+import { navigate } from '../util/navigationService';
 
 const Card = item => {
   return (
@@ -51,7 +52,7 @@ const Card = item => {
           <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.primary}]}>
             <Text style={FindRideStyles.text}>{'Decline'}</Text>
           </Pressable>
-          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.green}]}>
+          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.green}]} onPress={item.handleNavigation}>
             <Text style={FindRideStyles.text}>{'Accept'}</Text>
           </Pressable>
       </View>
@@ -61,11 +62,15 @@ const Card = item => {
   );
 };
 const DriverCard = ({list}) => {
+  const handleNavigation = () =>{
+    navigate(ROUTES_NAMES.activeRide)
+  }
   return list.map((item, key) => {
     return (
       <Card
         {...{
           ...item,
+          handleNavigation: handleNavigation
         }}
         key={`${key}_${item.vehicle_id}`}
       />
@@ -76,6 +81,8 @@ const DriverCard = ({list}) => {
 export const PickARide = () => {
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  
+
   const list = [
     {
       distance_away: 1,

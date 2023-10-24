@@ -32,7 +32,7 @@ const ActiveRidePageStyles = StyleSheet.create({
     textAlign:'center',
     fontSize:20,
     fontWeight:'bold',
-    backgroundColor:`rgba(52, 52, 52, 0.3)`,
+    color: COLORS.primary,
     padding:10
   },
   list:{
