@@ -1,18 +1,26 @@
+const express = require('express');
 const http = require('http');
-const socketio = require('socket.io');
+const socketIo = require('socket.io');
 
-const server = http.createServer();
-const io = socketio(server);
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('A user connected');
+
   socket.on('message', (message) => {
-    console.log('message:', message);
-    io.emit('message', message);
+    console.log(`Received message: ${message}`);
+    io.emit('message', message); // Broadcast the message to all connected clients
   });
+
   socket.on('disconnect', () => {
-    console.log('a user disconnected');
+    console.log('A user disconnected');
   });
 });
-server.listen(3000, () => {
-  console.log('Socket.io server listening on port 3000');
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

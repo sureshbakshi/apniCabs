@@ -1,31 +1,39 @@
-import {GiftedChat} from 'react-native-gifted-chat';
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, Button, FlatList } from 'react-native';
 import socket from './common/socket';
-import images from '../util/images';
-const ChatScreen = () => {
+
+export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
+  const [messageInput, setMessageInput] = useState('');
+
   useEffect(() => {
-    socket.on('message', message => {
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, {
-          _id: 1,
-          text: message,
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'nickname',
-            avatar: `captain${1}`,
-          },
-        }),
-      );
+    socket.on('message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
     });
+
     return () => {
-      socket.off('message');
+      socket.disconnect();
     };
   }, []);
-  const onSend = useCallback(newMessages => {
-    socket.emit('message', newMessages[0].text);
-  }, []);
-  return <GiftedChat messages={messages} onSend={onSend} user={{_id: 1}} />;
-};
-export default ChatScreen;
+
+  const sendMessage = () => {
+    socket.emit('message', messageInput);
+    setMessageInput('');
+  };
+
+  return (
+    <View>
+      <Text>Socket.io Chat App</Text>
+      <FlatList
+        data={messages}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text>{item}</Text>}
+      />
+      <TextInput
+        value={messageInput}
+        onChangeText={(text) => setMessageInput(text)}
+      />
+      <Button title="Send" onPress={sendMessage} />
+    </View>
+  );
+}
