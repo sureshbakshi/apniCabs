@@ -51,10 +51,10 @@ const Modalpopup = ({ modalVisible, handleModalVisible }) => {
           <View>
             <Text style={[ActiveRidePageStyles.modalText]}>Reasons to cancel</Text>
             <View style={ActiveRidePageStyles.content}>
-              {message.map((item, key) => {
+              {message.map((item) => {
                 return (
                   <Pressable
-                    key={key}
+                    key={item.id}
                     style={ActiveRidePageStyles.list}
                     onPress={() => handleCancelReason(item)}>
                     <Icon
