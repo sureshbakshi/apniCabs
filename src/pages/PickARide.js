@@ -8,6 +8,7 @@ import _ from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { navigate } from '../util/navigationService';
+import { acceptRequest } from '../sockets/driverSockets';
 
 const Card = item => {
   return (
@@ -52,7 +53,7 @@ const Card = item => {
           <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.primary}]}>
             <Text style={FindRideStyles.text}>{'Decline'}</Text>
           </Pressable>
-          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.green}]} onPress={item.handleNavigation}>
+          <Pressable style={[FindRideStyles.button,{backgroundColor:COLORS.green}]} onPress={ () => item.handleNavigation(item)}>
             <Text style={FindRideStyles.text}>{'Accept'}</Text>
           </Pressable>
       </View>
@@ -62,8 +63,8 @@ const Card = item => {
   );
 };
 const DriverCard = ({list}) => {
-  const handleNavigation = () =>{
-    navigate(ROUTES_NAMES.activeRide)
+  const handleNavigation = (item) =>{
+    acceptRequest(item)
   }
   return list.map((item, key) => {
     return (

@@ -5,6 +5,7 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import AppContainer from '../components/AppContainer';
 import { PickARide } from '../pages/PickARide';
+import { useSelector } from 'react-redux';
 
 const PickARidePageContainer = AppContainer(PickARide);
 
@@ -12,6 +13,8 @@ const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [];
 
 export default function DriverStackNavigator({ navigation, route }) {
+  const {isActiveRide} = useSelector(state => state.driver)
+
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -31,7 +34,7 @@ export default function DriverStackNavigator({ navigation, route }) {
           fontWeight: 'bold',
         },
       }}>
-      {true ? <Stack.Screen
+      {!isActiveRide ? <Stack.Screen
         name={ROUTES_NAMES.searchRide}
         options={{ title: null }}
         component={PickARidePageContainer}

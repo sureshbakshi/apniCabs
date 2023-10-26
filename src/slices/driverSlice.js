@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { navigate } from '../util/navigationService';
+import { ROUTES_NAMES } from '../constants';
 
 const driverSlice = createSlice({
   name: 'driver',
   initialState: {
     // Define driver state here
     driverRequests: [],
-    activeRide: null,
+    isActiveRide: null,
   },
   reducers: {
     receiveRequest: (state, action) => {
@@ -18,10 +20,14 @@ const driverSlice = createSlice({
     declineRequest: (state) => {
       // Handle declining a request and remove it from driverRequests
     },
+    setRideStatus: (state, action) => {
+      state.isActiveRide = action.payload;
+      // navigate(ROUTES_NAMES.activeRide)
+    }
     // Add other actions and reducers
   },
 });
 
-export const { receiveRequest, acceptRequest, declineRequest } = driverSlice.actions;
+export const { receiveRequest, acceptRequest, declineRequest, setRideStatus } = driverSlice.actions;
 
 export default driverSlice.reducer;

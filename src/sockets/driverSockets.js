@@ -1,26 +1,44 @@
 import driverSocket from './socketConfig';
 
+const SOCKET_EVENTS = {
+  get_ride_requests: 'get_ride_requests',
+  active_ride: 'active_ride',
+  accept_request: 'accept_request',
+  decline_request: 'decline_request',
+  cancel_ride: 'cancel_ride',
+  driver_location: 'driver_location'
+}
+
+// listeners
 export const getRideRequests = (requestData) => {
-  driverSocket.on('get_ride_requests', (response) => {
+  driverSocket.on(SOCKET_EVENTS.get_ride_requests, (response) => {
     // Handle the request in the UI
     console.log(response)
   });
 };
 
-export const acceptRequest = () => {
-  driverSocket.emit('accept_request');
+export const onActiveRide = (cb) => {
+  driverSocket.on(SOCKET_EVENTS.active_ride, (res) =>{
+    cb(res)
+  })
+}
+
+
+// emitters
+export const acceptRequest = (item) => {
+  driverSocket.emit(SOCKET_EVENTS.accept_request, item);
 };
 
 export const declineRequest = () => {
-  driverSocket.emit('decline_request');
+  driverSocket.emit(SOCKET_EVENTS.decline_request);
 };
 
 export const cancelRequest = () => {
-  driverSocket.emit('cancel_ride');
+  driverSocket.emit(SOCKET_EVENTS.cancel_ride);
 };
 
 export const updateDriverLocation = () =>{
-  driverSocket.emit('driver_location')
+  driverSocket.emit(SOCKET_EVENTS.driver_location)
 }
 
 export const connectSocket = () => {
@@ -29,7 +47,9 @@ export const connectSocket = () => {
 
 export const disconnectSocket = () => {
   driverSocket.disconnect()
+  driverSocket.removeAllListeners()
 }
+
 
 
 // Add other socket events as needed

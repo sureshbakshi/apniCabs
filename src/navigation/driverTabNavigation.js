@@ -11,6 +11,8 @@ import ChatScreen from '../components/Chat';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
 import { useEffect, useState } from 'react';
 import socket from '../components/common/socket';
+import { useSelector } from 'react-redux';
+import MyRidePage from '../pages/MyRidesPage';
 const Tab = createBottomTabNavigator();
 
 export default function DriverTabNavigator() {
@@ -34,6 +36,7 @@ export default function DriverTabNavigator() {
         {/* <Tab.Screen name={ROUTES_NAMES.chat} options={{ title: 'chat' }} component={ChatScreen} /> */}
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={DriverStackNavigator}
         />
+        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={MyRidePage} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>

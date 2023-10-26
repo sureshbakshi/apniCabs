@@ -11,6 +11,7 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { goBack, navigate } from '../util/navigationService';
 import { showErrorMessage } from '../util';
+import { cancelRequest } from '../sockets/driverSockets';
 
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
@@ -31,7 +32,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible }) => {
   const handleSubmit = () => {
     if (selectedMessage?.id) {
       handleModalVisible(!modalVisible)
-      goBack()
+      cancelRequest()
     } else {
       setErrorMessage(true)
     }
@@ -96,8 +97,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible }) => {
   );
 };
 
-const Card = item => {
-  const [modalVisible, setModalVisible] = useState(false);
+const Card = (item) => {
 
   return (
     <View style={FindRideStyles.card} key={item.id}>
@@ -142,13 +142,9 @@ const Card = item => {
           </View>
         </View>
       </View>
-      <Modalpopup
-        modalVisible={modalVisible}
-        handleModalVisible={setModalVisible}
-      />
       <View style={FindRideStyles.cardBottom}>
         <Pressable
-          onPress={() => setModalVisible(true)}
+          onPress={() => item.setModalVisible(true)}
           style={[FindRideStyles.button, { backgroundColor: COLORS.brand_yellow }]}>
           <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
             {'Cancel Ride'}
@@ -160,6 +156,8 @@ const Card = item => {
 };
 
 const ActiveRidePage = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+  
   let item = {
     distance_away: 1,
     driver_name: 'John Deo',
@@ -174,10 +172,15 @@ const ActiveRidePage = () => {
     ride_distance: 53,
     id: 2,
   };
+
   return (
     <View style={[FindRideStyles.container]}>
       <View style={ActiveRidePageStyles.cardBottom}>
-        <Card {...item} />
+        <Card {...item} setModalVisible = {setModalVisible}/>
+      <Modalpopup
+        modalVisible={modalVisible}
+        handleModalVisible={setModalVisible}
+      />
       </View>
     </View>
   );
