@@ -1,6 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
+import { showErrorMessage } from "../util";
+let watchId = undefined;
 
 function AppContainer(WrappedComponent) {
     return (props) => {
@@ -30,17 +32,17 @@ function AppContainer(WrappedComponent) {
             }
         }
 
+
         useEffect(() => {
             //Get current location and set initial region to this
-            let watchId = undefined;
-            const watchPosition = async() =>{
+            const watchPosition = async() => {
                 let granted = false;
                 if (Platform.OS === "ios") {
                     granted = true;
                 } else {
                     granted = await checkAndroidPermissions();
                 }
-                if (granted)
+                if (granted) {
                     watchId = Geolocation.watchPosition(
                         position => {
                             setLocation({
@@ -49,8 +51,11 @@ function AppContainer(WrappedComponent) {
                             });
                         },
                         error => console.log(error),
-                        { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
+                        { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000, forceRequestLocation: true, interval: 2000 * 60, useSignificantChanges: true	 }
                     );
+                }else{
+                    showErrorMessage('Please enable location service')
+                }
             }
             watchPosition()
             return () => Geolocation?.clearWatch(watchId);

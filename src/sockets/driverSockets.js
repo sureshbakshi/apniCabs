@@ -1,12 +1,9 @@
-// Driver Socket Configuration
-import io from 'socket.io-client';
-import Config from "react-native-config";
+import driverSocket from './socketConfig';
 
-const driverSocket = io(Config.SOCKET_URL);
-
-export const receiveRequest = (requestData) => {
-  driverSocket.on('receive_request', (request) => {
+export const getRideRequests = (requestData) => {
+  driverSocket.on('get_ride_requests', (response) => {
     // Handle the request in the UI
+    console.log(response)
   });
 };
 
@@ -21,6 +18,19 @@ export const declineRequest = () => {
 export const cancelRequest = () => {
   driverSocket.emit('cancel_ride');
 };
+
+export const updateDriverLocation = () =>{
+  driverSocket.emit('driver_location')
+}
+
+export const connectSocket = () => {
+  driverSocket.connect()
+}
+
+export const disconnectSocket = () => {
+  driverSocket.disconnect()
+}
+
 
 // Add other socket events as needed
 

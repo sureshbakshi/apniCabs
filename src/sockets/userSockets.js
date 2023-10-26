@@ -1,8 +1,5 @@
 // User Socket Configuration
-import io from 'socket.io-client';
-import Config from "../util/config";
-
-const userSocket = io(Config.SOCKET_URL);
+import userSocket from './socketConfig';
 
 export const sendRequest = (requestData) => {
   userSocket.emit('send_request', requestData);

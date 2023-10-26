@@ -35,7 +35,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 }
 
 export const apiSlice = createApi({
-  reducerPath: 'userApi',
+  reducerPath: 'apiReducer',
   baseQuery:baseQueryWithReauth,
   endpoints: builder => ({
     login: builder.mutation({
@@ -88,6 +88,16 @@ export const apiSlice = createApi({
       query: () => ({
         method: 'GET',
         url: `drivers`,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      invalidatesTags: ['Token'],
+    }),
+    updateDriverStatus: builder.query({
+      query: (status) => ({
+        method: 'POST',
+        url: `driverStatus`,
+        body:{active: status}
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
