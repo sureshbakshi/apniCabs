@@ -6,8 +6,10 @@ import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
+import useUserSocketEvents from '../hooks/useUserSocketEvents';
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
+  useUserSocketEvents()
   return (
     <AppProvider>
       <Tab.Navigator

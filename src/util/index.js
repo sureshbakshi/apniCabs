@@ -4,7 +4,7 @@ import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 
 export const isUserOrDriver = () => {
-  return false;
+  return true;
 }
 
 export const getScreen = () => {

@@ -101,10 +101,19 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['Token'],
+      invalidatesTags: ['send_request'],
+    }),
+    sendRequest: builder.mutation({
+      query: () => ({
+        method: 'POST',
+        url: `sendRequest`,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      invalidatesTags: ['send_request'],
     }),
   }),
-  tagTypes: ['Token'],
+  tagTypes: ['Token', 'send_request'],
 });
 
 export const {

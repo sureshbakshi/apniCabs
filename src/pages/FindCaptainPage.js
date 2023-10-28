@@ -8,8 +8,8 @@ import { useAppContext } from '../context/App.context'
 import { useGetDriverQuery } from '../slices/apiSlice';
 
 const FindCaptainPage = () => {
+  const { route, location: { from, to }, distance, duration } = useAppContext()
   const { data: driversList, error, isLoading } = useGetDriverQuery()
-  const { route, location: { from, to } } = useAppContext()
   if (isLoading || error) {
     return null
   }

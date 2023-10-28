@@ -41,8 +41,8 @@ function App() {
     <NavigationContainer
       ref={navigationRef}
       fallback={<ActivityIndicator color="blue" size="large" />}>
-      {!isLoggedIn && <LoginNavigator />}
-      {isLoggedIn && isUserOrDriver() && <UserTabNavigator />}
+      {isLoggedIn && <LoginNavigator />}
+      {true && isUserOrDriver() && <UserTabNavigator />}
       {isLoggedIn && !isUserOrDriver() && <DriverTabNavigator />}
     </NavigationContainer>
   );

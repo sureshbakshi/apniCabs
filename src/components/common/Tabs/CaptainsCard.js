@@ -12,6 +12,7 @@ import { ROUTES_NAMES } from '../../../constants';
 const Card = item => {
   const handleNavigate = () => {
     navigate(ROUTES_NAMES.activeRide)
+    // dispatch sendrequest with request_id and vehicle_id
   };
   return (
     <View style={FindRideStyles.card} key={item.id}>

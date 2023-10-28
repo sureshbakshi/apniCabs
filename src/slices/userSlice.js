@@ -5,7 +5,10 @@ const userSlice = createSlice({
   initialState: {
     // Define user state here
     userRequests: [],
-    activeRide: null,
+    activeRideInfo: null,
+    activeRideId: null,
+    drivers: [],
+    request_id: null
   },
   reducers: {
     sendRequest: (state, action) => {
@@ -18,10 +21,30 @@ const userSlice = createSlice({
       // Handle accepting a request and update activeRide
       state.activeRide = action.payload;
     },
+    setDrivers: (state, action) => {
+      // Handle accepting a request and update activeRide
+      state.request_id = action.payload.request_id;
+      state.drivers = action.payload.drivers;
+    },
+    setActiveRide: (state, action) => {
+      // Handle accepting a request and update activeRide
+      state.activeRideId = action.payload.data.active_ride_id;
+      state.activeRideInfo = action.payload.data;
+    },
+    cancelActiveRide: (state, action) => {
+      // Handle accepting a request and update activeRide
+      state.activeRideId = null;
+      state.activeRideInfo = null;
+    },
+    updateDriversRequest: (state, action) => {
+      // Handle accepting a request and update activeRide
+      // find updated driver request -- vehicle_id
+      state.drivers = action.payload.request_id;
+    },
     // Add other actions and reducers
   },
 });
 
-export const { sendRequest, cancelRequest, acceptRequest } = userSlice.actions;
+export const { sendRequest, cancelRequest, acceptRequest , setDrivers, updateDriversRequest, setActiveRide, cancelActiveRide} = userSlice.actions;
 
 export default userSlice.reducer;
