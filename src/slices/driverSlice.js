@@ -8,6 +8,7 @@ const driverSlice = createSlice({
     // Define driver state here
     driverRequests: [],
     isActiveRide: null,
+    isOnline: false
   },
   reducers: {
     receiveRequest: (state, action) => {
@@ -22,12 +23,14 @@ const driverSlice = createSlice({
     },
     setRideStatus: (state, action) => {
       state.isActiveRide = action.payload;
-      // navigate(ROUTES_NAMES.activeRide)
-    }
+    },
+    setDriverStatus: (state, action) => {
+      state.isOnline = action.payload;
+    },
     // Add other actions and reducers
   },
 });
 
-export const { receiveRequest, acceptRequest, declineRequest, setRideStatus } = driverSlice.actions;
+export const { receiveRequest, acceptRequest, declineRequest, setRideStatus, setDriverStatus } = driverSlice.actions;
 
 export default driverSlice.reducer;

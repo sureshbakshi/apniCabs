@@ -9,6 +9,8 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { navigate } from '../util/navigationService';
 import { acceptRequest } from '../sockets/driverSockets';
+import { useSelector } from 'react-redux';
+import { useEmitDriverStatus } from '../hooks/useDriverSocketEvents';
 
 const Card = item => {
   return (
@@ -80,8 +82,9 @@ const DriverCard = ({list}) => {
 };
 
 export const PickARide = () => {
-  const [isEnabled, setIsEnabled] = useState(true);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const {isOnline} = useSelector((state) => state.driver)
+  const updateDriverStatus = useEmitDriverStatus()
+  const toggleSwitch = () => updateDriverStatus(!isOnline);
   
 
   const list = [
@@ -115,20 +118,20 @@ export const PickARide = () => {
   ];
   return (
     <View style={FindRideStyles.container}>
-      <View style={[FindRideStyles.switchBtn,{backgroundColor: isEnabled ? COLORS.green : COLORS.primary}]}>
+      <View style={[FindRideStyles.switchBtn,{backgroundColor: isOnline ? COLORS.green : COLORS.primary}]}>
         <Text style={FindRideStyles.headerText}>
-          {isEnabled ? 'Online' : 'Offline'}
+          {isOnline ? 'Online' : 'Offline'}
         </Text>
         <Switch
           trackColor={{false: COLORS.white, true: COLORS.white}}
-          thumbColor={isEnabled ? COLORS.light_green : COLORS.primary_soft}
+          thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
-          value={isEnabled}
+          value={isOnline}
         />
       </View>
 
-      {isEnabled && (
+      {isOnline && (
         <View style={FindRideStyles.section}>
           <ScrollView>
             <DriverCard list={list} />

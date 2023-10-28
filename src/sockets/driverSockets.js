@@ -1,3 +1,4 @@
+import { showErrorMessage } from '../util';
 import driverSocket from './socketConfig';
 
 const SOCKET_EVENTS = {
@@ -6,7 +7,8 @@ const SOCKET_EVENTS = {
   accept_request: 'accept_request',
   decline_request: 'decline_request',
   cancel_ride: 'cancel_ride',
-  driver_location: 'driver_location'
+  driver_location: 'driver_location',
+  driver_status: 'driver_status'
 }
 
 // listeners
@@ -23,8 +25,23 @@ export const onActiveRide = (cb) => {
   })
 }
 
+export const onDriverStatus = (cb) => {
+  driverSocket.on(SOCKET_EVENTS.driver_status, (res) =>{
+    cb(res)
+  })
+}
+
 
 // emitters
+export const emitDriverStatus = (status, cb) => {
+  driverSocket.emit(SOCKET_EVENTS.driver_status, {isOnline: status}, (res, err) => {
+    if(err) {
+      showErrorMessage()
+    }else{
+      cb(res?.isOnline)
+    }
+  })
+}
 export const acceptRequest = (item) => {
   driverSocket.emit(SOCKET_EVENTS.accept_request, item);
 };
@@ -42,6 +59,7 @@ export const updateDriverLocation = () =>{
 }
 
 export const connectSocket = () => {
+  console.log(`============= Client connection ==========`)
   driverSocket.connect()
 }
 

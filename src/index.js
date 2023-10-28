@@ -18,9 +18,43 @@ io.on('connection', (socket) => {
     console.log('A user disconnected');
   });
 
-  const timerFunctions = () => {
+  
+
+  
+  socket.on('accept_request', (item) => {
+    activeRide(true)
+  })
+  socket.on('cancel_ride', (item) => {
+    activeRide(false)
+  })
+
+
+  // driver events
+  
+  socket.on('driver_status', (req, cb) => {
+    cb({isOnline:req?.isOnline})
+  })
+
+
+
+  // sample timer functions
+  const emitDriverStatus = (status) =>{
+    socket.emit('driver_status', {isOnline: status})
+  }
+
+  const emitActiveRide = (status) => {
+    io.emit('active_ride', status)
+  }
+
+  const emitRideRequests = () =>{
     io.emit('get_ride_requests', `test_${Math.round(Math.random() * 2)}`)
-    activeRide()
+
+  }
+
+  const timerFunctions = () => {
+    emitRideRequests()
+    emitActiveRide()
+    emitDriverStatus(Math.random() < 0.5)
   }
 
 
@@ -30,16 +64,6 @@ io.on('connection', (socket) => {
   //   clearInterval(intervalId);
   //   console.log('Interval stopped after 5 seconds');
   // }, 50000);
-
-  const activeRide = (status) => {
-    io.emit('active_ride', status)
-  }
-  socket.on('accept_request', (item) => {
-    activeRide(true)
-  })
-  socket.on('cancel_ride', (item) => {
-    activeRide(false)
-  })
   
 });
 

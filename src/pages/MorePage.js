@@ -41,7 +41,7 @@ const MorePage = () => {
                 />
               </View>
               <View style={MoreStyles.middle}>
-                <Text style={MoreStyles.name}>{profile.name}</Text>
+                <Text style={MoreStyles.name}>{profile?.name}</Text>
                 <Text style={MoreStyles.review}>11 Reviews</Text>
               </View>
             </View>

@@ -1,0 +1,118 @@
+export default [
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 1,
+        "type": "car",
+        "vehicle_model": "Volvo XC60",
+        "vehicle_color": "White",
+        "seats": 4,
+        "distance_away": 4,
+        "price": 315,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/car.png",
+        "profile_avatar": 3,
+        "user_name": "John Deo",
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 2,
+        "type": "bike",
+        "vehicle_model": "PURE EV Epluto 7G Max",
+        "vehicle_color": "Gray",
+        "seats": 1,
+        "distance_away": 6,
+        "price": 124,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/bike.png",
+        "profile_avatar": 5,
+        "user_name": "John Depp"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 3,
+        "type": "auto",
+        "vehicle_model": "Auto",
+        "vehicle_color": "Yellow",
+        "seats": 3,
+        "distance_away": 2,
+        "price": 228,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/auto.png",
+        "profile_avatar": 5,
+        "user_name": "John Cena"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 8,
+        "type": "auto",
+        "vehicle_model": "Auto 2",
+        "vehicle_color": "Yellow",
+        "seats": 3,
+        "distance_away": 2,
+        "price": 291,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/auto.png",
+        "profile_avatar": 4,
+        "user_name": "John Ray"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 6,
+        "type": "car",
+        "vehicle_model": "Nissan Maxima",
+        "vehicle_color": "Green",
+        "seats": 4,
+        "distance_away": 3,
+        "price": 344,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/car.png",
+        "profile_avatar": 4,
+        "user_name": "John Deere"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 5,
+        "type": "car",
+        "vehicle_model": "Toyota Sienna",
+        "vehicle_color": "Grey",
+        "seats": 4,
+        "distance_away": 3,
+        "price": 338,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/car.png",
+        "profile_avatar": 5,
+        "user_name": "John Abraham"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 4,
+        "type": "car",
+        "vehicle_model": "Volkswagen Golf R",
+        "vehicle_color": "Red",
+        "seats": 4,
+        "distance_away": 1,
+        "price": 325,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/car.png",
+        "profile_avatar": 2,
+        "user_name": "John Wick"
+    },
+    {
+        "Request_id": "",
+        status: null,
+        "vehicle_id": 7,
+        "type": "bike",
+        "vehicle_model": "Honda Activa 6G",
+        "vehicle_color": "Blue",
+        "seats": 1,
+        "distance_away": 4,
+        "price": 136,
+        "vehicle_icon": "https://apnicabi.com/assets/icons/bike.png",
+        "profile_avatar": 5,
+        "user_name": "John Bule"
+    }
+]
+
+
+
+
