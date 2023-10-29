@@ -12,10 +12,9 @@ const SOCKET_EVENTS = {
 }
 
 // listeners
-export const getRideRequests = (requestData) => {
-  driverSocket.on(SOCKET_EVENTS.get_ride_requests, (response) => {
-    // Handle the request in the UI
-    console.log(response)
+export const getRideRequests = (cb) => {
+  driverSocket.on(SOCKET_EVENTS.get_ride_requests, (request) => {
+    cb(request)
   });
 };
 
@@ -31,31 +30,32 @@ export const onDriverStatus = (cb) => {
   })
 }
 
+const handleEmitCallback = (cb, res, err) => {
+  if(err) {
+    showErrorMessage()
+  }else{
+    cb(res)
+  }
+}
 
 // emitters
 export const emitDriverStatus = (status, cb) => {
-  driverSocket.emit(SOCKET_EVENTS.driver_status, {isOnline: status}, (res, err) => {
-    if(err) {
-      showErrorMessage()
-    }else{
-      cb(res?.isOnline)
-    }
-  })
+  driverSocket.volatile.emit(SOCKET_EVENTS.driver_status, {isOnline: status}, (res, err) => handleEmitCallback(cb, res, err))
 }
-export const acceptRequest = (item) => {
-  driverSocket.emit(SOCKET_EVENTS.accept_request, item);
+export const emitAcceptRequest = (item) => {
+  driverSocket.volatile.emit(SOCKET_EVENTS.accept_request, item);
 };
 
-export const declineRequest = () => {
-  driverSocket.emit(SOCKET_EVENTS.decline_request);
+export const emitDeclineRequest = (item, cb) => {
+  driverSocket.volatile.emit(SOCKET_EVENTS.decline_request, item, (res, err) => handleEmitCallback(cb, res, err) );
 };
 
-export const cancelRequest = () => {
-  driverSocket.emit(SOCKET_EVENTS.cancel_ride);
+export const emitCancelRequest = (activeRequest, cb) => {
+  driverSocket.volatile.emit(SOCKET_EVENTS.cancel_ride, activeRequest, (res, err) => handleEmitCallback(cb, res, err));
 };
 
 export const updateDriverLocation = () =>{
-  driverSocket.emit(SOCKET_EVENTS.driver_location)
+  driverSocket.volatile.emit(SOCKET_EVENTS.driver_location)
 }
 
 export const connectSocket = () => {

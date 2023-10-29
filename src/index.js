@@ -8,6 +8,7 @@ const io = socketIo(server);
 const mock = require('../src/mock/rideRequests');
 const bodyParser = require('body-parser');
 
+let driver_status = true
 app.use(bodyParser.json())
 app.post('/sendRequest', (req, res) => {
   console.log('req',req)
@@ -29,43 +30,57 @@ io.on('connection', socket => {
   });
 
   socket.on('accept_request', item => {
-    activeRide(true);
+    emitActiveRide();
   });
-  socket.on('cancel_ride', item => {
-    activeRide(false);
+  socket.on('cancel_ride', (item, cb) => {
+    cb(item);
+  });
+  socket.on('decline_request', (item, cb) => {
+    cb(item);
   });
 
   // driver events
 
   socket.on('driver_status', (req, cb) => {
+    driver_status = req?.isOnline
     cb({isOnline: req?.isOnline});
   });
 
   // sample timer functions
   const emitDriverStatus = status => {
+    driver_status = status
     socket.emit('driver_status', {isOnline: status});
   };
 
   const emitActiveRide = status => {
-    io.emit('active_ride', status);
+    io.emit('active_ride', {...getRandomMock(), active_request_id: 5});
   };
 
+  const getRandomMock = () => {
+    const max = 7, min = 0
+      const index = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      return {...mock[index]}
+  }
   const emitRideRequests = () => {
-    io.emit('get_ride_requests', `test_${Math.round(Math.random() * 2)}`);
+
+    if(driver_status) {
+      io.emit('get_ride_requests', getRandomMock());
+    }
   };
 
   const timerFunctions = () => {
     emitRideRequests();
-    emitActiveRide();
-    emitDriverStatus(Math.random() < 0.5);
+    // emitActiveRide();
+    // emitDriverStatus(Math.random() < 0.5);
   };
 
-  // const interval = 5000; // 1000 milliseconds = 1 second
+  // const interval = 1000*30; // 1000 milliseconds = 1 second
   // const intervalId = setInterval(timerFunctions, interval);
   // setTimeout(() => {
   //   clearInterval(intervalId);
   //   console.log('Interval stopped after 5 seconds');
-  // }, 50000);
+  // }, 1000 * 60);
 });
 
 const PORT = process.env.PORT || 3000;

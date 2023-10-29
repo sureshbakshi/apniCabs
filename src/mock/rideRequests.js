@@ -1,6 +1,7 @@
- [
+const requestList = [
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 1,
         "type": "car",
@@ -15,6 +16,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 2,
         "type": "bike",
@@ -29,6 +31,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 3,
         "type": "auto",
@@ -43,6 +46,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 8,
         "type": "auto",
@@ -57,6 +61,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 6,
         "type": "car",
@@ -71,6 +76,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 5,
         "type": "car",
@@ -85,6 +91,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 4,
         "type": "car",
@@ -99,6 +106,7 @@
     },
     {
         "Request_id": "",
+        "total_distance": 20,
         status: null,
         "vehicle_id": 7,
         "type": "bike",
@@ -112,6 +120,7 @@
         "user_name": "John Bule"
     }
 ]
+module.exports = requestList
 
 
 

@@ -12,6 +12,8 @@ import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { goBack, navigate } from '../util/navigationService';
 import { showErrorMessage } from '../util';
 import { cancelRequest } from '../sockets/driverSockets';
+import { useSelector } from 'react-redux';
+import { useDriverEvents } from '../hooks/useDriverSocketEvents';
 
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
@@ -19,20 +21,20 @@ const intialState = [
   { message: 'My reason is not listed', id: 3 },
 ];
 
-const Modalpopup = ({ modalVisible, handleModalVisible }) => {
+const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
   const [message, setMessage] = useState(intialState);
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [errorMsg, setErrorMessage] = useState(null)
-
+  const {emitCancelRequestEvent} = useDriverEvents()
   const handleCancelReason = (message) => {
     setSelectedMessage(message)
     setErrorMessage(false)
   }
   
+  const closeModal = () =>  handleModalVisible(!modalVisible)
   const handleSubmit = () => {
     if (selectedMessage?.id) {
-      handleModalVisible(!modalVisible)
-      cancelRequest()
+      emitCancelRequestEvent(activeReq, closeModal)
     } else {
       setErrorMessage(true)
     }
@@ -84,7 +86,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible }) => {
             <Pressable
               android_ripple={{ color: '#fff' }}
               style={[FindRideStyles.button]}
-              onPress={() => handleSubmit()}>
+              onPress={handleSubmit}>
               <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
                 {'Submit'}
               </Text>
@@ -97,22 +99,22 @@ const Modalpopup = ({ modalVisible, handleModalVisible }) => {
   );
 };
 
-const Card = (item) => {
+const Card = ({activeRequest, setModalVisible}) => {
 
   return (
-    <View style={FindRideStyles.card} key={item.id}>
+    <View style={FindRideStyles.card} key={activeRequest.id}>
       <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
             <ImageView
               source={
-                images[`captain${item.profile_avatar}`] || images[`captain0`]
+                images[`captain${activeRequest.profile_avatar}`] || images[`captain0`]
               }
               style={[styles.avatar]}
             />
           </View>
           <View style={FindRideStyles.middle}>
-            <Text style={FindRideStyles.name}>{item.driver_name}</Text>
+            <Text style={FindRideStyles.name}>{activeRequest.driver_name}</Text>
             <Timeline
               data={[
                 'Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana',
@@ -123,28 +125,28 @@ const Card = (item) => {
           <View style={FindRideStyles.right}>
             <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
-              {item.price}
+              {activeRequest.price}
             </Text>
           </View>
         </View>
         <View style={FindRideStyles.cardBottom}>
           <View style={FindRideStyles.left}>
-            {item.distance_away && (
+            {activeRequest.distance_away && (
               <Text style={[styles.text, styles.bold]}>
-                {item.distance_away} km away
+                {activeRequest.distance_away} km away
               </Text>
             )}
           </View>
           <View style={FindRideStyles.right}>
             <Text style={[styles.text, styles.bold]}>
-              Distance: {item.ride_distance} km
+              Distance: {activeRequest.total_distance} km
             </Text>
           </View>
         </View>
       </View>
       <View style={FindRideStyles.cardBottom}>
         <Pressable
-          onPress={() => item.setModalVisible(true)}
+          onPress={() => setModalVisible(true)}
           style={[FindRideStyles.button, { backgroundColor: COLORS.brand_yellow }]}>
           <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
             {'Cancel Ride'}
@@ -157,29 +159,17 @@ const Card = (item) => {
 
 const ActiveRidePage = () => {
     const [modalVisible, setModalVisible] = useState(false);
-  
-  let item = {
-    distance_away: 1,
-    driver_name: 'John Deo',
-    price: 432,
-    profile_avatar: 2,
-    seats: 4,
-    type: 'car',
-    vehicle_color: 'White',
-    vehicle_icon: 'https://apnicabi.com/assets/icons/car.png',
-    vehicle_id: 1,
-    vehicle_model: 'Volvo XC60',
-    ride_distance: 53,
-    id: 2,
-  };
+  const {activeRequest} = useSelector((state) => state.driver)
+
 
   return (
     <View style={[FindRideStyles.container]}>
       <View style={ActiveRidePageStyles.cardBottom}>
-        <Card {...item} setModalVisible = {setModalVisible}/>
+        <Card activeRequest={activeRequest} setModalVisible={setModalVisible}/>
       <Modalpopup
         modalVisible={modalVisible}
         handleModalVisible={setModalVisible}
+        activeReq={activeRequest}
       />
       </View>
     </View>

@@ -2,35 +2,44 @@ import { createSlice } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 
+const initialState = {
+  rideRequests: [],
+  activeRequest: null,
+  activeRequestId: null,
+  isOnline: false
+}
+
 const driverSlice = createSlice({
   name: 'driver',
-  initialState: {
-    // Define driver state here
-    driverRequests: [],
-    isActiveRide: null,
-    isOnline: false
-  },
+  initialState,
   reducers: {
-    receiveRequest: (state, action) => {
-      // Handle receiving a request and update driverRequests
+    declineRequest: (state, action) => {
+      const requestObj = action.payload
+      state.rideRequests =  state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
     },
-    acceptRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
-      state.activeRide = action.payload;
+    setActiveRide: (state, action) => {
+      const  {active_request_id} = action.payload || {}
+      state.activeRequest = action.payload;
+      state.activeRequestId = active_request_id;
     },
-    declineRequest: (state) => {
-      // Handle declining a request and remove it from driverRequests
-    },
-    setRideStatus: (state, action) => {
-      state.isActiveRide = action.payload;
+    cancelRequest: (state, action) => {
+      const  {active_request_id} = action.payload || {}
+      if(state.activeRequestId === active_request_id) {
+        return  Object.assign(state, {...initialState, isOnline: state.isOnline})
+      }
     },
     setDriverStatus: (state, action) => {
       state.isOnline = action.payload;
+      if (!action.payload) {
+        return  Object.assign(state, {...initialState, isOnline: state.isOnline})
+      }
     },
-    // Add other actions and reducers
+    setRideRequest: (state, action) => {
+      state.rideRequests = [...state.rideRequests, action.payload];
+    },
   },
 });
 
-export const { receiveRequest, acceptRequest, declineRequest, setRideStatus, setDriverStatus } = driverSlice.actions;
+export const { declineRequest, setActiveRide, setDriverStatus, setRideRequest, cancelRequest } = driverSlice.actions;
 
 export default driverSlice.reducer;

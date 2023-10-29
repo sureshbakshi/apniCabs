@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import driverSocket, { connectSocket, disconnectSocket, emitDriverStatus, getRideRequests, onActiveRide, onDriverStatus } from "../sockets/driverSockets"
-import { useDispatch } from "react-redux"
-import { setDriverStatus, setRideStatus } from "../slices/driverSlice"
+import driverSocket, { connectSocket, disconnectSocket, emitCancelRequest, emitDeclineRequest, emitDriverStatus, getRideRequests, onActiveRide, onDriverStatus } from "../sockets/driverSockets"
+import { useDispatch, useSelector } from "react-redux"
+import { cancelRequest, declineRequest, setActiveRide, setDriverStatus, setRideRequest } from "../slices/driverSlice"
 
 
 export const useSetDriverStatus = () => {
@@ -12,30 +12,55 @@ export const useSetDriverStatus = () => {
     return updateStatus
 }
 
-export const useSetRideStatus = () => {
+export const useDriverEvents = () => {
     const dispatch = useDispatch()
-    const updateRideStatus = (status) => {
-        dispatch(setRideStatus(status))
+    
+    const emitDriverStatusEvent = (status) =>{
+        emitDriverStatus(status, (res) => updateDriverStatus(res?.isOnline))
     }
-    return updateRideStatus
-}
+    const emitDeclineRequestEvent = (requestObj) =>{
+        emitDeclineRequest(requestObj, (res) => updateDeclineRequest(res))
+    }
+    const emitCancelRequestEvent = (activeRequest, cb) => {
+        emitCancelRequest(activeRequest, (res) => {
+            cb ()
+            updateCancelRequest(res)})
+    }
 
-export const useEmitDriverStatus = () => {
-    const updateStatus = useSetDriverStatus()
-    const updateDriverStatus = (status) => {
-        emitDriverStatus(status, updateStatus)
+    const updateDeclineRequest = (response) =>{
+        dispatch(declineRequest(response))
     }
-    return updateDriverStatus
+
+    const updateCancelRequest = (activeReq) =>{
+        dispatch(cancelRequest(activeReq))
+
+    }
+
+    const updateDriverStatus = (status) => {
+        dispatch(setDriverStatus(status))
+    }
+
+    const updateActiveRide = (activeRequest) => {
+        dispatch(setActiveRide(activeRequest))
+    }
+
+    const updateRideRequests = (request) => {
+        dispatch(setRideRequest(request))
+    }
+    
+    return {updateDriverStatus, updateActiveRide, updateRideRequests, emitDriverStatusEvent, emitDeclineRequestEvent, emitCancelRequestEvent}
 }
 
 export default (() => {
-    const setDriverStatus = useSetDriverStatus()
-    const setRideStatus = useSetRideStatus()
+    const {updateDriverStatus, updateActiveRide, updateRideRequests} = useDriverEvents()
+    const {isOnline} = useSelector((state) => state.driver)
     useEffect(() => {
+        onDriverStatus(updateDriverStatus)
         connectSocket()
-        getRideRequests()
-        onActiveRide(setRideStatus)
-        onDriverStatus(setDriverStatus)
+        if(isOnline) {
+            getRideRequests(updateRideRequests)
+            onActiveRide(updateActiveRide)
+        }
         return () => disconnectSocket()
-    }, [])
+    }, [isOnline])
 })
