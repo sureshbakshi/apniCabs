@@ -24,7 +24,7 @@ const userSlice = createSlice({
     setDrivers: (state, action) => {
       // Handle accepting a request and update activeRide
       state.request_id = action.payload.request_id;
-      state.drivers = action.payload.drivers;
+      state.drivers = action.payload;
     },
     setActiveRide: (state, action) => {
       // Handle accepting a request and update activeRide

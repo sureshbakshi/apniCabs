@@ -84,10 +84,11 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       invalidatesTags: ['Token'],
     }),
-    getDriver: builder.query({
-      query: () => ({
-        method: 'GET',
+    getDriver: builder.mutation({
+      query: (body) => ({
+        method: 'POST',
         url: `drivers`,
+        body
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -104,9 +105,10 @@ export const apiSlice = createApi({
       invalidatesTags: ['send_request'],
     }),
     sendRequest: builder.mutation({
-      query: () => ({
+      query: (body) => ({
         method: 'POST',
         url: `sendRequest`,
+        body
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -121,5 +123,6 @@ export const {
   useSingUpMutation,
   useUserCheckMutation,
   useProfileMutation,
-  useGetDriverQuery,
+  useGetDriverMutation,
+  useSendRequestMutation
 } = apiSlice;

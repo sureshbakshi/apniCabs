@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 import config from '../util/config';
 
-const socket = io('http://192.168.1.88:3000', {
+const socket = io('http://192.168.0.103:3000', {
   // Additional configuration options can be set here
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss

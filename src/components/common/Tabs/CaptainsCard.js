@@ -7,13 +7,22 @@ import images from '../../../util/images';
 import Timeline from '../timeline/Timeline';
 import {navigate} from '../../../util/navigationService';
 import _ from 'lodash';
-import { ROUTES_NAMES } from '../../../constants';
+import {ROUTES_NAMES} from '../../../constants';
+import {useSendRequestMutation} from '../../../slices/apiSlice';
 
 const Card = item => {
-  const handleNavigate = () => {
-    navigate(ROUTES_NAMES.activeRide)
+  const [SendRequest, {data: requestData, error, isLoading}] =
+    useSendRequestMutation();
+  const handleNavigate = item => {
+    // navigate(ROUTES_NAMES.activeRide)
     // dispatch sendrequest with request_id and vehicle_id
+    let payload = {request_id: item.request_id, vehicle_id: item.vehicle_id};
+    console.log(payload);
+    SendRequest(payload);
   };
+  if (isLoading || error) {
+    return null;
+  }
   return (
     <View style={FindRideStyles.card} key={item.id}>
       <Timeline />
@@ -54,7 +63,9 @@ const Card = item => {
           </Text>
         </View>
         <View style={FindRideStyles.right}>
-          <Pressable style={FindRideStyles.button} onPress={handleNavigate}>
+          <Pressable
+            style={FindRideStyles.button}
+            onPress={()=>handleNavigate(item)}>
             <Text style={FindRideStyles.text}>{'Request'}</Text>
           </Pressable>
         </View>
@@ -64,7 +75,6 @@ const Card = item => {
 };
 const CaptainsCard = ({list, keyProp, extraProps}) =>
   list.map(item => {
-    console.log('list', list);
     return (
       <Card
         {...{
