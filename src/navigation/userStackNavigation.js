@@ -13,7 +13,7 @@ const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.findCaptain, ROUTES_NAMES.activeRide];
 
-export default function stackNavigator({ navigation, route }) {
+export default function UserStackNavigator({ navigation, route }) {
   const isActiveRide = useSelector((state) => state.user.activeRideId)
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {

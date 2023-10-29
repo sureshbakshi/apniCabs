@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import userStackNavigator from './userStackNavigation';
+import UserStackNavigator from './userStackNavigation';
 import WalletPage from '../pages/WalletPage';
 import MyRidePage from '../pages/MyRidesPage';
 import MoreNavigator from './moreNavigation';
@@ -27,7 +27,7 @@ export default function UserTabNavigator() {
         <Tab.Screen
           name={ROUTES_NAMES.findRide}
           options={{ title: 'Find a Ride' }}
-          component={userStackNavigator}
+          component={UserStackNavigator}
         />
         <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={MyRidePage} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
