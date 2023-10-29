@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import {createSlice} from '@reduxjs/toolkit';
+import _ from 'lodash';
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -8,13 +8,13 @@ const userSlice = createSlice({
     activeRideInfo: null,
     activeRideId: null,
     drivers: [],
-    request_id: null
+    request_id: null,
   },
   reducers: {
     sendRequest: (state, action) => {
       // Handle sending a request and update userRequests
     },
-    cancelRequest: (state) => {
+    cancelRequest: state => {
       // Handle canceling a request and update userRequests
     },
     acceptRequest: (state, action) => {
@@ -23,8 +23,13 @@ const userSlice = createSlice({
     },
     setDrivers: (state, action) => {
       // Handle accepting a request and update activeRide
-      state.request_id = action.payload.request_id;
-      state.drivers = action.payload;
+      state.request_id = action.payload?.request_id;
+      const data = _.groupBy(action.payload, 'type');
+      const sortedData = {};
+      Object.keys(data).map(key => {
+        sortedData[key] = _.sortBy(data[key], 'price');
+      });
+      state.drivers = sortedData;
     },
     setActiveRide: (state, action) => {
       // Handle accepting a request and update activeRide
@@ -45,6 +50,14 @@ const userSlice = createSlice({
   },
 });
 
-export const { sendRequest, cancelRequest, acceptRequest , setDrivers, updateDriversRequest, setActiveRide, cancelActiveRide} = userSlice.actions;
+export const {
+  sendRequest,
+  cancelRequest,
+  acceptRequest,
+  setDrivers,
+  updateDriversRequest,
+  setActiveRide,
+  cancelActiveRide,
+} = userSlice.actions;
 
 export default userSlice.reducer;

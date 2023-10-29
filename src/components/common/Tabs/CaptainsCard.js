@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {View, Pressable} from 'react-native';
 import {ImageView, Text} from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
@@ -16,10 +16,16 @@ const Card = item => {
   const handleNavigate = item => {
     // navigate(ROUTES_NAMES.activeRide)
     // dispatch sendrequest with request_id and vehicle_id
-    let payload = {request_id: item.request_id, vehicle_id: item.vehicle_id};
+    let payload = {request_id: '1234', vehicle_id: item.vehicle_id};
     console.log(payload);
     SendRequest(payload);
   };
+  useEffect (()=>{
+    if(requestData){
+      console.log('requestData',requestData)
+    }
+  },[requestData])
+  
   if (isLoading || error) {
     return null;
   }

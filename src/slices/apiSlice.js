@@ -1,25 +1,25 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { navigate } from '../util/navigationService';
-import { ROUTES_NAMES } from '../constants';
-import { clearAuthData } from './authSlice';
+import {navigate} from '../util/navigationService';
+import {ROUTES_NAMES} from '../constants';
+import {clearAuthData} from './authSlice';
 
-const baseQuery =  fetchBaseQuery({
+const baseQuery = fetchBaseQuery({
   baseUrl: 'https://www.apnicabi.com/api/',
-  prepareHeaders:( headers,{getState} )=> {
+  prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
     headers.set('Content-Type', `application/json`);
-    if(getState().auth.token){
-      headers.set('Authorization', `Bearer ${getState().auth.token}`)
+    if (getState().auth.token) {
+      headers.set('Authorization', `Bearer ${getState().auth.token}`);
     }
     return headers;
   },
-})
+});
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions)
+  let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
-       api.dispatch(clearAuthData())
-       
+    api.dispatch(clearAuthData());
+
     // try to get a new token
     // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
     // if (refreshResult.data) {
@@ -31,12 +31,12 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     //   api.dispatch(loggedOut())
     // }
   }
-  return result
-}
+  return result;
+};
 
 export const apiSlice = createApi({
   reducerPath: 'apiReducer',
-  baseQuery:baseQueryWithReauth,
+  baseQuery: baseQueryWithReauth,
   endpoints: builder => ({
     login: builder.mutation({
       query: body => ({
@@ -51,10 +51,10 @@ export const apiSlice = createApi({
       providesTags: ['Token'],
     }),
     singUp: builder.mutation({
-      query: (body) => ({
+      query: body => ({
         method: 'POST',
         url: `register`,
-        body
+        body,
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -67,8 +67,8 @@ export const apiSlice = createApi({
         body: {email},
       }),
       transformResponse: response => {
-        if(!response.user){
-          navigate(ROUTES_NAMES.signUp)
+        if (!response.user) {
+          navigate(ROUTES_NAMES.signUp);
         }
         return response;
       },
@@ -85,37 +85,40 @@ export const apiSlice = createApi({
       invalidatesTags: ['Token'],
     }),
     getDriver: builder.mutation({
-      query: (body) => ({
+      query: body => ({
         method: 'POST',
         url: `drivers`,
-        body
+        body,
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
       invalidatesTags: ['Token'],
     }),
     updateDriverStatus: builder.query({
-      query: (status) => ({
+      query: status => ({
         method: 'POST',
         url: `driverStatus`,
-        body:{active: status}
+        body: {active: status},
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['send_request'],
+      invalidatesTags: ['Token'],
     }),
     sendRequest: builder.mutation({
-      query: (body) => ({
+      query: ({request_id, vehicle_id}) => ({
         method: 'POST',
-        url: `sendRequest`,
-        body
+        url: `http://192.168.0.103:3000/sendRequest`,
+        body: {
+          request_id,
+          vehicle_id,
+        },
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['send_request'],
+      invalidatesTags: ['Token'],
     }),
   }),
-  tagTypes: ['Token', 'send_request'],
+  tagTypes: ['Token'],
 });
 
 export const {
@@ -124,5 +127,5 @@ export const {
   useUserCheckMutation,
   useProfileMutation,
   useGetDriverMutation,
-  useSendRequestMutation
+  useSendRequestMutation,
 } = apiSlice;
