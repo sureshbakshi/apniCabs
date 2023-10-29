@@ -6,7 +6,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 const mock = require('../src/mock/rideRequests');
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.json())
 app.post('/sendRequest', (req, res) => {
   console.log('req',req)
   const {request_id, vehicle_id} = req.body;
