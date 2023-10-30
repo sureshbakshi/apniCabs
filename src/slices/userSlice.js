@@ -42,9 +42,16 @@ const userSlice = createSlice({
       state.activeRideInfo = null;
     },
     updateDriversRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
-      // find updated driver request -- vehicle_id
-      state.drivers = action.payload.request_id;
+      const {vehicle_id, status} = action.payload;
+      const existingDrivers = JSON.parse(JSON.stringify(state.drivers));
+      Object.keys(existingDrivers).map(key => {
+        const index = _.find(existingDrivers[key], item => {
+          return item.vehicle_id === vehicle_id;
+        });
+        const upadtedItem = {...index,status:status}
+        existingDrivers[key].splice(index, 1, upadtedItem);
+      });
+      state.drivers = existingDrivers;
     },
     // Add other actions and reducers
   },

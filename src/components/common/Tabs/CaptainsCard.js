@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {View, Pressable} from 'react-native';
 import {ImageView, Text} from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
@@ -9,8 +9,11 @@ import {navigate} from '../../../util/navigationService';
 import _ from 'lodash';
 import {ROUTES_NAMES} from '../../../constants';
 import {useSendRequestMutation} from '../../../slices/apiSlice';
+import {useDispatch} from 'react-redux';
+import {updateDriversRequest} from '../../../slices/userSlice';
 
 const Card = item => {
+  const dispatch = useDispatch();
   const [SendRequest, {data: requestData, error, isLoading}] =
     useSendRequestMutation();
   const handleNavigate = item => {
@@ -20,12 +23,12 @@ const Card = item => {
     console.log(payload);
     SendRequest(payload);
   };
-  useEffect (()=>{
-    if(requestData){
-      console.log('requestData',requestData)
+  useEffect(() => {
+    if (requestData) {
+      dispatch(updateDriversRequest(requestData.data));
     }
-  },[requestData])
-  
+  }, [requestData]);
+
   if (isLoading || error) {
     return null;
   }
@@ -71,8 +74,10 @@ const Card = item => {
         <View style={FindRideStyles.right}>
           <Pressable
             style={FindRideStyles.button}
-            onPress={()=>handleNavigate(item)}>
-            <Text style={FindRideStyles.text}>{'Request'}</Text>
+            onPress={() => handleNavigate(item)}>
+            <Text style={FindRideStyles.text}>
+              {item.status ? item.status : 'Request'}
+            </Text>
           </Pressable>
         </View>
       </View>

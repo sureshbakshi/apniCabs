@@ -11,7 +11,6 @@ const bodyParser = require('body-parser');
 let driver_status = true
 app.use(bodyParser.json())
 app.post('/sendRequest', (req, res) => {
-  console.log('req',req)
   const {request_id, vehicle_id} = req.body;
   res
     .status(200)
