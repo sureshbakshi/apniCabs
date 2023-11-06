@@ -23,10 +23,10 @@ const FindCaptainPage = () => {
     (async () => {
       const {distance, duration} = await getDistance();
       let fromCity = _.filter(from.address_components, {
-        types: ['administrative_area_level_1'],
+        types: ['locality'],
       });
       let toCity = _.filter(to.address_components, {
-        types: ['administrative_area_level_1'],
+        types: ['locality'],
       });
 
       let payload = {
