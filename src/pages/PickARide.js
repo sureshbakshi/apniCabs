@@ -1,77 +1,89 @@
-import React, { useState } from 'react';
-import { View, Pressable, ScrollView, Text, Switch } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Pressable, ScrollView, Text, Switch} from 'react-native';
 import styles from '../styles/MyRidePageStyles';
-import { ImageView } from '../components/common';
+import {ImageView} from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import _ from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, ROUTES_NAMES } from '../constants';
-import { navigate } from '../util/navigationService';
-import { emitAcceptRequest } from '../sockets/driverSockets';
-import { useSelector } from 'react-redux';
-import { useDriverEvents, useEmitDriverStatus } from '../hooks/useDriverSocketEvents';
+import {COLORS, ROUTES_NAMES} from '../constants';
+import {navigate} from '../util/navigationService';
+import {emitAcceptRequest} from '../sockets/driverSockets';
+import {useSelector} from 'react-redux';
+import {
+  useDriverEvents,
+  useEmitDriverStatus,
+} from '../hooks/useDriverSocketEvents';
+import {useUpdateDriverStatusMutation} from '../slices/apiSlice';
 
 const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
   return (
-    <>
-      <View style={FindRideStyles.card} key={item.vehicle_id}>
-        <View style={{ padding: 10 }}>
-          <View style={FindRideStyles.cardtop}>
-            <View style={FindRideStyles.left}>
-              {/* <ImageView
+    <View style={FindRideStyles.card} key={item.vehicle_id}>
+      <View style={{padding: 10}}>
+        <View style={FindRideStyles.cardtop}>
+          <View style={FindRideStyles.left}>
+            {/* <ImageView
                 source={
                   images[`captain${item.profile_avatar}`] || images[`captain0`]
                 }
                 style={[styles.avatar]}
               /> */}
-            </View>
-            <View style={FindRideStyles.middle}>
-              <Text style={FindRideStyles.name}>{item.user_name}</Text>
-              <Timeline data={['Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana', 'Lingampally, Telangana']} />
-              {/* <Timeline data={[item.from, item.to]} /> */}
-            </View>
-            <View style={FindRideStyles.right}>
-              <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
-                {'\u20B9'}
-                {item.price}
-              </Text>
-            </View>
           </View>
-          <View style={FindRideStyles.cardBottom}>
-            <View style={FindRideStyles.left}>
-              {item.distance_away && (
-                <Text style={[styles.text, styles.bold]}>{item.distance_away} km away</Text>
-              )}
-            </View>
-            <View style={FindRideStyles.right}>
-              <Text style={[styles.text, styles.bold]}>
-                Distance: {item.ride_distance} km
-              </Text>
-            </View>
+          <View style={FindRideStyles.middle}>
+            <Text style={FindRideStyles.name}>{item.user_name}</Text>
+            <Timeline
+              data={[
+                'Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana',
+                'Lingampally, Telangana',
+              ]}
+            />
+            {/* <Timeline data={[item.from, item.to]} /> */}
+          </View>
+          <View style={FindRideStyles.right}>
+            <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
+              {'\u20B9'}
+              {item.price}
+            </Text>
           </View>
         </View>
         <View style={FindRideStyles.cardBottom}>
-          <Pressable style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}  onPress={() => handleDeclineRequest(item)}>
-            <Text style={FindRideStyles.text}>{'Decline'}</Text>
-          </Pressable>
-          <Pressable style={[FindRideStyles.button, { backgroundColor: COLORS.green }]} onPress={() => handleAcceptRequest(item)}>
-            <Text style={FindRideStyles.text}>{'Accept'}</Text>
-          </Pressable>
+          <View style={FindRideStyles.left}>
+            {item.distance_away && (
+              <Text style={[styles.text, styles.bold]}>
+                {item.distance_away} km away
+              </Text>
+            )}
+          </View>
+          <View style={FindRideStyles.right}>
+            <Text style={[styles.text, styles.bold]}>
+              Distance: {item.ride_distance} km
+            </Text>
+          </View>
         </View>
       </View>
-
-    </>
+      <View style={FindRideStyles.cardBottom}>
+        <Pressable
+          style={[FindRideStyles.button, {backgroundColor: COLORS.primary}]}
+          onPress={() => handleDeclineRequest(item)}>
+          <Text style={FindRideStyles.text}>{'Decline'}</Text>
+        </Pressable>
+        <Pressable
+          style={[FindRideStyles.button, {backgroundColor: COLORS.green}]}
+          onPress={() => handleAcceptRequest(item)}>
+          <Text style={FindRideStyles.text}>{'Accept'}</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };
-const DriverCard = ({ list }) => {
-  const {emitDeclineRequestEvent} =  useDriverEvents()
+const DriverCard = ({list}) => {
+  const {emitDeclineRequestEvent} = useDriverEvents();
   return list.map((item, key) => {
     return (
       <Card
-        item = {item}
-        handleAcceptRequest= {emitAcceptRequest}
-        handleDeclineRequest = {emitDeclineRequestEvent}
+        item={item}
+        handleAcceptRequest={emitAcceptRequest}
+        handleDeclineRequest={emitDeclineRequestEvent}
         key={`${key}_${item.vehicle_id}`}
       />
     );
@@ -79,17 +91,38 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
-  const { isOnline, rideRequests } = useSelector((state) => state.driver)
-  const { emitDriverStatusEvent } = useDriverEvents()
-  const toggleSwitch = () => emitDriverStatusEvent(!isOnline);
+  const profile = useSelector(state => state.auth?.profileInfo);
+
+  const [
+    updateDriverStatus,
+    {data: driverStatus, error: driverStatusError, isLoginLoading},
+  ] = useUpdateDriverStatusMutation();
+  const {isOnline, rideRequests} = useSelector(state => state.driver);
+  const {emitDriverStatusEvent} = useDriverEvents(!isOnline);
+  // const toggleSwitch = () => emitDriverStatusEvent(!isOnline);
+
+  const toggleSwitch = val =>
+    updateDriverStatus({id: profile.id, is_available: "Available",driver_id:""});
+
+  useEffect(() => {
+    if (driverStatusError) {
+      console.log('driverStatusError', driverStatusError);
+    } else if (driverStatus) {
+      console.log('driverStatus', driverStatus);
+    }
+  }, [driverStatus, driverStatusError]);
   return (
     <View style={FindRideStyles.container}>
-      <View style={[FindRideStyles.switchBtn, { backgroundColor: isOnline ? COLORS.green : COLORS.primary }]}>
+      <View
+        style={[
+          FindRideStyles.switchBtn,
+          {backgroundColor: isOnline ? COLORS.green : COLORS.primary},
+        ]}>
         <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
         </Text>
         <Switch
-          trackColor={{ false: COLORS.white, true: COLORS.white }}
+          trackColor={{false: COLORS.white, true: COLORS.white}}
           thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
@@ -99,11 +132,11 @@ export const PickARide = () => {
 
       {isOnline && (
         <View style={FindRideStyles.section}>
-          {rideRequests.length ?
+          {rideRequests.length ? (
             <ScrollView>
               <DriverCard list={rideRequests} />
             </ScrollView>
-            : null}
+          ) : null}
         </View>
       )}
     </View>

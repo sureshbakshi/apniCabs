@@ -2,10 +2,18 @@ import { Dimensions } from 'react-native';
 import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
+import { useSelector } from 'react-redux';
+import { USER_ROLES } from '../constants';
 
-export const isUserOrDriver = () => {
-  return true;
+
+const getRoles = () => {
+  const { profileInfo } = useSelector((state) => state.auth);
+return profileInfo?.roles || []
 }
+
+export const isDriver = () => Boolean(getRoles()?.includes(USER_ROLES.DRIVER));
+export const isOwner = () =>  Boolean(getRoles()?.includes(USER_ROLES.OWNER));
+export const isUser = () => Boolean(getRoles()?.includes(USER_ROLES.USER));
 
 export const getScreen = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");

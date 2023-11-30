@@ -4,15 +4,15 @@ import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
 import {updateLoginToken} from '../slices/authSlice';
 const initialState = {
-  isLoggedIn: '',
+  isLoggedIn: false,
 };
 
 export const AuthProvider = props => {
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(initialState.isLoggedIn);
 
-  const signIn = async (username, token) => {
-    await Keychain.setGenericPassword(username, token);
+  const signIn = async (id, token) => {
+    await Keychain.setGenericPassword(id, token);
     getToken();
   };
   const getToken = async () => {

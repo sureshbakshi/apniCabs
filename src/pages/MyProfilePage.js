@@ -9,6 +9,7 @@ import {useSelector} from 'react-redux';
 
 const MyProfilePage = () => {
   const profile = useSelector(state => state.auth?.profileInfo);
+  const googleInfo = useSelector(state => state.auth?.googleInfo);
   if (!profile) return null;
 
   return (
@@ -19,7 +20,9 @@ const MyProfilePage = () => {
             <View style={MyProfileStyles.cardtop}>
               <View style={MyProfileStyles.left}>
                 <ImageView
-                  source={images[`captain4`]}
+                  source={
+                    profile.avatar || googleInfo?.picture || images[`captain4`]
+                  }
                   style={[styles.avatar]}
                 />
               </View>
@@ -39,7 +42,7 @@ const MyProfilePage = () => {
             </View>
             <View style={MyProfileStyles.list}>
               <Text style={MyProfileStyles.review}>Phone Number</Text>
-              <Text style={MyProfileStyles.name}>{profile.phone_number}</Text>
+              <Text style={MyProfileStyles.name}>{profile.phone}</Text>
             </View>
             <View style={MyProfileStyles.list}>
               <Text style={MyProfileStyles.review}>Profession</Text>

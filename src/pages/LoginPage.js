@@ -16,12 +16,14 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { Text } from '../components/common';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import { useDispatch } from 'react-redux';
 import {
   updateGoogleUserInfo,
   updateLoginToken,
+  updateProfileInfo,
   updateUserCheck,
+  updateUserInfo,
 } from '../slices/authSlice';
 import { useLoginMutation, useUserCheckMutation } from '../slices/apiSlice';
 import { showErrorMessage } from '../util';
@@ -29,10 +31,11 @@ import { isEmpty } from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
 import { useAuthContext } from '../context/Auth.context';
 import Config from 'react-native-config';
+import { navigate } from '../util/navigationService';
 
 const initialState = {
-  phone: '9885098850',
-  password: '9885098850',
+  email: 'driver2@gmail.com',
+  password: '1234445',
 };
 
 GoogleSignin.configure({
@@ -57,7 +60,7 @@ const LoginPage = () => {
   };
   const handleLogin = data => {
     const token = data.token;
-    const username = 'title';
+    const username = data.id;
     signIn(username, token);
   };
 
@@ -67,6 +70,8 @@ const LoginPage = () => {
     } else if (!isEmpty(logindata)) {
       handleLogin(logindata);
       dispatch(updateLoginToken(logindata));
+      dispatch(updateUserInfo(logindata));
+      dispatch(updateProfileInfo(logindata))
     }
   }, [loginError, logindata]);
 
@@ -74,8 +79,10 @@ const LoginPage = () => {
     if (userCheckData?.user) {
       handleLogin(userCheckData);
       dispatch(updateUserCheck(userCheckData));
+    }else if(userCheckError){
+      navigate(ROUTES_NAMES.signUp)
     }
-  }, [userCheckData]);
+  }, [userCheckData,userCheckError]);
 
   const GoogleSignIn = async () => {
     try {
@@ -118,9 +125,9 @@ const LoginPage = () => {
           <View style={LoginStyles.section}>
             <View>
               <TextInput
-                placeholder="Phone Number"
-                onChangeText={newText => setState({ phone: newText })}
-                value={state.phone}
+                placeholder="Email"
+                onChangeText={newText => setState({ email: newText })}
+                value={state.email}
                 style={LoginStyles.textInputPickup}
               />
               <TextInput

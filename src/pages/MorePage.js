@@ -15,7 +15,6 @@ const MorePage = () => {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.auth?.profileInfo);
 
-  console.log('profile', profile);
   const logOut = async () => {
     try {
       const sucess = signOut();

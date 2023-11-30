@@ -4,13 +4,14 @@ import {ROUTES_NAMES} from '../constants';
 import {clearAuthData} from './authSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://www.apnicabi.com/api/',
+  // baseUrl: 'https://www.apnicabi.com/',
+  baseUrl: "http://localhost:3000/",
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
     headers.set('Content-Type', `application/json`);
-    if (getState().auth.token) {
-      headers.set('Authorization', `Bearer ${getState().auth.token}`);
+    if (getState().auth.access_token) {
+      headers.set('Authorization', `${getState().auth.access_token}`);
     }
     return headers;
   },
@@ -19,7 +20,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
     api.dispatch(clearAuthData());
-
+    navigate(ROUTES_NAMES.signIn)
     // try to get a new token
     // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
     // if (refreshResult.data) {
@@ -34,6 +35,19 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   return result;
 };
 
+const api_path = {
+  public: (path) => `openApi/${path}`,
+  users: (path) => `users/${path}`,
+  drivers: (path) => `drivers/${path}`,
+  vehicle: (path) => `vehicle/${path}`,
+};
+const api_urls = {
+  login: "login",
+  signUp: "user",
+  userCheck: "checkUser",
+  driverAvailabilty: "driver-availabilty",
+};
+
 export const apiSlice = createApi({
   reducerPath: 'apiReducer',
   baseQuery: baseQueryWithReauth,
@@ -41,7 +55,7 @@ export const apiSlice = createApi({
     login: builder.mutation({
       query: body => ({
         method: 'POST',
-        url: `login`,
+        url: api_path.public(api_urls.login),
         body,
       }),
       transformResponse: response => {
@@ -53,7 +67,7 @@ export const apiSlice = createApi({
     singUp: builder.mutation({
       query: body => ({
         method: 'POST',
-        url: `register`,
+        url: api_path.public(api_urls.signUp),
         body,
       }),
       transformResponse: response => response,
@@ -63,7 +77,7 @@ export const apiSlice = createApi({
     userCheck: builder.mutation({
       query: email => ({
         method: 'POST',
-        url: `user_check`,
+        url: api_path.public(api_urls.userCheck),
         body: {email},
       }),
       transformResponse: response => {
@@ -75,15 +89,6 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       providesTags: ['Token'],
     }),
-    profile: builder.mutation({
-      query: () => ({
-        method: 'POST',
-        url: `profile`,
-      }),
-      transformResponse: response => response,
-      transformErrorResponse: response => response,
-      invalidatesTags: ['Token'],
-    }),
     getDriver: builder.mutation({
       query: body => ({
         method: 'POST',
@@ -94,11 +99,11 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       invalidatesTags: ['Token'],
     }),
-    updateDriverStatus: builder.query({
-      query: status => ({
+    updateDriverStatus: builder.mutation({
+      query: body => ({
         method: 'POST',
-        url: `driverStatus`,
-        body: {active: status},
+        url: api_path.drivers(api_urls.driverAvailabilty),
+        body,
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -125,7 +130,7 @@ export const {
   useLoginMutation,
   useSingUpMutation,
   useUserCheckMutation,
-  useProfileMutation,
   useGetDriverMutation,
   useSendRequestMutation,
+  useUpdateDriverStatusMutation
 } = apiSlice;

@@ -6,7 +6,7 @@ const initialState = {
   },
   googleInfo: null,
   userInfo: null,
-  token: null
+  access_token: null,
 };
 
 const authSlice = createSlice({
@@ -17,28 +17,38 @@ const authSlice = createSlice({
       state.googleInfo = action.payload;
     },
     updateUserCheck(state, action) {
-      if(action.payload?.token) {
-        state.token = action.payload.token 
+      if (action.payload?.token) {
+        state.access_token = action.payload.token;
       }
       state.user_check = action.payload;
     },
     updateLoginToken(state, action) {
-      if(action.payload?.token) {
-        state.token = action.payload.token 
+      if (action.payload?.token) {
+        state.access_token = action.payload.token;
       }
     },
     updateUserInfo(state, action) {
-      if(action.payload?.data) {
-        state.userInfo = action.payload.data
+      if (action.payload?.data) {
+        state.userInfo = action.payload.data;
       }
     },
     updateProfileInfo(state, action) {
-        state.profileInfo = action.payload.data
+      state.profileInfo = action.payload;
+      if (action.payload.token) {
+        state.access_token = action.payload.token;
+      }
     },
     clearAuthData(state, action) {
-      state.token = null
-    }
+      state.access_token = null;
+    },
   },
 });
-export const {updateGoogleUserInfo, updateUserCheck, updateUserInfo, updateLoginToken, clearAuthData,updateProfileInfo} = authSlice.actions;
+export const {
+  updateGoogleUserInfo,
+  updateUserCheck,
+  updateUserInfo,
+  updateLoginToken,
+  clearAuthData,
+  updateProfileInfo,
+} = authSlice.actions;
 export default authSlice.reducer;

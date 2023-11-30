@@ -1,5 +1,12 @@
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 
+
+export const USER_ROLES = {
+  USER: "USER",
+  DRIVER: "DRIVER",
+  OWNER: "OWNER",
+};
+
 export const COLORS = {
   primary: "#f85c70",
   primary_soft: "#ff8f9d",
