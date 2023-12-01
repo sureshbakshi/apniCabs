@@ -32,25 +32,28 @@ const FindCaptainPage = () => {
       let payload = {
         from: {
           location: from.formatted_address,
-          city: fromCity[0].long_name,
-          lat: from.geometry.location.lat,
-          lng: from.geometry.location.lng,
+          City: fromCity[0].long_name,
+          Lat: from.geometry.location.lat+'',
+          Long: from.geometry.location.lng+'',
         },
         to: {
           location: to.formatted_address,
-          city: toCity[0].long_name,
-          lat: to.geometry.location.lat,
-          lng: to.geometry.location.lng,
+          City: toCity[0].long_name,
+          Lat: to.geometry.location.lat+'',
+          Long: to.geometry.location.lng+'',
         },
-        distance: (distance.value / 1000).toFixed(1),
-        duration: duration.text,
+        Distance: Number((distance.value / 1000).toFixed(1)),
+        Duration: duration.text,
       };
       GetDriver(payload);
     })();
   }, [from, to]);
 
   useEffect(() => {
-    if (driversList) {
+    if(error){
+      console.log({error})
+    }
+    else if (driversList) {
       dispatch(setDrivers(driversList.data));
     }
   }, [driversList]);

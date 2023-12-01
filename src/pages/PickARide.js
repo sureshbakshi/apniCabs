@@ -102,7 +102,7 @@ export const PickARide = () => {
   // const toggleSwitch = () => emitDriverStatusEvent(!isOnline);
 
   const toggleSwitch = val =>
-    updateDriverStatus({id: profile.id, is_available: "Available",driver_id:""});
+    updateDriverStatus({is_available: val ? 1: 0});
 
   useEffect(() => {
     if (driverStatusError) {

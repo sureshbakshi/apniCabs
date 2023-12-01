@@ -5,7 +5,7 @@ import {clearAuthData} from './authSlice';
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: 'https://www.apnicabi.com/',
-  baseUrl: "http://localhost:3000/",
+  baseUrl: "http://192.168.0.105:3000/",
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -92,7 +92,7 @@ export const apiSlice = createApi({
     getDriver: builder.mutation({
       query: body => ({
         method: 'POST',
-        url: `drivers`,
+        url: `request/create`,
         body,
       }),
       transformResponse: response => response,

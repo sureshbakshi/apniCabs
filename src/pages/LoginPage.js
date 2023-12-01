@@ -34,8 +34,8 @@ import Config from 'react-native-config';
 import { navigate } from '../util/navigationService';
 
 const initialState = {
-  email: 'driver2@gmail.com',
-  password: '1234445',
+  email: 'kommemaheshwari@gmail.com',
+  password: 'abc@123',
 };
 
 GoogleSignin.configure({

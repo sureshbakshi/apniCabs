@@ -50,7 +50,7 @@ const SignUpPage = () => {
   };
   useEffect(() => {
     if (singUpError) {
-      setError(singUpError?.data?.error.fields);
+      setError(singUpError?.data?.error);
     } else if (signUpdata) {
       dispatch(updateUserCheck(signUpdata));
       dispatch(updateProfileInfo(signUpdata));
