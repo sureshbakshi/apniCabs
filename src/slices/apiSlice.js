@@ -5,7 +5,8 @@ import {clearAuthData} from './authSlice';
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: 'https://www.apnicabi.com/',
-  baseUrl: 'http://192.168.0.101:3000/',
+  baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
+  // baseUrl: 'http://192.168.0.105:3000/', //suresh IP
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -19,6 +20,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
+    console.log(result.error)
     api.dispatch(clearAuthData());
     navigate(ROUTES_NAMES.signIn);
     // try to get a new token

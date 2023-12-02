@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import driverSocket, { connectSocket, disconnectSocket, emitCancelRequest, emitDeclineRequest, emitDriverStatus, getRideRequests, onActiveRide, onDriverStatus } from "../sockets/driverSockets"
 import { useDispatch, useSelector } from "react-redux"
 import { cancelRequest, declineRequest, setActiveRide, setDriverStatus, setRideRequest } from "../slices/driverSlice"
+import { isAvailable } from "../util"
 
 
 export const useSetDriverStatus = () => {
@@ -53,14 +54,14 @@ export const useDriverEvents = () => {
 
 export default (() => {
     const {updateDriverStatus, updateActiveRide, updateRideRequests} = useDriverEvents()
-    const {isOnline} = useSelector((state) => state.driver)
+    const {driverInfo} = useSelector((state) => state.auth)
     useEffect(() => {
         onDriverStatus(updateDriverStatus)
         connectSocket()
-        if(isOnline) {
+        if(isAvailable(driverInfo)) {
             getRideRequests(updateRideRequests)
             onActiveRide(updateActiveRide)
         }
         return () => disconnectSocket()
-    }, [isOnline])
+    }, [driverInfo])
 })

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { USER_ROLES } from '../constants';
+import { DriverAvailableStatus, USER_ROLES } from '../constants';
 
 
 const getRoles = () => {
@@ -66,6 +66,8 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
 export const Capitalize = (str) =>{
   return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+export const isAvailable = (driverInfo) => driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE
 export const fakeLogin = ()=> {
     axios
     .post(

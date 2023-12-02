@@ -11,7 +11,7 @@ const initialState = {
   googleInfo: null,
   userInfo: null,
   access_token: null,
-  driverDetails: null,
+  driverInfo: null,
 };
 
 // const getProfileDetails = id => {
@@ -61,7 +61,7 @@ const authSlice = createSlice({
       state.access_token = null;
     },
     setDriverDetails(state, action) {
-      state.driverDetails = action.payload;
+      state.driverInfo = action.payload;
     },
   },
 });

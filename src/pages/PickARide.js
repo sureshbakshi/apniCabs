@@ -6,7 +6,7 @@ import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import _ from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import {COLORS, ROUTES_NAMES} from '../constants';
+import {COLORS, DriverAvailableStatus, ROUTES_NAMES} from '../constants';
 import {navigate} from '../util/navigationService';
 import {emitAcceptRequest} from '../sockets/driverSockets';
 import {useSelector} from 'react-redux';
@@ -15,6 +15,8 @@ import {
   useEmitDriverStatus,
 } from '../hooks/useDriverSocketEvents';
 import {useUpdateDriverStatusMutation} from '../slices/apiSlice';
+import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
+import { isAvailable } from '../util';
 
 const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
   return (
@@ -97,9 +99,13 @@ export const PickARide = () => {
     updateDriverStatus,
     {data: driverStatus, error: driverStatusError, isLoginLoading},
   ] = useUpdateDriverStatusMutation();
-  const {isOnline, rideRequests} = useSelector(state => state.driver);
+  useDisptachDriverDetails(driverStatus)
+  
+  
+  const {driverInfo, userInfo} = useSelector(state => state.auth);
+  useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
+
   const {emitDriverStatusEvent} = useDriverEvents(!isOnline);
-  // const toggleSwitch = () => emitDriverStatusEvent(!isOnline);
 
   const toggleSwitch = val =>
     updateDriverStatus({is_available: val ? 1: 0});
@@ -108,9 +114,11 @@ export const PickARide = () => {
     if (driverStatusError) {
       console.log('driverStatusError', driverStatusError);
     } else if (driverStatus) {
-      // console.log('driverStatus', driverStatus);
+      console.log('driverStatus', driverStatus);
     }
   }, [driverStatus, driverStatusError]);
+  const isOnline = isAvailable(driverInfo)
+  const rideRequests = []
   return (
     <View style={FindRideStyles.container}>
       <View
@@ -132,7 +140,7 @@ export const PickARide = () => {
 
       {isOnline && (
         <View style={FindRideStyles.section}>
-          {rideRequests.length ? (
+          {rideRequests?.length ? (
             <ScrollView>
               <DriverCard list={rideRequests} />
             </ScrollView>

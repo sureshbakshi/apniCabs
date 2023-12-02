@@ -75,6 +75,35 @@ export const ROUTES_NAMES = {
   searchRide: 'SearchRide'
 }
 
+export const RideStatus = {
+  REQUESTED :  'REQUESTED',
+  ACCEPTED : 'ACCEPTED',
+  DECLINED : 'DECLINED',
+  CLOSED : 'CLOSED',
+  ONRIDE : 'ONRIDE',
+  CANCELLED : 'CANCELLED',
+  AUTO_CANCELLED : 'AUTO_CANCELLED',
+  COMPLETED : 'COMPLETED',
+}
+
+export const VerificationStatus = {
+  REJECTED: 'REJECTED',
+  VERIFIED : 'VERIFIED',
+  ONHOLD : 'ONHOLD',
+  REVEIEW : 'REVIEWING',
+}
+
+export const DriverAvailableStatus = {
+  OFFLINE : 'OFFLINE',
+  ONLINE : 'ONLINE',
+  ONRIDE : 'ONRIDE'
+}
+
+export const RequestStatus = {
+  REQUESTED : 'REQUESTED',
+
+}
+
 export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.chat]: ['chat', 'chat'],
   [ROUTES_NAMES.pickRide]: ['map-search', 'map-search-outline'],
