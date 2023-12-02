@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -9,33 +9,34 @@ import {
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
-import { useSetState } from 'react-use';
+import {useSetState} from 'react-use';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { Text } from '../components/common';
-import { COLORS, ROUTES_NAMES } from '../constants';
-import { useDispatch } from 'react-redux';
+import {Text} from '../components/common';
+import {COLORS, ROUTES_NAMES} from '../constants';
+import {useDispatch} from 'react-redux';
 import {
   updateGoogleUserInfo,
   updateLoginToken,
-  updateProfileInfo,
   updateUserCheck,
   updateUserInfo,
 } from '../slices/authSlice';
-import { useLoginMutation, useUserCheckMutation } from '../slices/apiSlice';
-import { showErrorMessage } from '../util';
-import { isEmpty } from 'lodash';
+import {useLoginMutation, useUserCheckMutation} from '../slices/apiSlice';
+import {showErrorMessage} from '../util';
+import {isEmpty} from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
-import { useAuthContext } from '../context/Auth.context';
+import {useAuthContext} from '../context/Auth.context';
 import Config from 'react-native-config';
-import { navigate } from '../util/navigationService';
+import {navigate} from '../util/navigationService';
 
 const initialState = {
-  email: 'kommemaheshwari@gmail.com',
-  password: 'abc@123',
+  // email: 'kommemaheshwari@gmail.com',
+  // password: 'abc@123',
+  email: 'driver2@gmail.com',
+  password: '1234445',
 };
 
 GoogleSignin.configure({
@@ -45,12 +46,12 @@ GoogleSignin.configure({
 });
 
 const LoginPage = () => {
-  const { signIn } = useAuthContext();
-  const [login, { data: logindata, error: loginError, isLoginLoading }] =
+  const {signIn} = useAuthContext();
+  const [login, {data: logindata, error: loginError, isLoginLoading}] =
     useLoginMutation();
   const [
     userCheck,
-    { data: userCheckData, error: userCheckError, isUserCheckLoading },
+    {data: userCheckData, error: userCheckError, isUserCheckLoading},
   ] = useUserCheckMutation();
 
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const LoginPage = () => {
       handleLogin(logindata);
       dispatch(updateLoginToken(logindata));
       dispatch(updateUserInfo(logindata));
-      dispatch(updateProfileInfo(logindata))
+      
     }
   }, [loginError, logindata]);
 
@@ -79,16 +80,16 @@ const LoginPage = () => {
     if (userCheckData?.user) {
       handleLogin(userCheckData);
       dispatch(updateUserCheck(userCheckData));
-    }else if(userCheckError){
-      navigate(ROUTES_NAMES.signUp)
+    } else if (userCheckError) {
+      navigate(ROUTES_NAMES.signUp);
     }
-  }, [userCheckData,userCheckError]);
+  }, [userCheckData, userCheckError]);
 
   const GoogleSignIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const googleUserInfo = await GoogleSignin.signIn();
-      const { email } = googleUserInfo.user;
+      const {email} = googleUserInfo.user;
       dispatch(updateGoogleUserInfo(googleUserInfo));
       userCheck(email);
     } catch (error) {
@@ -126,13 +127,13 @@ const LoginPage = () => {
             <View>
               <TextInput
                 placeholder="Email"
-                onChangeText={newText => setState({ email: newText })}
+                onChangeText={newText => setState({email: newText})}
                 value={state.email}
                 style={LoginStyles.textInputPickup}
               />
               <TextInput
                 placeholder="Password"
-                onChangeText={newText => setState({ password: newText })}
+                onChangeText={newText => setState({password: newText})}
                 value={state.password}
                 style={LoginStyles.textInputDrop}
                 secureTextEntry={true}
@@ -141,7 +142,7 @@ const LoginPage = () => {
               <View>
                 <Pressable
                   style={LoginStyles.button}
-                  android_ripple={{ color: '#fff' }}
+                  android_ripple={{color: '#fff'}}
                   onPress={() => onSubmit()}>
                   <Text style={LoginStyles.text}>{'Login'.toUpperCase()}</Text>
                 </Pressable>
@@ -158,13 +159,13 @@ const LoginPage = () => {
                 {'or'}
               </Text>
               <GoogleSigninButton
-                style={{ width: '100%', height: 48 }}
+                style={{width: '100%', height: 48}}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={GoogleSignIn}
               />
             </View>
-            <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
+            <View style={[CommonStyles.mtb10, {marginTop: 50}]}>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
                 {"Don't have an account?"}
               </Text>
@@ -173,9 +174,9 @@ const LoginPage = () => {
                 style={[
                   LoginStyles.googleBtn,
                   CommonStyles.mb10,
-                  { backgroundColor: COLORS.brand_blue },
+                  {backgroundColor: COLORS.brand_blue},
                 ]}
-                android_ripple={{ color: '#ccc' }}>
+                android_ripple={{color: '#ccc'}}>
                 <Text style={LoginStyles.googleTxt}>
                   {'Register as a Driver'}
                 </Text>
@@ -184,8 +185,8 @@ const LoginPage = () => {
               <Pressable
                 onPress={GoogleSignIn}
                 style={[LoginStyles.googleBtn, CommonStyles.mb10]}
-                android_ripple={{ color: '#ccc' }}>
-                <Text style={[LoginStyles.googleTxt, { color: COLORS.black }]}>
+                android_ripple={{color: '#ccc'}}>
+                <Text style={[LoginStyles.googleTxt, {color: COLORS.black}]}>
                   {'Register as a User'}
                 </Text>
               </Pressable>

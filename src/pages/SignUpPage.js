@@ -13,7 +13,7 @@ import {navigate} from '../util/navigationService';
 import {Text} from '../components/common';
 import {useSelector, useDispatch} from 'react-redux';
 import {useSingUpMutation} from '../slices/apiSlice';
-import {updateProfileInfo, updateUserCheck} from '../slices/authSlice';
+import {updateUserInfo, updateUserCheck} from '../slices/authSlice';
 import {useSetState} from 'react-use';
 import { ROUTES_NAMES, USER_ROLES } from '../constants';
 const initialState = {
@@ -53,7 +53,7 @@ const SignUpPage = () => {
       setError(singUpError?.data?.error);
     } else if (signUpdata) {
       dispatch(updateUserCheck(signUpdata));
-      dispatch(updateProfileInfo(signUpdata));
+      dispatch(updateUserInfo(signUpdata));
       navigate(ROUTES_NAMES.signIn)
     }
   }, [signUpdata, singUpError]);

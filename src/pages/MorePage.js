@@ -13,7 +13,7 @@ import {useAuthContext} from '../context/Auth.context';
 const MorePage = () => {
   const {signOut} = useAuthContext();
   const dispatch = useDispatch();
-  const profile = useSelector(state => state.auth?.profileInfo);
+  const profile = useSelector(state => state.auth?.userInfo);
 
   const logOut = async () => {
     try {

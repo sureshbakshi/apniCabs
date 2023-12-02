@@ -7,8 +7,8 @@ import { USER_ROLES } from '../constants';
 
 
 const getRoles = () => {
-  const { profileInfo } = useSelector((state) => state.auth);
-return profileInfo?.roles || []
+  const { userInfo } = useSelector((state) => state.auth);
+return userInfo?.roles || []
 }
 
 export const isDriver = () => Boolean(getRoles()?.includes(USER_ROLES.DRIVER));

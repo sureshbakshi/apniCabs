@@ -7,21 +7,11 @@ import {navigationRef} from '../util/navigationService';
 import {ActivityIndicator} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {updateProfileInfo} from '../slices/authSlice';
 import {useAuthContext} from '../context/Auth.context';
 import {isDriver, isUser} from '../util';
 import {isEmpty} from 'lodash';
 function App() {
   const {access_token} = useSelector(state => state.auth);
-
-  // const {isLoggedIn, getToken} = useAuthContext();
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     getToken();
-  //   }
-  // }, [isLoggedIn]);
-
   useEffect(() => {
     SplashScreen.hide();
   });

@@ -9,27 +9,31 @@ import {navigate} from '../../../util/navigationService';
 import _ from 'lodash';
 import {ROUTES_NAMES} from '../../../constants';
 import {useSendRequestMutation} from '../../../slices/apiSlice';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {updateDriversRequest} from '../../../slices/userSlice';
 
 const Card = item => {
+  const {request_id} = useSelector(state => state.user?.rideRequests);
+
   const dispatch = useDispatch();
-  const [SendRequest, {data: requestData, error, isLoading}] =
+  const [sendRequest, {data: requestData, error: requestError, isLoading}] =
     useSendRequestMutation();
   const handleNavigate = item => {
     // navigate(ROUTES_NAMES.activeRide)
     // dispatch sendrequest with request_id and vehicle_id
-    let payload = {request_id: '1234', vehicle_id: item.vehicle_id};
+    let payload = {request_id, driver_id: item.driver_id};
     console.log(payload);
-    SendRequest(payload);
+    sendRequest(payload);
   };
   useEffect(() => {
-    if (requestData) {
-      dispatch(updateDriversRequest(requestData.data));
+    if (requestError) {
+      console.log('requestError', requestError);
+    } else if (requestData) {
+      dispatch(updateDriversRequest(requestData));
     }
-  }, [requestData]);
+  }, [requestData, requestError]);
 
-  if (isLoading || error) {
+  if (isLoading) {
     return null;
   }
   return (
@@ -52,7 +56,7 @@ const Card = item => {
         <View style={FindRideStyles.right}>
           <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
             {'\u20B9'}
-            {item.price}
+            {item.calculated_fare}
           </Text>
           <Text style={FindRideStyles.address}>{item.distance.text}</Text>
           {/* <Text style={FindRideStyles.address}>{item.seats} Seats left</Text> */}

@@ -30,9 +30,6 @@ const driverSlice = createSlice({
     },
     setDriverStatus: (state, action) => {
       state.isOnline = action.payload;
-      if (!action.payload) {
-        return  Object.assign(state, {...initialState, isOnline: state.isOnline})
-      }
     },
     setRideRequest: (state, action) => {
       state.rideRequests = [...state.rideRequests, action.payload];

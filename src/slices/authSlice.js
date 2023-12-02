@@ -1,4 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {USER_ROLES} from '../constants';
+import {useGetDriverDetailsQuery} from './apiSlice';
+import {useDispatch} from 'react-redux';
+import {useEffect} from 'react';
 
 const initialState = {
   user_check: {
@@ -7,7 +11,23 @@ const initialState = {
   googleInfo: null,
   userInfo: null,
   access_token: null,
+  driverDetails: null,
 };
+
+// const getProfileDetails = id => {
+//   // const dispatch = useDispatch();
+//   const {data, error, isLoading} = useGetDriverDetailsQuery(id);
+//   console.log(data, error);
+//   dispatch(setDriverDetails(data));
+
+//   // useEffect(() => {
+//   //   if (data) {
+//   //     console.log(data);
+//   //   } else if (error) {
+//   //     console.log(error);
+//   //   }
+//   // }, [data, error]);
+// };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -28,18 +48,20 @@ const authSlice = createSlice({
       }
     },
     updateUserInfo(state, action) {
-      if (action.payload?.data) {
-        state.userInfo = action.payload.data;
-      }
-    },
-    updateProfileInfo(state, action) {
-      state.profileInfo = action.payload;
-      if (action.payload.token) {
-        state.access_token = action.payload.token;
+      const {roles, token, id} = action.payload;
+      if (token) {
+        state.userInfo = action.payload;
+        state.access_token = token;
+        if (roles.includes(USER_ROLES.DRIVER)) {
+          // getProfileDetails(id);
+        }
       }
     },
     clearAuthData(state, action) {
       state.access_token = null;
+    },
+    setDriverDetails(state, action) {
+      state.driverDetails = action.payload;
     },
   },
 });
@@ -49,6 +71,6 @@ export const {
   updateUserInfo,
   updateLoginToken,
   clearAuthData,
-  updateProfileInfo,
+  setDriverDetails,
 } = authSlice.actions;
 export default authSlice.reducer;

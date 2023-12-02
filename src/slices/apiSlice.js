@@ -5,7 +5,7 @@ import {clearAuthData} from './authSlice';
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: 'https://www.apnicabi.com/',
-  baseUrl: "http://192.168.0.105:3000/",
+  baseUrl: 'http://192.168.0.101:3000/',
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -20,7 +20,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
     api.dispatch(clearAuthData());
-    navigate(ROUTES_NAMES.signIn)
+    navigate(ROUTES_NAMES.signIn);
     // try to get a new token
     // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
     // if (refreshResult.data) {
@@ -36,16 +36,16 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 };
 
 const api_path = {
-  public: (path) => `openApi/${path}`,
-  users: (path) => `users/${path}`,
-  drivers: (path) => `drivers/${path}`,
-  vehicle: (path) => `vehicle/${path}`,
+  public: path => `openApi/${path}`,
+  users: path => `users/${path}`,
+  drivers: path => `drivers/${path}`,
+  vehicle: path => `vehicle/${path}`,
 };
 const api_urls = {
-  login: "login",
-  signUp: "user",
-  userCheck: "checkUser",
-  driverAvailabilty: "driver-availabilty",
+  login: 'login',
+  signUp: 'user',
+  userCheck: 'checkUser',
+  driverAvailabilty: 'driver-availabilty',
 };
 
 export const apiSlice = createApi({
@@ -62,7 +62,6 @@ export const apiSlice = createApi({
         return response;
       },
       transformErrorResponse: response => response,
-      providesTags: ['Token'],
     }),
     singUp: builder.mutation({
       query: body => ({
@@ -72,7 +71,6 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ['Token'],
     }),
     userCheck: builder.mutation({
       query: email => ({
@@ -87,9 +85,8 @@ export const apiSlice = createApi({
         return response;
       },
       transformErrorResponse: response => response,
-      providesTags: ['Token'],
     }),
-    getDriver: builder.mutation({
+    getRideRequest: builder.mutation({
       query: body => ({
         method: 'POST',
         url: `request/create`,
@@ -97,7 +94,6 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['Token'],
     }),
     updateDriverStatus: builder.mutation({
       query: body => ({
@@ -107,22 +103,26 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['Token'],
     }),
     sendRequest: builder.mutation({
-      query: ({request_id, vehicle_id}) => ({
-        method: 'POST',
-        url: `http://192.168.0.103:3000/sendRequest`,
-        body: {
-          request_id,
-          vehicle_id,
-        },
+      query: body => ({
+        method: 'PUT',
+        url: `/request/send`,
+        body,
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ['Token'],
+    }),
+    getDriverDetails: builder.query({
+      query: id => ({
+        method: 'GET',
+        url: api_path.drivers(id),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
     }),
   }),
+
   tagTypes: ['Token'],
 });
 
@@ -130,7 +130,8 @@ export const {
   useLoginMutation,
   useSingUpMutation,
   useUserCheckMutation,
-  useGetDriverMutation,
   useSendRequestMutation,
-  useUpdateDriverStatusMutation
+  useUpdateDriverStatusMutation,
+  useGetRideRequestMutation,
+  useGetDriverDetailsQuery
 } = apiSlice;

@@ -91,7 +91,7 @@ const DriverCard = ({list}) => {
 };
 
 export const PickARide = () => {
-  const profile = useSelector(state => state.auth?.profileInfo);
+  const profile = useSelector(state => state.auth?.userInfo);
 
   const [
     updateDriverStatus,
@@ -108,7 +108,7 @@ export const PickARide = () => {
     if (driverStatusError) {
       console.log('driverStatusError', driverStatusError);
     } else if (driverStatus) {
-      console.log('driverStatus', driverStatus);
+      // console.log('driverStatus', driverStatus);
     }
   }, [driverStatus, driverStatusError]);
   return (

@@ -8,7 +8,7 @@ import images from '../util/images';
 import {useSelector} from 'react-redux';
 
 const MyProfilePage = () => {
-  const profile = useSelector(state => state.auth?.profileInfo);
+  const profile = useSelector(state => state.auth?.userInfo);
   const googleInfo = useSelector(state => state.auth?.googleInfo);
   if (!profile) return null;
 

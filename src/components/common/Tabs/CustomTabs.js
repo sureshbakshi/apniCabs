@@ -9,7 +9,7 @@ import CaptainsCard from './CaptainsCard';
 import {useSelector} from 'react-redux';
 
 const CustomTabs = ({extraProps, data}) => {
-  const list = useSelector(state => state.user.drivers);
+  const list = useSelector(state => state.user?.rideRequests?.vehicles);
   return (
     <View style={FindRideStyles.container}>
       <TabsProvider defaultIndex={0}>
@@ -20,19 +20,18 @@ const CustomTabs = ({extraProps, data}) => {
           theme={{
             colors: {onSurface: COLORS.primary, onSurfaceVariant: COLORS.black},
           }}>
-          {list &&
-            Object.keys(list).map((key, i) => {
+          {list && list.map((item, i) => {
               return (
                 <TabScreen
-                  label={Capitalize(key)}
-                  icon={VEHICLE_TYPES[key]}
+                  label={Capitalize(item.name)}
+                  icon={VEHICLE_TYPES[item.name]}
                   key={`${i}`}>
                   <View style={FindRideStyles.section}>
                     <ScrollView>
                       {
                         <CaptainsCard
-                          list={list[key]}
-                          keyProp={key}
+                          list={item.drivers}
+                          keyProp={i}
                           extraProps={extraProps}
                         />
                       }

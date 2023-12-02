@@ -8,7 +8,7 @@ const userSlice = createSlice({
     activeRideInfo: null,
     activeRideId: null,
     drivers: [],
-    request_id: null,
+    rideRequests: null,
   },
   reducers: {
     sendRequest: (state, action) => {
@@ -21,15 +21,9 @@ const userSlice = createSlice({
       // Handle accepting a request and update activeRide
       state.activeRide = action.payload;
     },
-    setDrivers: (state, action) => {
+    setRideRequest: (state, action) => {
       // Handle accepting a request and update activeRide
-      state.request_id = action.payload?.request_id;
-      const data = _.groupBy(action.payload, 'type');
-      const sortedData = {};
-      Object.keys(data).map(key => {
-        sortedData[key] = _.sortBy(data[key], 'price');
-      });
-      state.drivers = sortedData;
+      state.rideRequests = action.payload;
     },
     setActiveRide: (state, action) => {
       // Handle accepting a request and update activeRide
@@ -42,16 +36,18 @@ const userSlice = createSlice({
       state.activeRideInfo = null;
     },
     updateDriversRequest: (state, action) => {
-      const {vehicle_id, status} = action.payload;
-      const existingDrivers = JSON.parse(JSON.stringify(state.drivers));
-      Object.keys(existingDrivers).map(key => {
-        const index = _.find(existingDrivers[key], item => {
-          return item.vehicle_id === vehicle_id;
+      const {driver_id, status} = action.payload;
+      const existingVehicleList = JSON.parse(
+        JSON.stringify(state.rideRequests.vehicles),
+      );
+      existingVehicleList.map(item => {
+        _.map(item.drivers, item => {
+          if (item.driver_id === driver_id) {
+            item.status = status;
+          }
         });
-        const upadtedItem = {...index,status:status}
-        existingDrivers[key].splice(index, 1, upadtedItem);
       });
-      state.drivers = existingDrivers;
+      state.rideRequests.vehicles = existingVehicleList;
     },
     // Add other actions and reducers
   },
@@ -61,7 +57,7 @@ export const {
   sendRequest,
   cancelRequest,
   acceptRequest,
-  setDrivers,
+  setRideRequest,
   updateDriversRequest,
   setActiveRide,
   cancelActiveRide,

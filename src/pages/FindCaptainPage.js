@@ -5,8 +5,8 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 
 import _ from 'lodash';
 import {useAppContext} from '../context/App.context';
-import {useGetDriverMutation} from '../slices/apiSlice';
-import {setDrivers} from '../slices/userSlice';
+import {useGetRideRequestMutation} from '../slices/apiSlice';
+import {setRideRequest} from '../slices/userSlice';
 import {useDispatch} from 'react-redux';
 
 const FindCaptainPage = () => {
@@ -16,8 +16,8 @@ const FindCaptainPage = () => {
     location: {from, to},
     getDistance,
   } = useAppContext();
-  const [GetDriver, {data: driversList, error, isLoading}] =
-    useGetDriverMutation();
+  const [getRideRequest, {data: rideList, error, isLoading}] =
+    useGetRideRequestMutation();
 
   useEffect(() => {
     (async () => {
@@ -33,30 +33,29 @@ const FindCaptainPage = () => {
         from: {
           location: from.formatted_address,
           City: fromCity[0].long_name,
-          Lat: from.geometry.location.lat+'',
-          Long: from.geometry.location.lng+'',
+          Lat: from.geometry.location.lat + '',
+          Long: from.geometry.location.lng + '',
         },
         to: {
           location: to.formatted_address,
           City: toCity[0].long_name,
-          Lat: to.geometry.location.lat+'',
-          Long: to.geometry.location.lng+'',
+          Lat: to.geometry.location.lat + '',
+          Long: to.geometry.location.lng + '',
         },
         Distance: Number((distance.value / 1000).toFixed(1)),
         Duration: duration.text,
       };
-      GetDriver(payload);
+      getRideRequest(payload);
     })();
   }, [from, to]);
 
   useEffect(() => {
-    if(error){
-      console.log({error})
+    if (error) {
+      console.log({error});
+    } else if (rideList) {
+      dispatch(setRideRequest(rideList));
     }
-    else if (driversList) {
-      dispatch(setDrivers(driversList.data));
-    }
-  }, [driversList]);
+  }, [rideList]);
 
   const extraProps = {
     ...route,
