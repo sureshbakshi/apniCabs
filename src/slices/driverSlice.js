@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
-import { ROUTES_NAMES } from '../constants';
+import { ROUTES_NAMES, RideStatus } from '../constants';
 
 const initialState = {
   rideRequests: [],
@@ -13,9 +13,15 @@ const driverSlice = createSlice({
   name: 'driver',
   initialState,
   reducers: {
-    declineRequest: (state, action) => {
+    updateRideRequest: (state, action) => {
       const requestObj = action.payload
-      state.rideRequests =  state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
+      if(requestObj.status === RideStatus.ACCEPTED) {
+        state.activeRequest = requestObj;
+        state.activeRequestId = requestObj?.active_request_id;
+        state.rideRequests = []
+      }else{
+        state.rideRequests =  state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
+      }
     },
     setActiveRide: (state, action) => {
       const  {active_request_id} = action.payload || {}
@@ -37,6 +43,6 @@ const driverSlice = createSlice({
   },
 });
 
-export const { declineRequest, setActiveRide, setDriverStatus, setRideRequest, cancelRequest } = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, cancelRequest } = driverSlice.actions;
 
 export default driverSlice.reducer;

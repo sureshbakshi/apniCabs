@@ -42,12 +42,15 @@ const api_path = {
   users: path => `users/${path}`,
   drivers: path => `drivers/${path}`,
   vehicle: path => `vehicle/${path}`,
+  request: path => `request/${path}`,
 };
 const api_urls = {
   login: 'login',
   signUp: 'user',
   userCheck: 'checkUser',
   driverAvailabilty: 'driver-availabilty',
+  updateRequest: 'driver-update',
+  send: 'send'
 };
 
 export const apiSlice = createApi({
@@ -106,15 +109,29 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    // request Apis
     sendRequest: builder.mutation({
       query: body => ({
         method: 'PUT',
-        url: `/request/send`,
+        url: api_path.request(api_urls.send),
         body,
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    updateRequest: builder.mutation({
+      query: body => ({
+        method: 'PUT',
+        url: api_path.request(api_urls.updateRequest),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    
+
+
+    // request apis end
     getDriverDetails: builder.query({
       query: id => ({
         method: 'GET',
@@ -133,6 +150,7 @@ export const {
   useSingUpMutation,
   useUserCheckMutation,
   useSendRequestMutation,
+  useUpdateRequestMutation,
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
   useGetDriverDetailsQuery

@@ -24,10 +24,10 @@ export const getConfig = () => {
     return Config
 }
 
-export const showErrorMessage = (msg) => {
+export const showErrorMessage = (obj) => {
     Toast.show({
         type: 'error',
-        text1: msg || 'Something Went Wrong. Please try again!',
+        text1: obj?.data.erro || obj || 'Something Went Wrong. Please try again!',
         position: 'bottom',
         visibilityTime: 2000,
           autoHide: true,

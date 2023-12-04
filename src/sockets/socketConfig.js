@@ -2,13 +2,15 @@
 import io from 'socket.io-client';
 
 import config from '../util/config';
+// baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
 
-const socket = io('http://192.168.1.88:3000', {
+const socket = io('http://192.168.0.105:3000', {
   // Additional configuration options can be set here
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss
   reconnectionAttempts: Infinity, // Number of reconnection attempts
   reconnectionDelay: 1000, // Delay between reconnection attempts in milliseconds
+  origins: '*',
   extraHeaders: {
 
   }
@@ -20,8 +22,7 @@ socket.on('disconnect', err => console.log({ 'disconnect': err }))
 socket.on('*', function (packet) {
   console.log({ packet })
 });
-socket.on('connect', (res) => {
-  console.log({ 'connect': res })
+socket.on('connect', () => {
   const engine = socket.io.engine;
   engine.on("packet", ({ type, data }) => {
     // called for each packet received

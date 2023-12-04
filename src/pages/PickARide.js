@@ -1,27 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {View, Pressable, ScrollView, Text, Switch} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Pressable, ScrollView, Text, Switch } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
-import {ImageView} from '../components/common';
+import { ImageView } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import _ from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import {COLORS, DriverAvailableStatus, ROUTES_NAMES} from '../constants';
-import {navigate} from '../util/navigationService';
-import {emitAcceptRequest} from '../sockets/driverSockets';
-import {useSelector} from 'react-redux';
+import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
+import { navigate } from '../util/navigationService';
+import { emitAcceptRequest } from '../sockets/driverSockets';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useDriverEvents,
   useEmitDriverStatus,
 } from '../hooks/useDriverSocketEvents';
-import {useUpdateDriverStatusMutation} from '../slices/apiSlice';
+import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
-import { isAvailable } from '../util';
+import { isAvailable, showErrorMessage } from '../util';
+import { updateRideRequest } from '../slices/driverSlice';
 
-const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
+const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
     <View style={FindRideStyles.card} key={item.vehicle_id}>
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
             {/* <ImageView
@@ -42,7 +43,7 @@ const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
             {/* <Timeline data={[item.from, item.to]} /> */}
           </View>
           <View style={FindRideStyles.right}>
-            <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
+            <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
               {item.price}
             </Text>
@@ -65,12 +66,12 @@ const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
       </View>
       <View style={FindRideStyles.cardBottom}>
         <Pressable
-          style={[FindRideStyles.button, {backgroundColor: COLORS.primary}]}
+          style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
           onPress={() => handleDeclineRequest(item)}>
           <Text style={FindRideStyles.text}>{'Decline'}</Text>
         </Pressable>
         <Pressable
-          style={[FindRideStyles.button, {backgroundColor: COLORS.green}]}
+          style={[FindRideStyles.button, { backgroundColor: COLORS.green }]}
           onPress={() => handleAcceptRequest(item)}>
           <Text style={FindRideStyles.text}>{'Accept'}</Text>
         </Pressable>
@@ -78,14 +79,33 @@ const Card = ({item, handleAcceptRequest, handleDeclineRequest}) => {
     </View>
   );
 };
-const DriverCard = ({list}) => {
-  const {emitDeclineRequestEvent} = useDriverEvents();
+const DriverCard = ({ list }) => {
+  const dispatch = useDispatch()
+  const [updateRequest, { data: updatedRequest, error: updateRequestError, isLoading }] =
+    useUpdateRequestMutation();
+
+  const requestHandler = (status, request) => {
+    const payload = {
+      "status": status,
+      "request_id": request?.data?.id
+    }
+    updateRequest(payload)
+  }
+
+  useEffect(() => {
+    if (updateRequestError) {
+      showErrorMessage(updateRequestError)
+    } else if (updatedRequest) {
+      dispatch(updateRideRequest(updatedRequest))
+    }
+  }, [updatedRequest, updateRequestError])
+
   return list.map((item, key) => {
     return (
       <Card
         item={item}
-        handleAcceptRequest={emitAcceptRequest}
-        handleDeclineRequest={emitDeclineRequestEvent}
+        handleAcceptRequest={(request) => requestHandler(RideStatus.ACCEPTED, request)}
+        handleDeclineRequest={(request) => requestHandler(RideStatus.DECLINED, request)}
         key={`${key}_${item.vehicle_id}`}
       />
     );
@@ -94,21 +114,22 @@ const DriverCard = ({list}) => {
 
 export const PickARide = () => {
   const profile = useSelector(state => state.auth?.userInfo);
+  const rideRequests = useSelector(state => state.driver?.rideRequests);
 
   const [
     updateDriverStatus,
-    {data: driverStatus, error: driverStatusError, isLoginLoading},
+    { data: driverStatus, error: driverStatusError, isLoginLoading },
   ] = useUpdateDriverStatusMutation();
   useDisptachDriverDetails(driverStatus)
-  
-  
-  const {driverInfo, userInfo} = useSelector(state => state.auth);
+
+
+  const { driverInfo, userInfo } = useSelector(state => state.auth);
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
-  const {emitDriverStatusEvent} = useDriverEvents(!isOnline);
+  const { emitDriverStatusEvent } = useDriverEvents(!isOnline);
 
   const toggleSwitch = val =>
-    updateDriverStatus({is_available: val ? 1: 0});
+    updateDriverStatus({ is_available: val ? 1 : 0 });
 
   useEffect(() => {
     if (driverStatusError) {
@@ -118,19 +139,18 @@ export const PickARide = () => {
     }
   }, [driverStatus, driverStatusError]);
   const isOnline = isAvailable(driverInfo)
-  const rideRequests = []
   return (
     <View style={FindRideStyles.container}>
       <View
         style={[
           FindRideStyles.switchBtn,
-          {backgroundColor: isOnline ? COLORS.green : COLORS.primary},
+          { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
         ]}>
         <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
         </Text>
         <Switch
-          trackColor={{false: COLORS.white, true: COLORS.white}}
+          trackColor={{ false: COLORS.white, true: COLORS.white }}
           thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
