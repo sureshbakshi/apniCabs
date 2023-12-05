@@ -55,7 +55,8 @@ const api_urls = {
   userCheck: 'checkUser',
   driverAvailabilty: 'driver-availabilty',
   updateRequest: 'driver-update',
-  send: 'send'
+  send: 'send',
+  location:'location'
 };
 
 export const apiSlice = createApi({
@@ -128,6 +129,15 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    updateDriverLocation: builder.mutation({
+      query: body => ({
+        method: 'PUT',
+        url: api_path.drivers(`${api_urls.location}/${body.driver_id}`),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     
 
 
@@ -153,5 +163,6 @@ export const {
   useUpdateRequestMutation,
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
-  useGetDriverDetailsQuery
+  useGetDriverDetailsQuery,
+  useUpdateDriverLocationMutation
 } = apiSlice;
