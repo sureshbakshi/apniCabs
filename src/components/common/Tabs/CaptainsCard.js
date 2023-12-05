@@ -49,14 +49,14 @@ const Card = item => {
           />
         </View>
         <View style={FindRideStyles.middle}>
-          <Text style={FindRideStyles.name}>{item.driver_name}</Text>
+          <Text style={FindRideStyles.name}>{item.name}</Text>
           {/* <Text style={FindRideStyles.review}>({item.size} Reviews)</Text> */}
           <Timeline data={[item.from, item.to]} />
         </View>
         <View style={FindRideStyles.right}>
           <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
             {'\u20B9'}
-            {item.calculated_fare}
+            {item.price}
           </Text>
           <Text style={FindRideStyles.address}>{item.distance.text}</Text>
           {/* <Text style={FindRideStyles.address}>{item.seats} Seats left</Text> */}
@@ -64,7 +64,7 @@ const Card = item => {
       </View>
       <View style={FindRideStyles.cardBottom}>
         <View style={FindRideStyles.left}>
-          {item.distance_away && (
+          {item?.distance_away && (
             <Text style={[styles.text, styles.bold]}>
               {item.distance_away} away{' '}
             </Text>
@@ -72,7 +72,7 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.middle}>
           <Text style={[styles.text, styles.bold]}>
-            {item.vehicle_model} | {item.vehicle_color}
+            {item?.vehicle_details?.name} | {item.colour}
           </Text>
         </View>
         <View style={FindRideStyles.right}>

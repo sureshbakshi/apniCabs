@@ -82,7 +82,6 @@ export const disconnectSocket = () => {
 driverSocket.on('connect', () => {
   const authStore = store.getState().auth
   const id = authStore?.driverInfo?.id
-  console.log(authStore.access_token)
   if (id)
     driverSocket.emit('addDevice', id)
 })

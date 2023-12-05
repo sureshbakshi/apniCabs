@@ -5,9 +5,6 @@ import {useDispatch} from 'react-redux';
 import {useEffect} from 'react';
 
 const initialState = {
-  user_check: {
-    user: false,
-  },
   googleInfo: null,
   userInfo: null,
   access_token: null,
@@ -39,8 +36,8 @@ const authSlice = createSlice({
     updateUserCheck(state, action) {
       if (action.payload?.token) {
         state.access_token = action.payload.token;
+        state.userInfo = action.payload
       }
-      state.user_check = action.payload;
     },
     updateLoginToken(state, action) {
       if (action.payload?.token) {

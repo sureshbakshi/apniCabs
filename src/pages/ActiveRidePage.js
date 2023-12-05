@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Pressable, Modal, Alert } from 'react-native';
+import { View, Pressable, Modal } from 'react-native';
 import _ from 'lodash';
 import { Text } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
@@ -7,11 +7,8 @@ import { ImageView, Icon } from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import { COLORS, ROUTES_NAMES } from '../constants';
+import { COLORS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
-import { goBack, navigate } from '../util/navigationService';
-import { showErrorMessage } from '../util';
-import { cancelRequest } from '../sockets/driverSockets';
 import { useSelector } from 'react-redux';
 import { useDriverEvents } from '../hooks/useDriverSocketEvents';
 

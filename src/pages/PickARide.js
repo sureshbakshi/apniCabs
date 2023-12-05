@@ -16,7 +16,7 @@ import {
 } from '../hooks/useDriverSocketEvents';
 import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
-import { isAvailable, showErrorMessage } from '../util';
+import { isAvailable } from '../util';
 import { updateRideRequest } from '../slices/driverSlice';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -81,8 +81,7 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
 };
 const DriverCard = ({ list }) => {
   const dispatch = useDispatch()
-  const [updateRequest, { data: updatedRequest, error: updateRequestError, isLoading }] =
-    useUpdateRequestMutation();
+  const [updateRequest, { data: updatedRequest}] = useUpdateRequestMutation();
 
   const requestHandler = (status, request) => {
     const payload = {
@@ -93,12 +92,10 @@ const DriverCard = ({ list }) => {
   }
 
   useEffect(() => {
-    if (updateRequestError) {
-      showErrorMessage(updateRequestError)
-    } else if (updatedRequest) {
+    if (updatedRequest) {
       dispatch(updateRideRequest(updatedRequest))
     }
-  }, [updatedRequest, updateRequestError])
+  }, [updatedRequest])
 
   return list.map((item, key) => {
     return (

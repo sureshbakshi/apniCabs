@@ -2,10 +2,11 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {navigate} from '../util/navigationService';
 import {ROUTES_NAMES} from '../constants';
 import {clearAuthData} from './authSlice';
+import { showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: 'https://www.apnicabi.com/',
-  baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
+  baseUrl: 'http://www.apnicabi.com/api/',
+  // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
   // baseUrl: 'http://192.168.0.105:3000/', //suresh IP
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
@@ -19,6 +20,10 @@ const baseQuery = fetchBaseQuery({
 });
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+  console.log({result})
+  if(result?.error) {
+    showErrorMessage(result.error)
+  }
   if (result.error && result.error.status === 401) {
     console.log(result.error)
     api.dispatch(clearAuthData());
@@ -83,12 +88,7 @@ export const apiSlice = createApi({
         url: api_path.public(api_urls.userCheck),
         body: {email},
       }),
-      transformResponse: response => {
-        if (!response.user) {
-          navigate(ROUTES_NAMES.signUp);
-        }
-        return response;
-      },
+      transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
     getRideRequest: builder.mutation({
