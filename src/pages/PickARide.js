@@ -51,15 +51,15 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
         </View>
         <View style={FindRideStyles.cardBottom}>
           <View style={FindRideStyles.left}>
-            {item.distance_away && (
+            {item?.driver_distance && (
               <Text style={[styles.text, styles.bold]}>
-                {item.distance_away} km away
+                {item.driver_distance} km away
               </Text>
             )}
           </View>
           <View style={FindRideStyles.right}>
             <Text style={[styles.text, styles.bold]}>
-              Distance: {item.ride_distance} km
+              Distance: {item.distance} km
             </Text>
           </View>
         </View>

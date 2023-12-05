@@ -46,7 +46,7 @@ export const useDriverEvents = () => {
     }
 
     const updateRideRequests = (request) => {
-        dispatch(setRideRequest(request))
+        dispatch(setRideRequest(request?.data))
     }
     
     return {updateDriverStatus, updateActiveRide, updateRideRequests, emitDriverStatusEvent, emitDeclineRequestEvent, emitCancelRequestEvent}

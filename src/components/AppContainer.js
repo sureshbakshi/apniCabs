@@ -28,7 +28,6 @@ function AppContainer(WrappedComponent) {
           let payload = {...location};
           payload.driver_id = profile.id;
           payload.status = '';
-          console.log(payload);
           updateDriverLocation(payload)
             .unwrap()
             .then(res => console.log(res))
