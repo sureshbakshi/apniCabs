@@ -8,11 +8,12 @@ import { PickARide } from '../pages/PickARide';
 import { useSelector } from 'react-redux';
 
 const PickARidePageContainer = AppContainer(PickARide);
+const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
 const Stack = createNativeStackNavigator();
 
 export default function DriverStackNavigator({ navigation, route }) {
-  const { activeRequestId } = useSelector(state => state.driver)
+  const { activeRequest } = useSelector(state => state.driver)
 
   return (
     <Stack.Navigator
@@ -26,10 +27,10 @@ export default function DriverStackNavigator({ navigation, route }) {
           fontWeight: 'bold',
         },
       }}>
-      {true ? <Stack.Screen
+      {false? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
-        component={ActiveRidePage}
+        component={ActiveRidePageContainer}
       /> : <Stack.Screen
         name={ROUTES_NAMES.searchRide}
         options={{ title: null }}

@@ -67,7 +67,7 @@ export const Capitalize = (str) =>{
   return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-export const isAvailable = (driverInfo) => driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE
+export const isAvailable = (driverInfo) => true || driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE
 export const fakeLogin = ()=> {
     axios
     .post(

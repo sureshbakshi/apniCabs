@@ -17,7 +17,7 @@ import {
 import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
 import { isAvailable } from '../util';
-import { updateRideRequest } from '../slices/driverSlice';
+import { updateRideRequest,setDriverStatus } from '../slices/driverSlice';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
@@ -110,14 +110,15 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
+  const dispatch = useDispatch()
   const profile = useSelector(state => state.auth?.userInfo);
-  const rideRequests = useSelector(state => state.driver?.rideRequests);
+  const {isOnline,rideRequests} = useSelector(state => state.driver);
 
   const [
     updateDriverStatus,
     { data: driverStatus, error: driverStatusError, isLoginLoading },
   ] = useUpdateDriverStatusMutation();
-  const { data: rideDetails, error: rideDetailsError, isRideDetailsLoading } = useDriverActiveRideQuery();
+  const { data: activeRideDetails, error: rideDetailsError, isRideDetailsLoading } = useDriverActiveRideQuery();
 
   useDisptachDriverDetails(driverStatus)
   
@@ -136,13 +137,17 @@ export const PickARide = () => {
       console.log('driverStatusError', driverStatusError);
     } else if (driverStatus) {
       console.log('driverStatus', driverStatus);
+      dispatch(setDriverStatus(driverStatus))
     }
   }, [driverStatus, driverStatusError]);
 
   useEffect(()=> {
-    console.log({rideDetails})
-  },[rideDetails])
-  const isOnline = isAvailable(driverInfo)
+    if(activeRideDetails){
+      dispatch(updateRideRequest(activeRideDetails))
+    }
+    console.log({activeRideDetails})
+  },[activeRideDetails])
+  // const isOnline = isAvailable(driverInfo)
   return (
     <View style={FindRideStyles.container}>
       <View

@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
-import { ROUTES_NAMES, RideStatus } from '../constants';
+import { DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
+import { activeReq, requestObj } from '../mock/activeRequest';
+
 
 const initialState = {
-  rideRequests: [],
-  activeRequest: null,
-  activeRequestId: null,
+  rideRequests: requestObj,
+  activeRequest: activeReq,
+  activeRideId: null,
   isOnline: false
 }
 
@@ -15,34 +17,37 @@ const driverSlice = createSlice({
   reducers: {
     updateRideRequest: (state, action) => {
       const requestObj = action.payload
-      if(requestObj.status === RideStatus.ACCEPTED) {
+      if (requestObj.status === RideStatus.ACCEPTED) {
         state.activeRequest = requestObj;
-        state.activeRequestId = requestObj?.active_request_id;
+        // state.activeRideId = requestObj?.active_request_id;
         state.rideRequests = []
-      }else{
-        state.rideRequests =  state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
+      } else {
+        state.rideRequests = state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
       }
     },
     setActiveRide: (state, action) => {
-      const  {active_request_id} = action.payload || {}
-      state.activeRequest = action.payload;
-      state.activeRequestId = active_request_id;
+      const { id } = action.payload || {}
+      state.activeRideId = id;
     },
-    cancelRequest: (state, action) => {
-      const  {active_request_id} = action.payload || {}
-      if(state.activeRequestId === active_request_id) {
-        return  Object.assign(state, {...initialState, isOnline: state.isOnline})
+    updateRideStatus: (state, action) => {
+      const { status } = action.payload || {}
+      if (status === RideStatus.USER_CANCELLED || status === RideStatus.DRIVER_CANCELLED || status === RideStatus.COMPLETED) {
+        return Object.assign(state, { ...initialState, isOnline: state.isOnline })
       }
     },
     setDriverStatus: (state, action) => {
-      state.isOnline = action.payload;
+      const status = action.payload?.is_available
+      if (status === DriverAvailableStatus.ONLINE) {
+        state.isOnline = status;
+      }
     },
     setRideRequest: (state, action) => {
       state.rideRequests = [...state.rideRequests, action.payload];
     },
+
   },
 });
 
-export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, cancelRequest } = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus } = driverSlice.actions;
 
 export default driverSlice.reducer;

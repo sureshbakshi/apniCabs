@@ -1,14 +1,14 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {navigate} from '../util/navigationService';
-import {ROUTES_NAMES} from '../constants';
-import {clearAuthData} from './authSlice';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { navigate } from '../util/navigationService';
+import { ROUTES_NAMES } from '../constants';
+import { clearAuthData } from './authSlice';
 import { showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: 'http://www.apnicabi.com/api/',
-  // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
-  baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
-  prepareHeaders: (headers, {getState}) => {
+  baseUrl: 'http://www.apnicabi.com/api/',
+  // baseUrl: 'http://192.168.0.102:3000/api/', //rajesh IP
+  // baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
+  prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
     headers.set('Content-Type', `application/json`);
@@ -23,7 +23,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   let result = await baseQuery(args, api, extraOptions);
   console.log(JSON.stringify(result))
-  if(result?.error) {
+  if (result?.error) {
     showErrorMessage(result.error)
   }
   if (result.error && result.error.status === 401) {
@@ -59,7 +59,10 @@ const api_urls = {
   driverActiveRide: 'active-rides/driver',
   updateRequest: 'driver-update',
   send: 'send',
-  location:'location'
+  ride: 'ride',
+  completeRide: 'complete-ride',
+  cancelAcceptedRequest: 'cancel-accpeted-request',
+  location: 'location'
 };
 
 export const apiSlice = createApi({
@@ -90,7 +93,7 @@ export const apiSlice = createApi({
       query: email => ({
         method: 'POST',
         url: api_path.public(api_urls.userCheck),
-        body: {email},
+        body: { email },
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -131,6 +134,33 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    rideRequest: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.request(api_urls.ride),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    completeRideRequest: builder.mutation({
+      query: body => ({
+        method: 'PUT',
+        url: api_path.request(api_urls.completeRide),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    cancelAcceptedRequest: builder.mutation({
+      query: body => ({
+        method: 'PUT',
+        url: api_path.request(api_urls.cancelAcceptedRequest),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     updateRequest: builder.mutation({
       query: body => ({
         method: 'PUT',
@@ -149,7 +179,7 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
-    
+
 
 
     // request apis end
@@ -176,5 +206,8 @@ export const {
   useGetRideRequestMutation,
   useGetDriverDetailsQuery,
   useUpdateDriverLocationMutation,
-  useDriverActiveRideQuery
+  useDriverActiveRideQuery,
+  useRideRequestMutation,
+  useCompleteRideRequestMutation,
+  useCancelAcceptedRequestMutation
 } = apiSlice;
