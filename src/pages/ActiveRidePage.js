@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Pressable, Modal } from 'react-native';
+import { View, Pressable, Modal, TextInput } from 'react-native';
 import _ from 'lodash';
 import { Text } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
@@ -11,6 +11,7 @@ import { COLORS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
 import { useDriverEvents } from '../hooks/useDriverSocketEvents';
+import requestList from '../mock/rideRequests';
 
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
@@ -18,24 +19,24 @@ const intialState = [
   { message: 'My reason is not listed', id: 3 },
 ];
 
-const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
+const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
   const [message, setMessage] = useState(intialState);
-  const [selectedMessage, setSelectedMessage] = useState(null)
-  const [errorMsg, setErrorMessage] = useState(null)
-  const {emitCancelRequestEvent} = useDriverEvents()
-  const handleCancelReason = (message) => {
-    setSelectedMessage(message)
-    setErrorMessage(false)
-  }
-  
-  const closeModal = () =>  handleModalVisible(!modalVisible)
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [errorMsg, setErrorMessage] = useState(null);
+  const { emitCancelRequestEvent } = useDriverEvents();
+  const handleCancelReason = message => {
+    setSelectedMessage(message);
+    setErrorMessage(false);
+  };
+
+  const closeModal = () => handleModalVisible(!modalVisible);
   const handleSubmit = () => {
     if (selectedMessage?.id) {
-      emitCancelRequestEvent(activeReq, closeModal)
+      emitCancelRequestEvent(activeReq, closeModal);
     } else {
-      setErrorMessage(true)
+      setErrorMessage(true);
     }
-  }
+  };
   return (
     <Modal
       animationType="slide"
@@ -44,21 +45,25 @@ const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
       onPress={() => {
         handleModalVisible(!modalVisible);
       }}>
-      <View
-        style={ActiveRidePageStyles.centeredView}
-      >
+      <View style={ActiveRidePageStyles.centeredView}>
         <View style={ActiveRidePageStyles.modalView}>
           <View>
-            <Text style={[ActiveRidePageStyles.modalText]}>Reasons to cancel</Text>
+            <Text style={[ActiveRidePageStyles.modalText]}>
+              Reasons to cancel
+            </Text>
             <View style={ActiveRidePageStyles.content}>
-              {message.map((item) => {
+              {message.map(item => {
                 return (
                   <Pressable
                     key={item.id}
                     style={ActiveRidePageStyles.list}
                     onPress={() => handleCancelReason(item)}>
                     <Icon
-                      name={selectedMessage?.id === item.id ? 'radiobox-marked' : 'radiobox-blank'}
+                      name={
+                        selectedMessage?.id === item.id
+                          ? 'radiobox-marked'
+                          : 'radiobox-blank'
+                      }
                       size={'large'}
                       color={COLORS.black}
                     />
@@ -68,7 +73,11 @@ const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
                   </Pressable>
                 );
               })}
-              {errorMsg && <Text style={{ color: COLORS.primary }}>Please select a reason</Text>}
+              {errorMsg && (
+                <Text style={{ color: COLORS.primary }}>
+                  Please select a reason
+                </Text>
+              )}
             </View>
           </View>
           <View style={{ flexDirection: 'row' }}>
@@ -76,7 +85,11 @@ const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
               android_ripple={{ color: '#fff' }}
               style={[FindRideStyles.button, { backgroundColor: COLORS.bg_dark }]}
               onPress={() => handleModalVisible(!modalVisible)}>
-              <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
+              <Text
+                style={[
+                  FindRideStyles.text,
+                  { fontWeight: 'bold', color: COLORS.black },
+                ]}>
                 {'Close'}
               </Text>
             </Pressable>
@@ -89,14 +102,15 @@ const Modalpopup = ({ modalVisible, handleModalVisible , activeReq}) => {
               </Text>
             </Pressable>
           </View>
-
         </View>
       </View>
     </Modal>
   );
 };
 
-const Card = ({activeRequest, setModalVisible}) => {
+const Card = ({ activeRequest, setModalVisible }) => {
+
+  const [otp, setOtp] = useState();
 
   return (
     <View style={FindRideStyles.card} key={activeRequest.id}>
@@ -105,7 +119,8 @@ const Card = ({activeRequest, setModalVisible}) => {
           <View style={FindRideStyles.left}>
             <ImageView
               source={
-                images[`captain${activeRequest.profile_avatar}`] || images[`captain0`]
+                images[`captain${activeRequest.profile_avatar}`] ||
+                images[`captain0`]
               }
               style={[styles.avatar]}
             />
@@ -141,11 +156,45 @@ const Card = ({activeRequest, setModalVisible}) => {
           </View>
         </View>
       </View>
+      <View>
+        <TextInput
+          keyboardType='numeric'
+          placeholder="Enter Otp here"
+          onChangeText={newText => setOtp(newText)}
+          value={otp}
+          autoFocus
+          minLength={6}
+          maxLength={6}
+          style={FindRideStyles.textInputPickup}
+        />
+      </View>
       <View style={FindRideStyles.cardBottom}>
+
+        <Pressable
+          onPress={() => console.log(otp)}
+          style={[
+            FindRideStyles.button,
+            { backgroundColor: COLORS.bg_primary },
+          ]}>
+          <Text
+            style={[
+              FindRideStyles.text,
+              { fontWeight: 'bold', color: COLORS.black },
+            ]}>
+            {'Submit'}
+          </Text>
+        </Pressable>
         <Pressable
           onPress={() => setModalVisible(true)}
-          style={[FindRideStyles.button, { backgroundColor: COLORS.brand_yellow }]}>
-          <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: COLORS.black }]}>
+          style={[
+            FindRideStyles.button,
+            { backgroundColor: COLORS.brand_yellow },
+          ]}>
+          <Text
+            style={[
+              FindRideStyles.text,
+              { fontWeight: 'bold', color: COLORS.black },
+            ]}>
             {'Cancel Ride'}
           </Text>
         </Pressable>
@@ -155,19 +204,19 @@ const Card = ({activeRequest, setModalVisible}) => {
 };
 
 const ActiveRidePage = () => {
-    const [modalVisible, setModalVisible] = useState(false);
-  const {activeRequest} = useSelector((state) => state.driver)
-
+  const [modalVisible, setModalVisible] = useState(false);
+  // const {activeRequest} = useSelector((state) => state.driver)
+  const activeRequest = requestList[0];
 
   return (
     <View style={[FindRideStyles.container]}>
       <View style={ActiveRidePageStyles.cardBottom}>
-        <Card activeRequest={activeRequest} setModalVisible={setModalVisible}/>
-      <Modalpopup
-        modalVisible={modalVisible}
-        handleModalVisible={setModalVisible}
-        activeReq={activeRequest}
-      />
+        <Card activeRequest={activeRequest} setModalVisible={setModalVisible} />
+        <Modalpopup
+          modalVisible={modalVisible}
+          handleModalVisible={setModalVisible}
+          activeReq={activeRequest}
+        />
       </View>
     </View>
   );

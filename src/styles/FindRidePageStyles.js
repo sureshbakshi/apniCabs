@@ -114,6 +114,14 @@ const FindRideStyles = StyleSheet.create({
     elevation: 3,
     marginBottom:5,
     justifyContent:'space-between',
+  },
+  textInputPickup:{
+    backgroundColor: '#f2f4f6',
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 0.5,
+    padding: 15,
   }
 });
 export default FindRideStyles;
