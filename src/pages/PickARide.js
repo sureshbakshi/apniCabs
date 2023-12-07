@@ -14,14 +14,14 @@ import {
   useDriverEvents,
   useEmitDriverStatus,
 } from '../hooks/useDriverSocketEvents';
-import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
+import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
 import { isAvailable } from '../util';
 import { updateRideRequest } from '../slices/driverSlice';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
-    <View style={FindRideStyles.card} key={item.vehicle_id}>
+    <View style={FindRideStyles.card} key={item.id}>
       <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
@@ -36,8 +36,8 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
             <Text style={FindRideStyles.name}>{item.user_name}</Text>
             <Timeline
               data={[
-                'Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana',
-                'Lingampally, Telangana',
+                item.from_location,
+                item.to_location,
               ]}
             />
             {/* <Timeline data={[item.from, item.to]} /> */}
@@ -86,7 +86,7 @@ const DriverCard = ({ list }) => {
   const requestHandler = (status, request) => {
     const payload = {
       "status": status,
-      "request_id": request?.data?.id
+      "request_id": request?.id
     }
     updateRequest(payload)
   }
@@ -103,7 +103,7 @@ const DriverCard = ({ list }) => {
         item={item}
         handleAcceptRequest={(request) => requestHandler(RideStatus.ACCEPTED, request)}
         handleDeclineRequest={(request) => requestHandler(RideStatus.DECLINED, request)}
-        key={`${key}_${item.vehicle_id}`}
+        key={`${key}_${item.id}`}
       />
     );
   });
@@ -117,7 +117,10 @@ export const PickARide = () => {
     updateDriverStatus,
     { data: driverStatus, error: driverStatusError, isLoginLoading },
   ] = useUpdateDriverStatusMutation();
+  const { data: rideDetails, error: rideDetailsError, isRideDetailsLoading } = useDriverActiveRideQuery();
+
   useDisptachDriverDetails(driverStatus)
+  
 
 
   const { driverInfo, userInfo } = useSelector(state => state.auth);
@@ -135,6 +138,10 @@ export const PickARide = () => {
       console.log('driverStatus', driverStatus);
     }
   }, [driverStatus, driverStatusError]);
+
+  useEffect(()=> {
+    console.log({rideDetails})
+  },[rideDetails])
   const isOnline = isAvailable(driverInfo)
   return (
     <View style={FindRideStyles.container}>

@@ -205,8 +205,8 @@ const Card = ({ activeRequest, setModalVisible }) => {
 
 const ActiveRidePage = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  // const {activeRequest} = useSelector((state) => state.driver)
-  const activeRequest = requestList[0];
+  const {activeRequest} = useSelector((state) => state.driver)
+  // const activeRequest = requestList[0];
 
   return (
     <View style={[FindRideStyles.container]}>

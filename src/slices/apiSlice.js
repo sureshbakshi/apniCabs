@@ -5,9 +5,9 @@ import {clearAuthData} from './authSlice';
 import { showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://www.apnicabi.com/api/',
+  // baseUrl: 'http://www.apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
-  // baseUrl: 'http://192.168.0.105:3000/', //suresh IP
+  baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
   prepareHeaders: (headers, {getState}) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -19,8 +19,10 @@ const baseQuery = fetchBaseQuery({
   },
 });
 const baseQueryWithReauth = async (args, api, extraOptions) => {
+  console.log(JSON.stringify(args))
+
   let result = await baseQuery(args, api, extraOptions);
-  console.log({result})
+  console.log(JSON.stringify(result))
   if(result?.error) {
     showErrorMessage(result.error)
   }
@@ -54,6 +56,7 @@ const api_urls = {
   signUp: 'user',
   userCheck: 'checkUser',
   driverAvailabilty: 'driver-availabilty',
+  driverActiveRide: 'active-rides/driver',
   updateRequest: 'driver-update',
   send: 'send',
   location:'location'
@@ -113,9 +116,17 @@ export const apiSlice = createApi({
     // request Apis
     sendRequest: builder.mutation({
       query: body => ({
-        method: 'PUT',
+        method: 'POST',
         url: api_path.request(api_urls.send),
         body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    driverActiveRide: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.request(api_urls.driverActiveRide),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -164,5 +175,6 @@ export const {
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
   useGetDriverDetailsQuery,
-  useUpdateDriverLocationMutation
+  useUpdateDriverLocationMutation,
+  useDriverActiveRideQuery
 } = apiSlice;

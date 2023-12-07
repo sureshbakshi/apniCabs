@@ -46,6 +46,7 @@ export const useDriverEvents = () => {
     }
 
     const updateRideRequests = (request) => {
+        console.log({request})
         dispatch(setRideRequest(request?.data))
     }
     
@@ -56,11 +57,11 @@ export default (() => {
     const {updateDriverStatus, updateActiveRide, updateRideRequests} = useDriverEvents()
     const {driverInfo} = useSelector((state) => state.auth)
     useEffect(() => {
-        onDriverStatus(updateDriverStatus)
+        // onDriverStatus(updateDriverStatus)
         if(isAvailable(driverInfo)) {
             connectSocket()
             onGetRideRequests(updateRideRequests)
-            onActiveRide(updateActiveRide)
+            // onActiveRide(updateActiveRide)
         }
         return () => disconnectSocket()
     }, [driverInfo])

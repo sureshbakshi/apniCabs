@@ -96,7 +96,7 @@ const CaptainsCard = ({list, keyProp, extraProps}) =>
           ...item,
           ...extraProps,
         }}
-        key={`${keyProp}_${item.vehicle_id}`}
+        key={`${keyProp}_${item.driver_id}`}
       />
     );
   });
