@@ -26,9 +26,10 @@ export const getConfig = () => {
 }
 
 export const showErrorMessage = (obj) => {
+  const msg = typeof obj === 'string'? obj: obj?.data?.message 
     Toast.show({
         type: 'error',
-        text1: obj?.data?.message || 'Something Went Wrong. Please try again!',
+        text1: msg || 'Something Went Wrong. Please try again!',
         position: 'bottom',
         visibilityTime: 2000,
           autoHide: true,
@@ -68,9 +69,15 @@ export const Capitalize = (str) =>{
   return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-export const isAvailable = () => {
+export const _isDriverOnline = () => {
   const driverInfo =  store.getState().auth
   return Boolean(driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE)
+} 
+
+export const _isLoggedIn = () => {
+  const {userInfo} =  store.getState().auth
+
+  return Boolean(userInfo?.id)
 } 
 export const fakeLogin = ()=> {
     axios

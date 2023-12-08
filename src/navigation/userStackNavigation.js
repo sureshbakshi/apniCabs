@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.findCaptain, ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
-  const isActiveRide = useSelector((state) => state.user.activeRideId)
+  const {activeRequest} = useSelector((state) => state.user)
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -33,7 +33,7 @@ export default function UserStackNavigator({ navigation, route }) {
           fontWeight: 'bold',
         },
       }}>
-      {isActiveRide ? <Stack.Screen
+      {activeRequest?.id ? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePage}

@@ -1,66 +1,67 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
+import { RideStatus } from '../constants';
+import { activeReq } from '../mock/activeRequest';
+
+
+const updateStatusByDriverId = (updatedData, driver_id, status) => {
+  _.forEach(updatedData, item => {
+    const driverToUpdate = _.find(item.drivers, { 'driver_id': driver_id });
+    if (driverToUpdate) {
+      _.set(driverToUpdate, 'status', status);
+    }
+  });
+  return updatedData;
+};
+const intialState = {
+  activeRideId: null,
+  rideRequests: null,
+  activeRequest: null,
+}
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    // Define user state here
-    userRequests: [],
-    activeRideInfo: null,
-    activeRideId: null,
-    drivers: [],
-    rideRequests: null,
-  },
+  initialState: intialState,
   reducers: {
-    sendRequest: (state, action) => {
-      // Handle sending a request and update userRequests
-    },
-    cancelRequest: state => {
-      // Handle canceling a request and update userRequests
-    },
-    acceptRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
-      state.activeRide = action.payload;
-    },
+
     setRideRequest: (state, action) => {
       // Handle accepting a request and update activeRide
       state.rideRequests = action.payload;
     },
-    setActiveRide: (state, action) => {
+    setActiveRequest: (state, action) => {
       // Handle accepting a request and update activeRide
-      state.activeRideId = action.payload.data.active_ride_id;
-      state.activeRideInfo = action.payload.data;
+      state.activeRequest = action.payload.data;
     },
-    cancelActiveRide: (state, action) => {
+    cancelActiveRequest: (state, action) => {
       // Handle accepting a request and update activeRide
-      state.activeRideId = null;
-      state.activeRideInfo = null;
+      return Object.assign(state, { ...initialState })
     },
     updateDriversRequest: (state, action) => {
-      const {driver_id, status} = action.payload;
-      const existingVehicleList = JSON.parse(
-        JSON.stringify(state.rideRequests.vehicles),
-      );
-      existingVehicleList.map(item => {
-        _.map(item.drivers, item => {
-          if (item.driver_id === driver_id) {
-            item.status = status;
+      const { driver_id, status } = action.payload;
+
+      if (status === RideStatus.ACCEPTED) {
+        state.activeRequest = action.payload
+        state.rideRequests = []
+      } else if (status === RideStatus.USER_CANCELLED || status === RideStatus.DRIVER_CANCELLED || status === RideStatus.COMPLETED) {
+        return Object.assign(state, { ...initialState })
+      } else {
+        const vehicles = state.rideRequests?.vehicles;
+        if (vehicles.length) {
+          const updatedData = _.cloneDeep(vehicles); // Ensure you're working with a copy
+          const updateDrivers = updateStatusByDriverId(updatedData, driver_id, status);
+          if (updateDrivers.length) {
+            state.rideRequests.vehicles = updateDrivers;
           }
-        });
-      });
-      state.rideRequests.vehicles = existingVehicleList;
+        }
+      }
     },
-    // Add other actions and reducers
   },
 });
 
 export const {
-  sendRequest,
-  cancelRequest,
-  acceptRequest,
   setRideRequest,
   updateDriversRequest,
-  setActiveRide,
-  cancelActiveRide,
+  setActiveRequest,
+  cancelActiveRequest,
 } = userSlice.actions;
 
 export default userSlice.reducer;

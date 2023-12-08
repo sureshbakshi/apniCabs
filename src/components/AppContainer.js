@@ -1,11 +1,11 @@
-import React, {Component, useEffect, useState} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import {getConfig, isAvailable, isDriver, showErrorMessage} from '../util';
+import { getConfig, _isDriverOnline, isDriver, showErrorMessage } from '../util';
 import axios from 'axios';
 import filter from 'lodash/filter';
-import {useUpdateDriverLocationMutation} from '../slices/apiSlice';
-import {useSelector} from 'react-redux';
+import { useUpdateDriverLocationMutation } from '../slices/apiSlice';
+import { useSelector } from 'react-redux';
 let watchId = undefined;
 
 function AppContainer(WrappedComponent) {
@@ -23,15 +23,15 @@ function AppContainer(WrappedComponent) {
     const driver = isDriver();
 
     useEffect(() => {
-        if (driver && location.latitude  && isAvailable()) {
-          let payload = {...location};
-          payload.driver_id = profile.id;
-          payload.status = '';
-          updateDriverLocation(payload)
-            .unwrap()
-            .then(res => console.log(res))
-            .then(err => console.log(err));
-        }
+      if (driver && location.latitude && _isDriverOnline()) {
+        let payload = { ...location };
+        payload.driver_id = profile.id;
+        payload.status = '';
+        updateDriverLocation(payload)
+          .unwrap()
+          .then(res => console.log(res))
+          .then(err => console.log(err));
+      }
     }, [location.latitude]);
 
     const checkAndroidPermissions = async () => {
@@ -57,14 +57,14 @@ function AppContainer(WrappedComponent) {
     const getLocation = async coords => {
       try {
         const apiKey = getConfig().GOOGLE_PLACES_KEY;
-        const {latitude, longitude} = coords;
+        const { latitude, longitude } = coords;
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
         const {
-          data: {status, results},
+          data: { status, results },
         } = await axios.get(url);
         if (status == 'OK') {
-          const {address_components, formatted_address} = results[0] || {};
+          const { address_components, formatted_address } = results[0] || {};
           const address = filter(address_components, {
             types: ['locality'],
           });

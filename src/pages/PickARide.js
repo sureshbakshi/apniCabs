@@ -16,7 +16,7 @@ import {
 } from '../hooks/useDriverSocketEvents';
 import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
-import { isAvailable } from '../util';
+import { _isDriverOnline  } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -113,9 +113,9 @@ export const PickARide = () => {
   const dispatch = useDispatch()
   const { isOnline: status, rideRequests } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const [ isOnline, setToggleSwitch] = useState(status === DriverAvailableStatus.ONLINE)
-  const [ updateDriverStatus ] = useUpdateDriverStatusMutation();
-  const { data: activeRideDetails } = useDriverActiveRideQuery();
+  const [isOnline, setToggleSwitch] = useState(status === DriverAvailableStatus.ONLINE)
+  const [updateDriverStatus] = useUpdateDriverStatusMutation();
+  const { data: activeRideDetails } = useDriverActiveRideQuery(undefined, { skip: !isOnline });
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
   const toggleSwitch = val => {
@@ -123,7 +123,7 @@ export const PickARide = () => {
   }
 
   useEffect(() => {
-    updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => { 
+    updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
       dispatch(setDriverStatus(res))
     }).catch(() => setToggleSwitch(!val))
   }, [isOnline]);
@@ -160,7 +160,7 @@ export const PickARide = () => {
             </ScrollView>
           ) : null}
         </View>
-      ): null}
+      ) : null}
     </View>
   );
 };

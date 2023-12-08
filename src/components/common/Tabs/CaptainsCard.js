@@ -1,29 +1,32 @@
-import React, {useEffect} from 'react';
-import {View, Pressable} from 'react-native';
-import {ImageView, Text} from '..';
+import React, { useEffect } from 'react';
+import { View, Pressable } from 'react-native';
+import { ImageView, Text } from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import styles from '../../../styles/MyRidePageStyles';
 import images from '../../../util/images';
 import Timeline from '../timeline/Timeline';
-import {navigate} from '../../../util/navigationService';
+import { navigate } from '../../../util/navigationService';
 import _ from 'lodash';
-import {ROUTES_NAMES} from '../../../constants';
-import {useSendRequestMutation} from '../../../slices/apiSlice';
-import {useDispatch, useSelector} from 'react-redux';
-import {updateDriversRequest} from '../../../slices/userSlice';
+import { ROUTES_NAMES, RideStatus } from '../../../constants';
+import { useSendRequestMutation } from '../../../slices/apiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateDriversRequest } from '../../../slices/userSlice';
+import { showErrorMessage } from '../../../util';
 
 const Card = item => {
-  const {request_id} = useSelector(state => state.user?.rideRequests);
+  const { request_id } = useSelector(state => state.user?.rideRequests);
 
   const dispatch = useDispatch();
-  const [sendRequest, {data: requestData, error: requestError, isLoading}] =
+  const [sendRequest, { data: requestData, error: requestError, isLoading }] =
     useSendRequestMutation();
-  const handleNavigate = item => {
-    // navigate(ROUTES_NAMES.activeRide)
-    // dispatch sendrequest with request_id and vehicle_id
-    let payload = {request_id, driver_id: item.driver_id};
-    console.log(payload);
-    sendRequest(payload);
+  const handleSendRequest = item => {
+    if (!item.status) {
+      let payload = { request_id, driver_id: item.driver_id,fare: item.price };
+      sendRequest(payload);
+    }else{
+      showErrorMessage('Request already sent.')
+    }
+
   };
   useEffect(() => {
     if (requestError) {
@@ -54,7 +57,7 @@ const Card = item => {
           <Timeline data={[item.from, item.to]} />
         </View>
         <View style={FindRideStyles.right}>
-          <Text style={[FindRideStyles.name, {alignSelf: 'center'}]}>
+          <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
             {'\u20B9'}
             {item.price}
           </Text>
@@ -78,7 +81,7 @@ const Card = item => {
         <View style={FindRideStyles.right}>
           <Pressable
             style={FindRideStyles.button}
-            onPress={() => handleNavigate(item)}>
+            onPress={() => handleSendRequest(item)}>
             <Text style={FindRideStyles.text}>
               {item.status ? item.status : 'Request'}
             </Text>
@@ -88,7 +91,7 @@ const Card = item => {
     </View>
   );
 };
-const CaptainsCard = ({list, keyProp, extraProps}) =>
+const CaptainsCard = ({ list, keyProp, extraProps }) =>
   list.map(item => {
     return (
       <Card

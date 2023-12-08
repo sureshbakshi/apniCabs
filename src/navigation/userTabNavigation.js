@@ -9,7 +9,7 @@ import { AppProvider } from '../context/App.context';
 import useUserSocketEvents from '../hooks/useUserSocketEvents';
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
-  useUserSocketEvents()
+  useUserSocketEvents();
   return (
     <AppProvider>
       <Tab.Navigator

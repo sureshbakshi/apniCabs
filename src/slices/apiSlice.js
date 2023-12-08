@@ -62,7 +62,8 @@ const api_urls = {
   ride: 'ride',
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
-  location: 'location'
+  location: 'location',
+  userActiveRide:'active-rides/user'
 };
 
 export const apiSlice = createApi({
@@ -130,6 +131,14 @@ export const apiSlice = createApi({
       query: () => ({
         method: 'GET',
         url: api_path.request(api_urls.driverActiveRide),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    userActiveRide: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.request(api_urls.userActiveRide),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -209,5 +218,6 @@ export const {
   useDriverActiveRideQuery,
   useRideRequestMutation,
   useCompleteRideRequestMutation,
-  useCancelAcceptedRequestMutation
+  useCancelAcceptedRequestMutation,
+  useUserActiveRideQuery
 } = apiSlice;

@@ -65,7 +65,7 @@ export const activeReq = {
     "created_at": null,
     "updated_at": null,
     "deleted_at": null,
-    "fare": null,
+    "fare": 123,
     "driver": {
         "id": "2873d04e-be62-4571-83ff-a4e2a410b113",
         "name": "Jhon",

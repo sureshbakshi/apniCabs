@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, TextInput, Pressable, ImageBackground } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
@@ -8,9 +8,13 @@ import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
 import { COLORS, ROUTES_NAMES } from '../constants';
+import { useUserActiveRideQuery } from '../slices/apiSlice';
+import { useDispatch } from 'react-redux';
+import { setActiveRequest } from '../slices/userSlice';
 
 const SearchRidePage = () => {
-
+  const { data: activeRideDetails } = useUserActiveRideQuery();
+  const dispatch = useDispatch();
   const { location, updateLocation, getDistance, setNoOfSeats, noOfSeats } = useAppContext()
   const searchHandler = async () => {
     const { distance, duration } = await getDistance()
@@ -21,6 +25,12 @@ const SearchRidePage = () => {
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)
   }
+
+  useEffect(() => {
+    if (activeRideDetails) {
+      dispatch(setActiveRequest(activeRideDetails))
+    }
+  }, [activeRideDetails])
 
 
 

@@ -6,7 +6,7 @@ import { activeReq, requestObj } from '../mock/activeRequest';
 
 const initialState = {
   rideRequests: requestObj,
-  activeRequest: activeReq,
+  activeRequest: null,
   activeRideId: activeReq.id,
   isOnline: false
 }

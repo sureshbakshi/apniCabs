@@ -1,16 +1,18 @@
 import { useEffect } from "react"
-import driverSocket, { connectSocket, disconnectSocket, onActiveRide, onCanceActiveRide } from "../sockets/userSockets"
+import { connectSocket, disconnectSocket } from "../sockets/userSockets"
 import { useDispatch } from "react-redux"
 import { onRequestUpdate } from "../sockets/userSockets"
-import { cancelActiveRide, setActiveRide, updateDriversRequest } from "../slices/userSlice"
+import { updateDriversRequest } from "../slices/userSlice"
+import { _isLoggedIn } from "../util"
 
 export default (() => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const isLoggedIn = _isLoggedIn();
     useEffect(() => {
-        connectSocket()
-        onRequestUpdate((res)=> dispatch(updateDriversRequest(res)))
-        onActiveRide((res)=> dispatch(setActiveRide(res)))
-        onCanceActiveRide((res)=> dispatch(cancelActiveRide(res)))
+        if (isLoggedIn) {
+            connectSocket()
+            onRequestUpdate((res) => dispatch(updateDriversRequest(res)))
+        }
         return () => disconnectSocket()
-    }, [])
+    }, [isLoggedIn])
 })

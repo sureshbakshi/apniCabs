@@ -124,6 +124,19 @@ const MyRideStyles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 100
+  },
+  end:{
+    alignSelf:'flex-end',
+    backgroundColor: COLORS.brand_blue,
+    paddingVertical:5,
+    paddingHorizontal:15,
+    borderRadius:20,
+    color:COLORS.white,
+    fontWeight:'bold',
+    fontSize:14,
+    position:'absolute',
+    top:-10,
+    height:30
   }
 });
 export default MyRideStyles;

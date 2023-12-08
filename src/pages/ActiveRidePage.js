@@ -14,7 +14,7 @@ import { useDriverEvents } from '../hooks/useDriverSocketEvents';
 import requestList from '../mock/rideRequests';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus } from '../slices/driverSlice';
-import { setActiveRide } from '../slices/userSlice';
+import { cancelActiveRequest, setActiveRide } from '../slices/userSlice';
 import { isDriver, isUser } from '../util';
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
@@ -22,7 +22,7 @@ const intialState = [
   { message: 'My reason is not listed', id: 3 },
 ];
 
-const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
+const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogged }) => {
   const dispatch = useDispatch()
   const [message, setMessage] = useState(intialState);
   const [selectedMessage, setSelectedMessage] = useState({});
@@ -42,12 +42,13 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
     if (selectedMessage.id) {
       cancelAcceptedRequest({
         "request_id": activeReq.id,
-        "status": RideStatus.DRIVER_CANCELLED,
+        "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message
       }).unwrap().then((res) => {
         console.log('cancelAcceptedRequest', res);
         closeModal();
-        dispatch(updateRideStatus(res))
+        dispatch(isDriverLogged ? updateRideStatus(res) : cancelActiveRequest(res))
+
       }).then((err) => {
         console.log(err)
       })
@@ -68,7 +69,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
         <View style={ActiveRidePageStyles.modalView}>
           <View>
             <Text style={[ActiveRidePageStyles.modalText]}>
-              Reasons to cancel
+              Reason to Cancel
             </Text>
             <View style={ActiveRidePageStyles.content}>
               {message.map(item => {
@@ -131,7 +132,7 @@ const VehicleCard = ({ activeRequest, details, avatar }) => {
   const avatarUri = get(activeRequest, avatar, null)
 
   return (
-    <View style={FindRideStyles.card} key={activeRequest.id}>
+    <View style={FindRideStyles.card}>
       <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
@@ -144,7 +145,7 @@ const VehicleCard = ({ activeRequest, details, avatar }) => {
           <View style={FindRideStyles.middle}>
             {details.map((item) => {
               const value = Array.isArray(item.key) ? item.key.map(key => get(activeRequest, key, 'NA')).join(' | ') : get(activeRequest, item.key, null)
-              return <Text style={[FindRideStyles.name, item.props?.style]}>{value}</Text>
+              return <Text key={item.key} style={[FindRideStyles.name, item.props?.style]}>{value}</Text>
             })}
           </View>
         </View>
@@ -153,18 +154,38 @@ const VehicleCard = ({ activeRequest, details, avatar }) => {
   );
 };
 
+const cancelRide = (setModalVisible) => {
+  return <Pressable
+    onPress={() => setModalVisible(true)}
+    style={[
+      FindRideStyles.button,
+      { backgroundColor: COLORS.brand_yellow },
+    ]}>
+    <Text
+      style={[
+        FindRideStyles.text,
+        { fontWeight: 'bold', color: COLORS.black },
+      ]}>
+      {'Cancel Ride'}
+    </Text>
+  </Pressable>
+}
 
-const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
+const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged }) => {
+
   const dispatch = useDispatch()
-
-  const fromLocation = {
-    Long: currentLocation.longitude,
-    Lat: currentLocation.latitude,
-    City: currentLocation.city,
-    location: currentLocation.address
+  let fromLocation = {}
+  if (currentLocation) {
+    fromLocation = {
+      Long: currentLocation.longitude,
+      Lat: currentLocation.latitude,
+      City: currentLocation.city,
+      location: currentLocation.address
+    }
   }
+
   const [otp, setOtp] = useState(activeRequest.code);
-  const { activeRideId } = useSelector((state) => state.driver)
+  const { activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user)
 
   const [rideRequest, { data: rideRequestData, error: rideRequestError, rideRequestDataLoading }] =
     useRideRequestMutation();
@@ -203,7 +224,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
   }
 
   return (
-    <View style={FindRideStyles.card} key={activeRequest.id}>
+    <View style={FindRideStyles.card}>
       <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
@@ -246,40 +267,10 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
           </View>
         </View>
       </View>
-      {activeRideId ? <View style={FindRideStyles.cardBottom}>
-        <Pressable
-          onPress={() => handleCompleRide()}
-          style={[
-            FindRideStyles.button,
-            { backgroundColor: COLORS.bg_primary },
-          ]}>
-          <Text
-            style={[
-              FindRideStyles.text,
-              { fontWeight: 'bold', color: COLORS.black },
-            ]}>
-            {'Completed Ride'}
-          </Text>
-        </Pressable>
-
-      </View> : <View>
-        <View>
-          <TextInput
-            keyboardType='numeric'
-            placeholder="Enter Otp here"
-            // autoComplete={'sms-otp'}
-            onChangeText={newText => setOtp(newText)}
-            value={otp}
-            autoFocus
-            minLength={4}
-            maxLength={4}
-            style={FindRideStyles.textInputPickup}
-          />
-        </View>
-        <View style={FindRideStyles.cardBottom}>
-
+      {isDriverLogged ? <View>
+        {activeRideId ? <View style={FindRideStyles.cardBottom}>
           <Pressable
-            onPress={() => handleSubmitOtp()}
+            onPress={() => handleCompleRide()}
             style={[
               FindRideStyles.button,
               { backgroundColor: COLORS.bg_primary },
@@ -289,25 +280,44 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
                 FindRideStyles.text,
                 { fontWeight: 'bold', color: COLORS.black },
               ]}>
-              {'Submit'}
+              {'Completed Ride'}
             </Text>
           </Pressable>
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            style={[
-              FindRideStyles.button,
-              { backgroundColor: COLORS.brand_yellow },
-            ]}>
-            <Text
+
+        </View> : <View>
+          <View>
+            <TextInput
+              keyboardType='numeric'
+              placeholder="Enter Otp here"
+              // autoComplete={'sms-otp'}
+              onChangeText={newText => setOtp(newText)}
+              value={otp}
+              autoFocus
+              minLength={4}
+              maxLength={4}
+              style={FindRideStyles.textInputPickup}
+            />
+          </View>
+          <View style={FindRideStyles.cardBottom}>
+
+            <Pressable
+              onPress={() => handleSubmitOtp()}
               style={[
-                FindRideStyles.text,
-                { fontWeight: 'bold', color: COLORS.black },
+                FindRideStyles.button,
+                { backgroundColor: COLORS.bg_primary },
               ]}>
-              {'Cancel Ride'}
-            </Text>
-          </Pressable>
-        </View>
-      </View>}
+              <Text
+                style={[
+                  FindRideStyles.text,
+                  { fontWeight: 'bold', color: COLORS.black },
+                ]}>
+                {'Submit'}
+              </Text>
+            </Pressable>
+            {cancelRide(setModalVisible)}
+
+          </View>
+        </View>}</View> : <View>{!activeRideId ? cancelRide(setModalVisible) : null}</View>}
 
     </View>
   );
@@ -315,8 +325,9 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { activeRequest } = useSelector((state) => state.driver);
   const isDriverLogged = isDriver();
+
+  const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 
   const Cards = ({ title, children }) => {
     return <View>
@@ -334,15 +345,17 @@ const ActiveRidePage = ({ currentLocation }) => {
           <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
         </Cards> :
           <Cards title={'Vehicle Details'}>
+            <Text style={styles.end}>OTP: {activeRequest.code}</Text>
             <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
           </Cards>}
         <Cards title={'Ride Details'}>
-          <Card activeRequest={activeRequest} currentLocation={currentLocation} setModalVisible={setModalVisible} />
+          <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={currentLocation} setModalVisible={setModalVisible} />
         </Cards>
         <Modalpopup
           modalVisible={modalVisible}
           handleModalVisible={setModalVisible}
           activeReq={activeRequest}
+          isDriverLogged={isDriverLogged}
         />
       </View>
     </View>

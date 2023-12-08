@@ -1,3 +1,4 @@
+import { store } from '../store';
 import userSocket from './socketConfig';
 
 const SOCKET_EVENTS = {
@@ -6,7 +7,7 @@ const SOCKET_EVENTS = {
   accept_request: 'accept_request',
   decline_request: 'decline_request',
   cancel_active_ride: 'cancel_active_ride',
-  request_status: 'request_status'
+  request_status: 'useRequestUpdate'
 }
 
 // listeners
@@ -17,21 +18,10 @@ export const onRequestUpdate = (cb) => {
   });
 };
 
-export const onActiveRide = (cb) => {
-  userSocket.on(SOCKET_EVENTS.active_ride, (res) =>{
-    cb(res)
-  })
-}
-
-export const onCanceActiveRide = (cb) => {
-  userSocket.on(SOCKET_EVENTS.cancel_active_ride, (res) =>{
-    cb(res)
-  })
-}
-
 // emitters
 
 export const connectSocket = () => {
+  console.log(`============= user socket connection ==========`)
   userSocket.connect()
 }
 
@@ -40,6 +30,15 @@ export const disconnectSocket = () => {
   userSocket.removeAllListeners()
 }
 
+userSocket.on('connect', () => {
+  const authStore = store?.getState().auth
+  console.log(store?.getState())
+  const id = authStore?.userInfo?.id
+  if (id){
+    console.log(`============= addDevice ==========`)
+    userSocket.emit('addDevice', id)
+  }
+})
 
 
 // Add other socket events as needed
