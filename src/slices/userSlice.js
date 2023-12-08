@@ -17,6 +17,7 @@ const intialState = {
   activeRideId: null,
   rideRequests: null,
   activeRequest: null,
+  isSocketConnected:false
 }
 const userSlice = createSlice({
   name: 'user',
@@ -24,16 +25,16 @@ const userSlice = createSlice({
   reducers: {
 
     setRideRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
       state.rideRequests = action.payload;
     },
     setActiveRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
       state.activeRequest = action.payload.data;
     },
     cancelActiveRequest: (state, action) => {
-      // Handle accepting a request and update activeRide
       return Object.assign(state, { ...initialState })
+    },
+    updatedSocketConnectionStatus: (state, action) => {
+      state.isSocketConnected = action.payload;
     },
     updateDriversRequest: (state, action) => {
       const { driver_id, status } = action.payload;
@@ -62,6 +63,7 @@ export const {
   updateDriversRequest,
   setActiveRequest,
   cancelActiveRequest,
+  updatedSocketConnectionStatus
 } = userSlice.actions;
 
 export default userSlice.reducer;

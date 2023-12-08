@@ -30,15 +30,14 @@ export const disconnectSocket = () => {
   userSocket.removeAllListeners()
 }
 
-userSocket.on('connect', () => {
-  const authStore = store?.getState().auth
-  console.log(store?.getState())
-  const id = authStore?.userInfo?.id
-  if (id){
-    console.log(`============= addDevice ==========`)
-    userSocket.emit('addDevice', id)
-  }
-})
+// userSocket.on('connect', () => {
+//   const authStore = store?.getState().auth
+//   const id = authStore?.userInfo?.id
+//   if (id){
+//     console.log(`============= addDevice ==========`)
+//     userSocket.emit('addDevice', id)
+//   }
+// })
 
 
 // Add other socket events as needed

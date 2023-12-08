@@ -9,10 +9,12 @@ import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useUserActiveRideQuery } from '../slices/apiSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setActiveRequest } from '../slices/userSlice';
+import styles from '../components/common/imageView/ImageView.styles';
 
 const SearchRidePage = () => {
+  const { isSocketConnected } = useSelector((state) => state.user)
   const { data: activeRideDetails } = useUserActiveRideQuery();
   const dispatch = useDispatch();
   const { location, updateLocation, getDistance, setNoOfSeats, noOfSeats } = useAppContext()
@@ -41,6 +43,7 @@ const SearchRidePage = () => {
       style={SearchRideStyles.image}>
       <View style={SearchRideStyles.container}>
         <View style={SearchRideStyles.section}>
+          <Text style={{ backgroundColor: 'red' }}>Socket Id:{isSocketConnected}</Text>
           <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
             <Timeline data={['', '']} height={25} />
           </View>

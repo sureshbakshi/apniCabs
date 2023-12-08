@@ -110,6 +110,7 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
+  const { isSocketConnected } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const { isOnline: status, rideRequests } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
@@ -151,6 +152,8 @@ export const PickARide = () => {
           value={Boolean(isOnline)}
         />
       </View>
+      <Text style={{ backgroundColor: 'red' }}>Socket Id:{isSocketConnected}</Text>
+
 
       {isOnline ? (
         <View style={FindRideStyles.section}>

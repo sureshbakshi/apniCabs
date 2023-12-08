@@ -29,17 +29,17 @@ export const connectSocket = () => {
 
 export const disconnectSocket = () => {
   driverSocket.disconnect()
-  driverSocket.removeAllListeners()
+  // driverSocket.removeAllListeners()
 }
 
-driverSocket.on('connect', () => {
-  const authStore = store.getState().auth
-  const id = authStore?.driverInfo?.id
-  if (id){
-    console.log(`============= addDevice ==========`)
-    driverSocket.emit('addDevice', id)
-  }
-})
+// driverSocket.on('connect', () => {
+//   const authStore = store.getState().auth
+//   const id = authStore?.driverInfo?.id
+//   if (id){
+//     console.log(`============= addDevice ==========`)
+//     driverSocket.emit('addDevice', id)
+//   }
+// })
 
 
 // Add other socket events as needed
