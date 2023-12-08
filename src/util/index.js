@@ -4,6 +4,7 @@ import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { DriverAvailableStatus, USER_ROLES } from '../constants';
+import { store } from '../store';
 
 
 const getRoles = () => {
@@ -67,7 +68,10 @@ export const Capitalize = (str) =>{
   return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-export const isAvailable = (driverInfo) => true || driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE
+export const isAvailable = () => {
+  const driverInfo =  store.getState().auth
+  return Boolean(driverInfo?.driver_detail?.is_available === DriverAvailableStatus.ONLINE)
+} 
 export const fakeLogin = ()=> {
     axios
     .post(

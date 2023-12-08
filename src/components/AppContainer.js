@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import {getConfig, isDriver, showErrorMessage} from '../util';
+import {getConfig, isAvailable, isDriver, showErrorMessage} from '../util';
 import axios from 'axios';
 import filter from 'lodash/filter';
 import {useUpdateDriverLocationMutation} from '../slices/apiSlice';
@@ -23,8 +23,7 @@ function AppContainer(WrappedComponent) {
     const driver = isDriver();
 
     useEffect(() => {
-      if (driver) {
-        if (location.latitude) {
+        if (driver && location.latitude  && isAvailable()) {
           let payload = {...location};
           payload.driver_id = profile.id;
           payload.status = '';
@@ -33,7 +32,6 @@ function AppContainer(WrappedComponent) {
             .then(res => console.log(res))
             .then(err => console.log(err));
         }
-      }
     }, [location.latitude]);
 
     const checkAndroidPermissions = async () => {

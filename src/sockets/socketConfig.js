@@ -23,12 +23,12 @@ socket.on('disconnect', err => console.log({ 'disconnect': err }))
 socket.on('*', function (packet) {
   console.log({ packet })
 });
-socket.on('connect', () => {
-  const engine = socket.io.engine;
-  engine.on("packet", ({ type, data }) => {
-    // called for each packet received
-    console.log('received packet',{ type, data })
-  });
-})
+// socket.on('connect', () => {
+//   const engine = socket.io.engine;
+//   engine.on("packet", ({ type, data }) => {
+//     // called for each packet received
+//     console.log('received packet',{ type, data })
+//   });
+// })
 
 export default socket
