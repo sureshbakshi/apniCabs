@@ -99,7 +99,7 @@ export const DriverAvailableStatus = {
   OFFLINE: 'OFFLINE',
   ONLINE: 'ONLINE',
   ONRIDE: 'ON_RIDE',
-  ACCEPTED:'ACCEPTED'
+  ACCEPTED: 'ACCEPTED'
 }
 
 export const RequestStatus = {
@@ -179,3 +179,27 @@ export const VEHICLE_TYPES = {
   auto: 'golf-cart',//rv-truck,truck
   bike: 'bike'
 }
+
+export const VEHICLE_INFORMATION = [{
+  key: 'driver.vehicle.registration_number',
+  props: {
+    style: { fontWeight: 'bold' }
+  }
+}, {
+  key: ['driver.vehicle.model', 'driver.vehicle.colour'],
+  props: {
+
+  }
+}]
+
+export const USER_INFORMATION = [{
+  key: 'user.name',
+  props: {
+    style: { fontWeight: 'bold' }
+  }
+}, {
+  key: ['user.phone'],
+  props: {
+
+  }
+}]

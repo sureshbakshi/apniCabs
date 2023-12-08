@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Pressable, Modal, TextInput } from 'react-native';
-import _ from 'lodash';
+import { get } from 'lodash';
 import { Text } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { ImageView, Icon } from '../components/common';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import { COLORS, RideStatus } from '../constants';
+import { COLORS, RideStatus, USER_INFORMATION, VEHICLE_INFORMATION } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDriverEvents } from '../hooks/useDriverSocketEvents';
@@ -15,7 +15,7 @@ import requestList from '../mock/rideRequests';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus } from '../slices/driverSlice';
 import { setActiveRide } from '../slices/userSlice';
-
+import { isDriver, isUser } from '../util';
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
   { message: 'Unable to contact driver', id: 2 },
@@ -45,7 +45,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
         "status": RideStatus.DRIVER_CANCELLED,
         "reason": selectedMessage.message
       }).unwrap().then((res) => {
-        console.log('cancelAcceptedRequest',res);
+        console.log('cancelAcceptedRequest', res);
         closeModal();
         dispatch(updateRideStatus(res))
       }).then((err) => {
@@ -127,6 +127,33 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq }) => {
   );
 };
 
+const VehicleCard = ({ activeRequest, details, avatar }) => {
+  const avatarUri = get(activeRequest, avatar, null)
+
+  return (
+    <View style={FindRideStyles.card} key={activeRequest.id}>
+      <View style={{ padding: 10 }}>
+        <View style={FindRideStyles.cardtop}>
+          <View style={FindRideStyles.left}>
+            <ImageView
+              source={avatarUri ? { uri: avatarUri } : images[`captain0`]
+              }
+              style={[styles.avatar]}
+            />
+          </View>
+          <View style={FindRideStyles.middle}>
+            {details.map((item) => {
+              const value = Array.isArray(item.key) ? item.key.map(key => get(activeRequest, key, 'NA')).join(' | ') : get(activeRequest, item.key, null)
+              return <Text style={[FindRideStyles.name, item.props?.style]}>{value}</Text>
+            })}
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+
 const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
   const dispatch = useDispatch()
 
@@ -182,39 +209,39 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
           <View style={FindRideStyles.left}>
             <ImageView
               source={
-                images[`captain${activeRequest.profile_avatar}`] ||
+                images[`captain${activeRequest?.driver?.avatar}`] ||
                 images[`captain0`]
               }
               style={[styles.avatar]}
             />
           </View>
           <View style={FindRideStyles.middle}>
-            <Text style={FindRideStyles.name}>{activeRequest.driver_name}</Text>
+            <Text style={[FindRideStyles.name, styles.bold]}>{activeRequest?.driver?.name}</Text>
             <Timeline
               data={[
-                'Kachiguda Railway Station, Nimboliadda, Kachiguda, Hyderabad, Telangana',
-                'Lingampally, Telangana',
+                activeRequest.from_location,
+                activeRequest.to_location,
               ]}
             />
           </View>
           <View style={FindRideStyles.right}>
             <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
-              {activeRequest.price}
+              {activeRequest.fare}
             </Text>
           </View>
         </View>
         <View style={FindRideStyles.cardBottom}>
           <View style={FindRideStyles.left}>
-            {activeRequest.distance_away && (
+            {activeRequest.duration && (
               <Text style={[styles.text, styles.bold]}>
-                {activeRequest.distance_away} km away
+                Duration: {activeRequest.duration}
               </Text>
             )}
           </View>
           <View style={FindRideStyles.right}>
             <Text style={[styles.text, styles.bold]}>
-              Distance: {activeRequest.total_distance} km
+              Distance: {activeRequest.distance} km
             </Text>
           </View>
         </View>
@@ -288,12 +315,30 @@ const Card = ({ activeRequest, currentLocation, setModalVisible }) => {
 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { activeRequest } = useSelector((state) => state.driver)
+  const { activeRequest } = useSelector((state) => state.driver);
+  const isDriverLogged = isDriver();
+
+  const Cards = ({ title, children }) => {
+    return <View>
+      <Text style={[styles.name, styles.primaryColor, styles.bold]}>
+        {title}:
+      </Text>
+      {children}
+    </View>
+  }
 
   return (
     <View style={[FindRideStyles.container]}>
       <View style={ActiveRidePageStyles.cardBottom}>
-        <Card activeRequest={activeRequest} currentLocation={currentLocation} setModalVisible={setModalVisible} />
+        {isDriverLogged ? <Cards title={'User Details'}>
+          <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
+        </Cards> :
+          <Cards title={'Vehicle Details'}>
+            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
+          </Cards>}
+        <Cards title={'Ride Details'}>
+          <Card activeRequest={activeRequest} currentLocation={currentLocation} setModalVisible={setModalVisible} />
+        </Cards>
         <Modalpopup
           modalVisible={modalVisible}
           handleModalVisible={setModalVisible}
