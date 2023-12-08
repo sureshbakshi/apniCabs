@@ -8,9 +8,10 @@ import { setDriverStatus } from "../slices/driverSlice"
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        if (!isEmpty(details))
+        if (!isEmpty(details)) {
             dispatch(setDriverDetails(details))
             dispatch(setDriverStatus(details))
+        }
     }, [details])
 }
 

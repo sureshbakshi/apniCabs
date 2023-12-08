@@ -7,7 +7,7 @@ import { activeReq, requestObj } from '../mock/activeRequest';
 const initialState = {
   rideRequests: requestObj,
   activeRequest: activeReq,
-  activeRideId: null,
+  activeRideId: activeReq.id,
   isOnline: false
 }
 
@@ -37,7 +37,7 @@ const driverSlice = createSlice({
     },
     setDriverStatus: (state, action) => {
       const status = action.payload?.is_available
-      if (status === DriverAvailableStatus.ONLINE) {
+      if (status) {
         state.isOnline = status;
       }
     },
