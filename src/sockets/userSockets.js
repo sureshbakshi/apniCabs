@@ -27,7 +27,7 @@ export const connectSocket = () => {
 
 export const disconnectSocket = () => {
   userSocket.disconnect()
-  userSocket.removeAllListeners()
+  // userSocket.removeAllListeners()
 }
 
 // userSocket.on('connect', () => {

@@ -11,29 +11,28 @@ import { store } from "../store"
 
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.user)
+    const { userInfo } = useSelector((state) => state.auth)
+
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
     useEffect(() => {
         if (isLoggedIn) {
             connectSocket()
-            onRequestUpdate((res) => dispatch(updateDriversRequest(res)))
+            onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
         }
         return () => disconnectSocket()
     }, [isLoggedIn])
 
     useEffect(() => {
-        if (!isSocketConnected) {
             userSocket.on('connect', () => {
-                const authStore = store?.getState().auth
-                const id = authStore?.userInfo?.id
-                if (id) {
+                console.log('onconnect',userInfo?.id)
+                if (userInfo?.id) {
                     console.log(`============= addDevice ==========`)
-                    userSocket.emit('addDevice', id)
-                    dispatch(updatedSocketConnectionStatus(id))
+                    userSocket.emit('addDevice', userInfo?.id)
+                    dispatch(updatedSocketConnectionStatus(userInfo?.id))
                 }
             })
-        }
         userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))
 
-    }, [isSocketConnected])
+    })
 })

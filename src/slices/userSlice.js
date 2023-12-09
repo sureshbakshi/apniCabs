@@ -28,7 +28,7 @@ const userSlice = createSlice({
       state.rideRequests = action.payload;
     },
     setActiveRequest: (state, action) => {
-      state.activeRequest = action.payload.data;
+      state.activeRequest = action.payload;
     },
     cancelActiveRequest: (state, action) => {
       return Object.assign(state, { ...initialState })
