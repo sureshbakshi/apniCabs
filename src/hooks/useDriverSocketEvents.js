@@ -18,7 +18,6 @@ export const useDriverEvents = () => {
 
 export default (() => {
     const dispatch = useDispatch();
-    const { isSocketConnected } = useSelector((state) => state.user)
     const { userInfo } = useSelector((state) => state.auth)
 
     const { updateRideRequests } = useDriverEvents();

@@ -31,7 +31,7 @@ const userSlice = createSlice({
       state.activeRequest = action.payload;
     },
     cancelActiveRequest: (state, action) => {
-      return Object.assign(state, { ...initialState })
+      return Object.assign(state, { ...intialState })
     },
     updatedSocketConnectionStatus: (state, action) => {
       state.isSocketConnected = action.payload;

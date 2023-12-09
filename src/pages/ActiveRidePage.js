@@ -43,7 +43,8 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
       cancelAcceptedRequest({
         "request_id": activeReq.id,
         "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
-        "reason": selectedMessage.message
+        "reason": selectedMessage.message,
+        "driver_id": activeReq.driver_id
       }).unwrap().then((res) => {
         console.log('cancelAcceptedRequest', res);
         closeModal();
