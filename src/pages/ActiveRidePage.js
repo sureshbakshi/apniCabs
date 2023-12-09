@@ -177,8 +177,8 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
   let fromLocation = {}
   if (currentLocation) {
     fromLocation = {
-      Long: currentLocation.longitude,
-      Lat: currentLocation.latitude,
+      Long: currentLocation.longitude+'',
+      Lat: currentLocation.latitude+'',
       City: currentLocation.city,
       location: currentLocation.address
     }

@@ -47,5 +47,5 @@ export default (() => {
             })
         driverSocket.on('disconnect', err => { console.log('disconnected',err); dispatch(updatedSocketConnectionStatus(null)) })
 
-    }, [isSocketConnected])
+    })
 })

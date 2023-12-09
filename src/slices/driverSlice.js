@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
 import { DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { activeReq, requestObj } from '../mock/activeRequest';
 
 
 const initialState = {
-  rideRequests: requestObj,
+  rideRequests: [],
   activeRequest: null,
-  activeRideId: activeReq.id,
+  activeRideId: null,
   isOnline: false
 }
 
@@ -17,12 +17,14 @@ const driverSlice = createSlice({
   reducers: {
     updateRideRequest: (state, action) => {
       const requestObj = action.payload
-      if (requestObj.status === RideStatus.ACCEPTED) {
+      if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
         state.activeRequest = requestObj;
-        // state.activeRideId = requestObj?.active_request_id;
         state.rideRequests = []
+        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : state.activeRideId
       } else {
-        state.rideRequests = state.rideRequests.filter((request) => requestObj.vehicle_id !== request.vehicle_id)
+        
+        console.log(current(state.rideRequests))
+        state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.id)
       }
     },
     setActiveRide: (state, action) => {
