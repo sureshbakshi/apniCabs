@@ -1,16 +1,25 @@
 import { useEffect } from "react"
 import driverSocket, { connectSocket, disconnectSocket, onGetRideRequests } from "../sockets/driverSockets"
 import { useDispatch, useSelector } from "react-redux"
-import { setRideRequest } from "../slices/driverSlice"
+import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isDriverOnline, _isLoggedIn } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/userSlice"
-import { DriverAvailableStatus } from "../constants"
+import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
 
     const updateRideRequests = (request) => {
-        dispatch(setRideRequest(request?.data))
+        const {status} = request?.data || {}
+        if(status) {
+            if (status === RideStatus.REQUESTED) {
+                dispatch(setRideRequest(request?.data))
+            } else if (ClearRideStatus.includes(status)) {
+                dispatch(updateRideStatus(request?.data))
+            } else {
+                dispatch(updateRideRequest(request?.data))
+            }
+        }
     }
 
     return { updateRideRequests }
@@ -23,7 +32,7 @@ export default (() => {
     const { updateRideRequests } = useDriverEvents();
     const { isOnline } = useSelector((state) => state.driver)
 
-    const isDriverOnline = isOnline === DriverAvailableStatus.ONLINE;
+    const isDriverOnline = isOnline !== DriverAvailableStatus.OFFLINE;
     const isLoggedIn = _isLoggedIn();
 
     useEffect(() => {
@@ -31,20 +40,20 @@ export default (() => {
         if (isDriverOnline && isLoggedIn) {
             connectSocket()
             onGetRideRequests(updateRideRequests);
-        } else if (!isDriverOnline) {
+        } else if (!isDriverOnline || !isLoggedIn) {
             disconnectSocket();
         }
         return () => disconnectSocket()
     }, [isDriverOnline, isLoggedIn])
 
     useEffect(() => {
-            driverSocket.on('connect', () => {
-                if (userInfo?.id) {
-                    driverSocket.emit('addDevice', userInfo?.id)
-                    dispatch(updatedSocketConnectionStatus(userInfo?.id))
-                }
-            })
-        driverSocket.on('disconnect', err => { console.log('disconnected',err); dispatch(updatedSocketConnectionStatus(null)) })
+        driverSocket.on('connect', () => {
+            if (userInfo?.id) {
+                driverSocket.emit('addDevice', userInfo?.id)
+                dispatch(updatedSocketConnectionStatus(userInfo?.id))
+            }
+        })
+        driverSocket.on('disconnect', err => { console.log('disconnected', err); dispatch(updatedSocketConnectionStatus(null)) })
 
     })
 })

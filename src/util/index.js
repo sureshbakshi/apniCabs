@@ -71,7 +71,7 @@ export const Capitalize = (str) => {
 
 export const _isDriverOnline = () => {
   const { isOnline } = store.getState().driver
-  return Boolean(isOnline === DriverAvailableStatus.ONLINE)
+  return Boolean(isOnline !== DriverAvailableStatus.OFFLINE)
 }
 
 export const _isLoggedIn = () => {

@@ -16,6 +16,7 @@ import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRi
 import { updateRideRequest, updateRideStatus } from '../slices/driverSlice';
 import { cancelActiveRequest, setActiveRide } from '../slices/userSlice';
 import { isDriver, isUser } from '../util';
+import useGetActiveRequests from '../hooks/useGetActiveRequests';
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
   { message: 'Unable to contact driver', id: 2 },
@@ -42,6 +43,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
     if (selectedMessage.id) {
       cancelAcceptedRequest({
         "request_id": activeReq.id,
+        "driver_id": activeReq?.driver?.id,
         "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
         "driver_id": activeReq.driver_id
@@ -160,12 +162,12 @@ const cancelRide = (setModalVisible) => {
     onPress={() => setModalVisible(true)}
     style={[
       FindRideStyles.button,
-      { backgroundColor: COLORS.brand_yellow },
+      { backgroundColor: COLORS.primary },
     ]}>
     <Text
       style={[
         FindRideStyles.text,
-        { fontWeight: 'bold', color: COLORS.black },
+        { fontWeight: 'bold', color: COLORS.white },
       ]}>
       {'Cancel Ride'}
     </Text>
@@ -212,7 +214,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 
   const handleCompleRide = () => {
     let payload = {
-      ride_id: activeRideId,
+      request_id: activeRideId,
       to: fromLocation
     }
     console.log('completeRideRequest', payload)
@@ -274,7 +276,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
             onPress={() => handleCompleRide()}
             style={[
               FindRideStyles.button,
-              { backgroundColor: COLORS.bg_primary },
+              { backgroundColor: COLORS.brand_yellow },
             ]}>
             <Text
               style={[
@@ -300,22 +302,21 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
             />
           </View>
           <View style={FindRideStyles.cardBottom}>
-
+          {cancelRide(setModalVisible)}
             <Pressable
               onPress={() => handleSubmitOtp()}
               style={[
                 FindRideStyles.button,
-                { backgroundColor: COLORS.bg_primary },
+                { backgroundColor: COLORS.brand_yellow },
               ]}>
               <Text
                 style={[
                   FindRideStyles.text,
                   { fontWeight: 'bold', color: COLORS.black },
                 ]}>
-                {'Submit'}
+                {'Submit OTP'}
               </Text>
             </Pressable>
-            {cancelRide(setModalVisible)}
 
           </View>
         </View>}</View> : <View>{!activeRideId ? cancelRide(setModalVisible) : null}</View>}
@@ -327,6 +328,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isDriverLogged = isDriver();
+  useGetActiveRequests()
 
   const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 

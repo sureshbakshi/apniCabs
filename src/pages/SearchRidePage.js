@@ -43,7 +43,7 @@ const SearchRidePage = () => {
       style={SearchRideStyles.image}>
       <View style={SearchRideStyles.container}>
         <View style={SearchRideStyles.section}>
-          <Text style={{ backgroundColor: 'red' }}>Socket Id:{isSocketConnected}</Text>
+        <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text>
           <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
             <Timeline data={['', '']} height={25} />
           </View>

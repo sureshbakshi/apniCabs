@@ -18,6 +18,7 @@ import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverS
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline  } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
+import useGetActiveRequests from '../hooks/useGetActiveRequests';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
@@ -110,13 +111,16 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
-  const { isSocketConnected } = useSelector((state) => state.user)
   const dispatch = useDispatch()
-  const { isOnline: status, rideRequests } = useSelector(state => state.driver);
+  const { isSocketConnected } = useSelector((state) => state.user)
+  const { rideRequests } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const [isOnline, setToggleSwitch] = useState(status === DriverAvailableStatus.ONLINE)
+
+  const {status} = useGetActiveRequests()
+  const [isOnline, setToggleSwitch] = useState(status)
+
   const [updateDriverStatus] = useUpdateDriverStatusMutation();
-  const { data: activeRideDetails } = useDriverActiveRideQuery(undefined, { skip: !isOnline });
+
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
   const toggleSwitch = val => {
@@ -129,11 +133,6 @@ export const PickARide = () => {
     }).catch(() => setToggleSwitch(!val))
   }, [isOnline]);
 
-  useEffect(() => {
-    if (activeRideDetails) {
-      dispatch(updateRideRequest(activeRideDetails))
-    }
-  }, [activeRideDetails])
   return (
     <View style={FindRideStyles.container}>
       <View
@@ -152,7 +151,7 @@ export const PickARide = () => {
           value={Boolean(isOnline)}
         />
       </View>
-      <Text style={{ backgroundColor: 'red' }}>Socket Id:{isSocketConnected}</Text>
+      <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text>
 
 
       {isOnline ? (

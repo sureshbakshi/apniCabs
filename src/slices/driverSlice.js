@@ -1,6 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
-import { DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
+import { ClearRideStatus, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { activeReq, requestObj } from '../mock/activeRequest';
 
 
@@ -22,8 +22,6 @@ const driverSlice = createSlice({
         state.rideRequests = []
         state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : state.activeRideId
       } else {
-        
-        console.log(current(state.rideRequests))
         state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.id)
       }
     },
@@ -33,7 +31,7 @@ const driverSlice = createSlice({
     },
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}
-      if (status === RideStatus.USER_CANCELLED || status === RideStatus.DRIVER_CANCELLED || status === RideStatus.COMPLETED) {
+      if (ClearRideStatus.includes(status)) {
         return Object.assign(state, { ...initialState, isOnline: state.isOnline })
       }
     },
@@ -44,7 +42,13 @@ const driverSlice = createSlice({
       }
     },
     setRideRequest: (state, action) => {
-      state.rideRequests = [...state.rideRequests, action.payload];
+      const { id } = action.payload || {}
+      const index = state.rideRequests?.findIndex((item) => item.id === id)
+      if (index > -1) {
+        state.rideRequests[index] = action.payload
+      } else {
+        state.rideRequests = [...state.rideRequests, action.payload];
+      }
     },
 
   },

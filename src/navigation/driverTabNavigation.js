@@ -1,17 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import WalletPage from '../pages/WalletPage';
-import { PickARide } from '../pages/PickARide';
 import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import DriverStackNavigator from './driverStackNavigation';
-import { navigate } from '../util/navigationService';
-import ChatScreen from '../components/Chat';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
-import { useEffect, useState } from 'react';
-import socket from '../components/common/socket';
-import { useSelector } from 'react-redux';
 import MyRidePage from '../pages/MyRidesPage';
 const Tab = createBottomTabNavigator();
 

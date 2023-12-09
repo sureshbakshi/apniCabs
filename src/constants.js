@@ -86,6 +86,7 @@ export const RideStatus = {
   COMPLETED: 'COMPLETED',
   USER_CANCELLED: 'USER_CANCELLED',
   DRIVER_CANCELLED: 'DRIVER_CANCELLED',
+  PENDING: 'PENDING'
 }
 
 export const VerificationStatus = {
@@ -106,6 +107,9 @@ export const RequestStatus = {
   REQUESTED: 'REQUESTED',
 
 }
+
+export const ClearRideStatus = [RideStatus.USER_CANCELLED, RideStatus.DRIVER_CANCELLED, RideStatus.COMPLETED]
+
 
 export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.chat]: ['chat', 'chat'],
