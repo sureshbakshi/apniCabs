@@ -134,7 +134,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ["rideComplete"]
+      invalidatesTags: ["RideComplete"]
     }),
     userActiveRide: builder.query({
       query: () => ({
@@ -161,7 +161,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["rideComplete"]
+      providesTags: ["RideComplete"]
     }),
     cancelAcceptedRequest: builder.mutation({
       query: body => ({
@@ -204,7 +204,7 @@ export const apiSlice = createApi({
     }),
   }),
 
-  tagTypes: ['Token', 'rideComplete'],
+  tagTypes: ['Token', 'RideComplete'],
 });
 
 export const {

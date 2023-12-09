@@ -12,11 +12,11 @@ import { useUserActiveRideQuery } from '../slices/apiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveRequest } from '../slices/userSlice';
 import styles from '../components/common/imageView/ImageView.styles';
+import useGetActiveRequests from '../hooks/useGetActiveRequests';
 
 const SearchRidePage = () => {
   const { isSocketConnected } = useSelector((state) => state.user)
-  const { data: activeRideDetails } = useUserActiveRideQuery();
-  const dispatch = useDispatch();
+  useGetActiveRequests()
   const { location, updateLocation, getDistance, setNoOfSeats, noOfSeats } = useAppContext()
   const searchHandler = async () => {
     const { distance, duration } = await getDistance()
@@ -27,14 +27,6 @@ const SearchRidePage = () => {
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)
   }
-
-  useEffect(() => {
-    if (activeRideDetails) {
-      dispatch(setActiveRequest(activeRideDetails))
-    }
-  }, [activeRideDetails])
-
-
 
   return (
     <ImageBackground

@@ -1,20 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 import { DriverAvailableStatus } from "../constants";
-import { useDriverActiveRideQuery } from "../slices/apiSlice";
+import { useDriverActiveRideQuery, useUserActiveRideQuery } from "../slices/apiSlice";
 import { useEffect } from "react";
-import { updateRideRequest } from "../slices/driverSlice";
+import { clearState, updateRideRequest } from "../slices/driverSlice";
+import { isDriver } from "../util";
+import { cancelActiveRequest, setActiveRequest } from "../slices/userSlice";
 
 export default () => {
     const dispatch = useDispatch()
     const { isOnline } = useSelector(state => state.driver);
     const status = isOnline !== DriverAvailableStatus.OFFLINE
-    const { data: activeRideDetails } = useDriverActiveRideQuery(undefined, { skip: !status, refetchOnMountOrArgChange: true });
+    const isDriverLogged = isDriver()
+    const { data: activeDriverRideDetails , error: isDriverError} = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true });
+    const { data: activeUserRideDetails , error: isUserError} = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true });
+
     useEffect(() => {
-        if (activeRideDetails) {
-            dispatch(updateRideRequest(activeRideDetails))
+        if(isDriverError){
+            dispatch(clearState())
+        }else if (activeDriverRideDetails && isDriverLogged) {
+            dispatch(updateRideRequest(activeDriverRideDetails))
         }
-    }, [activeRideDetails])
+    }, [activeDriverRideDetails, isDriverLogged])
+
+    useEffect(() => {if(isUserError){
+        dispatch(cancelActiveRequest())
+    }else if (activeUserRideDetails && !isDriverLogged) {
+            dispatch(setActiveRequest(activeUserRideDetails))
+        }
+    }, [activeUserRideDetails, isDriverLogged])
+
     return {
-        status, activeRideDetails
+        status, activeUserRideDetails, activeDriverRideDetails
     }
 }
