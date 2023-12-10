@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable, Modal, TextInput } from 'react-native';
 import { get } from 'lodash';
 import { Text } from '../components/common';
@@ -39,24 +39,28 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
   };
 
   const closeModal = () => handleModalVisible(!modalVisible);
+
+  useEffect(() => {
+    console.log('cancelAcceptedRequest', cancelAcceptedRequestData);
+    if (cancelAcceptedRequestData) {
+      closeModal();
+      dispatch(isDriverLogged ? updateRideStatus(cancelAcceptedRequestData) : cancelActiveRequest(cancelAcceptedRequestData))
+    } else if (cancelAcceptedRequestError) {
+      closeModal();
+      console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
+    }
+
+  }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
   const handleSubmit = () => {
     if (selectedMessage.id) {
-      cancelAcceptedRequest({
+      let payload = {
         "request_id": activeReq.id,
         "driver_id": activeReq.driver.id,
         "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
-      }).unwrap().then((res) => {
-        console.log('cancelAcceptedRequest', res);
-        closeModal();
-        setTimeout(() => {
-          dispatch(isDriverLogged ? updateRideStatus(res) : cancelActiveRequest(res))
-        }, 100);
-
-      }).then((err) => {
-        console.log(err)
-      })
-      // emitCancelRequestEvent(activeReq, closeModal);
+      }
+      console.log('payload', payload)
+      cancelAcceptedRequest(payload)
     } else {
       setErrorMessage(true);
     }

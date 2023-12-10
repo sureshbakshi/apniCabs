@@ -1,8 +1,10 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { updateDriversRequest, updatedSocketConnectionStatus } from "../slices/authSlice"
+import { updatedSocketConnectionStatus } from "../slices/authSlice";
+
 import { _isLoggedIn } from "../util";
 import userSocket from '../sockets/socketConfig';
+import { updateDriversRequest } from "../slices/userSlice";
 
 const SOCKET_EVENTS = {
     request_status: 'useRequestUpdate'
@@ -49,11 +51,11 @@ export default (() => {
         if (isLoggedIn && !Boolean(isSocketConnected)) {
             connectSocket()
             onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
-        } else {
+        } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
         return () => disconnectUserSocket();
-    }, [isLoggedIn])
+    }, [isLoggedIn,isSocketConnected])
 
     useEffect(() => {
         userSocket.on('connect', () => {
