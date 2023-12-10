@@ -9,6 +9,7 @@ const initialState = {
   userInfo: null,
   access_token: null,
   driverInfo: null,
+  isSocketConnected: false
 };
 
 // const getProfileDetails = id => {
@@ -60,6 +61,9 @@ const authSlice = createSlice({
     setDriverDetails(state, action) {
       state.driverInfo = action.payload;
     },
+    updatedSocketConnectionStatus: (state, action) => {
+      state.isSocketConnected = action.payload;
+    },
   },
 });
 export const {
@@ -69,5 +73,6 @@ export const {
   updateLoginToken,
   clearAuthData,
   setDriverDetails,
+  updatedSocketConnectionStatus
 } = authSlice.actions;
 export default authSlice.reducer;

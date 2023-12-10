@@ -112,7 +112,7 @@ const DriverCard = ({ list }) => {
 
 export const PickARide = () => {
   const dispatch = useDispatch()
-  const { isSocketConnected } = useSelector((state) => state.user)
+  const { isSocketConnected } = useSelector((state) => state.auth)
   const { rideRequests } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
 

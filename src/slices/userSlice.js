@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { RideStatus } from '../constants';
+import { ClearRideStatus, RideStatus } from '../constants';
 import { activeReq } from '../mock/activeRequest';
 
 
@@ -17,7 +17,6 @@ const intialState = {
   activeRideId: null,
   rideRequests: null,
   activeRequest: null,
-  isSocketConnected:false
 }
 const userSlice = createSlice({
   name: 'user',
@@ -28,22 +27,22 @@ const userSlice = createSlice({
       state.rideRequests = action.payload;
     },
     setActiveRequest: (state, action) => {
+      const { status, id } = action.payload
       state.activeRequest = action.payload;
+      state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
     },
     cancelActiveRequest: (state, action) => {
-      return Object.assign(state, { ...intialState })
+      return Object.assign(state, { ...intialState})
     },
-    updatedSocketConnectionStatus: (state, action) => {
-      state.isSocketConnected = action.payload;
-    },
+   
     updateDriversRequest: (state, action) => {
-      const { driver_id, status } = action.payload;
-
+      const { driver_id, status, id } = action.payload;
+      state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
       if (status === RideStatus.ACCEPTED) {
         state.activeRequest = action.payload
         state.rideRequests = []
-      } else if (status === RideStatus.USER_CANCELLED || status === RideStatus.DRIVER_CANCELLED || status === RideStatus.COMPLETED) {
-        return Object.assign(state, { ...initialState })
+      } else if (ClearRideStatus.includes(status)) {
+        return Object.assign(state, { ...intialState })
       } else {
         const vehicles = state.rideRequests?.vehicles;
         if (vehicles.length) {

@@ -49,7 +49,9 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
       }).unwrap().then((res) => {
         console.log('cancelAcceptedRequest', res);
         closeModal();
-        dispatch(isDriverLogged ? updateRideStatus(res) : cancelActiveRequest(res))
+        setTimeout(() => {
+          dispatch(isDriverLogged ? updateRideStatus(res) : cancelActiveRequest(res))
+        }, 100);
 
       }).then((err) => {
         console.log(err)
@@ -179,8 +181,8 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
   let fromLocation = {}
   if (currentLocation) {
     fromLocation = {
-      Long: currentLocation.longitude+'',
-      Lat: currentLocation.latitude+'',
+      Long: currentLocation.longitude + '',
+      Lat: currentLocation.latitude + '',
       City: currentLocation.city,
       location: currentLocation.address
     }
@@ -301,7 +303,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
             />
           </View>
           <View style={FindRideStyles.cardBottom}>
-          {cancelRide(setModalVisible)}
+            {cancelRide(setModalVisible)}
             <Pressable
               onPress={() => handleSubmitOtp()}
               style={[

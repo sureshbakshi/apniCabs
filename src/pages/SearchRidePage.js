@@ -15,7 +15,7 @@ import styles from '../components/common/imageView/ImageView.styles';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 
 const SearchRidePage = () => {
-  const { isSocketConnected } = useSelector((state) => state.user)
+  const { isSocketConnected } = useSelector((state) => state.auth)
   useGetActiveRequests()
   const { location, updateLocation, getDistance, setNoOfSeats, noOfSeats } = useAppContext()
   const searchHandler = async () => {
