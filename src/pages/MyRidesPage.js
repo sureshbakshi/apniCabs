@@ -28,6 +28,17 @@ const dummyObj = [
     status: 'Cancelled',
   },
 ];
+
+const DriverRideHistoryKeys = {
+  name: '',
+  status: '',
+  from: '',
+  to: '',
+  model: '',
+  rideTime: '',
+  avatar: ''
+}
+
 const list = dummyObj.map((item, i) => {
   return (
     <View style={styles.card} key={item.id}>
@@ -41,12 +52,12 @@ const list = dummyObj.map((item, i) => {
         </View>
         <View style={styles.middle}>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.review}>({item.id} Reviews)</Text>
+          {/* <Text style={styles.review}></Text> */}
           <Timeline data={['Bheeramguda', 'Hitech knowledge Park']}/>
         </View>
         <View style={styles.right}>
           <Text style={[styles.greenColor, styles.bold]}>{'\u20B9'}15</Text>
-          <Text style={styles.address}>3 Seats left</Text>
+          {/* <Text style={styles.address}>3 Seats left</Text> */}
         </View>
       </View>
       <View style={styles.cardBottom}>

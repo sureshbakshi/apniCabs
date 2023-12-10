@@ -8,8 +8,8 @@ import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants
 
 
 const SOCKET_EVENTS = {
-    driver_request_update: 'driverRequestUpdate',
-  }
+    get_ride_requests: 'request',
+}
 
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
@@ -30,6 +30,18 @@ export const useDriverEvents = () => {
     return { updateRideRequests }
 }
 
+
+const onGetRideRequests = (cb) => {
+    driverSocket.on(SOCKET_EVENTS.get_ride_requests, (request) => {
+        cb(request)
+    });
+};
+
+export const disconnectDriverSocket = () => {
+    console.log(`============= Driver Client disconnection - request ==========`)
+    driverSocket.disconnect()
+}
+
 export default (() => {
     const dispatch = useDispatch();
     const { userInfo } = useSelector((state) => state.auth)
@@ -48,11 +60,6 @@ export default (() => {
             dispatch(updatedSocketConnectionStatus(userInfo?.id))
         }
     }
-    const onGetRideRequests = (cb) => {
-        driverSocket.on(SOCKET_EVENTS.get_ride_requests, (request) => {
-            cb(request)
-        });
-    };
 
     const connectSocket = () => {
         if (driverSocket.connected) {
@@ -64,11 +71,7 @@ export default (() => {
         }
     }
 
-    const disconnectSocket = () => {
-        console.log(`============= Driver Client disconnection - request ==========`)
-        driverSocket.disconnect()
-        // driverSocket.removeAllListeners()
-    }
+   
 
     useEffect(() => {
         console.log('isDriverOnline', isDriverOnline, isLoggedIn)
@@ -76,9 +79,9 @@ export default (() => {
             connectSocket()
             onGetRideRequests(updateRideRequests);
         } else if (!isDriverOnline || !isLoggedIn) {
-            disconnectSocket();
+            disconnectDriverSocket();
         }
-        return () => disconnectSocket()
+        return () => disconnectDriverSocket()
     }, [isDriverOnline, isLoggedIn])
 
     useEffect(() => {

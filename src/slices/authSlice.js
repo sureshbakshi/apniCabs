@@ -1,8 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {USER_ROLES} from '../constants';
-import {useGetDriverDetailsQuery} from './apiSlice';
-import {useDispatch} from 'react-redux';
-import {useEffect} from 'react';
 
 const initialState = {
   googleInfo: null,
@@ -11,21 +8,6 @@ const initialState = {
   driverInfo: null,
   isSocketConnected: false
 };
-
-// const getProfileDetails = id => {
-//   // const dispatch = useDispatch();
-//   const {data, error, isLoading} = useGetDriverDetailsQuery(id);
-//   console.log(data, error);
-//   dispatch(setDriverDetails(data));
-
-//   // useEffect(() => {
-//   //   if (data) {
-//   //     console.log(data);
-//   //   } else if (error) {
-//   //     console.log(error);
-//   //   }
-//   // }, [data, error]);
-// };
 
 const authSlice = createSlice({
   name: 'auth',

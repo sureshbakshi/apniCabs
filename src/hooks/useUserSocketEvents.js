@@ -8,6 +8,12 @@ const SOCKET_EVENTS = {
     request_status: 'useRequestUpdate'
 }
 
+
+export const disconnectUserSocket = () => {
+    console.log(`============= user Client disconnection - request ==========`)
+    userSocket.disconnect()
+}
+
 export default (() => {
     const { userInfo } = useSelector((state) => state.auth)
 
@@ -39,19 +45,14 @@ export default (() => {
         }
     }
 
-    const disconnectSocket = () => {
-        console.log(`============= user Client disconnection - request ==========`)
-        userSocket.disconnect()
-    }
-
     useEffect(() => {
         if (isLoggedIn) {
             connectSocket()
             onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
         } else {
-            disconnectSocket();
+            disconnectUserSocket();
         }
-        return () => disconnectSocket();
+        return () => disconnectUserSocket();
     }, [isLoggedIn])
 
     useEffect(() => {
