@@ -28,6 +28,7 @@ export const connectSocket = () => {
 }
 
 export const disconnectSocket = () => {
+  console.log(`============= Client disconnecting ==========`)
   driverSocket.disconnect()
   // driverSocket.removeAllListeners()
 }

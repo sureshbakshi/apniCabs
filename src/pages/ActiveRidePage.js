@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDriverEvents } from '../hooks/useDriverSocketEvents';
 import requestList from '../mock/rideRequests';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
-import { updateRideRequest, updateRideStatus } from '../slices/driverSlice';
-import { cancelActiveRequest, setActiveRide } from '../slices/userSlice';
+import { updateRideRequest, updateRideStatus, setActiveRide } from '../slices/driverSlice';
+import { cancelActiveRequest } from '../slices/userSlice';
 import { isDriver, isUser } from '../util';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 const intialState = [
@@ -327,7 +327,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isDriverLogged = isDriver();
-  useGetActiveRequests()
+  // useGetActiveRequests()
 
   const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 

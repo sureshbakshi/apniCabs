@@ -1,19 +1,49 @@
 import { useEffect } from "react"
-import userSocket, { connectSocket, disconnectSocket } from "../sockets/userSockets"
 import { useDispatch, useSelector } from "react-redux"
-import { onRequestUpdate } from "../sockets/userSockets"
 import { updateDriversRequest, updatedSocketConnectionStatus } from "../slices/userSlice"
 import { _isLoggedIn } from "../util";
-import { store } from "../store"
+import userSocket from '../sockets/socketConfig';
 
-
-
+const SOCKET_EVENTS = {
+    request_status: 'useRequestUpdate'
+}
 
 export default (() => {
     const { userInfo } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
+
+    const addDevice = () => {
+        if (userInfo?.id) {
+            console.log(`============= User add device emit ==========`)
+            userSocket.emit('addDevice', userInfo?.id)
+            dispatch(updatedSocketConnectionStatus(userInfo?.id))
+        }
+    }
+    // listeners
+    const onRequestUpdate = (cb) => {
+        userSocket.on(SOCKET_EVENTS.request_status, (updatedRequest) => {
+            // Handle the driver list update in the UI
+            cb(updatedRequest)
+        });
+    };
+
+    const connectSocket = () => {
+        if (userSocket.connected) {
+            console.log(`============= user Client connection - add device ==========`)
+            addDevice()
+        } else {
+            console.log(`============= user Client connection - request ==========`)
+            userSocket.connect()
+        }
+    }
+
+    const disconnectSocket = () => {
+        console.log(`============= user Client disconnection - request ==========`)
+        userSocket.disconnect()
+    }
+
     useEffect(() => {
         if (isLoggedIn) {
             connectSocket()
@@ -26,12 +56,8 @@ export default (() => {
 
     useEffect(() => {
         userSocket.on('connect', () => {
-            console.log('onconnect', userInfo?.id)
-            if (userInfo?.id) {
-                console.log(`============= addDevice ==========`)
-                userSocket.emit('addDevice', userInfo?.id)
-                dispatch(updatedSocketConnectionStatus(userInfo?.id))
-            }
+            console.log('onconnect - add device', userInfo?.id)
+            addDevice()
         })
         userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))
 

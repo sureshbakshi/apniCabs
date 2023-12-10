@@ -6,6 +6,8 @@ import { clearState, updateRideRequest } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { cancelActiveRequest, setActiveRequest } from "../slices/userSlice";
 
+// pickaride, search ride - always
+//active page = active ride & drive, active page + user
 export default () => {
     const dispatch = useDispatch()
     const { isOnline } = useSelector(state => state.driver);
