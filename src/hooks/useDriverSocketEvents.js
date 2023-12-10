@@ -44,8 +44,7 @@ export const disconnectDriverSocket = () => {
 
 export default (() => {
     const dispatch = useDispatch();
-    const { userInfo } = useSelector((state) => state.auth)
-
+    const { userInfo, isSocketConnected } = useSelector((state) => state.auth)
     const { updateRideRequests } = useDriverEvents();
     const { isOnline } = useSelector((state) => state.driver)
 
@@ -75,7 +74,7 @@ export default (() => {
 
     useEffect(() => {
         console.log('isDriverOnline', isDriverOnline, isLoggedIn)
-        if (isDriverOnline && isLoggedIn) {
+        if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected)) {
             connectSocket()
             onGetRideRequests(updateRideRequests);
         } else if (!isDriverOnline || !isLoggedIn) {

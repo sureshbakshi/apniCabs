@@ -5,7 +5,6 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   stateReconciler: hardSet,
-
 };
 
 export default persistConfig;

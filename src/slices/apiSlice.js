@@ -57,6 +57,8 @@ const api_urls = {
   userCheck: 'checkUser',
   driverAvailabilty: 'driver-availabilty',
   driverActiveRide: 'active-rides/driver',
+  driverRideHistory: 'history/driver',
+  userRideHistory: 'history/users',
   updateRequest: 'driver-update',
   send: 'send',
   ride: 'ride',
@@ -117,6 +119,16 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+
+    userRideHistory: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.request(api_urls.userRideHistory),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      invalidatesTags: ["RideComplete"]
+    }),
     // request Apis
     sendRequest: builder.mutation({
       query: body => ({
@@ -131,6 +143,15 @@ export const apiSlice = createApi({
       query: () => ({
         method: 'GET',
         url: api_path.request(api_urls.driverActiveRide),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      invalidatesTags: ["RideComplete"]
+    }),
+    driverRideHistory: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.request(api_urls.driverRideHistory),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -221,5 +242,7 @@ export const {
   useRideRequestMutation,
   useCompleteRideRequestMutation,
   useCancelAcceptedRequestMutation,
-  useUserActiveRideQuery
+  useUserActiveRideQuery,
+  useDriverRideHistoryQuery,
+  useUserRideHistoryQuery,
 } = apiSlice;

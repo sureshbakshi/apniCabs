@@ -7,6 +7,7 @@ import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import useUserSocketEvents from '../hooks/useUserSocketEvents';
+import UserRideHistory from '../pages/user/UserRideHistory';
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
   useUserSocketEvents();
@@ -29,7 +30,7 @@ export default function UserTabNavigator() {
           options={{ title: 'Find a Ride' }}
           component={UserStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={MyRidePage} />
+        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={UserRideHistory} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>

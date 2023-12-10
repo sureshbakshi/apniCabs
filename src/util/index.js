@@ -7,6 +7,10 @@ import { DriverAvailableStatus, USER_ROLES } from '../constants';
 import { store } from '../store';
 
 
+export const getRandomNumber = (min = 0, max = 4) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 const getRoles = () => {
   const { userInfo } = useSelector((state) => state.auth);
   return userInfo?.roles || []
@@ -101,3 +105,15 @@ export const fakeLogin = () => {
       console.log('fakeLogin error:', err);
     });
 }
+
+export const formattedDate = (dateString) => {
+  const originalDate = new Date(dateString)
+  return originalDate.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+  }).replace(/\//g, '-');
+};

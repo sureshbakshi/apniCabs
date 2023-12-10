@@ -40,7 +40,8 @@ const MyRideStyles = StyleSheet.create({
   },
   cardBottom:{
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems:'center',
+    paddingVertical: 3
   },
   left: {
     padding: 10,
@@ -106,7 +107,7 @@ const MyRideStyles = StyleSheet.create({
     width: 80,
     height: 22,
     position:'absolute',
-    bottom: 80,
+    bottom: 42,
     left: -29,
     paddingVertical: 0,
     paddingHorizontal: 8,
@@ -123,7 +124,8 @@ const MyRideStyles = StyleSheet.create({
   avatar: {
     width: 60,
     height: 60,
-    borderRadius: 100
+    borderRadius: 100,
+    marginLeft: 5
   },
   end:{
     alignSelf:'flex-end',

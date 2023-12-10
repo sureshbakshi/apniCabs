@@ -15,7 +15,7 @@ export const disconnectUserSocket = () => {
 }
 
 export default (() => {
-    const { userInfo } = useSelector((state) => state.auth)
+    const { userInfo, isSocketConnected } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
@@ -46,7 +46,7 @@ export default (() => {
     }
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn && !Boolean(isSocketConnected)) {
             connectSocket()
             onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
         } else {
