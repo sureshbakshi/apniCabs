@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { updateDriversRequest, updatedSocketConnectionStatus } from "../slices/userSlice"
+import { updateDriversRequest, updatedSocketConnectionStatus } from "../slices/authSlice"
 import { _isLoggedIn } from "../util";
 import userSocket from '../sockets/socketConfig';
 

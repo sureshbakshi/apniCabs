@@ -3,7 +3,7 @@ import driverSocket from "../sockets/driverSockets"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isDriverOnline, _isLoggedIn } from "../util"
-import { updatedSocketConnectionStatus } from "../slices/userSlice"
+import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 
 

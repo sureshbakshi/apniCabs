@@ -61,8 +61,7 @@ export const {
   setRideRequest,
   updateDriversRequest,
   setActiveRequest,
-  cancelActiveRequest,
-  updatedSocketConnectionStatus
+  cancelActiveRequest
 } = userSlice.actions;
 
 export default userSlice.reducer;
