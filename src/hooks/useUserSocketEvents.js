@@ -62,6 +62,7 @@ export default (() => {
     useEffect(() => {
         userSocket.on('connect', () => {
             console.log('onconnect - add device', userInfo?.id)
+            onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
             addDevice()
         })
         userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))

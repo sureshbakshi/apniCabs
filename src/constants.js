@@ -99,7 +99,7 @@ export const VerificationStatus = {
 export const DriverAvailableStatus = {
   OFFLINE: 'OFFLINE',
   ONLINE: 'ONLINE',
-  ONRIDE: 'ON_RIDE',
+  ONRIDE: 'ONRIDE',
   ACCEPTED: 'ACCEPTED'
 }
 

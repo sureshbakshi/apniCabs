@@ -61,7 +61,7 @@ const Card = item => {
             {'\u20B9'}
             {item.price}
           </Text>
-          <Text style={FindRideStyles.address}>{item.distance.text}</Text>
+          <Text style={FindRideStyles.address}>{item.distance?.text}</Text>
           {/* <Text style={FindRideStyles.address}>{item.seats} Seats left</Text> */}
         </View>
       </View>

@@ -41,10 +41,11 @@ const userSlice = createSlice({
    
     updateDriversRequest: (state, action) => {
       const { driver_id, status, id } = action.payload;
-      state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
-      if (status === RideStatus.ACCEPTED) {
+      if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE ) {
         state.activeRequest = action.payload
         state.rideRequests = []
+        state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
+
       } else if (ClearRideStatus.includes(status)) {
         return Object.assign(state, { ...intialState })
       } else {
