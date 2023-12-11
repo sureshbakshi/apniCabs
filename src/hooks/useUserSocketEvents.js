@@ -25,8 +25,10 @@ export default (() => {
     const addDevice = () => {
         if (userInfo?.id) {
             console.log(`============= User add device emit ==========`)
-            userSocket.emit('addDevice', userInfo?.id)
-            dispatch(updatedSocketConnectionStatus(userInfo?.id))
+            userSocket.emit('addDevice', userInfo?.id, (cbRes) => {
+                console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
+                dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
+            })
         }
     }
     // listeners
@@ -54,7 +56,7 @@ export default (() => {
         } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
-        return () => disconnectUserSocket();
+        // return () => disconnectUserSocket();
     }, [isLoggedIn,isSocketConnected])
 
     useEffect(() => {

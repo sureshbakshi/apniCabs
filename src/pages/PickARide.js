@@ -4,7 +4,7 @@ import styles from '../styles/MyRidePageStyles';
 import { ImageView } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import _ from 'lodash';
+import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { navigate } from '../util/navigationService';
@@ -16,7 +16,7 @@ import {
 } from '../hooks/useDriverSocketEvents';
 import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
-import { _isDriverOnline  } from '../util';
+import { _isDriverOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 
@@ -113,10 +113,10 @@ const DriverCard = ({ list }) => {
 export const PickARide = () => {
   const dispatch = useDispatch()
   const { isSocketConnected } = useSelector((state) => state.auth)
-  const { rideRequests } = useSelector(state => state.driver);
+  const { rideRequests, isOnline: driverStoredOnlineStatus } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
 
-  const {status} = useGetActiveRequests()
+  const { status } = useGetActiveRequests()
   const [isOnline, setToggleSwitch] = useState(status)
 
   const [updateDriverStatus] = useUpdateDriverStatusMutation();
@@ -128,9 +128,11 @@ export const PickARide = () => {
   }
 
   useEffect(() => {
-    updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
-      dispatch(setDriverStatus(res))
-    }).catch(() => setToggleSwitch(!val))
+    if (!isEqual(status, isOnline)) {
+      updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
+        dispatch(setDriverStatus(res))
+      }).catch(() => setToggleSwitch(!val))
+    }
   }, [isOnline]);
 
   return (

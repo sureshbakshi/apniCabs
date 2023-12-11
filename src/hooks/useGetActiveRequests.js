@@ -14,11 +14,11 @@ export default () => {
     const status = isOnline !== DriverAvailableStatus.OFFLINE
     const isDriverLogged = isDriver()
     const { data: activeDriverRideDetails , error: isDriverError} = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true });
-    const { data: activeUserRideDetails , error: isUserError} = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true });
+    const { data: activeUserRideDetails , error: isUserError} = useUserActiveRideQuery(undefined, { skip: true || isDriverLogged, refetchOnMountOrArgChange: true });
 
     useEffect(() => {
         if(isDriverError){
-            dispatch(clearState())
+            // dispatch(clearState())
         }else if (activeDriverRideDetails && isDriverLogged) {
             dispatch(updateRideRequest(activeDriverRideDetails))
         }

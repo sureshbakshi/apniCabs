@@ -55,8 +55,10 @@ export default (() => {
     const addDevice = () => {
         if (userInfo?.id) {
             console.log(`============= Driver add device emit ==========`)
-            driverSocket.emit('addDevice', userInfo?.id)
-            dispatch(updatedSocketConnectionStatus(userInfo?.id))
+            driverSocket.emit('addDevice', userInfo?.id, (cbRes) => {
+                console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
+                dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
+            })
         }
     }
 
@@ -74,13 +76,16 @@ export default (() => {
 
     useEffect(() => {
         console.log('isDriverOnline', isDriverOnline, isLoggedIn)
-        if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected)) {
+        if (isDriverOnline && isLoggedIn) {
             connectSocket()
             onGetRideRequests(updateRideRequests);
-        } else if (!isDriverOnline || !isLoggedIn) {
+        } else if (!isLoggedIn) {
             disconnectDriverSocket();
         }
-        return () => disconnectDriverSocket()
+        // return () =>{ 
+        //     console.log('driver useEffect disconnected')
+        //     disconnectDriverSocket()
+        // }
     }, [isDriverOnline, isLoggedIn])
 
     useEffect(() => {
