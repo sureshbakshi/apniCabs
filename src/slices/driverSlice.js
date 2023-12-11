@@ -2,7 +2,7 @@ import { createSlice, current } from '@reduxjs/toolkit';
 import { navigate } from '../util/navigationService';
 import { ClearRideStatus, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { activeReq, requestObj } from '../mock/activeRequest';
-
+import { isEmpty } from 'lodash'
 
 const initialState = {
   rideRequests: [],
@@ -26,8 +26,13 @@ const driverSlice = createSlice({
       }
     },
     setActiveRide: (state, action) => {
-      const { id } = action.payload || {}
-      state.activeRideId = id;
+      if (isEmpty(requestObj)) {
+        state.activeRequest = null;
+        state.activeRideId = null;
+      } else {
+        const { id } = action.payload || {}
+        state.activeRideId = id;
+      }
     },
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}

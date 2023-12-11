@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { ClearRideStatus, RideStatus } from '../constants';
-import { activeReq } from '../mock/activeRequest';
 
 
 const updateStatusByDriverId = (updatedData, driver_id, status) => {
@@ -27,9 +26,14 @@ const userSlice = createSlice({
       state.rideRequests = action.payload;
     },
     setActiveRequest: (state, action) => {
-      const { status, id } = action.payload
-      state.activeRequest = action.payload;
-      state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
+      if(isEmpty(action.payload)) {
+        state.activeRequest = null;
+        state.activeRideId = null
+      }else{
+        const { status, id } = action.payload
+        state.activeRequest = action.payload;
+        state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
+      }
     },
     cancelActiveRequest: (state, action) => {
       return Object.assign(state, { ...intialState})

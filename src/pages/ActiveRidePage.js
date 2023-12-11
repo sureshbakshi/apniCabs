@@ -225,9 +225,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
     console.log('completeRideRequest', payload)
     completeRideRequest(payload).unwrap().then((res) => {
       console.log(res);
-      setTimeout(() => {
         dispatch(updateRideStatus(res))
-      }, 100);
     }).then((err) => {
       console.log(err)
     })
