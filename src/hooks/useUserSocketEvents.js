@@ -5,6 +5,7 @@ import { updatedSocketConnectionStatus } from "../slices/authSlice";
 import { _isLoggedIn } from "../util";
 import userSocket from '../sockets/socketConfig';
 import { updateDriversRequest } from "../slices/userSlice";
+import { store } from "../store";
 
 const SOCKET_EVENTS = {
     request_status: 'useRequestUpdate'
@@ -17,15 +18,17 @@ export const disconnectUserSocket = () => {
 }
 
 export default (() => {
-    const { userInfo, isSocketConnected } = useSelector((state) => state.auth)
+    const { isSocketConnected } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
 
     const addDevice = () => {
-        if (userInfo?.id) {
+        const id = store.getState().auth.userInfo?.id
+        console.log({addDeviceId: id})
+        if (id) {
             console.log(`============= User add device emit ==========`)
-            userSocket.emit('addDevice', userInfo?.id, (cbRes) => {
+            userSocket.emit('addDevice', id, (cbRes) => {
                 console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
                 dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
             })
@@ -56,12 +59,11 @@ export default (() => {
         } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
-        // return () => disconnectUserSocket();
     }, [isLoggedIn,isSocketConnected])
 
     useEffect(() => {
         userSocket.on('connect', () => {
-            console.log('onconnect - add device', userInfo?.id)
+            console.log('onconnect - add device')
             onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
             addDevice()
         })

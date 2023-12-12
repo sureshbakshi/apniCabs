@@ -10,7 +10,7 @@ const socket = io(socketUri, {
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss
   reconnectionAttempts: Infinity, // Number of reconnection attempts
-  reconnectionDelay: 1000, // Delay between reconnection attempts in milliseconds
+  reconnectionDelay: 5000, // Delay between reconnection attempts in milliseconds
   origins: '*',
   extraHeaders: {
 

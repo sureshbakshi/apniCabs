@@ -10,7 +10,6 @@ import Timeline from '../components/common/timeline/Timeline';
 import { COLORS, RideStatus, USER_INFORMATION, VEHICLE_INFORMATION } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDriverEvents } from '../hooks/useDriverSocketEvents';
 import requestList from '../mock/rideRequests';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus, setActiveRide } from '../slices/driverSlice';
@@ -32,7 +31,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
   const [cancelAcceptedRequest, { data: cancelAcceptedRequestData, error: cancelAcceptedRequestError, cancelAcceptedRequestDataLoading }] =
     useCancelAcceptedRequestMutation();
 
-  const { emitCancelRequestEvent } = useDriverEvents();
+
   const handleCancelReason = message => {
     setSelectedMessage(message);
     setErrorMessage(false);

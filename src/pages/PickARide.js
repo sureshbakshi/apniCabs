@@ -10,10 +10,7 @@ import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../cons
 import { navigate } from '../util/navigationService';
 import { emitAcceptRequest } from '../sockets/driverSockets';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useDriverEvents,
-  useEmitDriverStatus,
-} from '../hooks/useDriverSocketEvents';
+
 import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline } from '../util';
