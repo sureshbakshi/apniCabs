@@ -30,6 +30,7 @@ import ScreenContainer from '../components/ScreenContainer';
 import {useAuthContext} from '../context/Auth.context';
 import Config from 'react-native-config';
 import {navigate} from '../util/navigationService';
+import { disconnectSocket } from '../sockets/socketConfig';
 
 const initialState = {
   email: 'kommemaheshwari@gmail.com',
@@ -68,6 +69,10 @@ const LoginPage = () => {
       dispatch(updateUserInfo(logindata));
     }
   }, [logindata]);
+
+  useEffect(() => {
+    disconnectSocket()
+  },[])
 
   // useEffect(() => {
   //   console.log('userCheckData', userCheckData);

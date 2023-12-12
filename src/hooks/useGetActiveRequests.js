@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DriverAvailableStatus } from "../constants";
 import { useDriverActiveRideQuery, useUserActiveRideQuery } from "../slices/apiSlice";
 import { useEffect } from "react";
-import { clearState, updateRideRequest } from "../slices/driverSlice";
+import { clearState, setActiveRide } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { cancelActiveRequest, setActiveRequest } from "../slices/userSlice";
 
@@ -20,7 +20,7 @@ export default () => {
         if(isDriverError){
             dispatch(clearState())
         }else if (activeDriverRideDetails && isDriverLogged) {
-            dispatch(updateRideRequest(activeDriverRideDetails))
+            dispatch(setActiveRide(activeDriverRideDetails))
         }
     }, [activeDriverRideDetails, isDriverLogged])
 

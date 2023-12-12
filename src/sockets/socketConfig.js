@@ -31,4 +31,10 @@ socket.on('*', function (packet) {
 //   });
 // })
 
+export const disconnectSocket = () => {
+  console.log(`============= Client disconnecting ==========`)
+  socket.disconnect()
+  // driverSocket.removeAllListeners()
+}
+
 export default socket

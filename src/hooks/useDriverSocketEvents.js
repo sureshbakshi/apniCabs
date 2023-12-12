@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import driverSocket from "../sockets/driverSockets"
+import driverSocket from "../sockets/socketConfig"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isDriverOnline, _isLoggedIn } from "../util"
@@ -91,6 +91,8 @@ export default (() => {
     useEffect(() => {
         driverSocket.on('connect', () => {
             addDevice()
+            onGetRideRequests(updateRideRequests);
+
         })
         driverSocket.on('disconnect', err => { console.log('disconnected', err); dispatch(updatedSocketConnectionStatus(null)) })
 
