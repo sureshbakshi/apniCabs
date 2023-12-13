@@ -20,18 +20,20 @@ const driverSlice = createSlice({
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
         state.activeRequest = requestObj;
         state.rideRequests = []
-        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : state.activeRideId
+        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : null
       } else {
         state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.id)
       }
     },
     setActiveRide: (state, action) => {
+      const requestObj = action.payload
       if (isEmpty(requestObj)) {
         state.activeRequest = null;
         state.activeRideId = null;
       } else {
-        const { id } = action.payload || {}
-        state.activeRideId = id;
+        const { id } = requestObj || {}
+        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? id : null;
+        state.activeRequest = requestObj
       }
     },
     updateRideStatus: (state, action) => {

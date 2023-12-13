@@ -19,7 +19,7 @@ export default () => {
     useEffect(() => {
         if(isDriverError){
             dispatch(clearState())
-        }else if (activeDriverRideDetails && isDriverLogged) {
+        }else if (activeDriverRideDetails || activeDriverRideDetails === null) {
             dispatch(setActiveRide(activeDriverRideDetails))
         }
     }, [activeDriverRideDetails, isDriverLogged])
