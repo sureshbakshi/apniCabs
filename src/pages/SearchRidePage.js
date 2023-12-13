@@ -34,12 +34,12 @@ const SearchRidePage = () => {
       resizeMode="cover"
       style={SearchRideStyles.image}>
       <View style={SearchRideStyles.container}>
-        <View style={SearchRideStyles.section}>
         <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text>
+        <View style={SearchRideStyles.section}>
           <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
             <Timeline data={['', '']} height={25} />
           </View>
-          <GooglePlaces placeholder={'Pickup Location'} containerStyles={{ zIndex: 2 }} locationKey='from' onSelection={updateLocation} />
+          <GooglePlaces placeholder={'Pickup Location'} containerStyles={{ zIndex: 2 }} locationKey='from' onSelection={updateLocation} currentLocation={true}/>
           <GooglePlaces placeholder={'Drop Location'} containerStyles={{ zIndex: 1 }} locationKey='to' onSelection={updateLocation} />
           {/* <TextInput
             placeholder="No of seats: 1 - 6"
