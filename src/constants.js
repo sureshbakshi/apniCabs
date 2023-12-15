@@ -72,7 +72,8 @@ export const ROUTES_NAMES = {
   terms: 'Terms',
   signIn: 'SignIn',
   signUp: 'SignUp',
-  searchRide: 'SearchRide'
+  searchRide: 'SearchRide',
+  activeMap:'ActiveMap'
 }
 
 export const RideStatus = {
