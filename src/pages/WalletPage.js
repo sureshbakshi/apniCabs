@@ -5,13 +5,26 @@ import styles from '../styles/MyRidePageStyles';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
 import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
+import { COLORS } from '../constants';
 
+const walletCopy = {
+  'DEBIT': {
+    title: "Debited",
+    color: COLORS.primary,
+    image: images.requested
+  },
+  'CREDIT': {
+    title: 'Credited',
+    color: COLORS.green,
+    image: images.accepted
+  }
+}
 
 const WalletPage = ({ navigation }) => {
   const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
 
   console.log({ transactionHistory });
-  
+
   const { transactions, balance, hold } = transactionHistory || {}
   return (
     <View style={WalletStyles.container}>
@@ -24,33 +37,34 @@ const WalletPage = ({ navigation }) => {
             <Text style={WalletStyles.buttonTxt}>{'Add Money'.toUpperCase()}</Text>
           </Pressable>
         </View> */}
-        <View style={{ justifyContent: 'space-between', right: 20 , position: 'absolute', bottom: 10}}>
+        <View style={{ justifyContent: 'space-between', right: 20, position: 'absolute', bottom: 10 }}>
           <Text style={WalletStyles.whitetxt}>{'Hold Amount: '}
-          <Text style={[WalletStyles.whitetxt, {fontSize: 16, fontWeight: 'bold'}]}>{'\u20B9'}{hold}</Text>
+            <Text style={[WalletStyles.whitetxt, { fontSize: 16, fontWeight: 'bold' }]}>{'\u20B9'}{hold}</Text>
           </Text>
         </View>
       </View>
       <View style={WalletStyles.section}>
         <ScrollView>
           {transactions?.length && transactions.map((item, i) => {
+            const copy = walletCopy[item.type]
             return (
               <View style={WalletStyles.card} key={i}>
                 <View style={WalletStyles.cardtop}>
                   <View style={WalletStyles.left}>
                     {/* <View style={WalletStyles.profileIcon}></View> */}
-                    <ImageView source={images.requested} style={styles.avatar} resizeMode='cover'/>
+                    <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' />
                   </View>
                   <View style={WalletStyles.middle}>
-                    <Text style={WalletStyles.name}>Ride Payment </Text>
+                    <Text style={WalletStyles.name}>{copy.title} </Text>
                     <Text style={WalletStyles.review}>
-                      Sun, 05:15 pm
+                      {item.description}
                     </Text>
                     <Text style={WalletStyles.address}>
-                      {item.description}
+                      10-12-2023, 05:15 PM
                     </Text>
                   </View>
                   <View style={WalletStyles.right}>
-                    <Text style={WalletStyles.greenTxt}>{'\u20B9'} {item.amount}</Text>
+                    <Text style={[WalletStyles.greenTxt, {color: copy.color}]}>{'\u20B9'} {item.amount}</Text>
                   </View>
                 </View>
               </View>
