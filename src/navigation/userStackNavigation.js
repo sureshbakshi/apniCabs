@@ -34,11 +34,11 @@ export default function UserStackNavigator({ navigation, route }) {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         name={ROUTES_NAMES.activeMap}
         options={{ title: 'Maps' }}
         component={ActiveMapPage}
-      />
+      /> */}
       {activeRequest?.id ? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}

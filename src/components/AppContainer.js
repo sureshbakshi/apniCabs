@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { PermissionsAndroid, Platform } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import { getConfig, _isDriverOnline, isDriver, showErrorMessage } from '../util';
-import axios from 'axios';
-import filter from 'lodash/filter';
+import { getConfig, _isDriverOnline, showErrorMessage, isDriver } from '../util';
 import { useUpdateDriverLocationMutation } from '../slices/apiSlice';
 import { useSelector } from 'react-redux';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
-let watchId = undefined;
 
 function AppContainer(WrappedComponent) {
   return props => {
     const profile = useSelector(state => state.auth?.userInfo);
     const [updateDriverLocation] = useUpdateDriverLocationMutation();
-    const { location, getCurrentLocation } = useGetCurrentLocation(true)
-    const driver = isDriver();
+    const isDriverLogged = isDriver()
+    const { location, getCurrentLocation } = useGetCurrentLocation(isDriverLogged)
 
     useEffect(() => {
-      if (driver && location.latitude && _isDriverOnline()) {
+      if (isDriverLogged && location.latitude && _isDriverOnline()) {
         let payload = { ...location };
         payload.driver_id = profile.id;
         payload.status = '';

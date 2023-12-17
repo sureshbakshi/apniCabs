@@ -333,7 +333,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isDriverLogged = isDriver();
-  const {getCurrentLocation, location} = useGetCurrentLocation()
+  const {getCurrentLocation, location} = useGetCurrentLocation(isDriverLogged)
   useGetActiveRequests()
 
 

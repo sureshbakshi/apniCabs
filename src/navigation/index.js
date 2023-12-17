@@ -6,8 +6,7 @@ import LoginNavigator from './loginNavigation';
 import {navigationRef} from '../util/navigationService';
 import {ActivityIndicator} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {useAuthContext} from '../context/Auth.context';
+import { useSelector} from 'react-redux';
 import {isDriver, isUser} from '../util';
 import {isEmpty} from 'lodash';
 function App() {
@@ -15,7 +14,6 @@ function App() {
   useEffect(() => {
     SplashScreen.hide();
   });
-
   const GetNavigation = () => {
     if (isEmpty(access_token)) {
       return <LoginNavigator />;
