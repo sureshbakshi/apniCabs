@@ -6,6 +6,7 @@ import { ImageView, Text } from '../components/common';
 import images from '../util/images';
 import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS } from '../constants';
+import ActivityIndicator from '../components/common/ActivityIndicator';
 const walletCopy = {
   'DEBIT': {
     title: "Debited",
@@ -23,6 +24,9 @@ const WalletPage = ({ navigation }) => {
   const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
 
   console.log({ transactionHistory });
+  if(isLoading) {
+    return <ActivityIndicator/>
+  }
  
   const { transactions, balance, hold } = transactionHistory || {}
   return (

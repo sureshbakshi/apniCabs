@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Button, Pressable,SafeAreaView, StyleSheet,} from 'react-native';
 import {Text } from '../components/common';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker, enableLatestRenderer} from 'react-native-maps';
+enableLatestRenderer()
 
 const mapStyle = [
     {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
@@ -98,14 +99,20 @@ const ActiveMapPage = (location) => {
           }}
           customMapStyle={mapStyle}>
           <Marker
-            draggable
+            draggable={false}
             coordinate={{
               latitude: 37.78825,
               longitude: -122.4324,
             }}
-            onDragEnd={
-              (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
-            }
+            title={'Test Marker'}
+            description={'This is a description of the marker'}
+          />
+          <Marker
+            draggable={false}
+            coordinate={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+            }}
             title={'Test Marker'}
             description={'This is a description of the marker'}
           />
@@ -126,6 +133,7 @@ export default ActiveMapPage;
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'flex-end',
+      zIndex: 0
     },
     mapStyle: {
       position: 'absolute',
@@ -133,5 +141,6 @@ export default ActiveMapPage;
       left: 0,
       right: 0,
       bottom: 0,
+      zIndex: 0
     },
   });

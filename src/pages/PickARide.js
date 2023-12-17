@@ -16,6 +16,7 @@ import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDr
 import { _isDriverOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
+import SocketStatus from '../components/common/SocketStatus';
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
@@ -152,7 +153,7 @@ export const PickARide = () => {
       </View>
       <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text>
 
-
+      {(_isDriverOnline() && !isSocketConnected) && <SocketStatus />}
       {isOnline ? (
         <View style={FindRideStyles.section}>
           {rideRequests?.length ? (
