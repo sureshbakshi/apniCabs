@@ -10,13 +10,15 @@ import Timeline from '../components/common/timeline/Timeline';
 import { COLORS, RideStatus, USER_INFORMATION, VEHICLE_INFORMATION } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus, setActiveRide } from '../slices/driverSlice';
 import { cancelActiveRequest } from '../slices/userSlice';
 import { isDriver, isUser } from '../util';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import openMap from 'react-native-open-maps';
+
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
   { message: 'Unable to contact driver', id: 2 },
@@ -185,8 +187,8 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
   let fromLocation = {}
   if (currentLocation) {
     fromLocation = {
-      Long: currentLocation.longitude + '' || 'NA',
-      Lat: currentLocation.latitude + '' || 'NA',
+      Long: currentLocation.longitude+'' || 'NA',
+      Lat: currentLocation.latitude+'' || 'NA',
       City: currentLocation.city || 'NA',
       location: currentLocation.address || 'NA'
     }
@@ -225,22 +227,19 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
     console.log('completeRideRequest', payload)
     completeRideRequest(payload).unwrap().then((res) => {
       console.log(res);
-        dispatch(updateRideStatus(res))
+      dispatch(updateRideStatus(res))
     }).then((err) => {
       console.log(err)
     })
   }
-
+  const driver_avatar = activeRequest?.driver?.avatar
   return (
     <View style={FindRideStyles.card}>
       <View style={{ padding: 10 }}>
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
             <ImageView
-              source={
-                images[`captain${activeRequest?.driver?.avatar}`] ||
-                images[`captain0`]
-              }
+              source={driver_avatar ? { uri: driver_avatar } : images[`captain1`]}
               style={[styles.avatar]}
             />
           </View>
@@ -333,12 +332,14 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isDriverLogged = isDriver();
-  const {getCurrentLocation, location} = useGetCurrentLocation(isDriverLogged)
+  const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged)
   useGetActiveRequests()
 
 
-  const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
-
+  const { activeRequest, activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
+  const openMapApp = () => {
+    openMap({ start: activeRequest?.from_location, end: activeRequest?.to_location, navigate: true });
+  }
   const Cards = ({ title, children }) => {
     return <View>
       <Text style={[styles.name, styles.primaryColor, styles.bold]}>
@@ -350,6 +351,12 @@ const ActiveRidePage = ({ currentLocation }) => {
 
   return (
     <View style={[FindRideStyles.container]}>
+      { (activeRideId && activeRequest?.from_location) && <Pressable
+        onPress={openMapApp}
+        style={{ position: 'absolute', right: 20, top: 20 }}
+      >
+        <Icon name="directions" size="doubleLarge" color={COLORS.brand_blue} />
+      </Pressable>}
       <View style={ActiveRidePageStyles.cardBottom}>
         {isDriverLogged ? <Cards title={'User Details'}>
           <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />

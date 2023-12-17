@@ -6,7 +6,6 @@ import { ImageView, Text } from '../components/common';
 import images from '../util/images';
 import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS } from '../constants';
-
 const walletCopy = {
   'DEBIT': {
     title: "Debited",
@@ -24,7 +23,7 @@ const WalletPage = ({ navigation }) => {
   const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
 
   console.log({ transactionHistory });
-
+ 
   const { transactions, balance, hold } = transactionHistory || {}
   return (
     <View style={WalletStyles.container}>
@@ -32,11 +31,11 @@ const WalletPage = ({ navigation }) => {
         <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text>
         <Text style={WalletStyles.whitetxt}>{'Total Balance'}</Text>
         <Text style={WalletStyles.balTxt}>{'\u20B9'}{balance}</Text>
-        {/* <View style={WalletStyles.right}>
-          <Pressable style={WalletStyles.button}>
+        <View style={WalletStyles.right}>
+          {/* <Pressable style={WalletStyles.button} onPress={_goToYosemite}>
             <Text style={WalletStyles.buttonTxt}>{'Add Money'.toUpperCase()}</Text>
-          </Pressable>
-        </View> */}
+          </Pressable> */}
+        </View>
         <View style={{ justifyContent: 'space-between', right: 20, position: 'absolute', bottom: 10 }}>
           <Text style={WalletStyles.whitetxt}>{'Hold Amount: '}
             <Text style={[WalletStyles.whitetxt, { fontSize: 16, fontWeight: 'bold' }]}>{'\u20B9'}{hold}</Text>
@@ -64,7 +63,7 @@ const WalletPage = ({ navigation }) => {
                     </Text>
                   </View>
                   <View style={WalletStyles.right}>
-                    <Text style={[WalletStyles.greenTxt, {color: copy.color}]}>{'\u20B9'} {item.amount}</Text>
+                    <Text style={[WalletStyles.greenTxt, { color: copy.color }]}>{'\u20B9'} {item.amount}</Text>
                   </View>
                 </View>
               </View>
