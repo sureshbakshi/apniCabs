@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Pressable, Modal, TextInput } from 'react-native';
 import { get } from 'lodash';
 import { Text } from '../components/common';
@@ -10,12 +10,13 @@ import Timeline from '../components/common/timeline/Timeline';
 import { COLORS, RideStatus, USER_INFORMATION, VEHICLE_INFORMATION } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import requestList from '../mock/rideRequests';
+import {isEmpty} from 'lodash';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus, setActiveRide } from '../slices/driverSlice';
 import { cancelActiveRequest } from '../slices/userSlice';
 import { isDriver, isUser } from '../util';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 const intialState = [
   { message: 'Driver Denied to go to destination', id: 1 },
   { message: 'Unable to contact driver', id: 2 },
@@ -299,7 +300,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
               // autoComplete={'sms-otp'}
               onChangeText={newText => setOtp(newText)}
               value={otp}
-              autoFocus
+              // autoFocus
               minLength={4}
               maxLength={4}
               style={FindRideStyles.textInputPickup}
@@ -332,7 +333,9 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 const ActiveRidePage = ({ currentLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isDriverLogged = isDriver();
-  // useGetActiveRequests()
+  const {getCurrentLocation, location} = useGetCurrentLocation()
+  useGetActiveRequests()
+
 
   const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 
@@ -356,7 +359,7 @@ const ActiveRidePage = ({ currentLocation }) => {
             <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
           </Cards>}
         <Cards title={'Ride Details'}>
-          <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={currentLocation} setModalVisible={setModalVisible} />
+          {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}
         </Cards>
         <Modalpopup
           modalVisible={modalVisible}

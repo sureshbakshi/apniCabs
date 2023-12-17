@@ -31,7 +31,7 @@ export default function UserTabNavigator() {
           component={UserStackNavigator}
         />
         <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={UserRideHistory} />
-        <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
+        {/* <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} /> */}
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>
     </AppProvider>

@@ -1,45 +1,56 @@
 import * as React from 'react';
-import { View, Button, Pressable, ScrollView} from 'react-native';
+import { View, Button, Pressable, ScrollView } from 'react-native';
 import WalletStyles from '../styles/WalletPageStyles';
 import styles from '../styles/MyRidePageStyles';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
-const WalletPage = ({navigation}) => {
-  console.log(navigation);
+import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
+
+
+const WalletPage = ({ navigation }) => {
+  const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
+
+  console.log({ transactionHistory });
+  
+  const { transactions, balance, hold } = transactionHistory || {}
   return (
     <View style={WalletStyles.container}>
       <View style={WalletStyles.header}>
         <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text>
         <Text style={WalletStyles.whitetxt}>{'Total Balance'}</Text>
-        <Text style={WalletStyles.balTxt}>{'\u20B9'}{'120'}</Text>
-        <View style={WalletStyles.right}>
+        <Text style={WalletStyles.balTxt}>{'\u20B9'}{balance}</Text>
+        {/* <View style={WalletStyles.right}>
           <Pressable style={WalletStyles.button}>
             <Text style={WalletStyles.buttonTxt}>{'Add Money'.toUpperCase()}</Text>
           </Pressable>
+        </View> */}
+        <View style={{ justifyContent: 'space-between', right: 20 , position: 'absolute', bottom: 10}}>
+          <Text style={WalletStyles.whitetxt}>{'Hold Amount: '}
+          <Text style={[WalletStyles.whitetxt, {fontSize: 16, fontWeight: 'bold'}]}>{'\u20B9'}{hold}</Text>
+          </Text>
         </View>
       </View>
       <View style={WalletStyles.section}>
         <ScrollView>
-          {[1, 2, 3, 4, 5].map((item, i) => {
+          {transactions?.length && transactions.map((item, i) => {
             return (
               <View style={WalletStyles.card} key={i}>
                 <View style={WalletStyles.cardtop}>
                   <View style={WalletStyles.left}>
                     {/* <View style={WalletStyles.profileIcon}></View> */}
-                    <ImageView source={images[`captain${i}`]} style={[styles.avatar]}/>
+                    <ImageView source={images.requested} style={styles.avatar} resizeMode='cover'/>
                   </View>
                   <View style={WalletStyles.middle}>
-                    <Text style={WalletStyles.name}>Ride Payment</Text>
+                    <Text style={WalletStyles.name}>Ride Payment </Text>
                     <Text style={WalletStyles.review}>
-                      {item}th Feb,05:15 pm
+                      Sun, 05:15 pm
                     </Text>
                     <Text style={WalletStyles.address}>
-                      Amount deducted from ride
+                      {item.description}
                     </Text>
                   </View>
                   <View style={WalletStyles.right}>
-                    <Text style={WalletStyles.greenTxt}>{'\u20B9'}15</Text>
-                    <Text style={[WalletStyles.smallTxt]}>David Johnson</Text>
+                    <Text style={WalletStyles.greenTxt}>{'\u20B9'} {item.amount}</Text>
                   </View>
                 </View>
               </View>

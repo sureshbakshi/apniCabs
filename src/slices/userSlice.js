@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { ClearRideStatus, RideStatus } from '../constants';
 
-
 const updateStatusByDriverId = (updatedData, driver_id, status) => {
   _.forEach(updatedData, item => {
     const driverToUpdate = _.find(item.drivers, { 'driver_id': driver_id });
@@ -26,7 +25,7 @@ const userSlice = createSlice({
       state.rideRequests = action.payload;
     },
     setActiveRequest: (state, action) => {
-      if(isEmpty(action.payload)) {
+      if(_.isEmpty(action.payload)) {
         state.activeRequest = null;
         state.activeRideId = null
       }else{

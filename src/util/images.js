@@ -9,4 +9,7 @@ export default {
     car: require('../assets/images/captains/vehicles/3d-car.png'),
     auto: require('../assets/images/captains/vehicles/rickshaw.png'),
     bike: require('../assets/images/captains/vehicles/motorcycle.png'),
+    requested: require('../assets/images/request.png'),
+    accepted: require('../assets/images/accepted.png'),
+    hold: require('../assets/images/hold.png'),
 }   

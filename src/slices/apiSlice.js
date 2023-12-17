@@ -50,6 +50,7 @@ const api_path = {
   drivers: path => `drivers/${path}`,
   vehicle: path => `vehicle/${path}`,
   request: path => `request/${path}`,
+  transactions: path => `transactions/${path}`,
 };
 const api_urls = {
   login: 'login',
@@ -65,7 +66,8 @@ const api_urls = {
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
   location: 'location',
-  userActiveRide:'active-rides/user'
+  userActiveRide:'active-rides/user',
+  list: 'list'
 };
 
 export const apiSlice = createApi({
@@ -211,6 +213,16 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    // transaction starts
+    getDriverTransactions: builder.query({
+      query: id => ({
+        method: 'GET',
+        url: api_path.transactions(`${api_urls.list}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    // transaction end
 
 
 
@@ -245,4 +257,5 @@ export const {
   useUserActiveRideQuery,
   useDriverRideHistoryQuery,
   useUserRideHistoryQuery,
+  useGetDriverTransactionsQuery
 } = apiSlice;
