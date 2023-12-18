@@ -93,7 +93,7 @@ const FindRideStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 20,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.brand_yellow,
     flex: 1
   },
   text: {

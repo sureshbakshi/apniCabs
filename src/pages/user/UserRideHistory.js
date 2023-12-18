@@ -6,7 +6,7 @@ import ActivityIndicator from "../../components/common/ActivityIndicator";
 export default () => {
     const { data: rideHistory, error: rideHistoryError, isLoading } = useUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
 
-    if (true) {
+    if (isLoading) {
         return  <ActivityIndicator/>
     }
 

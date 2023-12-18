@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { View, Pressable, ScrollView, Text, Switch } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
-import { ImageView } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
-import { navigate } from '../util/navigationService';
-import { emitAcceptRequest } from '../sockets/driverSockets';
+import { COLORS, RideStatus } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useDriverActiveRideMutation, useDriverActiveRideQuery, useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
-import useGetDriverDetails, { useDisptachDriverDetails } from '../hooks/useGetDriverDetails';
+import useGetDriverDetails from '../hooks/useGetDriverDetails';
 import { _isDriverOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
+import SearchLoader from '../components/common/SearchLoader';
+import { useUpdateDriverStatusMutation } from '../slices/apiSlice';
+
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
@@ -133,6 +131,7 @@ export const PickARide = () => {
     }
   }, [isOnline]);
 
+
   return (
     <View style={FindRideStyles.container}>
       <View
@@ -151,9 +150,11 @@ export const PickARide = () => {
           value={Boolean(isOnline)}
         />
       </View>
-      <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text>
-
+      {/* <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text> */}
       {(_isDriverOnline() && !isSocketConnected) && <SocketStatus />}
+      {isSocketConnected && <>
+        <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} />
+      </>}
       {isOnline ? (
         <View style={FindRideStyles.section}>
           {rideRequests?.length ? (
@@ -162,7 +163,10 @@ export const PickARide = () => {
             </ScrollView>
           ) : null}
         </View>
-      ) : null}
+      ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+          You are currently offline. Turn on your availability to receive ride requests.</Text>
+      </View>}
     </View>
   );
 };

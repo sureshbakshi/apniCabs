@@ -5,9 +5,8 @@ import FindRideStyles from '../../../styles/FindRidePageStyles';
 import styles from '../../../styles/MyRidePageStyles';
 import images from '../../../util/images';
 import Timeline from '../timeline/Timeline';
-import { navigate } from '../../../util/navigationService';
 import _ from 'lodash';
-import { ROUTES_NAMES, RideStatus } from '../../../constants';
+import { COLORS } from '../../../constants';
 import { useSendRequestMutation } from '../../../slices/apiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDriversRequest } from '../../../slices/userSlice';
@@ -39,6 +38,30 @@ const Card = item => {
   if (isLoading) {
     return null;
   }
+  const getButtonStyles = (status) =>{
+    switch (status){
+      case 'DECLINED' : {
+        return  {
+          label: status,
+            bg: COLORS.primary,
+            color: COLORS.white
+        }
+      }
+      case 'REQUESTED': {
+        return  {
+          label: status,
+            bg: COLORS.brand_blue,
+            color: COLORS.white
+        }
+      }
+      default:return  {
+        label: status || 'Send Request',
+          bg: COLORS.brand_yellow,
+          color: COLORS.black
+      }
+    }
+  }
+  const actionButtonInfo = getButtonStyles(item?.status)
   return (
     <View style={FindRideStyles.card} key={item.id}>
       <Timeline />
@@ -80,10 +103,10 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.right}>
           <Pressable
-            style={FindRideStyles.button}
+            style={[FindRideStyles.button, {backgroundColor: actionButtonInfo.bg}]}
             onPress={() => handleSendRequest(item)}>
-            <Text style={FindRideStyles.text}>
-              {item.status ? item.status : 'Request'}
+            <Text style={[FindRideStyles.text, {color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize'}]}>
+              {actionButtonInfo.label}
             </Text>
           </Pressable>
         </View>

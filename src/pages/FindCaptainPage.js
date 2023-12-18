@@ -8,6 +8,7 @@ import {useAppContext} from '../context/App.context';
 import {useGetRideRequestMutation} from '../slices/apiSlice';
 import {setRideRequest} from '../slices/userSlice';
 import {useDispatch} from 'react-redux';
+import SearchLoader from '../components/common/SearchLoader';
 
 const FindCaptainPage = () => {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const FindCaptainPage = () => {
     to: to?.formatted_address || '',
   };
   if (isLoading || error) {
-    return null;
+    return  <SearchLoader msg='Finding best captains. Please wait...'/>;
   }
 
   return (

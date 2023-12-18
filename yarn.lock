@@ -1758,7 +1758,7 @@
   "resolved" "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
   "version" "1.0.0"
 
-"@react-native/normalize-color@*", "@react-native/normalize-color@2.1.0":
+"@react-native/normalize-color@^2.1.0", "@react-native/normalize-color@2.1.0":
   "integrity" "sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA=="
   "resolved" "https://registry.npmjs.org/@react-native/normalize-color/-/normalize-color-2.1.0.tgz"
   "version" "2.1.0"
@@ -3169,13 +3169,13 @@
   "version" "2.0.0"
 
 "deprecated-react-native-prop-types@^3.0.1":
-  "integrity" "sha512-J0jCJcsk4hMlIb7xwOZKLfMpuJn6l8UtrPEzzQV5ewz5gvKNYakhBuq9h2rWX7YwHHJZFhU5W8ye7dB9oN8VcQ=="
-  "resolved" "https://registry.npmjs.org/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-3.0.1.tgz"
-  "version" "3.0.1"
+  "integrity" "sha512-JoZY5iNM+oJlN2Ldpq0KSi0h3Nig4hlNJj5nWzWp8eL3uikMCvHwjSGPitwkEw0arL5JFra5nuGJQpXRbEjApg=="
+  "resolved" "https://registry.npmjs.org/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-3.0.2.tgz"
+  "version" "3.0.2"
   dependencies:
-    "@react-native/normalize-color" "*"
-    "invariant" "*"
-    "prop-types" "*"
+    "@react-native/normalize-color" "^2.1.0"
+    "invariant" "^2.2.4"
+    "prop-types" "^15.8.1"
 
 "destroy@1.2.0":
   "integrity" "sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg=="
@@ -4240,7 +4240,7 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
-"invariant@*", "invariant@^2.2.4":
+"invariant@^2.2.4":
   "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
   "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   "version" "2.2.4"
@@ -5216,6 +5216,11 @@
   "version" "1.4.0"
   dependencies:
     "js-tokens" "^3.0.0 || ^4.0.0"
+
+"lottie-react-native@^6.4.1":
+  "integrity" "sha512-DPsUPSxLc3ZffeRQ/AtKtcUl4PzmJEEPt965tNpWSE4vhDkoGFxRe0TPZ45xX8/3HbGsUl48aMdLlAu28MEDsQ=="
+  "resolved" "https://registry.npmjs.org/lottie-react-native/-/lottie-react-native-6.4.1.tgz"
+  "version" "6.4.1"
 
 "lru-cache@^5.1.1":
   "integrity" "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="
@@ -6237,7 +6242,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@*", "prop-types@^15.5.10", "prop-types@^15.7.2", "prop-types@^15.8.1":
+"prop-types@^15.5.10", "prop-types@^15.7.2", "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -6513,7 +6518,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.57.0", "react-native@>=0.59", "react-native@0.71.2":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.46", "react-native@>=0.57.0", "react-native@>=0.59", "react-native@0.71.2":
   "integrity" "sha512-ZSianM+j+09LoEdVIhrAP/uP8sQhT7dH6olCqM2xlpxmfCgA5NubsK6NABIuZiBlmmqjigyijm5Y/GhBIHDvEg=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.71.2.tgz"
   "version" "0.71.2"

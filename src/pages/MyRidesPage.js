@@ -9,9 +9,9 @@ import { formattedDate, getRandomNumber } from '../util';
 import { get } from 'lodash'
 
 const colorsNBg = {
-  [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled' },
-  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled' },
-  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed' },
+  [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
+  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled' , image: images.rideCancel },
+  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed' , image: images.rideAccept},
 }
 
 const getColorNBg = (status) => {
@@ -26,16 +26,15 @@ const Card = ({ item, keys }) => {
   const status = getValue(item, keys.status)
   const fare = getValue(item, keys.fare)
   const time = getValue(item, keys.rideTime)
-  const { color, bg, label } = getColorNBg(status)
+  const { color, bg, label, image } = getColorNBg(status)
 
   return <View style={styles.card} key={item.id}>
     <Pressable style={[styles.status, { backgroundColor: bg }]}>
       <Text style={[styles.text, styles.whiteColor, { color: color }]}>{label}</Text>
     </Pressable>
     <View style={styles.cardtop}>
-      <View style={styles.left}>
-        {/* <View style={styles.profileIcon}></View> */}
-        <ImageView source={images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
+      <View style={[styles.left, {paddingRight: 0, paddingLeft: 20}]}>
+        <ImageView source={image || images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
       </View>
       <View style={styles.middle}>
         {/* <Text style={styles.name}>{item.name}</Text> */}

@@ -123,10 +123,9 @@ const MyRideStyles = StyleSheet.create({
   },
   avatar: {
     minWidth: 10,
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     minHeight: 10,
-    borderRadius: 50
   },
   end:{
     alignSelf:'flex-end',

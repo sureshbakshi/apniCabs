@@ -12,4 +12,8 @@ export default {
     requested: require('../assets/images/request.png'),
     accepted: require('../assets/images/accepted.png'),
     hold: require('../assets/images/hold.png'),
+    searchLoader: require('../assets/images/loading.json'),
+    rideAccept: require('../assets/images/ride_accept.png'),
+    rideCancel: require('../assets/images/ride_cancel.png'),
+
 }   

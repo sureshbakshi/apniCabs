@@ -74,7 +74,7 @@ const WalletStyles = StyleSheet.create({
     fontWeight: '500',
   },
   whitetxt: {
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
     color: '#fff',
