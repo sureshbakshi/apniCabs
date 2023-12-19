@@ -94,12 +94,13 @@ const FindRideStyles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     backgroundColor: COLORS.brand_yellow,
-    flex: 1
+    flex: 1,
   },
   text: {
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
+    color: COLORS.white,
   },
   tabs:{
     backgroundColor:COLORS.white,

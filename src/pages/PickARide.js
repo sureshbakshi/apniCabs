@@ -13,7 +13,7 @@ import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
-import { useUpdateDriverStatusMutation } from '../slices/apiSlice';
+import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -152,9 +152,9 @@ export const PickARide = () => {
       </View>
       {/* <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text> */}
       {(_isDriverOnline() && !isSocketConnected) && <SocketStatus />}
-      {isSocketConnected && <>
+      {(isSocketConnected && rideRequests?.length <= 0) ? <>
         <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} />
-      </>}
+      </> : null}
       {isOnline ? (
         <View style={FindRideStyles.section}>
           {rideRequests?.length ? (

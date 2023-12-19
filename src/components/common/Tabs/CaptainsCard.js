@@ -105,9 +105,9 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.right}>
           <Pressable
-            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg }]}
+            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40,marginVertical: 10, marginHorizontal: 3 }]}
             onPress={() => handleSendRequest(item)}>
-            <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize' }]}>
+            <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
               {actionButtonInfo.label}
             </Text>
           </Pressable>
