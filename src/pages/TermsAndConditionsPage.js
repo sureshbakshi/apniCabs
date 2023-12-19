@@ -2,12 +2,13 @@ import * as React from 'react';
 import { View, Pressable, ScrollView, ImageBackground} from 'react-native';
 import TermsAndConditionsStyles from '../styles/TermsAndConditionsPageStyles';
 import { Text } from '../components/common';
+import images from '../util/images';
 
 const TermsAndConditionsPage = ({navigation}) => {
   return (
     <View style={TermsAndConditionsStyles.container}>
       <ImageBackground
-        source={require('../assets/images/bg.jpeg')}
+        source={images.backgroundImage}
         resizeMode="cover"
         style={TermsAndConditionsStyles.image}>
       </ImageBackground>

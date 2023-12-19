@@ -7,7 +7,7 @@ import { filter, isEmpty } from 'lodash';
 import { useAppContext } from '../context/App.context';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { setRideRequest } from '../slices/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchLoader from '../components/common/SearchLoader';
 import CaptainsCard from '../components/common/Tabs/CaptainsCard';
 import { COLORS, VEHICLE_TYPES } from '../constants';
@@ -16,6 +16,8 @@ import { Icon } from '../components/common';
 
 const FindCaptainPage = () => {
   const dispatch = useDispatch();
+  const list = useSelector(state => state.user?.rideRequests?.vehicles);
+
   const {
     route,
     location: { from, to },
@@ -70,23 +72,22 @@ const FindCaptainPage = () => {
   if (isLoading || error || isEmpty(rideList)) {
     return <SearchLoader msg='Finding best captains. Please wait...' />;
   }
-  if (rideList?.vehicles.length <= 0) {
+  if (isEmpty(list)) {
     return <SearchLoader msg='No Captains found. Please try after sometime.' isLoader={false} />
   }
-  console.log(rideList?.vehicles)
   return (
     <View style={FindRideStyles.container}>
       {
-        rideList?.vehicles.length > 1 ? <CustomTabs extraProps={extraProps} /> :
+        list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
         <>
         <View style={{backgroundColor: COLORS.white,marginBottom: 2 }}>
           <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120}}>
-          <Icon name={VEHICLE_TYPES[rideList?.vehicles[0].name]} size="extraLarge" color={COLORS.primary}/>
-          <Text  style={{marginLeft: 8}} >{rideList?.vehicles[0].name}</Text>
+          <Icon name={VEHICLE_TYPES[list[0].name]} size="extraLarge" color={COLORS.primary}/>
+          <Text  style={{marginLeft: 8}} >{list[0].name}</Text>
           </View>
         </View>
           <CaptainsCard
-            list={rideList?.vehicles[0]?.drivers}
+            list={list[0]?.drivers}
             keyProp={0}
             extraProps={extraProps}
           />

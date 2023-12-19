@@ -100,7 +100,6 @@ const FindRideStyles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
-    color: COLORS.white,
   },
   tabs:{
     backgroundColor:COLORS.white,

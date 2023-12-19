@@ -16,6 +16,7 @@ import {useSingUpMutation} from '../slices/apiSlice';
 import {updateUserInfo, updateUserCheck} from '../slices/authSlice';
 import {useSetState} from 'react-use';
 import { ROUTES_NAMES, USER_ROLES } from '../constants';
+import images from '../util/images';
 const initialState = {
   email: '',
   password: '',
@@ -61,7 +62,7 @@ const SignUpPage = () => {
     <ScrollView>
       <View style={LoginStyles.container}>
         <ImageBackground
-          source={require('../assets/images/bg.jpeg')}
+          source={images.backgroundImage}
           resizeMode="cover"
           style={LoginStyles.image}>
           <View style={LoginStyles.logoSection}>

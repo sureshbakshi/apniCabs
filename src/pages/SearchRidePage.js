@@ -11,6 +11,7 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
+import images from '../util/images';
 
 const SearchRidePage = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
@@ -28,7 +29,7 @@ const SearchRidePage = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/images/bg.jpeg')}
+      source={images.backgroundImage}
       resizeMode="cover"
       style={SearchRideStyles.image}>
       <View style={SearchRideStyles.container}>

@@ -31,6 +31,7 @@ import {useAuthContext} from '../context/Auth.context';
 import Config from 'react-native-config';
 import {navigate} from '../util/navigationService';
 import { disconnectSocket } from '../sockets/socketConfig';
+import images from '../util/images';
 
 const initialState = {
   email: 'kommemaheshwari@gmail.com',
@@ -120,7 +121,7 @@ const LoginPage = () => {
     <ScrollView>
       <View style={LoginStyles.container}>
         <ImageBackground
-          source={require('../assets/images/bg.jpeg')}
+          source={images.backgroundImage}
           resizeMode="cover"
           style={LoginStyles.image}>
           <View style={LoginStyles.logoSection}>

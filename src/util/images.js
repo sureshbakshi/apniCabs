@@ -15,5 +15,6 @@ export default {
     searchLoader: require('../assets/images/loading.json'),
     rideAccept: require('../assets/images/ride_accept.png'),
     rideCancel: require('../assets/images/ride_cancel.png'),
+    backgroundImage: require('../assets/images/bg.jpeg')
 
 }   
