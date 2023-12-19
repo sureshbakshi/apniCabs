@@ -3,11 +3,11 @@ import { Text } from "react-native-paper"
 import images from "../../util/images"
 import LottieAnimation from 'lottie-react-native';
 
-export default ({msg, source = images.searchLoader, containerStyles = {}, textStyles = {}, animationProps}) => {
+export default ({msg, source = images.searchLoader, containerStyles = {}, textStyles = {}, animationProps, isLoader= true}) => {
     const message = msg || 'Loading...'
     return (
         <><View style={{ justifyContent: 'flex-end', alignItems: 'center', padding: 20, ...containerStyles }}><Text style={{ fontWeight: 'bold', ...textStyles }}>{message}</Text>
-            <LottieAnimation
+            {isLoader && <LottieAnimation
                 source={source}
                 speed={1}
                 autoPlay={true}
@@ -16,7 +16,7 @@ export default ({msg, source = images.searchLoader, containerStyles = {}, textSt
                 style={{ width: '50%', height: '50%' }}
                 {...animationProps}
             >
-            </LottieAnimation>
+            </LottieAnimation>}
         </View></>
     )
 }

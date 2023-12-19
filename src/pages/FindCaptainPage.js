@@ -1,32 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
-import {CustomTabs} from '../components/common';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 
-import _ from 'lodash';
-import {useAppContext} from '../context/App.context';
-import {useGetRideRequestMutation} from '../slices/apiSlice';
-import {setRideRequest} from '../slices/userSlice';
-import {useDispatch} from 'react-redux';
+import { filter, isEmpty } from 'lodash';
+import { useAppContext } from '../context/App.context';
+import { useGetRideRequestMutation } from '../slices/apiSlice';
+import { setRideRequest } from '../slices/userSlice';
+import { useDispatch } from 'react-redux';
 import SearchLoader from '../components/common/SearchLoader';
+import CaptainsCard from '../components/common/Tabs/CaptainsCard';
+import { COLORS, VEHICLE_TYPES } from '../constants';
+import { Text } from 'react-native-paper';
+import { Icon } from '../components/common';
 
 const FindCaptainPage = () => {
   const dispatch = useDispatch();
   const {
     route,
-    location: {from, to},
+    location: { from, to },
     getDistance,
   } = useAppContext();
-  const [getRideRequest, {data: rideList, error, isLoading}] =
+  const [getRideRequest, { data: rideList, error, isLoading }] =
     useGetRideRequestMutation();
 
   useEffect(() => {
     (async () => {
-      const {distance, duration} = await getDistance();
-      let fromCity = _.filter(from.address_components, {
+      const { distance, duration } = await getDistance();
+      let fromCity = filter(from.address_components, {
         types: ['locality'],
       });
-      let toCity = _.filter(to.address_components, {
+      let toCity = filter(to.address_components, {
         types: ['locality'],
       });
 
@@ -52,7 +56,7 @@ const FindCaptainPage = () => {
 
   useEffect(() => {
     if (error) {
-      console.log({error});
+      console.log({ error });
     } else if (rideList) {
       dispatch(setRideRequest(rideList));
     }
@@ -63,13 +67,32 @@ const FindCaptainPage = () => {
     from: from?.formatted_address || '',
     to: to?.formatted_address || '',
   };
-  if (isLoading || error) {
-    return  <SearchLoader msg='Finding best captains. Please wait...'/>;
+  if (isLoading || error || isEmpty(rideList)) {
+    return <SearchLoader msg='Finding best captains. Please wait...' />;
   }
-
+  if (rideList?.vehicles.length <= 0) {
+    return <SearchLoader msg='No Captains found. Please try after sometime.' isLoader={false} />
+  }
+  console.log(rideList?.vehicles)
   return (
     <View style={FindRideStyles.container}>
-      <CustomTabs extraProps={extraProps} />
+      {
+        rideList?.vehicles.length > 1 ? <CustomTabs extraProps={extraProps} /> :
+        <>
+        <View style={{backgroundColor: COLORS.white,marginBottom: 2 }}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120}}>
+          <Icon name={VEHICLE_TYPES[rideList?.vehicles[0].name]} size="extraLarge" color={COLORS.primary}/>
+          <Text  style={{marginLeft: 8}} >{rideList?.vehicles[0].name}</Text>
+          </View>
+        </View>
+          <CaptainsCard
+            list={rideList?.vehicles[0]?.drivers}
+            keyProp={0}
+            extraProps={extraProps}
+          />
+          </>
+      }
+
     </View>
   );
 };

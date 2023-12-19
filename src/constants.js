@@ -182,7 +182,7 @@ export const toastConfig = {
 export const VEHICLE_TYPES = {
   car: 'car-side',
   auto: 'golf-cart',//rv-truck,truck
-  bike: 'bike'
+  'Bike': 'bike'
 }
 
 export const VEHICLE_INFORMATION = [{

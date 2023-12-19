@@ -20,9 +20,9 @@ const Card = item => {
     useSendRequestMutation();
   const handleSendRequest = item => {
     if (!item.status) {
-      let payload = { request_id, driver_id: item.driver_id,fare: item.price };
+      let payload = { request_id, driver_id: item.driver_id, fare: item.price };
       sendRequest(payload);
-    }else{
+    } else {
       showErrorMessage('Request already sent.')
     }
 
@@ -38,38 +38,40 @@ const Card = item => {
   if (isLoading) {
     return null;
   }
-  const getButtonStyles = (status) =>{
-    switch (status){
-      case 'DECLINED' : {
-        return  {
+  const getButtonStyles = (status) => {
+    switch (status) {
+      case 'DECLINED': {
+        return {
           label: status,
-            bg: COLORS.primary,
-            color: COLORS.white
+          bg: COLORS.primary,
+          color: COLORS.white
         }
       }
       case 'REQUESTED': {
-        return  {
+        return {
           label: status,
-            bg: COLORS.brand_blue,
-            color: COLORS.white
+          bg: COLORS.brand_blue,
+          color: COLORS.white
         }
       }
-      default:return  {
-        label: status || 'Send Request',
+      default: {
+        return {
+          label: 'Send Request',
           bg: COLORS.brand_yellow,
           color: COLORS.black
+        }
       }
     }
   }
   const actionButtonInfo = getButtonStyles(item?.status)
   return (
-    <View style={FindRideStyles.card} key={item.id}>
+    <View style={FindRideStyles.card} key={item?.driver_id}>
       <Timeline />
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
             source={
-              images[`captain${item.profile_avatar}`] || images[`captain0`]
+              images[`captain${item?.profile_avatar}`] || images[`captain0`]
             }
             style={[styles.avatar]}
           />
@@ -103,9 +105,9 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.right}>
           <Pressable
-            style={[FindRideStyles.button, {backgroundColor: actionButtonInfo.bg}]}
+            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg }]}
             onPress={() => handleSendRequest(item)}>
-            <Text style={[FindRideStyles.text, {color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize'}]}>
+            <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize' }]}>
               {actionButtonInfo.label}
             </Text>
           </Pressable>
