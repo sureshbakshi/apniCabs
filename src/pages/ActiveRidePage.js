@@ -126,7 +126,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
             </Pressable>
             <Pressable
               android_ripple={{ color: '#fff' }}
-              style={[FindRideStyles.button]}
+              style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
               onPress={handleSubmit}>
               <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
                 {'Submit'}
@@ -343,7 +343,7 @@ const ActiveRidePage = ({ currentLocation }) => {
   }
   const Cards = ({ title, children }) => {
     return <View>
-      <Text style={[styles.name, styles.primaryColor, styles.bold]}>
+      <Text style={[styles.name, styles.blackColor, styles.bold]}>
         {title}:
       </Text>
       {children}
@@ -352,32 +352,33 @@ const ActiveRidePage = ({ currentLocation }) => {
 
   return (
     <View style={[FindRideStyles.container]}>
-      <ActiveMapPage />
-        {(activeRideId && activeRequest?.from_location) && <Pressable
-          onPress={openMapApp}
-          style={{ position: 'absolute', right: 20, top: 20}}
-        >
-          <Icon name="directions" size="doubleLarge" color={COLORS.brand_blue} />
-        </Pressable>}
-        <View style={ActiveRidePageStyles.cardBottom}>
-          {isDriverLogged ? <Cards title={'User Details'}>
-            <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
-          </Cards> :
-            <Cards title={'Vehicle Details'}>
-              <Text style={styles.end}>OTP: {activeRequest.code}</Text>
-              <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
-            </Cards>}
-          <Cards title={'Ride Details'}>
-            {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}
-          </Cards>
-          <Modalpopup
-            modalVisible={modalVisible}
-            handleModalVisible={setModalVisible}
-            activeReq={activeRequest}
-            isDriverLogged={isDriverLogged}
-          />
-        </View>
-
+      <View style={{backgroundColor: 'red', minHeight: 300}}>
+        <ActiveMapPage />
+      </View>
+      {(activeRideId && activeRequest?.from_location) && <Pressable
+        onPress={openMapApp}
+        style={{ position: 'absolute', right: 20, top: 20, zIndex: 2 }}
+      >
+        <Icon name="directions" size="doubleLarge" color={COLORS.brand_blue} />
+      </Pressable>}
+      <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.bg_light, padding: 10, borderTopLeftRadius: 25, borderTopRightRadius: 25 }]}>
+        {isDriverLogged ? <Cards title={'User Details'}>
+          <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
+        </Cards> :
+          <Cards title={'Vehicle Details'}>
+            <Text style={styles.end}>OTP: {activeRequest.code}</Text>
+            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
+          </Cards>}
+        <Cards title={'Ride Details'}>
+          {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}
+        </Cards>
+        <Modalpopup
+          modalVisible={modalVisible}
+          handleModalVisible={setModalVisible}
+          activeReq={activeRequest}
+          isDriverLogged={isDriverLogged}
+        />
+      </View>
     </View>
   );
 };

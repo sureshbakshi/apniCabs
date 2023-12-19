@@ -87,7 +87,6 @@ const mapStyle = [
 
 const ActiveMapPage = (location) => {
   return (
-     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <MapView
           style={styles.mapStyle}
@@ -118,7 +117,6 @@ const ActiveMapPage = (location) => {
           />
         </MapView>
       </View>
-    </SafeAreaView>
   );
 };
 export default ActiveMapPage;
