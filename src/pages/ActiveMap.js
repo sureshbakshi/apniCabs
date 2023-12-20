@@ -85,35 +85,35 @@ const mapStyle = [
     },
   ];
 
-const ActiveMapPage = (location) => {
+const ActiveMapPage = ({activeRequest,currentLocation}) => {
   return (
       <View style={styles.container}>
         <MapView
           style={styles.mapStyle}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: Number(activeRequest?.from_latitude),
+            longitude: Number(activeRequest?.from_longitude),
+            latitudeDelta: 0.5,
+            longitudeDelta: 0.5,
           }}
           customMapStyle={mapStyle}>
           <Marker
             draggable={false}
             coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
+              latitude: Number(activeRequest?.from_latitude),
+              longitude: Number(activeRequest?.from_longitude),
             }}
-            title={'Test Marker'}
-            description={'This is a description of the marker'}
+            title={'Driver location'}
+            description={'Your driver is here!'}
           />
-          <Marker
+            <Marker
             draggable={false}
             coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
+              latitude: Number(currentLocation.latitude),
+              longitude: Number(currentLocation.longitude),
             }}
-            title={'Test Marker'}
-            description={'This is a description of the marker'}
+            title={'User location'}
+            description={'Your are here!'}
           />
         </MapView>
       </View>

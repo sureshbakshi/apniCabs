@@ -352,10 +352,10 @@ const ActiveRidePage = ({ currentLocation }) => {
 
   return (
     <View style={[FindRideStyles.container]}>
-      <View style={{backgroundColor: 'red', minHeight: 300}}>
-        <ActiveMapPage />
+      <View style={{ backgroundColor: 'red', minHeight: 300 }}>
+        {activeRequest?.id && <ActiveMapPage activeRequest={activeRequest} currentLocation={location || currentLocation} />}
       </View>
-      {(activeRideId && activeRequest?.from_location) && <Pressable
+      {(!activeRideId && activeRequest?.from_location) && <Pressable
         onPress={openMapApp}
         style={{ position: 'absolute', right: 20, top: 20, zIndex: 2 }}
       >
