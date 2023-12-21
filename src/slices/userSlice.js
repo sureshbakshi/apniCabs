@@ -15,6 +15,7 @@ const intialState = {
   activeRideId: null,
   rideRequests: null,
   activeRequest: null,
+  driverLocation: null,
 }
 const userSlice = createSlice({
   name: 'user',
@@ -58,6 +59,9 @@ const userSlice = createSlice({
         }
       }
     },
+    updateDriverLocation: (state, action) => {
+      state.driverLocation = action.payload;
+    },
   },
 });
 
@@ -65,7 +69,8 @@ export const {
   setRideRequest,
   updateDriversRequest,
   setActiveRequest,
-  cancelActiveRequest
+  cancelActiveRequest,
+  updateDriverLocation
 } = userSlice.actions;
 
 export default userSlice.reducer;

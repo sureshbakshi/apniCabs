@@ -16,11 +16,15 @@ export default (isWatchPosition = false) => {
 
     const defaultOptions = {
         enableHighAccuracy: true,
-        maximumAge: 3000,
-        timeout: 3000,
+        maximumAge: 3,
+        timeout: 3 * 1000,
         forceRequestLocation: true,
-        interval: 3000 * 1,
+        interval: 3,
+        fastestInterval:3,
         useSignificantChanges: true,
+        distanceFilter: 5,
+        showLocationDialog: true,
+        forceRequestLocation: true
     }
     const checkAndroidPermissions = async () => {
         try {
@@ -35,10 +39,12 @@ export default (isWatchPosition = false) => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 return true;
             } else {
-                return false;
+                checkAndroidPermissions();
+                return false
             }
         } catch (err) {
             console.warn(err);
+            checkAndroidPermissions();
             return false
         }
     };
@@ -68,11 +74,11 @@ export default (isWatchPosition = false) => {
                     setLocation(location);
                 }
             } else {
-                return new Error('Distance calculation error');
+                // return new Error('Distance calculation error');
+                showErrorMessage('Error while fetching location address')
             }
         } catch (error) {
-            console.error('Error calculating distance:', error);
-            return new Error('Error calculating distance');
+            showErrorMessage('Error while fetching location')
         }
     };
 
@@ -108,6 +114,7 @@ export default (isWatchPosition = false) => {
                 if (granted) {
                     watchId = Geolocation.watchPosition(
                         position => {
+                            console.log('watchPosition')
                             getLocation(position.coords);
                         },
                         error => console.log(error),
@@ -121,6 +128,7 @@ export default (isWatchPosition = false) => {
         }
         return () => {
             if (watchId)
+                console.log('watchId')
                 Geolocation?.clearWatch(watchId)
         };
     }, [isWatchPosition]);

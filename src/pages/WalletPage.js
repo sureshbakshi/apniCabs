@@ -13,8 +13,18 @@ const walletCopy = {
     color: COLORS.primary,
     image: images.requested
   },
+  'HOLD': {
+    title: "Holding",
+    color: COLORS.primary,
+    image: images.requested
+  },
   'CREDIT': {
     title: 'Credited',
+    color: COLORS.green,
+    image: images.accepted
+  },
+  'REFUND': {
+    title: 'Refunded',
     color: COLORS.green,
     image: images.accepted
   }

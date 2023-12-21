@@ -150,19 +150,19 @@ export const PickARide = () => {
           value={Boolean(isOnline)}
         />
       </View>
-      {/* <Text style={{ backgroundColor: COLORS.brand_blue, padding: 5 }}>Socket ID: {isSocketConnected}</Text> */}
-      {(_isDriverOnline() && !isSocketConnected) && <SocketStatus />}
-      {(isSocketConnected && rideRequests?.length <= 0) ? <>
-        <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} />
-      </> : null}
       {isOnline ? (
-        <View style={FindRideStyles.section}>
-          {rideRequests?.length ? (
-            <ScrollView>
-              <DriverCard list={rideRequests} />
-            </ScrollView>
-          ) : null}
-        </View>
+        <>
+          {!isSocketConnected ? <SocketStatus /> :
+            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
+              <View style={FindRideStyles.section}>
+                {rideRequests?.length ? (
+                  <ScrollView>
+                    <DriverCard list={rideRequests} />
+                  </ScrollView>
+                ) : null}
+              </View>
+          }
+        </>
       ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
         <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
           You are currently offline. Turn on your availability to receive ride requests.</Text>

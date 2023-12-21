@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { getConfig, _isDriverOnline, showErrorMessage, isDriver } from '../util';
+import React, { useEffect } from 'react';
+import { _isDriverOnline, isDriver } from '../util';
 import { useUpdateDriverLocationMutation } from '../slices/apiSlice';
 import { useSelector } from 'react-redux';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
@@ -16,10 +16,7 @@ function AppContainer(WrappedComponent) {
         let payload = { ...location };
         payload.driver_id = profile.id;
         payload.status = '';
-        updateDriverLocation(payload)
-          .unwrap()
-          .then(res => console.log(res))
-          .then(err => console.log(err));
+        updateDriverLocation(payload);
       } else if (location?.latitude) {
         getCurrentLocation()
       }

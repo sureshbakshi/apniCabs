@@ -4,11 +4,12 @@ import { updatedSocketConnectionStatus } from "../slices/authSlice";
 
 import { _isLoggedIn } from "../util";
 import userSocket from '../sockets/socketConfig';
-import { updateDriversRequest } from "../slices/userSlice";
+import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
 import { store } from "../store";
 
 const SOCKET_EVENTS = {
-    request_status: 'useRequestUpdate'
+    request_status: 'useRequestUpdate',
+    driver_location: 'driverLocation'
 }
 
 
@@ -22,6 +23,19 @@ export default (() => {
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
+    const baseSocketOn = userSocket.on;
+
+    userSocket.on = function() {
+        var ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location] 
+
+        if (userSocket._callbacks !== undefined &&
+            typeof userSocket._callbacks[`$${arguments[0]}`] !== 'undefined' &&
+            ignoreEvents.indexOf(arguments[0]) === -1) {
+               return;
+        }
+        console.log({arguments, cb: userSocket._callbacks, arg: arguments[0], key: userSocket._callbacks[`$${arguments[0]}`]})
+        return baseSocketOn.apply(this, arguments)
+    };
 
     const addDevice = () => {
         const id = store.getState().auth.userInfo?.id
@@ -35,12 +49,26 @@ export default (() => {
         }
     }
     // listeners
-    const onRequestUpdate = (cb) => {
+    const onRequestUpdate = () => {
         userSocket.on(SOCKET_EVENTS.request_status, (updatedRequest) => {
             // Handle the driver list update in the UI
-            cb(updatedRequest)
+            // cb(updatedRequest)
+            if(updatedRequest?.data){
+                dispatch(updateDriversRequest(updatedRequest?.data))
+            }
         });
     };
+
+    const onDriverLocationUpdate = () =>{
+        console.log('socket._callbacks', userSocket._callbacks)
+        userSocket.on(SOCKET_EVENTS.driver_location, (updatedLocation) => {
+            // Handle the driver list update in the UI
+            // cb(updatedRequest)
+            if(updatedLocation?.data) {
+                dispatch(updateDriverLocation(updatedLocation.data))
+            }
+        }); 
+    }
 
     const connectSocket = () => {
         if (userSocket.connected) {
@@ -55,7 +83,8 @@ export default (() => {
     useEffect(() => {
         if (isLoggedIn && !Boolean(isSocketConnected)) {
             connectSocket()
-            onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
+            onRequestUpdate()
+            onDriverLocationUpdate()
         } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
@@ -64,7 +93,8 @@ export default (() => {
     useEffect(() => {
         userSocket.on('connect', () => {
             console.log('onconnect - add device')
-            onRequestUpdate((res) => dispatch(updateDriversRequest(res?.data)))
+            onRequestUpdate()
+            onDriverLocationUpdate()
             addDevice()
         })
         userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))
