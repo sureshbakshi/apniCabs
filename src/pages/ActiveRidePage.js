@@ -14,7 +14,7 @@ import { isEmpty } from 'lodash';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideRequest, updateRideStatus, setActiveRide } from '../slices/driverSlice';
 import { cancelActiveRequest } from '../slices/userSlice';
-import { isDriver, isUser } from '../util';
+import { getScreen, isDriver, isUser } from '../util';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import openMap from 'react-native-open-maps';
@@ -349,10 +349,11 @@ const ActiveRidePage = ({ currentLocation }) => {
       {children}
     </View>
   }
+  const { screenHeight} = getScreen()
 
   return (
     <View style={[FindRideStyles.container]}>
-      <View style={{ backgroundColor: 'red', minHeight: 300 }}>
+      <View style={{height: ( screenHeight - 530) }}>
         {activeRequest?.id && <ActiveMapPage activeRequest={activeRequest} currentLocation={location || currentLocation} />}
       </View>
       {(!activeRideId && activeRequest?.from_location) && <Pressable

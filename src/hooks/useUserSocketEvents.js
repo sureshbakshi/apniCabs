@@ -81,7 +81,7 @@ export default (() => {
     }
 
     useEffect(() => {
-        if (isLoggedIn && !Boolean(isSocketConnected)) {
+        if (isLoggedIn && !Boolean(isSocketConnected) && !Boolean(userSocket?.connected)) {
             connectSocket()
             onRequestUpdate()
             onDriverLocationUpdate()
