@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { clearState, setActiveRide } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { cancelActiveRequest, setActiveRequest } from "../slices/userSlice";
+import {isEmpty} from 'lodash';
 
 // pickaride, search ride - always
 //active page = active ride & drive, active page + user
@@ -19,7 +20,8 @@ export default () => {
     useEffect(() => {
         if(isDriverError){
             dispatch(clearState())
-        }else if (activeDriverRideDetails || activeDriverRideDetails === null) {
+        }else if (!isEmpty(activeDriverRideDetails) || activeDriverRideDetails === null) {
+            console.log({activeDriverRideDetails})
             dispatch(setActiveRide(activeDriverRideDetails))
         }
     }, [activeDriverRideDetails, isDriverLogged])
