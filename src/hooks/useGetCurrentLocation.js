@@ -86,14 +86,13 @@ export default (isWatchPosition = false) => {
         if (checkAndroidPermissions()) {
             Geolocation.getCurrentPosition(
                 (position) => {
-                    console.log(position);
                     if (position?.coords) {
                         getLocation(position?.coords);
                     }
                 },
                 (error) => {
                     // See error code charts below.
-                    console.log(error.code, error.message);
+                    console.log(error?.code, error?.message);
                     showErrorMessage('Please enable location service');
                 },
                 defaultOptions

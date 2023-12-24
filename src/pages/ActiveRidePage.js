@@ -45,7 +45,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
 
   useEffect(() => {
     console.log('cancelAcceptedRequest', cancelAcceptedRequestData);
-    if (cancelAcceptedRequestData) {
+    if (cancelAcceptedRequestData ||  cancelAcceptedRequestData === null) {
       closeModal();
       dispatch(isDriverLogged ? updateRideStatus(cancelAcceptedRequestData) : cancelActiveRequest(cancelAcceptedRequestData))
     } else if (cancelAcceptedRequestError) {

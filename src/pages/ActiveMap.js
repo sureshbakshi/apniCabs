@@ -143,8 +143,6 @@ const ActiveMapPage = ({ activeRequest }) => {
     }
   },[to_location,location,mapRef]);
 
-  console.log({ location, driverLocation, to_location, }, isEmpty(to_location.latitude));
-
   return (
     <View style={styles.container}>
       {to_location?.latitude ? (
