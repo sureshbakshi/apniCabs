@@ -136,12 +136,12 @@ const ActiveMapPage = ({ activeRequest }) => {
   };
 
   useEffect(() => {
-    if (driverLocation?.latitude) {
+    if (to_location?.latitude) {
       delay(() => {
-        focus();
+         focus();
       }, 512)
     }
-  },[driverLocation,location,mapRef]);
+  },[to_location,location,mapRef]);
 
   console.log({ location, driverLocation, to_location, }, isEmpty(to_location.latitude));
 
