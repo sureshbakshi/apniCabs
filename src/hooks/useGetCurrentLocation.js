@@ -17,7 +17,7 @@ export default (isWatchPosition = false) => {
     const defaultOptions = {
         enableHighAccuracy: true,
         maximumAge: 3,
-        timeout: 3 * 1000,
+        timeout: 30 * 1000,
         forceRequestLocation: true,
         interval: 3,
         fastestInterval:3,

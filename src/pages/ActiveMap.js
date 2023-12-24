@@ -1,10 +1,15 @@
-import * as React from 'react';
-import { View, Button, Pressable, SafeAreaView, StyleSheet, } from 'react-native';
-import { ImageView, Text } from '../components/common';
-import MapView, { Marker, enableLatestRenderer } from 'react-native-maps';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { useSelector } from 'react-redux';
+import { getScreen, isDriver } from '../util';
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import { ImageView } from '../components/common';
 import images from '../util/images';
-import { getScreen } from '../util';
-enableLatestRenderer()
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -18,7 +23,7 @@ const mapStyle = [
   {
     featureType: 'poi',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#6398d5' }],
+    stylers: [{ color: '#d59563' }],
   },
   {
     featureType: 'poi.park',
@@ -87,93 +92,115 @@ const mapStyle = [
   },
 ];
 
-const { screenWidth, screenHeight } = getScreen()
-const ASPECT_RATIO = screenWidth / (screenHeight - 530)
+const { screenWidth, screenHeight } = getScreen();
+const ASPECT_RATIO = screenWidth / (screenHeight - 530);
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
-const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 
-const ActiveMapPage = ({ activeRequest, currentLocation }) => {
-  console.log({ currentLocation })
-  let map = undefined;
-  const driverMarker = {
-    latitude: Number(activeRequest?.from_latitude),
-    longitude: Number(activeRequest?.from_longitude),
-  }
-  const userMarker = {
-    latitude: Number(currentLocation.latitude),
-    longitude: Number(currentLocation.longitude),
-  }
-  const fitPadding = () => {
-    map?.fitToCoordinates([driverMarker, userMarker], {
-      edgePadding: { top: 10, right: 10, bottom: 10, left: 10 },
+const markerIDs = ['Marker1', 'Marker2'];
+const timeout = 4000;
+let animationTimeout;
+
+const ActiveMapPage = ({ activeRequest }) => {
+  const isDriverLogged = isDriver();
+  const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
+  const { driverLocation } = useSelector(state => state.user);
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (!location.latitude) {
+      getCurrentLocation();
+    }
+  }, [location]);
+
+  const focusMap = (markers) => {
+    console.log('focusMap')
+    mapRef.current.fitToSuppliedMarkers(markers,{
       animated: true,
+      edgePadding:
+      {
+        top: 150,
+        right: 100,
+        bottom: 150,
+        left: 100
+      }
     });
-  }
+  };
+
+  const focus = () => {
+    // animationTimeout = setTimeout(() => {
+    focusMap(markerIDs);
+    // }, timeout);
+  };
+
+  useEffect(() => {
+    if (driverLocation?.latitude) {
+      // animationTimeout = setTimeout(() => {
+      focus();
+      // }, timeout);
+    }
+    // return () => {
+    //   if (animationTimeout) {
+    //     clearTimeout(animationTimeout);
+    //   }
+    // };
+  }, [driverLocation,location,mapRef]);
+
+  console.log({ location, driverLocation });
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={ref => {
-          map = ref;
-        }}
-        style={styles.mapStyle}
-        liteMode
-        initialRegion={{
-          latitude: Number(activeRequest?.from_latitude) - SPACE,
-          longitude: Number(activeRequest?.from_longitude) - SPACE,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
-        customMapStyle={mapStyle}
-      >
-        <Marker
-          draggable={false}
-          coordinate={{
-            latitude: Number(activeRequest?.from_latitude),
-            longitude: Number(activeRequest?.from_longitude),
+      {driverLocation?.latitude && (
+        <MapView
+          style={styles.map}
+          ref={mapRef}
+          initialRegion={{
+            latitude: Number(driverLocation?.latitude),
+            longitude: Number(driverLocation?.longitude),
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
           }}
-          title={'Driver location'}
-          description={'Your driver is here!'}
-        >
-          <ImageView source={images.carYellow} style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }} />
-        </Marker>
-        <Marker
-          draggable={false}
-          coordinate={{
-            latitude: Number(currentLocation.latitude),
-            longitude: Number(currentLocation.longitude),
-          }}
-          title={'User location'}
-          description={'Your are here!'}
-        >
-          <ImageView source={images.pin} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
-        </Marker>
-      </MapView>
+          onMapReady={()=>focusMap(markerIDs)}
+          customMapStyle={mapStyle}>
+          <Marker
+            identifier="Marker1"
+            title={"Driver"}
+            description={"Your driver is here!"}
+            coordinate={{
+              latitude: driverLocation?.latitude + SPACE,
+              longitude: driverLocation?.longitude + SPACE,
+            }}>
+            <ImageView
+              source={images.carYellow}
+              style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
+            />
+          </Marker>
+          <Marker
+            identifier="Marker2"
+            title={"User"}
+            description={"Your are here!"}
+            coordinate={{
+              latitude: location?.latitude - SPACE,
+              longitude: location?.longitude - SPACE,
+            }}
+          >
+            <ImageView source={images.pin} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
+          </Marker>
+        </MapView>
+      )}
     </View>
   );
 };
 export default ActiveMapPage;
 
-
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
-    zIndex: 0
+    alignItems: 'center',
   },
-  mapStyle: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 0
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
