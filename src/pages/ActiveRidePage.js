@@ -356,7 +356,7 @@ const ActiveRidePage = ({ currentLocation }) => {
       <View style={{height: ( screenHeight - 530) }}>
         {activeRequest?.id && <ActiveMapPage activeRequest={activeRequest} currentLocation={location || currentLocation} />}
       </View>
-      {(!activeRideId && activeRequest?.from_location) && <Pressable
+      {(activeRideId && activeRequest?.from_location) && <Pressable
         onPress={openMapApp}
         style={{ position: 'absolute', right: 20, top: 20, zIndex: 2 }}
       >

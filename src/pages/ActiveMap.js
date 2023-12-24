@@ -10,6 +10,7 @@ import { getScreen, isDriver } from '../util';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { ImageView } from '../components/common';
 import images from '../util/images';
+import { isEmpty, delay } from 'lodash';
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -96,17 +97,20 @@ const { screenWidth, screenHeight } = getScreen();
 const ASPECT_RATIO = screenWidth / (screenHeight - 530);
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.01;
+const SPACE = 0.00;
 
 const markerIDs = ['Marker1', 'Marker2'];
-const timeout = 4000;
-let animationTimeout;
 
 const ActiveMapPage = ({ activeRequest }) => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
   const { driverLocation } = useSelector(state => state.user);
   const mapRef = useRef(null);
+
+  const to_location = {
+    latitude: isDriverLogged ? Number(activeRequest?.from_latitude) : Number(driverLocation?.latitude),
+    longitude: isDriverLogged ? Number(activeRequest?.from_longitude) : Number(driverLocation?.longitude)
+  }
 
   useEffect(() => {
     if (!location.latitude) {
@@ -115,8 +119,7 @@ const ActiveMapPage = ({ activeRequest }) => {
   }, [location]);
 
   const focusMap = (markers) => {
-    console.log('focusMap')
-    mapRef.current.fitToSuppliedMarkers(markers,{
+    mapRef.current?.fitToSuppliedMarkers(markers, {
       animated: true,
       edgePadding:
       {
@@ -129,66 +132,58 @@ const ActiveMapPage = ({ activeRequest }) => {
   };
 
   const focus = () => {
-    // animationTimeout = setTimeout(() => {
     focusMap(markerIDs);
-    // }, timeout);
   };
 
   useEffect(() => {
     if (driverLocation?.latitude) {
-      // animationTimeout = setTimeout(() => {
-      focus();
-      // }, timeout);
+      delay(() => {
+        focus();
+      }, 512)
     }
-    // return () => {
-    //   if (animationTimeout) {
-    //     clearTimeout(animationTimeout);
-    //   }
-    // };
-  }, [driverLocation,location,mapRef]);
+  },[driverLocation,location,mapRef]);
 
-  console.log({ location, driverLocation });
+  console.log({ location, driverLocation, to_location, }, isEmpty(to_location.latitude));
 
   return (
     <View style={styles.container}>
-      {driverLocation?.latitude && (
+      {to_location?.latitude ? (
         <MapView
           style={styles.map}
           ref={mapRef}
           initialRegion={{
-            latitude: Number(driverLocation?.latitude),
-            longitude: Number(driverLocation?.longitude),
+            latitude: Number(to_location?.latitude),
+            longitude: Number(to_location?.longitude),
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
-          onMapReady={()=>focusMap(markerIDs)}
+          onMapReady={() => focusMap(markerIDs)}
           customMapStyle={mapStyle}>
           <Marker
             identifier="Marker1"
-            title={"Driver"}
-            description={"Your driver is here!"}
+            title={"Your are here"}
             coordinate={{
-              latitude: driverLocation?.latitude + SPACE,
-              longitude: driverLocation?.longitude + SPACE,
+              latitude: Number(location?.latitude) + SPACE,
+              longitude: Number(location?.longitude) + SPACE,
             }}>
             <ImageView
-              source={images.carYellow}
+              source={isDriverLogged ? images.carYellow : images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
           <Marker
             identifier="Marker2"
-            title={"User"}
-            description={"Your are here!"}
+            title={isDriverLogged ? "Your User" : "Your Driver"}
+            description={isDriverLogged ? `Waiting at ${activeRequest?.from_location}` : `On the way to ${activeRequest?.from_location}`}
             coordinate={{
-              latitude: location?.latitude - SPACE,
-              longitude: location?.longitude - SPACE,
+              latitude: Number(to_location?.latitude) - SPACE,
+              longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={images.pin} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
+            <ImageView source={isDriverLogged ? images.pin : images.carYellow} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker>
         </MapView>
-      )}
+      ) : null}
     </View>
   );
 };
