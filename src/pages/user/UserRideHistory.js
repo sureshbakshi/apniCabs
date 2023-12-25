@@ -22,6 +22,6 @@ export default () => {
       }
       
     return (
-       rideHistory.length && <MyRidePage data={rideHistory} keys={rideHistoryKeys}/>
+       <MyRidePage data={rideHistory} keys={rideHistoryKeys}/>
     )
 }

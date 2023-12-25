@@ -5,13 +5,14 @@ import { COLORS, RideStatus } from '../constants';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import { formattedDate, getRandomNumber } from '../util';
+import { formattedDate, getRandomNumber, getScreen } from '../util';
 import { get } from 'lodash'
+import SearchLoader from '../components/common/SearchLoader';
 
 const colorsNBg = {
   [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
-  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled' , image: images.rideCancel },
-  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed' , image: images.rideAccept},
+  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
+  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
 }
 
 const getColorNBg = (status) => {
@@ -33,7 +34,7 @@ const Card = ({ item, keys }) => {
       <Text style={[styles.text, styles.whiteColor, { color: color }]}>{label}</Text>
     </Pressable>
     <View style={styles.cardtop}>
-      <View style={[styles.left, {paddingRight: 0, paddingLeft: 20}]}>
+      <View style={[styles.left, { paddingRight: 0, paddingLeft: 20 }]}>
         <ImageView source={image || images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
       </View>
       <View style={styles.middle}>
@@ -68,9 +69,12 @@ const MyRidePage = ({ data, keys }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>{'My Rides'.toUpperCase()}</Text>
       </View>
-      <View style={styles.section}>
+      {data?.length ? <View style={styles.section}>
         <ScrollView>{data?.map((item, i) => <Card item={item} key={i} keys={keys} />)}</ScrollView>
-      </View>
+      </View> :
+        <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
+
+
     </View>
   );
 };
