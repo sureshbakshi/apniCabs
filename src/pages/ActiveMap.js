@@ -106,10 +106,14 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
   const { driverLocation } = useSelector(state => state.user);
   const mapRef = useRef(null);
+  const currentLocation = {
+    latitude: isDriverLogged ? Number(location?.latitude) : Number(driverLocation?.latitude),
+    longitude: isDriverLogged ? Number(location?.longitude) : Number(driverLocation?.longitude)
+  }
 
   const to_location = {
-    latitude: activeRideId ? Number(activeRequest?.to_latitude) : Number(driverLocation?.latitude),
-    longitude: activeRideId ? Number(activeRequest?.to_longitude) : Number(driverLocation?.longitude)
+    latitude: activeRideId ? Number(activeRequest?.to_latitude) : currentLocation?.latitude,
+    longitude: activeRideId ? Number(activeRequest?.to_longitude) : currentLocation?.longitude
   }
 
   useEffect(() => {
@@ -143,6 +147,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     }
   }, [to_location, location, mapRef]);
 
+
   return (
     <View style={styles.container}>
       {activeRequest?.from_latitude ? (
@@ -151,7 +156,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           ref={mapRef}
           initialRegion={{
             latitude: Number(activeRequest?.from_latitude),
-            longitude: Number(activeRequest?.from_latitude),
+            longitude: Number(activeRequest?.from_longitude),
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
