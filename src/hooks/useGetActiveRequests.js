@@ -5,34 +5,37 @@ import { useEffect } from "react";
 import { clearDriverState, setActiveRide } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { clearUserState, setActiveRequest } from "../slices/userSlice";
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
+import { activeReq } from "../mock/activeRequest";
 
 // pickaride, search ride - always
 //active page = active ride & drive, active page + user
 export default () => {
     const dispatch = useDispatch()
-    const { isOnline } = useSelector(state => state.driver);
-    const status = isOnline !== DriverAvailableStatus.OFFLINE
     const isDriverLogged = isDriver()
-    const { data: activeDriverRideDetails , error: isDriverError,  refetch: fetchDriverActiveRequest} = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true });
-    const { data: activeUserRideDetails , error: isUserError, refetch: fetchUserActiveRequest} = useUserActiveRideQuery(undefined, { skip: isDriverLogged});
+    const { isOnline } = useSelector(state => state.driver);
+
+    const status = isOnline !== DriverAvailableStatus.OFFLINE
+    const { data: activeDriverRideDetails, error: isDriverError, refetch: fetchDriverActiveRequest } = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true });
+    const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged,  refetchOnMountOrArgChange: true  });
 
 
     useEffect(() => {
-        if(isDriverError){
+        if (isDriverError) {
             dispatch(clearDriverState())
-        }else if (activeDriverRideDetails || activeDriverRideDetails === null) {
-            console.log({activeDriverRideDetails})
+        } else if (activeDriverRideDetails || activeDriverRideDetails === null) {
+            console.log({ activeDriverRideDetails })
             dispatch(setActiveRide(activeDriverRideDetails))
         }
-    }, [activeDriverRideDetails, isDriverLogged])
+    }, [activeDriverRideDetails?.id, isDriverLogged])
 
-    useEffect(() => {if(isUserError){
-        dispatch(clearUserState())
-    }else if (activeUserRideDetails && !isDriverLogged) {
+    useEffect(() => {
+        if (isUserError) {
+            dispatch(clearUserState())
+        } else if (activeUserRideDetails && !isDriverLogged) {
             dispatch(setActiveRequest(activeUserRideDetails))
         }
-    }, [activeUserRideDetails, isDriverLogged])
+    }, [activeUserRideDetails?.id, isDriverLogged])
 
     return {
         status, activeUserRideDetails, activeDriverRideDetails

@@ -142,7 +142,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
   );
 };
 
-const VehicleCard = ({ activeRequest, details, avatar }) => {
+const VehicleCard = ({ activeRequest, details, avatar, showOtp=false }) => {
   const avatarUri = get(activeRequest, avatar, null)
 
   return (
@@ -162,11 +162,11 @@ const VehicleCard = ({ activeRequest, details, avatar }) => {
               return <Text key={item.key} style={[FindRideStyles.name, item.props?.style]}>{value}</Text>
             })}
           </View>
-          <View style={FindRideStyles.right}>
+         {showOtp && <View style={FindRideStyles.right}>
             <Text style={[FindRideStyles.name, { alignSelf: 'center', fontWeight: 'bold', color: COLORS.brand_blue }]}>
               OTP: {activeRequest.code}
             </Text>
-          </View>
+          </View>}
         </View>
       </View>
     </View>
@@ -369,15 +369,15 @@ const ActiveRidePage = ({ currentLocation }) => {
   const statusMessages = {
     [RideStatus.USER_CANCELLED]: {
       title: "Booking Cancelled",
-      description: `We're sorry, but your ride has been canceled by the driver. `,
+      description: `We're sorry, but your ride has been canceled by the ${activeRequest?.user?.name || 'passenger'}.`,
       reason: statusUpdate?.reason,
-      subText: `We apologize for any inconvenience caused. Thank you for using Apnicabi. We appreciate your understanding.`
+      subText: `We understand that unexpected situations may arise, and we appreciate your understanding. Your availability is now back to active, and you are ready to receive new ride requests.`
     },
     [RideStatus.DRIVER_CANCELLED]: {
       title: "Booking Cancelled",
-      description: `We regret to inform you that the ride with ${activeRequest?.user?.name || 'passenger'} has been canceled.`,
+      description: `We're sorry, but your ride has been canceled by the driver. `,
       reason: statusUpdate?.reason,
-      subText: `We understand that unexpected situations may arise, and we appreciate your understanding. Your availability is now back to active, and you are ready to receive new ride requests.`
+      subText: `We apologize for any inconvenience caused. Thank you for using Apnicabi. We appreciate your understanding.`
     },
     [RideStatus.COMPLETED]: {
       title: "Trip Completed",
@@ -409,7 +409,7 @@ const ActiveRidePage = ({ currentLocation }) => {
           <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
         </Cards> :
           <Cards title={'Vehicle Details'}>
-            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} />
+            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true}/>
           </Cards>}
         <Cards title={'Driver & Ride Details'}>
           {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}
