@@ -16,6 +16,7 @@ const intialState = {
   rideRequests: null,
   activeRequest: null,
   driverLocation: null,
+  statusUpdate: null
 }
 const userSlice = createSlice({
   name: 'user',
@@ -35,7 +36,7 @@ const userSlice = createSlice({
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
       }
     },
-    cancelActiveRequest: (state, action) => {
+    clearUserState: (state, action) => {
       return Object.assign(state, { ...intialState})
     },
    
@@ -47,7 +48,7 @@ const userSlice = createSlice({
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
 
       } else if (ClearRideStatus.includes(status)) {
-        return Object.assign(state, { ...intialState })
+        state.statusUpdate = action.payload;
       } else {
         const vehicles = state.rideRequests?.vehicles;
         if (vehicles.length) {
@@ -69,7 +70,7 @@ export const {
   setRideRequest,
   updateDriversRequest,
   setActiveRequest,
-  cancelActiveRequest,
+  clearUserState,
   updateDriverLocation
 } = userSlice.actions;
 

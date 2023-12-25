@@ -126,6 +126,7 @@ const MyRideStyles = StyleSheet.create({
     width: 50,
     height: 50,
     minHeight: 10,
+    borderRadius: 25
   },
   end:{
     alignSelf:'flex-end',

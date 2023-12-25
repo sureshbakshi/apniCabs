@@ -219,7 +219,13 @@ export const apiSlice = createApi({
         method: 'GET',
         url: api_path.transactions(`${api_urls.list}`),
       }),
-      transformResponse: response => response,
+      transformResponse: (response) => {
+        const history = response
+        if(history?.transactions) {
+          history.transactions = history.transactions.filter((item) => item.type !== 'HOLD')
+        }
+        return history
+      },
       transformErrorResponse: response => response,
     }),
     // transaction end

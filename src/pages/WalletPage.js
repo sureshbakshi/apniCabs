@@ -9,7 +9,7 @@ import { COLORS } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 const walletCopy = {
   'DEBIT': {
-    title: "Debited",
+    title: "Requested Amount",
     color: COLORS.primary,
     image: images.requested
   },
@@ -19,12 +19,12 @@ const walletCopy = {
     image: images.requested
   },
   'CREDIT': {
-    title: 'Credited',
-    color: COLORS.green,
-    image: images.accepted
+    title: 'Accepted Amount',
+    color: COLORS.primary,
+    image: images.requested
   },
   'REFUND': {
-    title: 'Refunded',
+    title: 'Credited Amount ',
     color: COLORS.green,
     image: images.accepted
   }
@@ -33,7 +33,6 @@ const walletCopy = {
 const WalletPage = ({ navigation }) => {
   const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
 
-  console.log({ transactionHistory });
   if(isLoading) {
     return <ActivityIndicator/>
   }

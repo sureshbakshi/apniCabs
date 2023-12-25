@@ -13,7 +13,9 @@ import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StrictMode } from 'react';
 
-
+if (!__DEV__) {
+  console.log = () => {};
+}
 
 function AppWithProvider() {
   return (

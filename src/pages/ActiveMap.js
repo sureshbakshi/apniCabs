@@ -101,15 +101,15 @@ const SPACE = 0.00;
 
 const markerIDs = ['Marker1', 'Marker2'];
 
-const ActiveMapPage = ({ activeRequest }) => {
+const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
   const { driverLocation } = useSelector(state => state.user);
   const mapRef = useRef(null);
 
   const to_location = {
-    latitude: isDriverLogged ? Number(activeRequest?.from_latitude) : Number(driverLocation?.latitude),
-    longitude: isDriverLogged ? Number(activeRequest?.from_longitude) : Number(driverLocation?.longitude)
+    latitude: activeRideId ? Number(activeRequest?.to_latitude) : Number(driverLocation?.latitude),
+    longitude: activeRideId ? Number(activeRequest?.to_longitude) : Number(driverLocation?.longitude)
   }
 
   useEffect(() => {
@@ -138,20 +138,20 @@ const ActiveMapPage = ({ activeRequest }) => {
   useEffect(() => {
     if (to_location?.latitude) {
       delay(() => {
-         focus();
+        focus();
       }, 512)
     }
-  },[to_location,location,mapRef]);
+  }, [to_location, location, mapRef]);
 
   return (
     <View style={styles.container}>
-      {to_location?.latitude ? (
+      {activeRequest?.from_latitude ? (
         <MapView
           style={styles.map}
           ref={mapRef}
           initialRegion={{
-            latitude: Number(to_location?.latitude),
-            longitude: Number(to_location?.longitude),
+            latitude: Number(activeRequest?.from_latitude),
+            longitude: Number(activeRequest?.from_latitude),
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
@@ -161,15 +161,15 @@ const ActiveMapPage = ({ activeRequest }) => {
             identifier="Marker1"
             title={"Your are here"}
             coordinate={{
-              latitude: Number(location?.latitude) + SPACE,
-              longitude: Number(location?.longitude) + SPACE,
+              latitude: Number(activeRequest?.from_latitude) + SPACE,
+              longitude: Number(activeRequest?.from_longitude) + SPACE,
             }}>
             <ImageView
-              source={isDriverLogged ? images.carYellow : images.pin}
+              source={images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
-          <Marker
+          {to_location?.latitude ? <Marker
             identifier="Marker2"
             title={isDriverLogged ? "Your User" : "Your Driver"}
             description={isDriverLogged ? `Waiting at ${activeRequest?.from_location}` : `On the way to ${activeRequest?.from_location}`}
@@ -178,8 +178,8 @@ const ActiveMapPage = ({ activeRequest }) => {
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={isDriverLogged ? images.pin : images.carYellow} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
-          </Marker>
+            <ImageView source={images.carYellow} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
+          </Marker> : null}
         </MapView>
       ) : null}
     </View>

@@ -8,7 +8,8 @@ const initialState = {
   rideRequests: [],
   activeRequest: null,
   activeRideId: null,
-  isOnline: false
+  isOnline: false,
+  statusUpdate: null
 }
 
 const driverSlice = createSlice({
@@ -39,7 +40,7 @@ const driverSlice = createSlice({
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}
       if (ClearRideStatus.includes(status)) {
-        return Object.assign(state, { ...initialState, isOnline: state.isOnline })
+         state.statusUpdate = action.payload
       }
     },
     setDriverStatus: (state, action) => {
@@ -49,8 +50,8 @@ const driverSlice = createSlice({
       }
     },
 
-    clearState: (state, action) => {
-      return Object.assign(state, { ...initialState })
+    clearDriverState: (state, action) => {
+      return Object.assign(state, { ...initialState, isOnline: state.isOnline })
     },
     setRideRequest: (state, action) => {
       const { id } = action.payload || {}
@@ -65,6 +66,6 @@ const driverSlice = createSlice({
   },
 });
 
-export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearState } = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState } = driverSlice.actions;
 
 export default driverSlice.reducer;
