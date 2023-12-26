@@ -30,7 +30,7 @@ const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, 
                 }
                 }
                 enableHighAccuracyLocation={true}
-                query={{ key: Config.GOOGLE_PLACES_KEY, components: 'country:in', language: 'it' }}
+                query={{ key: Config.GOOGLE_PLACES_KEY, components: 'country:in' }}
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}
@@ -44,7 +44,7 @@ const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, 
                     // selection: {start: 0},
                     selectTextOnFocus: true
                 }}
-                listViewDisplayed={true}
+                listViewDisplayed={false}
                 autoSelectFirstResult={true}
                 enablePoweredByContainer={false}
                 styles={{
