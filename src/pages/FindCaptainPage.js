@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 
@@ -79,18 +79,20 @@ const FindCaptainPage = () => {
     <View style={FindRideStyles.container}>
       {
         list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
-        <>
-        <View style={{backgroundColor: COLORS.white,marginBottom: 2 }}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120}}>
-          <Icon name={VEHICLE_TYPES[list[0].name]} size="extraLarge" color={COLORS.primary}/>
-          <Text  style={{marginLeft: 8}} >{list[0].name}</Text>
-          </View>
-        </View>
-          <CaptainsCard
-            list={list[0]?.drivers}
-            keyProp={0}
-            extraProps={extraProps}
-          />
+          <>
+            <View style={{ backgroundColor: COLORS.white, marginBottom: 2 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120 }}>
+                <Icon name={VEHICLE_TYPES[list[0].name]} size="extraLarge" color={COLORS.primary} />
+                <Text style={{ marginLeft: 8 }} >{list[0].name}</Text>
+              </View>
+            </View>
+            <ScrollView>
+              <CaptainsCard
+                list={list[0]?.drivers}
+                keyProp={0}
+                extraProps={extraProps}
+              />
+            </ScrollView>
           </>
       }
 

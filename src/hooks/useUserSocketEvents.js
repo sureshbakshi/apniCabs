@@ -33,7 +33,6 @@ export default (() => {
             ignoreEvents.indexOf(arguments[0]) === -1) {
                return;
         }
-        console.log({arguments, cb: userSocket._callbacks, arg: arguments[0], key: userSocket._callbacks[`$${arguments[0]}`]})
         return baseSocketOn.apply(this, arguments)
     };
 

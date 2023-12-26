@@ -64,21 +64,19 @@ const Card = item => {
     }
   }
   const actionButtonInfo = getButtonStyles(item?.status)
+  const vehicleImage = (item) => item?.vehicle_details?.photo ? { uri: item?.vehicle_details?.photo } : images[`captain4`]
   return (
     <View style={FindRideStyles.card} key={item?.driver_id}>
       <Timeline />
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
-            source={
-              images[`captain${item?.profile_avatar}`] || images[`captain0`]
-            }
+            source={vehicleImage(item)}
             style={[styles.avatar]}
           />
         </View>
         <View style={FindRideStyles.middle}>
           <Text style={FindRideStyles.name}>{item.name}</Text>
-          {/* <Text style={FindRideStyles.review}>({item.size} Reviews)</Text> */}
           <Timeline data={[item.from, item.to]} />
         </View>
         <View style={FindRideStyles.right}>
@@ -87,7 +85,6 @@ const Card = item => {
             {item.price}
           </Text>
           <Text style={FindRideStyles.address}>{item.distance?.text}</Text>
-          {/* <Text style={FindRideStyles.address}>{item.seats} Seats left</Text> */}
         </View>
       </View>
       <View style={FindRideStyles.cardBottom}>
@@ -105,7 +102,7 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.right}>
           <Pressable
-            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40,marginVertical: 10, marginHorizontal: 3 }]}
+            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginVertical: 10, marginHorizontal: 3 }]}
             onPress={() => handleSendRequest(item)}>
             <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
               {actionButtonInfo.label}

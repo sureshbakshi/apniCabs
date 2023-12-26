@@ -10,6 +10,7 @@ import {COLORS} from '../constants';
 import {clearAuthData} from '../slices/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useAuthContext} from '../context/Auth.context';
+import ProfileImage from '../components/common/ProfileImage';
 const MorePage = () => {
   const {signOut} = useAuthContext();
   const dispatch = useDispatch();
@@ -33,15 +34,11 @@ const MorePage = () => {
           <View style={MoreStyles.card}>
             <View style={MoreStyles.cardtop}>
               <View style={MoreStyles.left}>
-                {/* <View style={MoreStyles.profileIcon}></View> */}
-                <ImageView
-                  source={images[`captain4`]}
-                  style={[styles.avatar]}
-                />
+                <ProfileImage />
               </View>
               <View style={MoreStyles.middle}>
                 <Text style={MoreStyles.name}>{profile?.name}</Text>
-                <Text style={MoreStyles.review}>11 Reviews</Text>
+                {/* <Text style={MoreStyles.review}>11 Reviews</Text> */}
               </View>
             </View>
           </View>
