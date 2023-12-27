@@ -1,17 +1,22 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDriverRideHistoryQuery } from "../../slices/apiSlice";
 import MyRidePage from "../MyRidesPage"
 import { COLORS } from "../../constants";
 import { View } from "react-native";
 import ActivityIndicator from "../../components/common/ActivityIndicator";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default () => {
-    const { data: rideHistory, error: rideHistoryError, isLoading } = useDriverRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    const { data: rideHistory, error: rideHistoryError, isLoading , refech} = useDriverRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
 
-    if (isLoading) {
-        return <ActivityIndicator/>
-    }
-
+    
+console.log('MyRidePage')
+useFocusEffect(
+    useCallback(() => {
+        console.log("Function Call on TAb change", refech)
+        refech?.()
+    }, [])
+ );
     const rideHistoryKeys = {
         name: '',
         status: 'status',
@@ -21,6 +26,9 @@ export default () => {
         rideTime: 'driver_requests.updated_at',
         avatar: '',
         fare: 'fare'
+    }
+    if (isLoading) {
+        return <ActivityIndicator/>
     }
     return (
         <MyRidePage data={rideHistory} keys={rideHistoryKeys} />

@@ -83,6 +83,10 @@ export const _isLoggedIn = () => {
 
   return Boolean(userInfo?.id)
 }
+export const getUserId = () => {
+  const { userInfo } = store.getState().auth
+  return userInfo?.id
+}
 export const fakeLogin = () => {
   axios
     .post(

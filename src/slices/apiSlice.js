@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
-import { showErrorMessage } from '../util';
+import { getUserId, showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://www.apnicabi.com/api/',
@@ -125,7 +125,7 @@ export const apiSlice = createApi({
     userRideHistory: builder.query({
       query: () => ({
         method: 'GET',
-        url: api_path.request(api_urls.userRideHistory),
+        url: api_path.request(`${api_urls.userRideHistory}/${getUserId()}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -153,7 +153,7 @@ export const apiSlice = createApi({
     driverRideHistory: builder.query({
       query: () => ({
         method: 'GET',
-        url: api_path.request(api_urls.driverRideHistory),
+        url: api_path.request(`${api_urls.driverRideHistory}/${getUserId()}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,

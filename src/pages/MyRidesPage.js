@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Button, Pressable, ScrollView } from 'react-native';
+import { View, Button, Pressable, ScrollView, FlatList } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, RideStatus } from '../constants';
 import { ImageView, Text } from '../components/common';
@@ -70,11 +70,13 @@ const MyRidePage = ({ data, keys }) => {
         <Text style={styles.headerText}>{'My Rides'.toUpperCase()}</Text>
       </View>
       {data?.length ? <View style={styles.section}>
-        <ScrollView>{data?.map((item, i) => <Card item={item} key={i} keys={keys} />)}</ScrollView>
+        <FlatList
+        data={data}
+        renderItem={({item, i}) => <Card item={item} key={i} keys={keys} />}
+        keyExtractor={item => item.id}
+      />
       </View> :
         <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
-
-
     </View>
   );
 };

@@ -246,7 +246,8 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
       console.log(err)
     })
   }
-  const driver_avatar = activeRequest?.driver?.avatar
+  const driver_avatar = activeRequest?.driver?.driver_detail?.photo
+  
   return (
     <View style={FindRideStyles.card}>
       <View style={{ padding: 10 }}>
