@@ -20,7 +20,7 @@ const Card = item => {
     useSendRequestMutation();
   const handleSendRequest = item => {
     if (!item.status) {
-      let payload = { request_id, driver_id: item.driver_id, fare: item.price };
+      let payload = { request_id, driver_id: item.driver_id };
       sendRequest(payload);
     } else {
       showErrorMessage('Request already sent.')

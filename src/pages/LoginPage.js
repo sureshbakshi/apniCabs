@@ -112,7 +112,7 @@ const LoginPage = () => {
   };
 
   const registerAsDriver = () => {
-    Linking.openURL('https://www.apnicabi.com/register').catch(err =>
+    Linking.openURL('http://owner.apnicabi.com/').catch(err =>
       console.error('An error occurred', err),
     );
   };

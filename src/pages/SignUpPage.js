@@ -5,6 +5,7 @@ import {
   Pressable,
   ImageBackground,
   ScrollView,
+  Platform,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
@@ -42,8 +43,10 @@ const SignUpPage = () => {
 
   const handleSignUp = () => {
     const payload = {...state}
-    payload.avatar = googleInfo?.photo,
-    payload.provider = 'web'
+    if(googleInfo?.photo) {
+      payload.avatar = googleInfo?.photo || ''
+    }
+    payload.provider = Platform.OS || 'mobile'
     payload.name = payload.name ?? googleInfo.name
     payload.email = payload.email ?? googleInfo.email
     payload.user_type = USER_ROLES.USER
