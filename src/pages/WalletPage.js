@@ -8,6 +8,7 @@ import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
+import { formattedDate } from '../util';
 const walletCopy = {
   'DEBIT': {
     title: "Requested Amount",
@@ -55,7 +56,8 @@ const WalletPage = ({ navigation }) => {
               {item.description}
             </Text>
             <Text style={WalletStyles.address}>
-              10-12-2023, 05:15 PM
+              {/* 10-12-2023, 05:15 PM */}
+              {formattedDate(item.created_at)}
             </Text>
           </View>
           <View style={WalletStyles.right}>
