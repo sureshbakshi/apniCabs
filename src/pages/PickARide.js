@@ -42,7 +42,7 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
           <View style={FindRideStyles.right}>
             <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
-              {item.price}
+              {item.fare}
             </Text>
           </View>
         </View>
