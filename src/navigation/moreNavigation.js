@@ -5,6 +5,7 @@ import MyProfilePage from '../pages/MyProfilePage';
 import TermsAndConditionsPage from '../pages/TermsAndConditionsPage';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
+import FareSettings from '../pages/FareSettings';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -38,6 +39,11 @@ export default function MoreNavigator({ navigation, route }) {
         name="TermsAndConditions"
         options={{ title: 'Terms And Conditions' }}
         component={TermsAndConditionsPage}
+      />
+      <Stack.Screen
+        name="FareSettings"
+        options={{ title: 'Fare Settings' }}
+        component={FareSettings}
       />
     </Stack.Navigator>
   );

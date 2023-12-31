@@ -121,3 +121,9 @@ export const formattedDate = (dateString) => {
       hour12: true,
   }).replace(/\//g, '-');
 };
+
+
+export const isUndefined = (arrayValues, arrayKeys, key) => {
+  const index = arrayKeys?.findIndex((item) => item === key)
+  return Boolean(arrayValues[index]);
+}

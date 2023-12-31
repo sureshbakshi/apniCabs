@@ -52,6 +52,15 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
+            <Pressable
+              style={MoreStyles.list}
+              android_ripple={{color: '#ccc'}}
+              onPress={() => navigate('FareSettings')}>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="account" size="large" color={COLORS.primary} />
+              </View>
+              <Text style={MoreStyles.name}>Edit Fare</Text>
+            </Pressable>
             <View style={MoreStyles.list}>
               <View style={MoreStyles.listIcon}>
                 <Icon name="bell-ring" size="large" color={COLORS.primary} />

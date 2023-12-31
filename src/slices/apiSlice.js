@@ -5,9 +5,9 @@ import { clearAuthData } from './authSlice';
 import { getUserId, showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://www.apnicabi.com/api/',
+  // baseUrl: 'http://www.apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.102:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
+  baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -22,7 +22,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   console.log(JSON.stringify(args))
 
   let result = await baseQuery(args, api, extraOptions);
-  console.log({response: result?.data, uri: result?.meta?.response.url})
+  console.log({response: result?.data, uri: result?.meta?.response?.url, result})
   if (result?.error) {
     showErrorMessage(result.error)
   }
@@ -213,6 +213,18 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    editFare: builder.mutation({
+      query: ({ id, ...rest }) => ({
+        method: "PUT",
+        url: api_path.vehicle(`fair/${id}`),
+        body: rest,
+      }),
+      transformResponse: (response) => {
+        return response;
+      },
+      transformErrorResponse: (response) => response,
+      invalidatesTags: ["FARE"]
+    }),
     // transaction starts
     getDriverTransactions: builder.query({
       query: id => ({
@@ -240,10 +252,11 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      providesTags: ["FARE"]
     }),
   }),
 
-  tagTypes: ['Token', 'RideComplete'],
+  tagTypes: ['Token', 'RideComplete', "FARE"],
 });
 
 export const {
@@ -263,5 +276,6 @@ export const {
   useUserActiveRideQuery,
   useDriverRideHistoryQuery,
   useUserRideHistoryQuery,
-  useGetDriverTransactionsQuery
+  useGetDriverTransactionsQuery,
+  useEditFareMutation
 } = apiSlice;
