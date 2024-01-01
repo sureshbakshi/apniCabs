@@ -73,7 +73,7 @@ export const ROUTES_NAMES = {
   signIn: 'SignIn',
   signUp: 'SignUp',
   searchRide: 'SearchRide',
-  activeMap:'ActiveMap'
+  activeMap: 'ActiveMap'
 }
 
 export const RideStatus = {
@@ -247,6 +247,7 @@ export const BASE_FARE_FORM = [
   },
 ];
 
+
 export const LOGIN_FORM = [
   {
     name: 'email',
@@ -261,6 +262,57 @@ export const LOGIN_FORM = [
     props: {
       placeholder: "12345",
       secureTextEntry: true,
+    },
+  },
+];
+
+
+export const SIGN_UP_FORM = [
+  {
+    name: 'name',
+    label: "Name*",
+    props: {
+      placeholder: "Enter name*",
+      required: true,
+    },
+  },
+  {
+    name: 'email',
+    label: "Email Address*",
+    props: {
+      placeholder: "Enter email address*",
+      required: true,
+
+    },
+  },
+  {
+    name: 'phone',
+    label: "Phone Number*",
+    props: {
+      placeholder: "Enter phone number*",
+      required: true,
+      inputMode: 'numeric',
+      keyboardType: 'number-pad',
+
+    },
+  },
+  {
+    name: 'password',
+    label: "Password*",
+    props: {
+      placeholder: "Enter password*",
+      required: true,
+      secureTextEntry: true,
+    },
+  },
+  {
+    name: 'referral_phone_number',
+    label: "Referral Phone Number",
+    props: {
+      placeholder: "Enter referral number",
+      required: false,
+      inputMode: 'numeric',
+      keyboardType: 'number-pad',
     },
   },
 ];

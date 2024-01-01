@@ -1,26 +1,29 @@
 import React from 'react';
-import { View,  StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Icon } from '../Icon';
 import { COLORS } from '../../../constants';
 import { Text } from '../Text';
 
 const getCustomStyles = (height) => {
-  return {marginBottom: height, height: height + 5}
+  return { marginBottom: height, height: height + 5 }
 }
 
-const TimelineItem = ({  value,  isLast, size , customStyles}) => {
+const TimelineItem = ({ value, isLast, size, customStyles, numberOfLines }) => {
   return (
-    <View style={[styles.timelineItem, isLast && styles.lastItem, {marginBottom: customStyles.marginBottom}]}>
-      <Icon name={'google-maps'} size={size} color={isLast ? COLORS.primary : COLORS.brand_blue}/>
-      <View style={styles.timelineContent}>
-        <Text numberOfLines={1} ellipsizeMode='tail'>{value}</Text>
+    <View style={[styles.timelineItem, isLast && styles.lastItem, { marginBottom: customStyles.marginBottom }]}>
+      <View>
+        {isLast && <View style={[styles.timelineConnector, { height: '50%', top: '-50%' }]} />}
+        <Icon name={'google-maps'} size={size} color={isLast ? COLORS.primary : COLORS.brand_blue} />
+        {!isLast && <View style={[styles.timelineConnector, { height: '50%', top: 10 }]} />}
       </View>
-      {!isLast && <View style={[styles.timelineConnector, {height: customStyles.height}]} />}
+      <View style={styles.timelineContent}>
+        <Text numberOfLines={numberOfLines} ellipsizeMode='tail'>{value}</Text>
+      </View>
     </View>
   );
 };
 
-const Timeline = ({data=[], size='medium', height=10}) => {
+const Timeline = ({ data = [], size = 'medium', height = 10, numberOfLines = 1 }) => {
   const customStyles = getCustomStyles(height)
   return (
     <View >
@@ -31,6 +34,7 @@ const Timeline = ({data=[], size='medium', height=10}) => {
           isLast={index === data.length - 1}
           size={size}
           customStyles={customStyles}
+          numberOfLines={numberOfLines}
         />
       ))}
     </View>
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 15,
     left: 8,
-    borderWidth: 1, borderStyle:'dashed', borderRadius: 1
+    borderWidth: 1, borderStyle: 'dashed', borderRadius: 1
   },
 });
 

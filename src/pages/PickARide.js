@@ -20,26 +20,18 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
   return (
     <View style={FindRideStyles.card} key={item.id}>
       <View style={{ padding: 10 }}>
-        <View style={FindRideStyles.cardtop}>
-          <View style={FindRideStyles.left}>
-            {/* <ImageView
-                source={
-                  images[`captain${item.profile_avatar}`] || images[`captain0`]
-                }
-                style={[styles.avatar]}
-              /> */}
-          </View>
-          <View style={FindRideStyles.middle}>
-            <Text style={FindRideStyles.name}>{item.user_name}</Text>
+        <View style={[FindRideStyles.cardtop]}>
+          <View style={[FindRideStyles.middle]}>
+            {/* <Text style={FindRideStyles.name}>{item.user_name}</Text> */}
             <Timeline
               data={[
                 item.from_location,
                 item.to_location,
               ]}
+              numberOfLines={0}
             />
-            {/* <Timeline data={[item.from, item.to]} /> */}
           </View>
-          <View style={FindRideStyles.right}>
+          <View style={[FindRideStyles.right]}>
             <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
               {'\u20B9'}
               {item.fare}
@@ -47,14 +39,14 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
           </View>
         </View>
         <View style={FindRideStyles.cardBottom}>
-          <View style={FindRideStyles.left}>
+          <View style={[FindRideStyles.left, { padding: 0 }]}>
             {item?.driver_distance && (
               <Text style={[styles.text, styles.bold]}>
                 {item.driver_distance} km away
               </Text>
             )}
           </View>
-          <View style={FindRideStyles.right}>
+          <View style={[FindRideStyles.right, { padding: 0 }]}>
             <Text style={[styles.text, styles.bold]}>
               Distance: {item.distance} km
             </Text>
@@ -134,39 +126,39 @@ export const PickARide = () => {
 
   return (
     <SafeAreaView style={FindRideStyles.container}>
-        <View
-          style={[
-            FindRideStyles.switchBtn,
-            { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
-          ]}>
-          <Text style={FindRideStyles.headerText}>
-            {isOnline ? 'Online' : 'Offline'}
-          </Text>
-          <Switch
-            trackColor={{ false: COLORS.white, true: COLORS.white }}
-            thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={Boolean(isOnline)}
-          />
-        </View>
-        {isOnline ? (
-          <>
-            {!isSocketConnected ? <SocketStatus /> :
-              rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
-                <View style={FindRideStyles.section}>
-                  {rideRequests?.length ? (
-                    <ScrollView>
-                      <DriverCard list={rideRequests} />
-                    </ScrollView>
-                  ) : null}
-                </View>
-            }
-          </>
-        ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-            You are currently offline. Turn on your availability to receive ride requests.</Text>
-        </View>}
+      <View
+        style={[
+          FindRideStyles.switchBtn,
+          { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
+        ]}>
+        <Text style={FindRideStyles.headerText}>
+          {isOnline ? 'Online' : 'Offline'}
+        </Text>
+        <Switch
+          trackColor={{ false: COLORS.white, true: COLORS.white }}
+          thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={Boolean(isOnline)}
+        />
+      </View>
+      {isOnline ? (
+        <>
+          {!isSocketConnected ? <SocketStatus /> :
+            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
+              <View style={FindRideStyles.section}>
+                {rideRequests?.length ? (
+                  <ScrollView>
+                    <DriverCard list={rideRequests} />
+                  </ScrollView>
+                ) : null}
+              </View>
+          }
+        </>
+      ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+          You are currently offline. Turn on your availability to receive ride requests.</Text>
+      </View>}
     </SafeAreaView>
   );
 };

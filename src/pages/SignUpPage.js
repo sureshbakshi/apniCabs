@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -10,14 +10,19 @@ import {
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import ScreenContainer from '../components/ScreenContainer';
-import {navigate} from '../util/navigationService';
-import {Text} from '../components/common';
-import {useSelector, useDispatch} from 'react-redux';
-import {useSingUpMutation} from '../slices/apiSlice';
-import {updateUserInfo, updateUserCheck} from '../slices/authSlice';
-import {useSetState} from 'react-use';
-import { ROUTES_NAMES, USER_ROLES } from '../constants';
+import { navigate } from '../util/navigationService';
+import { Text } from '../components/common';
+import { useSelector, useDispatch } from 'react-redux';
+import { useSingUpMutation } from '../slices/apiSlice';
+import { updateUserInfo, updateUserCheck } from '../slices/authSlice';
+import { useSetState } from 'react-use';
+import { COLORS, ROUTES_NAMES, SIGN_UP_FORM, USER_ROLES } from '../constants';
 import images from '../util/images';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { signupSchema } from '../schema';
+import { isEmpty } from 'lodash';
+
 const initialState = {
   email: '',
   password: '',
@@ -26,11 +31,29 @@ const initialState = {
 };
 const SignUpPage = () => {
   const dispatch = useDispatch();
-  const [singUp, {data: signUpdata, error: singUpError, isLoading}] =
+  const [singUp, { data: signUpdata, error: singUpError, isLoading }] =
     useSingUpMutation();
-  const googleInfo = useSelector(state => state.auth.googleInfo.user);
+  const googleInfo = useSelector(state => state.auth.googleInfo?.user);
   const [state, setState] = useSetState(initialState);
   const [error, setError] = useSetState();
+
+  const {
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors, isDirty },
+    ...methods
+  } = useForm({
+    mode: "onSubmit",
+    defaultValues: {
+      name: googleInfo?.name || '',
+      email: googleInfo?.email || '',
+      phone: '',
+      phone: '',
+      referral_phone_number: '',
+    },
+    resolver: yupResolver(signupSchema),
+  });
 
   useEffect(() => {
     if (googleInfo) {
@@ -41,9 +64,9 @@ const SignUpPage = () => {
     }
   }, [googleInfo]);
 
-  const handleSignUp = () => {
-    const payload = {...state}
-    if(googleInfo?.photo) {
+  const handleSignUp = (data) => {
+    const payload = { ...data }
+    if (googleInfo?.photo) {
       payload.avatar = googleInfo?.photo || ''
     }
     payload.provider = Platform.OS || 'mobile'
@@ -52,6 +75,7 @@ const SignUpPage = () => {
     payload.user_type = USER_ROLES.USER
     singUp(payload);
   };
+
   useEffect(() => {
     if (singUpError) {
       setError(singUpError?.data?.error);
@@ -61,6 +85,9 @@ const SignUpPage = () => {
       navigate(ROUTES_NAMES.signIn)
     }
   }, [signUpdata, singUpError]);
+
+  const isDisabled = !isDirty || !isEmpty(errors)
+
   return (
     <ScrollView>
       <View style={LoginStyles.container}>
@@ -75,56 +102,44 @@ const SignUpPage = () => {
         <ScreenContainer>
           <View style={[LoginStyles.section]}>
             <View>
-              <TextInput
-                placeholder="Name"
-                onChangeText={newText => setState({name: newText})}
-                value={state.name}
-                style={LoginStyles.textInputPickup}
-              />
-              {error[`body.name`] && (
-                <Text style={CommonStyles.errorTxt}>{error[`body.name`].message}</Text>
-              )}
-              <TextInput
-                placeholder="Email Address"
-                onChangeText={newText => setState({email: newText})}
-                value={state.email}
-                editable={false}
-                style={LoginStyles.textInputPickup}
-              />
-              {error[`body.email`] && (
-                <Text style={CommonStyles.errorTxt}>{error[`body.email`].message}</Text>
-              )}
-              <TextInput
-                placeholder="Phone Number"
-                onChangeText={newText => setState({phone: newText})}
-                value={state.phone}
-                style={LoginStyles.textInputPickup}
-              />
-              {error[`body.phone`] && (
-                <Text style={CommonStyles.errorTxt}>{error[`body.phone`].message}</Text>
-              )}
-              <TextInput
-                placeholder="Create Password"
-                onChangeText={newText => setState({password: newText})}
-                value={state.password}
-                style={LoginStyles.textInputDrop}
-              />
-              {error[`body.password`] && (
-                <Text style={CommonStyles.errorTxt}>{error[`body.password`].message}</Text>
-              )}
-              <TextInput
-                placeholder="Referral Phone Number"
-                onChangeText={newText => setState({referral_phone_number: newText})}
-                value={state.referral_phone_number}
-                style={LoginStyles.textInputDrop}
-              />
+              {SIGN_UP_FORM.map((field, index) => {
+                return (
+                  <View key={field.name}>
+                    <Controller
+                      control={control}
+                      render={({ field: { onChange, onBlur, value } }) => {
+                        return (
+                          <>
+                            <TextInput
+                              name={field.name}
+                              onBlur={onBlur}
+                              onChangeText={(value) => {
+                                onChange(value);
+                              }}
+                              value={value?.toString()}
+                              placeholderTextColor={COLORS.gray}
+                              style={[LoginStyles.textInputPickup]}
+                              {...field.props}
+                            />
+                          </>
+                        )
+                      }}
+                      name={field.name}
+                      rules={{ required: `${field.label} is required` }}
+                    />
+                    {errors[field.name] && <Text style={[CommonStyles.errorTxt]}>{errors[field.name].message}</Text>}
+                  </View>
+                );
+              })}
             </View>
             <View>
               <View style={CommonStyles.mb10}>
                 <Pressable
-                  style={LoginStyles.button}
-                  android_ripple={{color: '#fff'}}
-                  onPress={handleSignUp}>
+                  style={[LoginStyles.button, { opacity: isDisabled ? 0.7 : 1 }]}
+                  android_ripple={{ color: '#fff' }}
+                  onPress={handleSubmit(handleSignUp)}
+                  disabled={isDisabled}
+                >
                   <Text style={LoginStyles.text}>
                     {'Sign Up Now'.toUpperCase()}
                   </Text>
@@ -133,7 +148,7 @@ const SignUpPage = () => {
               <View style={LoginStyles.signUpSection}>
                 <Text style={LoginStyles.headerText}>Already Registered?</Text>
                 <Pressable
-                  android_ripple={{color: '#fff'}}
+                  android_ripple={{ color: '#fff' }}
                   onPress={() => navigate('SignIn')}>
                   <Text style={LoginStyles.greenTxt}>Sign in</Text>
                 </Pressable>
