@@ -39,13 +39,13 @@ const FindCaptainPage = () => {
       let payload = {
         from: {
           location: from.formatted_address,
-          City: fromCity[0].long_name,
+          City: fromCity[0]?.long_name,
           Lat: from.geometry.location.lat + '',
           Long: from.geometry.location.lng + '',
         },
         to: {
           location: to.formatted_address,
-          City: toCity[0].long_name,
+          City: toCity[0]?.long_name,
           Lat: to.geometry.location.lat + '',
           Long: to.geometry.location.lng + '',
         },

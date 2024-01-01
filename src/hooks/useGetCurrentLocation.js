@@ -76,7 +76,7 @@ export default (isWatchPosition = false) => {
                     types: ['locality'],
                 });
                 if (address.length) {
-                    const city = address[0].long_name;
+                    const city = address[0]?.long_name;
                     const location = {
                         latitude: latitude,
                         longitude: longitude,
