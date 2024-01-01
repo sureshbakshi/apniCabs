@@ -246,3 +246,21 @@ export const BASE_FARE_FORM = [
     },
   },
 ];
+
+export const LOGIN_FORM = [
+  {
+    name: 'email',
+    label: "Email",
+    props: {
+      placeholder: "example@example.com",
+    },
+  },
+  {
+    name: 'password',
+    label: "Password",
+    props: {
+      placeholder: "12345",
+      secureTextEntry: true,
+    },
+  },
+];
