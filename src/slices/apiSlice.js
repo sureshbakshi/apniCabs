@@ -5,9 +5,9 @@ import { clearAuthData } from './authSlice';
 import { getUserId, showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: 'http://www.apnicabi.com/api/',
+  baseUrl: 'http://www.apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.102:3000/api/', //rajesh IP
-  baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);

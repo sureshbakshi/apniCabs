@@ -23,15 +23,8 @@ const defaultProps = {
 };
 export default function FareSettings() {
     const { userInfo, driverInfo } = useSelector((state) => state.auth);
-    useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, })
-    console.log({ driverInfo, userInfo })
+    useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
     const [editVehicleFair] = useEditFareMutation();
-
-    if (isEmpty(driverInfo?.vehicle)) {
-        return (
-            <SearchLoader msg='No Vehicles assigned' isLoader={false} />
-        );
-    }
 
     const {
         watch,
@@ -41,15 +34,13 @@ export default function FareSettings() {
         ...methods
     } = useForm({
         mode: "onSubmit",
-        defaultValues: driverInfo
-            ? {
-                base_fare: driverInfo?.vehicle?.vehicle_fare.base_fare,
-                fare_0_10_km: driverInfo?.vehicle?.vehicle_fare.fare_0_10_km,
-                fare_10_20_km: driverInfo?.vehicle?.vehicle_fare.fare_10_20_km,
-                fare_20_50_km: driverInfo?.vehicle?.vehicle_fare.fare_20_50_km,
-                fare_above_50_km: driverInfo?.vehicle?.vehicle_fare.fare_above_50_km,
-            }
-            : {},
+        defaultValues: {
+            base_fare: driverInfo?.vehicle?.vehicle_fare.base_fare || '',
+            fare_0_10_km: driverInfo?.vehicle?.vehicle_fare.fare_0_10_km || '',
+            fare_10_20_km: driverInfo?.vehicle?.vehicle_fare.fare_10_20_km || '',
+            fare_20_50_km: driverInfo?.vehicle?.vehicle_fare.fare_20_50_km || '',
+            fare_above_50_km: driverInfo?.vehicle?.vehicle_fare.fare_above_50_km || '',
+        },
         resolver: yupResolver(fareSchema),
     });
 
@@ -62,7 +53,6 @@ export default function FareSettings() {
             fare_above_50_km,
         } = data;
         if (isDirty) {
-            console.log({data})
             if (driverInfo?.vehicle?.id) {
                 editVehicleFair({
                     base_fare,
@@ -76,9 +66,13 @@ export default function FareSettings() {
         }
     };
 
+    if (isEmpty(driverInfo?.vehicle)) {
+        return (
+            <SearchLoader msg='No Vehicles assigned' isLoader={false} />
+        );
+    }
 
-console.log({errors, isDirty})
-const isDisabled = !isDirty || !isEmpty(errors)
+    const isDisabled = !isDirty || !isEmpty(errors)
     return (
         <ScrollView>
             <ScreenContainer>
@@ -99,10 +93,12 @@ const isDisabled = !isDirty || !isEmpty(errors)
                                                         onChangeText={(value) => {
                                                             onChange(value);
                                                         }}
-                                                        value={value+''}
-                                                        // type={"number"}334
-                                                        // keyboardType='number-pad'
-                                                        style={[LoginStyles.textInputDrop, { padding: 5 , height: 40, backgroundColor: COLORS.white}]}
+                                                        value={value.toString()}
+                                                        placeholderTextColor={COLORS.gray}
+                                                        // type={"number"}
+                                                        keyboardType='number-pad'
+                                                        inputMode="numeric"
+                                                        style={[LoginStyles.textInputDrop, { padding: 5, height: 40, backgroundColor: COLORS.white, marginBottom: 10 }]}
                                                         {...field.props}
                                                     />
                                                 </>
@@ -111,7 +107,7 @@ const isDisabled = !isDirty || !isEmpty(errors)
                                         name={field.name}
                                         rules={{ required: `${field.label} is required` }}
                                     />
-                                    {errors[field.name] && <Text style={{ color: 'red' }}>{errors[field.name].message}</Text>}
+                                    {errors[field.name] && <Text style={{ color: COLORS.red, marginBottom: 5 }}>{errors[field.name].message}</Text>}
 
                                 </View>
                             );
@@ -119,11 +115,11 @@ const isDisabled = !isDirty || !isEmpty(errors)
                     </View>
                     <View >
                         <Pressable
-                            style={[FindRideStyles.button, { backgroundColor: isDisabled ? COLORS.gray: COLORS.brand_yellow, minHeight: 40, margin: 10 }]}
+                            style={[FindRideStyles.button, { backgroundColor: isDisabled ? COLORS.gray : COLORS.brand_yellow, minHeight: 40, margin: 10 }]}
                             onPress={handleSubmit(onSubmit)}
                             disabled={isDisabled}
                         >
-                            <Text style={[FindRideStyles.text, { color: COLORS.black, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
+                            <Text style={[FindRideStyles.text, { color: isDisabled ? COLORS.white : COLORS.black, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
                                 Update
                             </Text>
                         </Pressable>

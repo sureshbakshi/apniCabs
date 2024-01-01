@@ -32,6 +32,7 @@ import Config from 'react-native-config';
 import {navigate} from '../util/navigationService';
 import { disconnectSocket } from '../sockets/socketConfig';
 import images from '../util/images';
+import { openOwnerPortal } from '../util/config';
 
 const initialState = {
   email: 'kommemaheshwari@gmail.com',
@@ -111,11 +112,7 @@ const LoginPage = () => {
     }
   };
 
-  const registerAsDriver = () => {
-    Linking.openURL('http://owner.apnicabi.com/').catch(err =>
-      console.error('An error occurred', err),
-    );
-  };
+
 
   return (
     <ScrollView>
@@ -176,7 +173,7 @@ const LoginPage = () => {
                 {"Don't have an account?"}
               </Text>
               <Pressable
-                onPress={registerAsDriver}
+                onPress={openOwnerPortal}
                 style={[
                   LoginStyles.googleBtn,
                   CommonStyles.mb10,

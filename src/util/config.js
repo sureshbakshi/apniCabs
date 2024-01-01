@@ -1,3 +1,4 @@
+import { Linking } from "react-native";
 import Config from "react-native-config";
 
 export default {
@@ -7,3 +8,9 @@ export default {
     IOS_GOOGLE_SIGN_IN_KEY: Config.IOS_GOOGLE_SIGN_IN_KEY,
     GOOGLE_MAPS_KEY:Config.GOOGLE_MAPS_KEY
 }
+
+export const openOwnerPortal = () => {
+    Linking.openURL('http://owner.apnicabi.com/').catch(err =>
+      console.error('An error occurred', err),
+    );
+  };
