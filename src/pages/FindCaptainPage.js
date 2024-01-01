@@ -69,7 +69,12 @@ const FindCaptainPage = () => {
     from: from?.formatted_address || '',
     to: to?.formatted_address || '',
   };
-  if (isLoading || error || isEmpty(rideList)) {
+
+  if(error) {
+    return <SearchLoader msg='Something went wrong. Please try after again!' isLoader={false}/>;
+  }
+
+  if (isLoading || isEmpty(rideList)) {
     return <SearchLoader msg='Finding best captains. Please wait...' />;
   }
   if (isEmpty(list)) {
