@@ -27,8 +27,6 @@ export default function DriverTabNavigator() {
 
         })}
       >
-        {/* listeners={{ tabPress: e => navigate(ROUTES_NAMES.activeRide) }} */}
-        {/* <Tab.Screen name={ROUTES_NAMES.chat} options={{ title: 'chat' }} component={ChatScreen} /> */}
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={DriverStackNavigator}
         />
         <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={DriverRideHistory} />
