@@ -15,6 +15,7 @@
 		1BFF1C52EB9B42B4BC97AC4C /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-apnicabi-apnicabiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-apnicabi-apnicabiTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9309ACAE2B42C8B10020BDC4 /* geoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */; };
 		B18C8683587F435887AE429F /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,8 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-apnicabi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = apnicabi/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-apnicabi-apnicabiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiTests.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests.release.xcconfig"; sourceTree = "<group>"; };
+		9309ACAC2B42C8B10020BDC4 /* apnicabi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "apnicabi-Bridging-Header.h"; sourceTree = "<group>"; };
+		9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoLocation.swift; sourceTree = "<group>"; };
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -92,10 +95,12 @@
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				9309ACAC2B42C8B10020BDC4 /* apnicabi-Bridging-Header.h */,
 			);
 			name = apnicabi;
 			sourceTree = "<group>";
@@ -221,7 +226,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -429,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				9309ACAE2B42C8B10020BDC4 /* geoLocation.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,6 +454,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-apnicabi-apnicabiTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -475,6 +482,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-apnicabi-apnicabiTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = apnicabiTests/Info.plist;
@@ -519,6 +527,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apnicabi;
 				PRODUCT_NAME = apnicabi;
+				SWIFT_OBJC_BRIDGING_HEADER = "apnicabi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -548,6 +557,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apnicabi;
 				PRODUCT_NAME = apnicabi;
+				SWIFT_OBJC_BRIDGING_HEADER = "apnicabi-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

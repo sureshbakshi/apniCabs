@@ -11,7 +11,8 @@ const FindRideStyles = StyleSheet.create({
     justifyContent:'space-between',
     flexDirection:'row',
     backgroundColor:COLORS.primary,
-    padding:10
+    padding:10,
+    minHeight:45
   },
   header: {
     flexDirection: 'row',

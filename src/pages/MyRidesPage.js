@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Button, Pressable, ScrollView, FlatList } from 'react-native';
+import { View, Button, Pressable, ScrollView, FlatList, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, RideStatus } from '../constants';
 import { ImageView, Text } from '../components/common';
@@ -13,6 +13,8 @@ const colorsNBg = {
   [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
   [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
   [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
+  [RideStatus.ACCEPTED]: { color: COLORS.white, bg: COLORS.brand_blue, label: 'On Going', image: images.rideAccept },
+
 }
 
 const getColorNBg = (status) => {
@@ -65,7 +67,7 @@ const Card = ({ item, keys }) => {
 }
 const MyRidePage = ({ data, keys }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>{'My Rides'.toUpperCase()}</Text>
       </View>
@@ -77,7 +79,7 @@ const MyRidePage = ({ data, keys }) => {
       />
       </View> :
         <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
-    </View>
+    </SafeAreaView>
   );
 };
 export default MyRidePage;

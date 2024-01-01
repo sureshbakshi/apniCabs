@@ -14,7 +14,9 @@ const socket = io(socketUri, {
   origins: '*',
   extraHeaders: {
 
-  }
+  },
+  transports: [ 'websocket' ]
+
 });
 
 socket.on('connect_error', err => console.log({ 'connect_error': err }))

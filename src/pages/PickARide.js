@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Pressable, ScrollView, Text, Switch } from 'react-native';
+import { View, Pressable, ScrollView, Text, Switch, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
@@ -133,40 +133,40 @@ export const PickARide = () => {
 
 
   return (
-    <View style={FindRideStyles.container}>
-      <View
-        style={[
-          FindRideStyles.switchBtn,
-          { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
-        ]}>
-        <Text style={FindRideStyles.headerText}>
-          {isOnline ? 'Online' : 'Offline'}
-        </Text>
-        <Switch
-          trackColor={{ false: COLORS.white, true: COLORS.white }}
-          thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={Boolean(isOnline)}
-        />
-      </View>
-      {isOnline ? (
-        <>
-          {!isSocketConnected ? <SocketStatus /> :
-            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
-              <View style={FindRideStyles.section}>
-                {rideRequests?.length ? (
-                  <ScrollView>
-                    <DriverCard list={rideRequests} />
-                  </ScrollView>
-                ) : null}
-              </View>
-          }
-        </>
-      ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-          You are currently offline. Turn on your availability to receive ride requests.</Text>
-      </View>}
-    </View>
+    <SafeAreaView style={FindRideStyles.container}>
+        <View
+          style={[
+            FindRideStyles.switchBtn,
+            { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
+          ]}>
+          <Text style={FindRideStyles.headerText}>
+            {isOnline ? 'Online' : 'Offline'}
+          </Text>
+          <Switch
+            trackColor={{ false: COLORS.white, true: COLORS.white }}
+            thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={Boolean(isOnline)}
+          />
+        </View>
+        {isOnline ? (
+          <>
+            {!isSocketConnected ? <SocketStatus /> :
+              rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
+                <View style={FindRideStyles.section}>
+                  {rideRequests?.length ? (
+                    <ScrollView>
+                      <DriverCard list={rideRequests} />
+                    </ScrollView>
+                  ) : null}
+                </View>
+            }
+          </>
+        ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+            You are currently offline. Turn on your availability to receive ride requests.</Text>
+        </View>}
+    </SafeAreaView>
   );
 };
