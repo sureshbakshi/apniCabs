@@ -92,6 +92,7 @@ const FindRideStyles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical:8,
     paddingHorizontal: 20,
     backgroundColor: COLORS.brand_yellow,
     flex: 1,
