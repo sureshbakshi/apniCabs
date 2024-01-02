@@ -1,11 +1,16 @@
-import { useEffect } from "react";
-import { useUserRideHistoryQuery } from "../../slices/apiSlice";
+import { useCallback, useEffect } from "react";
+import { useLazyUserRideHistoryQuery } from "../../slices/apiSlice";
 import MyRidePage from "../MyRidesPage"
 import ActivityIndicator from "../../components/common/ActivityIndicator";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default () => {
-    const { data: rideHistory, error: rideHistoryError, isLoading } = useUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
-
+    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading }] = useLazyUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    useFocusEffect(
+        useCallback(() => {
+            refetch?.()
+        }, [])
+    );
     if (isLoading) {
         return  <ActivityIndicator/>
     }

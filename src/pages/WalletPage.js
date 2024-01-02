@@ -4,11 +4,12 @@ import WalletStyles from '../styles/WalletPageStyles';
 import styles from '../styles/MyRidePageStyles';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
-import { useGetDriverTransactionsQuery } from '../slices/apiSlice';
+import { useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
 import { formattedDate } from '../util';
+import { useFocusEffect } from '@react-navigation/native';
 const walletCopy = {
   'DEBIT': {
     title: "Requested Amount",
@@ -33,8 +34,12 @@ const walletCopy = {
 }
 
 const WalletPage = ({ navigation }) => {
-  const { data: transactionHistory, error: transactionHistoryError, isLoading } = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
-
+  const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading }] = useLazyGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
+  useFocusEffect(
+    React.useCallback(() => {
+        refetch?.()
+    }, [])
+);
   if (isLoading) {
     return <ActivityIndicator />
   }

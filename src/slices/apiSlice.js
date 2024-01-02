@@ -274,8 +274,8 @@ export const {
   useCompleteRideRequestMutation,
   useCancelAcceptedRequestMutation,
   useUserActiveRideQuery,
-  useDriverRideHistoryQuery,
-  useUserRideHistoryQuery,
-  useGetDriverTransactionsQuery,
+  useLazyDriverRideHistoryQuery,
+  useLazyUserRideHistoryQuery,
+  useLazyGetDriverTransactionsQuery,
   useEditFareMutation
 } = apiSlice;

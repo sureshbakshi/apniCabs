@@ -1,15 +1,14 @@
 import { useCallback, useEffect } from "react";
-import { useDriverRideHistoryQuery } from "../../slices/apiSlice";
+import { useLazyDriverRideHistoryQuery } from "../../slices/apiSlice";
 import MyRidePage from "../MyRidesPage"
 import ActivityIndicator from "../../components/common/ActivityIndicator";
 import { useFocusEffect } from '@react-navigation/native';
 
 export default () => {
-    const { data: rideHistory, error: rideHistoryError, isLoading, refech } = useDriverRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading, refech }] = useLazyDriverRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
     useFocusEffect(
         useCallback(() => {
-            console.log("Function Call on TAb change", refech)
-            refech?.()
+            refetch?.()
         }, [])
     );
     const rideHistoryKeys = {
