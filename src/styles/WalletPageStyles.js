@@ -9,7 +9,7 @@ const WalletStyles = StyleSheet.create({
   header: {
     alignItems: 'center',
     backgroundColor: COLORS.primary,
-    height: 200,
+    height: 170,
     padding: 10,
     width: '100%',
     alignContent: 'center',

@@ -78,17 +78,17 @@ const WalletPage = ({ navigation }) => {
         <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text>
         <Text style={WalletStyles.whitetxt}>{'Total Balance'}</Text>
         {balance ? <Text style={WalletStyles.balTxt}>{'\u20B9'}{balance}</Text>: null}
-        <View style={WalletStyles.right}>
+        {/* <View style={WalletStyles.right}> */}
           {/* <Pressable style={WalletStyles.button} onPress={_goToYosemite}>
             <Text style={WalletStyles.buttonTxt}>{'Add Money'.toUpperCase()}</Text>
           </Pressable> */}
         </View>
-        {hold ? <View style={{ justifyContent: 'space-between', right: 20, position: 'absolute', bottom: 10 }}>
+        {/* {hold ? <View style={{ justifyContent: 'space-between', right: 20, position: 'absolute', bottom: 10 }}>
           <Text style={WalletStyles.whitetxt}>{'Hold Amount: '}
             <Text style={[WalletStyles.whitetxt, { fontSize: 16, fontWeight: 'bold' }]}>{'\u20B9'}{hold}</Text>
           </Text>
-        </View>: null}
-      </View>
+        </View>: null} */}
+      {/* </View> */}
       <View style={WalletStyles.section}>
         <FlatList
           data={transactions}
