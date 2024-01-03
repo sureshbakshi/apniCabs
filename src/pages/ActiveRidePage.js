@@ -390,6 +390,7 @@ const ActiveRidePage = ({ currentLocation }) => {
   const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
   console.log({ statusUpdate, rideStatusModalInfo })
   const clearRideState = () => {
+    setModalVisible(false);
     dispatch(isDriverLogged ? clearDriverState() : clearUserState())
   }
   return (
@@ -422,7 +423,7 @@ const ActiveRidePage = ({ currentLocation }) => {
           isDriverLogged={isDriverLogged}
         />
         {rideStatusModalInfo ? <>
-          <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
+          <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={modalVisible}>
             <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
             {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: <br /> {rideStatusModalInfo.reason}</Text> : null}
             {rideStatusModalInfo?.subText ? <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.subText}</Text> : null}
