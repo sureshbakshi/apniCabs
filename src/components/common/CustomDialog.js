@@ -8,14 +8,14 @@ import FindRideStyles from "../../styles/FindRidePageStyles";
 export default ({ openDialog, actions, title, closeCb, children }) => {
     const [modalVisible, setModalVisible] = useState(openDialog)
 
-    // useEffect(() => {
-    //     if (modalVisible !== openDialog) {
-    //         setModalVisible(openDialog)
-    //     }
-    // }, [openDialog])
+    useEffect(() => {
+        if (modalVisible !== openDialog) {
+            setModalVisible(openDialog)
+        }
+    }, [openDialog])
 
     const closeDialog = () => {
-        // setModalVisible(false);
+        setModalVisible(false);
         closeCb?.()
     }
 

@@ -20,6 +20,7 @@ import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import openMap from 'react-native-open-maps';
 import ActiveMapPage from './ActiveMap';
 import CustomDialog from '../components/common/CustomDialog';
+import { delay } from 'lodash';
 
 const driverReasons = [
   { message: 'Vehicle breakdown or mechanical issue', id: 1 },
@@ -56,13 +57,14 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
     setErrorMessage(false);
   };
 
-  const closeModal = () => handleModalVisible(!modalVisible);
+  const closeModal = () => handleModalVisible(false);
 
   useEffect(() => {
-    console.log('cancelAcceptedRequest', cancelAcceptedRequestData);
     if (cancelAcceptedRequestData || cancelAcceptedRequestData === null) {
       closeModal();
-      dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
+      delay(()=>{
+        dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
+      },250)
     } else if (cancelAcceptedRequestError) {
       closeModal();
       console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
@@ -88,7 +90,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
     <Pressable
       android_ripple={{ color: '#fff' }}
       style={[FindRideStyles.button, { backgroundColor: COLORS.bg_dark }]}
-      onPress={() => handleModalVisible(!modalVisible)}>
+      onPress={closeModal}>
       <Text
         style={[
           FindRideStyles.text,
@@ -105,7 +107,6 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
         {'Submit'}
       </Text>
     </Pressable></>
-  console.log({ modalVisible })
   return (
     <CustomDialog
       openDialog={modalVisible}
@@ -138,6 +139,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
           Please select a reason
         </Text>
       )}
+      
     </CustomDialog>
   );
 };
@@ -423,7 +425,7 @@ const ActiveRidePage = ({ currentLocation }) => {
           isDriverLogged={isDriverLogged}
         />
         {rideStatusModalInfo ? <>
-          <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={modalVisible}>
+          <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
             <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
             {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: <br /> {rideStatusModalInfo.reason}</Text> : null}
             {rideStatusModalInfo?.subText ? <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.subText}</Text> : null}
