@@ -23,7 +23,7 @@ export default ({ openDialog, actions, title, closeCb, children }) => {
         <Modal
             animationType="slide"
             transparent={true}
-            visible={openDialog}
+            visible={modalVisible}
             onPress={closeDialog}>
             <View style={ActiveRidePageStyles.centeredView}>
                 <View style={ActiveRidePageStyles.modalView}>

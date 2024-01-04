@@ -393,7 +393,9 @@ const ActiveRidePage = ({ currentLocation }) => {
   console.log({ statusUpdate, rideStatusModalInfo })
   const clearRideState = () => {
     setModalVisible(false);
-    dispatch(isDriverLogged ? clearDriverState() : clearUserState())
+    delay(() => {
+      dispatch(isDriverLogged ? clearDriverState() : clearUserState())
+    }, 250)
   }
   return (
     <View style={[FindRideStyles.container]}>

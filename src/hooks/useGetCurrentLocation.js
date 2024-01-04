@@ -151,6 +151,5 @@ export default (isWatchPosition = false) => {
     useEffect(() => {
         getCurrentLocation()
     }, [])
-    console.log({ location })
     return { getCurrentLocation, checkAndroidPermissions, location }
 }
