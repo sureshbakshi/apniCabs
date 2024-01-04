@@ -7,7 +7,6 @@ import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 import { store } from "../store"
 
-
 const SOCKET_EVENTS = {
     get_ride_requests: 'request',
 }

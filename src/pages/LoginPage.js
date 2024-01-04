@@ -36,6 +36,7 @@ import { openOwnerPortal } from '../util/config';
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
+import CustomButton from '../components/common/CustomButton';
 
 const initialState = {
   email: 'kommemaheshwari@gmail.com',
@@ -123,7 +124,7 @@ const LoginPage = () => {
     ...methods
   } = useForm({
     mode: "onSubmit",
-    defaultValues:initialState,
+    defaultValues: initialState,
     resolver: yupResolver(signInSchema),
   });
 
@@ -186,13 +187,10 @@ const LoginPage = () => {
 
                 {isLoginLoading && <Text>Please wait...</Text>}
                 <View>
-                  <Pressable
-                    style={LoginStyles.button}
-                    android_ripple={{ color: '#fff' }}
-                    // disabled={!isDirty || !isEmpty(errors)}
-                    onPress={handleSubmit(onSubmit)}>
-                    <Text style={LoginStyles.text}>{'Login'.toUpperCase()}</Text>
-                  </Pressable>
+                  <CustomButton
+                    onClick={handleSubmit(onSubmit)}
+                    label='Login'
+                  />
                 </View>
               </FormProvider>
               {/* <View style={LoginStyles.signUpContainer}>
