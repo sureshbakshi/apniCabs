@@ -24,7 +24,6 @@ export default () => {
         if (isDriverError) {
             dispatch(clearDriverState())
         } else if (activeDriverRideDetails || activeDriverRideDetails === null) {
-            console.log({ activeDriverRideDetails })
             dispatch(setActiveRide(activeDriverRideDetails))
         }
     }, [activeDriverRideDetails?.id, isDriverLogged])

@@ -72,7 +72,7 @@ const SignUpPage = () => {
     payload.provider = Platform.OS || 'mobile'
     payload.name = payload.name ?? googleInfo.name
     payload.email = payload.email ?? googleInfo.email
-    payload.user_type = USER_ROLES.USER
+    payload.user_type = USER_ROLES.OWNER
     singUp(payload);
   };
 
