@@ -6,6 +6,7 @@ import { _isDriverOnline, _isLoggedIn } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 import { store } from "../store"
+// import useLocalNotifications from "./useLocalNotifications"
 
 const SOCKET_EVENTS = {
     get_ride_requests: 'request',
@@ -13,9 +14,12 @@ const SOCKET_EVENTS = {
 
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
+    // const { scheduleLocalNotification } = useLocalNotifications();
 
     const updateRideRequests = (request) => {
         const { status } = request?.data || {}
+        // scheduleLocalNotification('Local Notification', 'This is a test local notification', { customData: request?.data });
+
         if (status) {
             if (status === RideStatus.REQUESTED) {
                 dispatch(setRideRequest(request?.data))
@@ -50,6 +54,18 @@ export default (() => {
 
     const isDriverOnline = isOnline !== DriverAvailableStatus.OFFLINE;
     const isLoggedIn = _isLoggedIn();
+    const baseSocketOn = driverSocket.on;
+
+    driverSocket.on = function() {
+        var ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.get_ride_requests] 
+
+        if (driverSocket._callbacks !== undefined &&
+            typeof driverSocket._callbacks[`$${arguments[0]}`] !== 'undefined' &&
+            ignoreEvents.indexOf(arguments[0]) === -1) {
+               return;
+        }
+        return baseSocketOn.apply(this, arguments)
+    };
 
 
     const addDevice = () => {

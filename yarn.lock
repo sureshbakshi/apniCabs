@@ -6368,6 +6368,11 @@ react-native-material-ripple@^0.9.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-notifications@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-5.1.0.tgz#8cba105fd57ab9d5df9d27284acf1e2b4f3d7ea3"
+  integrity sha512-laqDSDlCvEASmJR6cXpqaryK855ejQd07vrfYERzhv68YDOoSkKy/URExRP4vAfAOVqHhix80tLbNUcfvZk2VQ==
+
 react-native-open-maps@^0.4.3:
   version "0.4.3"
   resolved "https://registry.npmjs.org/react-native-open-maps/-/react-native-open-maps-0.4.3.tgz"

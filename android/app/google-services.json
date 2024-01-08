@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523429894990",
+    "project_id": "apnicabi-app",
+    "storage_bucket": "apnicabi-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523429894990:android:d25b6080394f7a1dc2dc1f",
+        "android_client_info": {
+          "package_name": "com.apnicabi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAjhl8r210U-aiW0mnYeKhb2cKWJ05akk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

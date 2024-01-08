@@ -2,6 +2,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
+#import "RNNotifications.h"
 
 @implementation AppDelegate
 
@@ -13,7 +14,20 @@
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
+  [RNNotifications startMonitorNotifications]
   return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+  [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
