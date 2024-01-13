@@ -5,6 +5,8 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import org.devio.rn.splashscreen.SplashScreen; // Add this here
+import com.github.wumke.RNImmediatePhoneCall.RNImmediatePhoneCallPackage;  // <--- import
+
 
 public class MainActivity extends ReactActivity {
 
@@ -15,6 +17,12 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "apnicabi";
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+      RNImmediatePhoneCallPackage.onRequestPermissionsResult(requestCode, permissions, grantResults); // very important event callback
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 
   /**

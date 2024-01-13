@@ -14,6 +14,7 @@ import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {

@@ -6,6 +6,9 @@ import { _isDriverOnline, _isLoggedIn } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 import { store } from "../store"
+import SoundPlayer from 'react-native-sound-player'
+import audio from "../assets/audio"
+
 // import useLocalNotifications from "./useLocalNotifications"
 
 const SOCKET_EVENTS = {
@@ -16,6 +19,21 @@ export const useDriverEvents = () => {
     const dispatch = useDispatch()
     // const { scheduleLocalNotification } = useLocalNotifications();
 
+    const setSoundConfig= () => {
+        SoundPlayer.setSpeaker(true)
+        SoundPlayer.setVolume(1);
+    }
+
+    useEffect(() =>{
+        const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
+            if(success) {
+                setSoundConfig()
+            }
+          })
+        return () => _onFinishedLoadingSubscription.remove()
+
+    },[])
+
     const updateRideRequests = (request) => {
         const { status } = request?.data || {}
         // scheduleLocalNotification('Local Notification', 'This is a test local notification', { customData: request?.data });
@@ -23,6 +41,7 @@ export const useDriverEvents = () => {
         if (status) {
             if (status === RideStatus.REQUESTED) {
                 dispatch(setRideRequest(request?.data))
+                SoundPlayer.playUrl(audio.notify)
             } else if (ClearRideStatus.includes(status)) {
                 dispatch(updateRideStatus(request?.data))
             } else {

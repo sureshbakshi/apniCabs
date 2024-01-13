@@ -18,4 +18,6 @@ export default {
     backgroundImage: require('../assets/images/bg.jpeg'),
     pin: require('../assets/images/pin.png'),
     carYellow: require('../assets/images/car.png'),
+    google: require('../assets/images/google.png'),
+    captain:  require('../assets/images/captain_icon.png'),
 }   

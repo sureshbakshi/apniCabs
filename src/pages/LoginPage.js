@@ -15,7 +15,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { Text } from '../components/common';
+import { Icon, ImageView, Text } from '../components/common';
 import { COLORS, LOGIN_FORM, ROUTES_NAMES } from '../constants';
 import { useDispatch } from 'react-redux';
 import {
@@ -204,12 +204,26 @@ const LoginPage = () => {
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
                 {'or'}
               </Text>
-              <GoogleSigninButton
+              {/* <GoogleSigninButton
                 style={{ width: '100%', height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={GoogleSignIn}
-              />
+              /> */}
+              <Pressable
+                onPress={GoogleSignIn}
+                style={[LoginStyles.googleBtn, CommonStyles.mb10]}
+                android_ripple={{ color: '#ccc' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <ImageView
+                    source={images.google}
+                    style={{ minHeight: 5, minWidth: 5, height: 20, width: 20, marginRight: 10 }}
+                  />
+                  <Text style={[LoginStyles.googleTxt]}>
+                    {'Sign in / Sign up with google'}
+                  </Text>
+                </View>
+              </Pressable>
             </View>
             <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
@@ -220,22 +234,21 @@ const LoginPage = () => {
                 style={[
                   LoginStyles.googleBtn,
                   CommonStyles.mb10,
-                  { backgroundColor: COLORS.brand_blue },
+                  { backgroundColor: COLORS.brand_yellow },
                 ]}
                 android_ripple={{ color: '#ccc' }}>
-                <Text style={LoginStyles.googleTxt}>
-                  {'Register as a Driver'}
-                </Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' , alignItems: 'center'}}>
+                  <ImageView
+                    source={images.captain}
+                    style={{ minHeight: 5, minWidth: 5, height: 30, width: 30, marginRight: 10 }}
+                  />
+                  <Text style={LoginStyles.googleTxt}>
+                    {'Register as a Driver'}
+                  </Text>
+                </View>
               </Pressable>
 
-              <Pressable
-                onPress={GoogleSignIn}
-                style={[LoginStyles.googleBtn, CommonStyles.mb10]}
-                android_ripple={{ color: '#ccc' }}>
-                <Text style={[LoginStyles.googleTxt, { color: COLORS.black }]}>
-                  {'Register as a User'}
-                </Text>
-              </Pressable>
+
             </View>
           </View>
         </ScreenContainer>

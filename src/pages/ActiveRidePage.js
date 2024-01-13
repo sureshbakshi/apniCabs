@@ -21,6 +21,8 @@ import openMap from 'react-native-open-maps';
 import ActiveMapPage from './ActiveMap';
 import CustomDialog from '../components/common/CustomDialog';
 import { delay } from 'lodash';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+
 
 const driverReasons = [
   { message: 'Vehicle breakdown or mechanical issue', id: 1 },
@@ -62,9 +64,9 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
   useEffect(() => {
     if (cancelAcceptedRequestData || cancelAcceptedRequestData === null) {
       closeModal();
-      delay(()=>{
+      delay(() => {
         dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
-      },250)
+      }, 250)
     } else if (cancelAcceptedRequestError) {
       closeModal();
       console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
@@ -139,12 +141,12 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
           Please select a reason
         </Text>
       )}
-      
+
     </CustomDialog>
   );
 };
 
-const VehicleCard = ({ activeRequest, details, avatar, showOtp=false }) => {
+const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
   const avatarUri = get(activeRequest, avatar, null)
 
   return (
@@ -164,11 +166,14 @@ const VehicleCard = ({ activeRequest, details, avatar, showOtp=false }) => {
               return <Text key={item.key} style={[FindRideStyles.name, item.props?.style]}>{value}</Text>
             })}
           </View>
-         {showOtp && <View style={FindRideStyles.right}>
-            <Text style={[FindRideStyles.name, { alignSelf: 'center', fontWeight: 'bold', color: COLORS.brand_blue }]}>
+          <View style={[FindRideStyles.right, { justifyContent: 'center', alignItems: 'center' }]}>
+            {showOtp && <Text style={[FindRideStyles.name, { alignSelf: 'center', fontWeight: 'bold', color: COLORS.brand_blue }]}>
               OTP: {activeRequest.code}
-            </Text>
-          </View>}
+            </Text>}
+            <Pressable onPress={() => RNImmediatePhoneCall.immediatePhoneCall('8142969648')} style={{ backgroundColor: COLORS.green, borderRadius: 20, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name="phone" size="large" color={COLORS.white} />
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
@@ -249,7 +254,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
     })
   }
   const driver_avatar = activeRequest?.driver?.driver_detail?.photo
-  
+
   return (
     <View style={FindRideStyles.card}>
       <View style={{ padding: 10 }}>
@@ -415,7 +420,7 @@ const ActiveRidePage = ({ currentLocation }) => {
           <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
         </Cards> :
           <Cards title={'Vehicle Details'}>
-            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true}/>
+            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true} />
           </Cards>}
         <Cards title={'Driver & Ride Details'}>
           {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}

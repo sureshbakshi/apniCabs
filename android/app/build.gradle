@@ -166,6 +166,7 @@ dependencies {
     implementation('com.google.android.gms:play-services-maps:18.0.2')
     implementation project(':react-native-notifications')
     implementation('com.google.firebase:firebase-core:16.0.0')
+    implementation project(':react-native-immediate-phone-call')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

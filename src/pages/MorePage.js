@@ -11,12 +11,13 @@ import { useAuthContext } from '../context/Auth.context';
 import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal } from '../util/config';
 import { isDriver } from '../util';
+import images from '../util/images';
 const MorePage = () => {
   const { signOut } = useAuthContext();
   const dispatch = useDispatch();
-  const {userInfo: profile, driverInfo} = useSelector(state => state.auth);
+  const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
   useGetDriverDetails(profile?.id, { skip: !driverInfo?.id || !profile?.id, refetchOnMountOrArgChange: true })
-  
+
 
   const logOut = async () => {
     try {
@@ -54,6 +55,15 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
+            {!isDriver() ? <Pressable
+              style={MoreStyles.list}
+              android_ripple={{ color: '#ccc' }}
+              onPress={() => openOwnerPortal()}>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
+              </View>
+              <Text style={MoreStyles.name}>Become Driver</Text>
+            </Pressable> : null}
             {isDriver() ? <><Pressable
               style={MoreStyles.list}
               android_ripple={{ color: '#ccc' }}
@@ -72,7 +82,7 @@ const MorePage = () => {
                 </View>
                 <Text style={MoreStyles.name}>More settings</Text>
               </Pressable>
-            </>: null}
+            </> : null}
 
 
           </View>
