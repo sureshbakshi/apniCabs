@@ -14,7 +14,7 @@
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
-  [RNNotifications startMonitorNotifications]
+  [RNNotifications startMonitorNotifications];
   return YES;
 }
 

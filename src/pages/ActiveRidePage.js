@@ -170,7 +170,7 @@ const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
             {showOtp && <Text style={[FindRideStyles.name, { alignSelf: 'center', fontWeight: 'bold', color: COLORS.brand_blue }]}>
               OTP: {activeRequest.code}
             </Text>}
-            <Pressable onPress={() => RNImmediatePhoneCall.immediatePhoneCall('8142969648')} style={{ backgroundColor: COLORS.green, borderRadius: 20, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
+            <Pressable onPress={() => RNImmediatePhoneCall.immediatePhoneCall('08071175144')} style={{ backgroundColor: COLORS.green, borderRadius: 20, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
               <Icon name="phone" size="large" color={COLORS.white} />
             </Pressable>
           </View>
@@ -395,7 +395,6 @@ const ActiveRidePage = ({ currentLocation }) => {
   }
 
   const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
-  console.log({ statusUpdate, rideStatusModalInfo })
   const clearRideState = () => {
     setModalVisible(false);
     delay(() => {
