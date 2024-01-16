@@ -226,21 +226,21 @@ export const BASE_FARE_FORM = [
   },
   {
     name: 'fare_10_20_km',
-    label: "Fare for 10 to 20km",
+    label: "Fare for 10.1 to 20km",
     props: {
-      placeholder: "Enter fare amount for 10 to 20km",
+      placeholder: "Enter fare amount for 10.1 to 20km",
     },
   },
   {
     name: 'fare_20_50_km',
-    label: "Fare for 20 to 50km",
+    label: "Fare for 20.1 to 50km",
     props: {
-      placeholder: "Enter fare amount for 20 to 50km",
+      placeholder: "Enter fare amount for 20.1 to 50km",
     },
   },
   {
     name: 'fare_above_50_km',
-    label: "Fare for above 50 km",
+    label: "Fare for above 50.1 km",
     props: {
       placeholder: "Enter fare amount above 50km",
     },
