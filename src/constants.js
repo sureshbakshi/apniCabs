@@ -240,7 +240,7 @@ export const BASE_FARE_FORM = [
   },
   {
     name: 'fare_above_50_km',
-    label: "Fare for above 50.1 km",
+    label: "Fare for above 50 km",
     props: {
       placeholder: "Enter fare amount above 50km",
     },
