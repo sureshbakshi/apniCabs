@@ -39,7 +39,7 @@ import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
 
 const initialState = {
-  email: 'kommemaheshwari@gmail.com',
+  email: 'sksureshii30@gmail.com',
   password: 'abc@123',
   // email: 'driver@gmail.com',
 };

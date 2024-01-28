@@ -6,6 +6,7 @@ import TermsAndConditionsPage from '../pages/TermsAndConditionsPage';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import FareSettings from '../pages/FareSettings';
+import Contacts from '../pages/Contacts';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -44,6 +45,11 @@ export default function MoreNavigator({ navigation, route }) {
         name="FareSettings"
         options={{ title: 'Fare Settings' }}
         component={FareSettings}
+      />
+      <Stack.Screen
+        name="Contacts"
+        options={{ title: 'Contacts' }}
+        component={Contacts}
       />
     </Stack.Navigator>
   );

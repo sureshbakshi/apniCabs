@@ -17,6 +17,33 @@ export const signInSchema = yup.object().shape({
 
 });
 
+export const contactsSchema = yup.object().shape({
+    "phone_number1": yup
+        .string()
+        .required("Please enter phone_number 1")
+        .matches(phone, {
+            message: "Please enter valid 10 digit phone number",
+        }),
+    "phone_number2": yup
+        .string()
+        .required("Please enter  phone_number 2")
+        .matches(phone, {
+            message: "Please enter valid 10 digit phone number",
+        }),
+    "phone_number3": yup
+        .string()
+        .required("Please enter  phone_number 3")
+        .matches(phone, {
+            message: "Please enter valid 10 digit phone number",
+        }),
+    "phone_number4": yup
+        .string()
+        .required("Please enter  phone_number 4")
+        .matches(phone, {
+            message: "Please enter valid 10 digit phone number",
+        })
+});
+
 export const fareSchema = yup.object().shape({
     "base_fare": yup
         .string()
@@ -61,5 +88,5 @@ export const signupSchema = yup.object().shape({
             message: "Please enter valid password",
         }),
     "referral_phone_number": yup
-    .string(),
+        .string(),
 });

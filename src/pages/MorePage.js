@@ -76,6 +76,16 @@ const MorePage = () => {
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
+                onPress={() => navigate('Contacts')}
+                >
+                <View style={MoreStyles.listIcon}>
+                  <Icon name="account-hard-hat" size="large" color={COLORS.primary} />
+                </View>
+                <Text style={MoreStyles.name}>Emergency contacts</Text>
+              </Pressable>
+              <Pressable
+                style={MoreStyles.list}
+                android_ripple={{ color: '#ccc' }}
                 onPress={openOwnerPortal}>
                 <View style={MoreStyles.listIcon}>
                   <Icon name="web" size="large" color={COLORS.primary} />

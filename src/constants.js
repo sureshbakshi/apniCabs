@@ -247,6 +247,38 @@ export const BASE_FARE_FORM = [
   },
 ];
 
+export const CONTACTS_FORM = [
+  {
+    name: 'phone_number1',
+    label: "Phone Number 1",
+    props: {
+      placeholder: "Enter Phone Number 1 amount",
+    },
+  },
+  {
+    name: 'phone_number2',
+    label: "Phone Number 2",
+    props: {
+      placeholder: "Enter Phone Number 2 amount",
+    },
+  },
+  {
+    name: 'phone_number3',
+    label: "Phone Number 3",
+    props: {
+      placeholder: "Enter Phone Number 3 amount",
+    },
+  },
+  {
+    name: 'phone_number4',
+    label: "Phone Number 4",
+    props: {
+      placeholder: "Enter Phone Number 4 amount",
+    },
+  },
+  
+];
+
 
 export const LOGIN_FORM = [
   {
