@@ -242,7 +242,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
 
   const handleCompleRide = () => {
     let payload = {
-      request_id: activeRideId,
+      request_id: activeRideId || activeRequest?.id,
       to: fromLocation
     }
     console.log('completeRideRequest', payload)
@@ -297,7 +297,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
         </View>
       </View>
       {isDriverLogged ? <View>
-        {activeRideId ? <View style={FindRideStyles.cardBottom}>
+        {activeRideId || activeRequest.status === RideStatus.ONRIDE ? <View style={FindRideStyles.cardBottom}>
           <Pressable
             onPress={() => handleCompleRide()}
             style={[
