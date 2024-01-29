@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { DriverAvailableStatus } from "../constants";
 import { useDriverActiveRideQuery, useUserActiveRideQuery } from "../slices/apiSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { clearDriverState, setActiveRide } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { clearUserState, setActiveRequest } from "../slices/userSlice";
@@ -14,12 +14,11 @@ export default () => {
     const dispatch = useDispatch()
     const isDriverLogged = isDriver()
     const { isOnline } = useSelector(state => state.driver);
-
-    const status = isOnline !== DriverAvailableStatus.OFFLINE
-    const { data: activeDriverRideDetails, error: isDriverError, refetch: fetchDriverActiveRequest } = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true });
-    const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged,  refetchOnMountOrArgChange: true  });
-
-
+    const timestampRef = useRef(Date.now()).current;
+    const status = isOnline !== DriverAvailableStatus.OFFLINE;
+    const { data: activeDriverRideDetails, error: isDriverError, refetch: fetchDriverActiveRequest } = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true, sessionId: timestampRef });
+    const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true , sessionId: timestampRef});
+    
     useEffect(() => {
         if (isDriverError) {
             dispatch(clearDriverState())

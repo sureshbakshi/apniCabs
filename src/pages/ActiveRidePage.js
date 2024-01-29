@@ -66,7 +66,7 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
       closeModal();
       delay(() => {
         dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
-      }, 250)
+      }, 10)
     } else if (cancelAcceptedRequestError) {
       closeModal();
       console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
@@ -399,7 +399,7 @@ const ActiveRidePage = ({ currentLocation }) => {
     setModalVisible(false);
     delay(() => {
       dispatch(isDriverLogged ? clearDriverState() : clearUserState())
-    }, 250)
+    }, 10)
   }
   return (
     <View style={[FindRideStyles.container]}>
