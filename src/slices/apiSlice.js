@@ -66,8 +66,9 @@ const api_urls = {
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
   location: 'location',
-  userActiveRide: 'active-rides/user',
-  list: 'list'
+  userActiveRide:'active-rides/user',
+  list: 'list',
+  cancelRequest:'cancel-request'
 };
 
 export const apiSlice = createApi({
@@ -196,6 +197,14 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    cancelRequest: builder.mutation({
+      query: ({request_id,driver_id}) => ({
+        method: 'PUT',
+        url: api_path.request(`${api_urls.cancelRequest}/${request_id}/${driver_id}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     updateRequest: builder.mutation({
       query: body => ({
         method: 'PUT',
@@ -279,5 +288,6 @@ export const {
   useLazyDriverRideHistoryQuery,
   useLazyUserRideHistoryQuery,
   useLazyGetDriverTransactionsQuery,
-  useEditFareMutation
+  useEditFareMutation,
+  useCancelRequestMutation
 } = apiSlice;

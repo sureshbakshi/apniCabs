@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { ImageView, Text } from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
@@ -13,11 +13,13 @@ import { updateDriversRequest } from '../../../slices/userSlice';
 import { showErrorMessage } from '../../../util';
 
 const Card = item => {
+  const [cancelRequestBtn, setCancelRequestBtn] = useState(false);
   const { request_id } = useSelector(state => state.user?.rideRequests);
-
   const dispatch = useDispatch();
+
   const [sendRequest, { data: requestData, error: requestError, isLoading }] =
     useSendRequestMutation();
+
   const handleSendRequest = item => {
     if (!item.status) {
       let payload = { request_id, driver_id: item.driver_id };
@@ -25,12 +27,23 @@ const Card = item => {
     } else {
       showErrorMessage('Request already sent.')
     }
-
   };
+
+  const handleCancelRequest = item => {
+    if (item.status) {
+      let payload = { request_id, driver_id: item.driver_id };
+      sendRequest(payload);
+    } else {
+      showErrorMessage('Request already sent.')
+    }
+  };
+
+
   useEffect(() => {
     if (requestError) {
       console.log('requestError', requestError);
     } else if (requestData) {
+      setCancelRequestBtn(true);
       dispatch(updateDriversRequest(requestData));
     }
   }, [requestData, requestError]);
