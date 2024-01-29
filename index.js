@@ -2,7 +2,7 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
+import { AppRegistry, AppState } from 'react-native';
 import App from './src/navigation/index';
 import { name as appName } from './app.json';
 import { store, persistor } from './src/store/index';
@@ -11,13 +11,26 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/constants';
 import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 
 if (!__DEV__) {
   console.log = () => {};
 }
 
 function AppWithProvider() {
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      nextAppState => {
+        console.log('Next AppState is: ', nextAppState);
+      },
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
+
   return (
 
     <Provider store={store}>

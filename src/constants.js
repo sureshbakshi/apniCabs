@@ -250,30 +250,30 @@ export const BASE_FARE_FORM = [
 export const CONTACTS_FORM = [
   {
     name: 'phone_number1',
-    label: "Phone Number 1",
+    label: "",
     props: {
-      placeholder: "Enter Phone Number 1 amount",
+      placeholder: "Enter Phone Number 1",
     },
   },
   {
     name: 'phone_number2',
-    label: "Phone Number 2",
+    label: "",
     props: {
-      placeholder: "Enter Phone Number 2 amount",
+      placeholder: "Enter Phone Number 2",
     },
   },
   {
     name: 'phone_number3',
-    label: "Phone Number 3",
+    label: "",
     props: {
-      placeholder: "Enter Phone Number 3 amount",
+      placeholder: "Enter Phone Number 3",
     },
   },
   {
     name: 'phone_number4',
-    label: "Phone Number 4",
+    label: "",
     props: {
-      placeholder: "Enter Phone Number 4 amount",
+      placeholder: "Enter Phone Number 4",
     },
   },
   

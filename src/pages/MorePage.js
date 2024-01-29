@@ -1,35 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Pressable, ScrollView } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { navigate } from '../util/navigationService';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Icon, ImageView, Text } from '../components/common';
+import { Icon, Text } from '../components/common';
 import { COLORS } from '../constants';
-import { clearAuthData } from '../slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAuthContext } from '../context/Auth.context';
+import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal } from '../util/config';
 import { isDriver } from '../util';
-import images from '../util/images';
+import useLogout from '../hooks/useLogout';
+
 const MorePage = () => {
-  const { signOut } = useAuthContext();
-  const dispatch = useDispatch();
+  const { logOut } = useLogout();
   const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
   useGetDriverDetails(profile?.id, { skip: !driverInfo?.id || !profile?.id, refetchOnMountOrArgChange: true })
 
-
-  const logOut = async () => {
-    try {
-      const sucess = signOut();
-      if (sucess) {
-        await GoogleSignin.signOut();
-        dispatch(clearAuthData());
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <View style={MoreStyles.container}>
       <View style={MoreStyles.section}>
@@ -58,7 +43,10 @@ const MorePage = () => {
             {!isDriver() ? <Pressable
               style={MoreStyles.list}
               android_ripple={{ color: '#ccc' }}
-              onPress={() => openOwnerPortal()}>
+              onPress={() => {
+                logOut()
+                openOwnerPortal()
+                }}>
               <View style={MoreStyles.listIcon}>
                 <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
               </View>
@@ -73,7 +61,7 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>Edit Fare</Text>
             </Pressable>
-              <Pressable
+              {/* <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
                 onPress={() => navigate('Contacts')}
@@ -82,7 +70,7 @@ const MorePage = () => {
                   <Icon name="account-hard-hat" size="large" color={COLORS.primary} />
                 </View>
                 <Text style={MoreStyles.name}>Emergency contacts</Text>
-              </Pressable>
+              </Pressable> */}
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}

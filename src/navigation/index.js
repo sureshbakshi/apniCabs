@@ -17,11 +17,11 @@ function App() {
   const GetNavigation = () => {
     if (isEmpty(access_token)) {
       return <LoginNavigator />;
-    } else if (isUser()) {
-      return <UserTabNavigator />;
     } else if (isDriver()) {
       return <DriverTabNavigator />;
-    }
+    } else if (isUser()) {
+      return <UserTabNavigator />;
+    } 
   };
 
   return (

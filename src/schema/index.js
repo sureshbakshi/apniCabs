@@ -84,8 +84,8 @@ export const signupSchema = yup.object().shape({
     "password": yup
         .string()
         .required("Please enter password")
-        .matches(noSplCharExp, {
-            message: "Please enter valid password",
+        .min(6, {
+            message: 'Minimum 6 Characters required'
         }),
     "referral_phone_number": yup
         .string(),
