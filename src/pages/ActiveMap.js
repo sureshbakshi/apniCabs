@@ -6,11 +6,12 @@ import {
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { getScreen, isDriver } from '../util';
+import { getScreen, getVehicleImage, isDriver } from '../util';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { ImageView } from '../components/common';
 import images from '../util/images';
-import { isEmpty, delay } from 'lodash';
+import { isEmpty, delay,get } from 'lodash';
+import { RideStatus } from '../constants';
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -147,6 +148,8 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     }
   }, [to_location, location, mapRef]);
 
+  const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
+
 
   return (
     <View style={styles.container}>
@@ -161,7 +164,8 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
             longitudeDelta: LONGITUDE_DELTA,
           }}
           onMapReady={() => focusMap(markerIDs)}
-          customMapStyle={mapStyle}>
+          // customMapStyle={mapStyle}
+          >
           <Marker
             identifier="Marker1"
             title={"Your are here"}
@@ -170,7 +174,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
               longitude: Number(activeRequest?.from_longitude) + SPACE,
             }}>
             <ImageView
-              source={images.pin}
+              source={activeRequest.status === RideStatus.ONRIDE ? getVehicleImage(vehicleImage): images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
@@ -183,7 +187,8 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={images.carYellow} style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
+            <ImageView source={activeRequest.status === RideStatus.ONRIDE ? images.pin : getVehicleImage(vehicleImage)}
+              style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker> : null}
         </MapView>
       ) : null}

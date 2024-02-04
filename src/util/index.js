@@ -3,8 +3,9 @@ import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { DriverAvailableStatus, USER_ROLES } from '../constants';
+import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES } from '../constants';
 import { store } from '../store';
+import images from './images';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -113,12 +114,12 @@ export const fakeLogin = () => {
 export const formattedDate = (dateString) => {
   const originalDate = new Date(dateString)
   return originalDate.toLocaleDateString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
   }).replace(/\//g, '-');
 };
 
@@ -126,4 +127,8 @@ export const formattedDate = (dateString) => {
 export const isUndefined = (arrayValues, arrayKeys, key) => {
   const index = arrayKeys?.findIndex((item) => item === key)
   return Boolean(arrayValues[index]);
+}
+
+export const getVehicleImage = (type) => {
+  return type ? (VEHICLE_IMAGES[type] || images.car) : images.car
 }

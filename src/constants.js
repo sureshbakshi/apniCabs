@@ -1,4 +1,5 @@
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+import images from './util/images';
 
 
 export const USER_ROLES = {
@@ -179,6 +180,12 @@ export const toastConfig = {
 };
 
 
+export const VEHICLE_IMAGES ={
+  BIKE:images.bike,
+  AUTO:images.auto,
+  CAR:images.carYellow
+}
+
 export const VEHICLE_TYPES = {
   car: 'car-side',
   auto: 'golf-cart',//rv-truck,truck
@@ -201,11 +208,6 @@ export const USER_INFORMATION = [{
   key: 'user.name',
   props: {
     style: { fontWeight: 'bold' }
-  }
-}, {
-  key: ['user.phone'],
-  props: {
-
   }
 }]
 

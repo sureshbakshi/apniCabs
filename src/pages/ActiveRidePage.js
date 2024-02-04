@@ -14,7 +14,7 @@ import { isEmpty } from 'lodash';
 import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRideRequestMutation } from '../slices/apiSlice';
 import { updateRideStatus, setActiveRide, clearDriverState } from '../slices/driverSlice';
 import { clearUserState } from '../slices/userSlice';
-import { getScreen, isDriver, isUser, showErrorMessage } from '../util';
+import { getScreen, getVehicleImage, isDriver, isUser, showErrorMessage } from '../util';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import openMap from 'react-native-open-maps';
@@ -147,7 +147,9 @@ const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogge
 };
 
 const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
-  const avatarUri = get(activeRequest, avatar, null)
+  const avatarUri = get(activeRequest, avatar, null);
+  const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
+  const defaultImage = showOtp ? images['captain0'] : getVehicleImage(vehicleImage)
 
   return (
     <View style={FindRideStyles.card}>
@@ -155,7 +157,7 @@ const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
         <View style={FindRideStyles.cardtop}>
           <View style={FindRideStyles.left}>
             <ImageView
-              source={avatarUri ? { uri: avatarUri } : images[`captain0`]
+              source={avatarUri ? { uri: avatarUri } : defaultImage
               }
               style={[styles.avatar]}
             />
@@ -253,7 +255,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
       console.log(err)
     })
   }
-  const driver_avatar = activeRequest?.driver?.driver_detail?.photo
+  const driver_avatar = activeRequest?.driver?.driver_detail?.photo || activeRequest?.driver?.vehicle?.vehicle_image
 
   return (
     <View style={FindRideStyles.card}>
