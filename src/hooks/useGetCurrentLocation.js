@@ -36,7 +36,7 @@ export default (isWatchPosition = false) => {
 
     const checkAndroidPermissions = async () => {
         try {
-            if(Platform.OS === 'ios' ) {
+            if (Platform.OS === 'ios') {
                 requestIosLocationPermissions()
                 return true
             }
@@ -127,14 +127,16 @@ export default (isWatchPosition = false) => {
                     granted = await checkAndroidPermissions();
                 }
                 if (granted) {
-                    watchId = Geolocation.watchPosition(
-                        position => {
-                            console.log('watchPosition', position)
-                            getLocation(position.coords);
-                        },
-                        error => console.log(error),
-                        defaultOptions,
-                    );
+                    if (!watchId) {
+                        watchId = Geolocation.watchPosition(
+                            position => {
+                                console.log('watchPosition', position)
+                                getLocation(position.coords);
+                            },
+                            error => console.log(error),
+                            defaultOptions,
+                        );
+                    }
                 } else {
                     showErrorMessage('Please enable location service');
                 }

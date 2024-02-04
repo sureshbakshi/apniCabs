@@ -6,8 +6,8 @@ import { getUserId, showErrorMessage } from '../util';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://www.apnicabi.com/api/',
-  // baseUrl: 'http://192.168.0.102:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.0.103:3000/api/', //rajesh IP
+  // baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -22,7 +22,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   console.log(JSON.stringify(args))
 
   let result = await baseQuery(args, api, extraOptions);
-  console.log({response: result?.data, uri: result?.meta?.response?.url, result})
+  console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
   if (result?.error) {
     showErrorMessage(result.error)
   }
@@ -66,7 +66,7 @@ const api_urls = {
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
   location: 'location',
-  userActiveRide:'active-rides/user',
+  userActiveRide: 'active-rides/user',
   list: 'list'
 };
 
@@ -148,7 +148,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ["RideComplete"]
+      providesTags: ['RideStatus', 'RideComplete'],
     }),
     driverRideHistory: builder.query({
       query: () => ({
@@ -157,7 +157,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ["RideComplete"]
+      providesTags: ["RideStatus","RideComplete"]
     }),
     userActiveRide: builder.query({
       query: () => ({
@@ -175,6 +175,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      invalidatesTags: ['RideStatus']
     }),
     completeRideRequest: builder.mutation({
       query: body => ({
@@ -184,7 +185,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["RideComplete"]
+      invalidatesTags: ["RideComplete"]
     }),
     cancelAcceptedRequest: builder.mutation({
       query: body => ({
@@ -233,12 +234,13 @@ export const apiSlice = createApi({
       }),
       transformResponse: (response) => {
         const history = response
-        if(history?.transactions) {
+        if (history?.transactions) {
           history.transactions = history.transactions.filter((item) => item.type !== 'HOLD')
         }
         return history
       },
       transformErrorResponse: response => response,
+      providesTags: ["RideStatus","RideComplete"]
     }),
     // transaction end
 
@@ -256,7 +258,7 @@ export const apiSlice = createApi({
     }),
   }),
 
-  tagTypes: ['Token', 'RideComplete', "FARE"],
+  tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus'],
 });
 
 export const {

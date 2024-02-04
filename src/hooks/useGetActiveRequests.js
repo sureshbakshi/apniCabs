@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { DriverAvailableStatus } from "../constants";
 import { useDriverActiveRideQuery, useUserActiveRideQuery } from "../slices/apiSlice";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { clearDriverState, setActiveRide } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { clearUserState, setActiveRequest } from "../slices/userSlice";
 import { isEmpty } from 'lodash';
 import { activeReq } from "../mock/activeRequest";
+import { useFocusEffect } from "@react-navigation/native";
 
 // pickaride, search ride - always
 //active page = active ride & drive, active page + user
@@ -19,6 +20,13 @@ export default () => {
     const { data: activeDriverRideDetails, error: isDriverError, refetch: fetchDriverActiveRequest } = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true, sessionId: timestampRef });
     const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true , sessionId: timestampRef});
     
+    useFocusEffect(
+        useCallback(() => {
+            console.log('useFocusEffect')
+            isDriverLogged ? fetchDriverActiveRequest?.() : fetchUserActiveRequest?.()
+        }, [])
+    );
+
     useEffect(() => {
         if (isDriverError) {
             dispatch(clearDriverState())

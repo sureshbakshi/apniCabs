@@ -251,8 +251,11 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
     completeRideRequest(payload).unwrap().then((res) => {
       console.log(res);
       dispatch(updateRideStatus(res))
-    }).then((err) => {
+    }).catch((err) => {
       console.log(err)
+      if(err?.status == 400){
+        dispatch(clearDriverState())
+      }
     })
   }
   const driver_avatar = activeRequest?.driver?.driver_detail?.photo || activeRequest?.driver?.vehicle?.vehicle_image
