@@ -6,32 +6,27 @@ import styles from '../../../styles/MyRidePageStyles';
 import images from '../../../util/images';
 import Timeline from '../timeline/Timeline';
 import _ from 'lodash';
-import { COLORS } from '../../../constants';
-import { useSendRequestMutation } from '../../../slices/apiSlice';
+import { COLORS, RideStatus } from '../../../constants';
+import { useCancelRequestMutation, useSendRequestMutation } from '../../../slices/apiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDriversRequest } from '../../../slices/userSlice';
 import { showErrorMessage } from '../../../util';
 
 const Card = item => {
-  const [cancelRequestBtn, setCancelRequestBtn] = useState(false);
   const { request_id } = useSelector(state => state.user?.rideRequests);
   const dispatch = useDispatch();
 
   const [sendRequest, { data: requestData, error: requestError, isLoading }] =
     useSendRequestMutation();
 
-  const handleSendRequest = item => {
-    if (!item.status) {
-      let payload = { request_id, driver_id: item.driver_id };
-      sendRequest(payload);
-    } else {
-      showErrorMessage('Request already sent.')
-    }
-  };
+  const [cancelRequest, { data: cancelRequestData, error: cancelRequestError, isLoading: cancelRequestLoading }] =
+    useCancelRequestMutation();
 
-  const handleCancelRequest = item => {
-    if (item.status) {
-      let payload = { request_id, driver_id: item.driver_id };
+  const handleSendRequest = item => {
+    let payload = { request_id, driver_id: item.driver_id };
+    if (item.status === RideStatus.REQUESTED) {
+      cancelRequest(payload);
+    } else if (!item.status) {
       sendRequest(payload);
     } else {
       showErrorMessage('Request already sent.')
@@ -43,7 +38,6 @@ const Card = item => {
     if (requestError) {
       console.log('requestError', requestError);
     } else if (requestData) {
-      setCancelRequestBtn(true);
       dispatch(updateDriversRequest(requestData));
     }
   }, [requestData, requestError]);
@@ -62,11 +56,12 @@ const Card = item => {
       }
       case 'REQUESTED': {
         return {
-          label: status,
-          bg: COLORS.brand_blue,
+          label: 'Cancel Request',
+          bg: COLORS.primary,
           color: COLORS.white
         }
       }
+
       default: {
         return {
           label: 'Send Request',
@@ -113,9 +108,9 @@ const Card = item => {
             {item?.vehicle_details?.name} | {item.colour}
           </Text>
         </View>
-        <View style={[FindRideStyles.right,{padding:0,paddingBottom:5}]}>
+        <View style={[FindRideStyles.right, { padding: 0, paddingBottom: 5 }]}>
           <Pressable
-            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40,  marginHorizontal: 3,paddingVertical:0 }]}
+            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginHorizontal: 3, paddingVertical: 0 }]}
             onPress={() => handleSendRequest(item)}>
             <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
               {actionButtonInfo.label}
