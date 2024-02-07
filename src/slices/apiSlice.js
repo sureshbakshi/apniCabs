@@ -214,6 +214,14 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    cancelAllRequest: builder.mutation({
+      query: (id) => ({
+        method: 'DELETE',
+        url: api_path.request(`${api_urls.cancelRequest}/${id}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     updateDriverLocation: builder.mutation({
       query: body => ({
         method: 'PUT',
@@ -289,5 +297,6 @@ export const {
   useLazyUserRideHistoryQuery,
   useLazyGetDriverTransactionsQuery,
   useEditFareMutation,
-  useCancelRequestMutation
+  useCancelRequestMutation,
+  useCancelAllRequestMutation
 } = apiSlice;

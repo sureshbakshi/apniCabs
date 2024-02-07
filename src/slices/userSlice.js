@@ -16,15 +16,23 @@ const intialState = {
   rideRequests: null,
   activeRequest: null,
   driverLocation: null,
-  statusUpdate: null
+  statusUpdate: null,
+  requestInfo:null,
+
 }
 const userSlice = createSlice({
   name: 'user',
   initialState: intialState,
   reducers: {
-
     setRideRequest: (state, action) => {
       state.rideRequests = action.payload;
+    },
+    requestInfo:(state, action)=>{
+      state.requestInfo = action.payload
+    },
+    cancelRideRequest:(state, action)=>{
+      state.requestInfo =null;
+      state.rideRequests = null;
     },
     setActiveRequest: (state, action) => {
       if(_.isEmpty(action.payload)) {
@@ -71,7 +79,9 @@ export const {
   updateDriversRequest,
   setActiveRequest,
   clearUserState,
-  updateDriverLocation
+  updateDriverLocation,
+  requestInfo,
+  cancelRideRequest
 } = userSlice.actions;
 
 export default userSlice.reducer;

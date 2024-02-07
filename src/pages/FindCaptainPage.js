@@ -10,75 +10,24 @@ import { setRideRequest } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchLoader from '../components/common/SearchLoader';
 import CaptainsCard from '../components/common/Tabs/CaptainsCard';
-import { COLORS, VEHICLE_TYPES } from '../constants';
+import { COLORS, ROUTES_NAMES, VEHICLE_TYPES } from '../constants';
 import { Text } from 'react-native-paper';
 import { Icon } from '../components/common';
+import { navigate } from '../util/navigationService';
 
 const FindCaptainPage = () => {
-  const dispatch = useDispatch();
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
+  const { requestInfo } = useSelector(state => state.user);
 
-  const {
-    route,
-    location: { from, to },
-    getDistance,
-  } = useAppContext();
-  const [getRideRequest, { data: rideList, error, isLoading }] =
-    useGetRideRequestMutation();
-
-  useEffect(() => {
-    (async () => {
-      const { distance, duration } = await getDistance();
-      let fromCity = filter(from.address_components, {
-        types: ['locality'],
-      });
-      let toCity = filter(to.address_components, {
-        types: ['locality'],
-      });
-
-      let payload = {
-        from: {
-          location: from.formatted_address,
-          City: fromCity[0]?.long_name,
-          Lat: from.geometry.location.lat + '',
-          Long: from.geometry.location.lng + '',
-        },
-        to: {
-          location: to.formatted_address,
-          City: toCity[0]?.long_name,
-          Lat: to.geometry.location.lat + '',
-          Long: to.geometry.location.lng + '',
-        },
-        Distance: Number((distance.value / 1000).toFixed(1)),
-        Duration: duration.text,
-      };
-      getRideRequest(payload);
-    })();
-  }, [from, to]);
-
-  useEffect(() => {
-    if (error) {
-      console.log({ error });
-    } else if (rideList) {
-      dispatch(setRideRequest(rideList));
-    }
-  }, [rideList]);
 
   const extraProps = {
-    ...route,
-    from: from?.formatted_address || '',
-    to: to?.formatted_address || '',
+    from: requestInfo?.from.location || '',
+    to: requestInfo?.to.location || '',
   };
 
-  if(error) {
-    return <SearchLoader msg='Something went wrong. Please try after again!' isLoader={false}/>;
-  }
-
-  if (isLoading || isEmpty(rideList)) {
-    return <SearchLoader msg='Finding best captains. Please wait...' />;
-  }
   if (isEmpty(list)) {
-    return <SearchLoader msg='No Captains found. Please try after sometime.' isLoader={false} />
+    navigate(ROUTES_NAMES.searchRide)
+    return null
   }
   return (
     <View style={FindRideStyles.container}>

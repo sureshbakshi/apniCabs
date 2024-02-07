@@ -8,14 +8,27 @@ import ActiveMapPage from '../pages/ActiveMap';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import AppContainer from '../components/AppContainer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'react-native';
+import { useCancelAllRequestMutation } from '../slices/apiSlice';
+import { cancelRideRequest } from '../slices/userSlice';
+import CustomButton from '../components/common/CustomButton';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.findCaptain, ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
-  const { activeRequest } = useSelector((state) => state.user)
+  const dispatch = useDispatch();
+  const { activeRequest, rideRequests } = useSelector((state) => state.user);
+  const [cancelAllRequest] = useCancelAllRequestMutation();
+  const handleCancelRequest = () => {
+    cancelAllRequest(rideRequests.request_id).unwrap().then((res) => {
+      dispatch(cancelRideRequest())
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -51,7 +64,18 @@ export default function UserStackNavigator({ navigation, route }) {
         />
         <Stack.Screen
           name={ROUTES_NAMES.findCaptain}
-          options={{ title: 'Captains' }}
+          options={{
+            title: 'Captains',
+            headerBackVisible: false,
+            headerRight: () => {
+              return <CustomButton
+                onClick={handleCancelRequest}
+                styles={{ paddingRight: 0, width: 'auto' }}
+                textStyles={{ color: COLORS.brand_yellow }}
+                label='Cancel & Back'
+              />
+            }
+          }}
           component={FindCaptain}
         />
       </>

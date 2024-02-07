@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Pressable, ImageBackground } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
@@ -8,19 +8,62 @@ import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
 import { COLORS, ROUTES_NAMES } from '../constants';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import images from '../util/images';
+import { useGetRideRequestMutation } from '../slices/apiSlice';
+import { filter, delay } from 'lodash';
+import { requestInfo, setRideRequest } from '../slices/userSlice';
 
 const SearchRidePage = () => {
-  const { isSocketConnected } = useSelector((state) => state.auth)
-  useGetActiveRequests()
-  const { location, updateLocation, getDistance, setNoOfSeats, noOfSeats } = useAppContext()
+  useGetActiveRequests();
+  const dispatch = useDispatch();
+  const { isSocketConnected } = useSelector((state) => state.auth);
+  const list = useSelector(state => state.user?.rideRequests?.vehicles);
+  const { location, updateLocation, getDistance } = useAppContext();
+  const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
+  useEffect(() => {
+    if (!isEmpty(list)) {
+      delay(() => navigate(ROUTES_NAMES.findCaptain), 0)
+    }
+  }, [list]);
+  useEffect(() => {
+    if (error) {
+      console.log({ error });
+    } else if (rideList) {
+      dispatch(setRideRequest(rideList));
+    }
+  }, [error, rideList]);
   const searchHandler = async () => {
-    const { distance, duration } = await getDistance()
-    if (distance && duration) {
-      navigate(ROUTES_NAMES.findCaptain)
+    const { distance, duration } = await getDistance();
+    const { from, to } = location;
+    console.log(distance, duration, from, to)
+    if (from && to && distance && duration) {
+      let fromCity = filter(from.address_components, {
+        types: ['locality'],
+      });
+      let toCity = filter(to.address_components, {
+        types: ['locality'],
+      });
+      let payload = {
+        from: {
+          location: from.formatted_address,
+          City: fromCity[0]?.long_name,
+          Lat: from.geometry.location.lat + '',
+          Long: from.geometry.location.lng + '',
+        },
+        to: {
+          location: to.formatted_address,
+          City: toCity[0]?.long_name,
+          Lat: to.geometry.location.lat + '',
+          Long: to.geometry.location.lng + '',
+        },
+        Distance: Number((distance.value / 1000).toFixed(1)),
+        Duration: duration.text,
+      };
+      dispatch(requestInfo(payload))
+      getRideRequest(payload);
     }
   }
   const isSearchDisabled = () => {
