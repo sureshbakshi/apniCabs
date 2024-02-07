@@ -3,6 +3,7 @@ import { navigate } from '../util/navigationService';
 import { ClearRideStatus, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { activeReq, requestObj } from '../mock/activeRequest';
 import { isEmpty } from 'lodash'
+import { formatRideRequest } from '../util';
 
 const initialState = {
   rideRequests: [],
@@ -40,7 +41,7 @@ const driverSlice = createSlice({
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}
       if (ClearRideStatus.includes(status)) {
-         state.statusUpdate = action.payload
+        state.statusUpdate = action.payload
       }
     },
     setDriverStatus: (state, action) => {
@@ -54,13 +55,16 @@ const driverSlice = createSlice({
       return Object.assign(state, { ...initialState, isOnline: state.isOnline })
     },
     setRideRequest: (state, action) => {
-      const { id } = action.payload || {}
-      const index = state.rideRequests?.findIndex((item) => item.id === id)
-      if (index > -1) {
-        state.rideRequests[index] = action.payload
+      const newRequest = action.payload;
+      let updatedRequest = state.rideRequests;
+      if (Array.isArray(newRequest)) {
+        newRequest.map((item) => {
+          updatedRequest = formatRideRequest(item, updatedRequest)
+        });
       } else {
-        state.rideRequests = [...state.rideRequests, action.payload];
+        updatedRequest = formatRideRequest(newRequest, state.rideRequests)
       }
+      state.rideRequests = updatedRequest;
     },
 
   },

@@ -132,3 +132,13 @@ export const isUndefined = (arrayValues, arrayKeys, key) => {
 export const getVehicleImage = (type) => {
   return type ? (VEHICLE_IMAGES[type] || images.car) : images.car
 }
+
+export const formatRideRequest = (newRequest, oldRequests) => {
+  const index = oldRequests?.findIndex((item) => item.id === newRequest.id)
+  if (index > -1) {
+    oldRequests[index] = newRequest
+  } else {
+    oldRequests = [newRequest,...oldRequests ];
+  }
+  return oldRequests;
+}

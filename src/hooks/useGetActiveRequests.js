@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DriverAvailableStatus } from "../constants";
 import { useDriverActiveRideQuery, useUserActiveRideQuery } from "../slices/apiSlice";
 import { useCallback, useEffect, useRef } from "react";
-import { clearDriverState, setActiveRide } from "../slices/driverSlice";
+import { clearDriverState, setActiveRide, setRideRequest } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { clearUserState, setActiveRequest } from "../slices/userSlice";
 import { isEmpty } from 'lodash';
@@ -31,7 +31,11 @@ export default () => {
         if (isDriverError) {
             dispatch(clearDriverState())
         } else if (activeDriverRideDetails || activeDriverRideDetails === null) {
-            dispatch(setActiveRide(activeDriverRideDetails))
+            if(Array.isArray(activeDriverRideDetails)){
+                dispatch(setRideRequest(activeDriverRideDetails));
+            }else{
+                dispatch(setActiveRide(activeDriverRideDetails))
+            }
         }
     }, [activeDriverRideDetails?.id, isDriverLogged])
 
