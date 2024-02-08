@@ -22,129 +22,11 @@ import ActiveMapPage from './ActiveMap';
 import CustomDialog from '../components/common/CustomDialog';
 import { delay } from 'lodash';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+import { CancelReasonDialog } from '../components/common/cancelReasonDialog';
+import { setDialogStatus } from '../slices/authSlice';
 
 
-const driverReasons = [
-  { message: 'Vehicle breakdown or mechanical issue', id: 1 },
-  { message: 'Weather or road conditions unsafe for travel', id: 2 },
-  { message: 'Inappropriate or unsafe behaviour from the passenger', id: 3 },
-  { message: 'The passenger is not at the pickup location', id: 4 },
-  { message: 'Attempts to contact passenger is unsuccessful.', id: 5 },
-  { message: 'Incorrect pickup location', id: 6 },
-]
 
-const passengerResons = [
-  { message: 'Plans changed. No longer need the ride', id: 1 },
-  { message: 'Estimated arrival time too long', id: 2 },
-  { message: 'Wrong destination address entered', id: 3 },
-  { message: 'The driver taking too long to arrive.', id: 4 },
-  { message: 'Inappropriate or unsafe behaviour from the driver', id: 5 },
-  { message: 'Technical issue with app', id: 6 },
-  { message: 'personal emergency. Unable to take ride.', id: 7 },
-
-]
-const Modalpopup = ({ modalVisible, handleModalVisible, activeReq, isDriverLogged }) => {
-  const dispatch = useDispatch()
-  const intialState = isDriverLogged ? driverReasons : passengerResons
-  const [message, setMessage] = useState(intialState);
-  const [selectedMessage, setSelectedMessage] = useState({});
-  const [errorMsg, setErrorMessage] = useState(null);
-
-  const [cancelAcceptedRequest, { data: cancelAcceptedRequestData, error: cancelAcceptedRequestError, cancelAcceptedRequestDataLoading }] =
-    useCancelAcceptedRequestMutation();
-
-
-  const handleCancelReason = message => {
-    setSelectedMessage(message);
-    setErrorMessage(false);
-  };
-
-  const closeModal = () => handleModalVisible(false);
-
-  useEffect(() => {
-    if (cancelAcceptedRequestData || cancelAcceptedRequestData === null) {
-      closeModal();
-      delay(() => {
-        dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
-      }, 10)
-    } else if (cancelAcceptedRequestError) {
-      closeModal();
-      console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
-    }
-
-  }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
-  const handleSubmit = () => {
-    if (selectedMessage.id) {
-      let payload = {
-        "request_id": activeReq.id,
-        "driver_id": activeReq.driver.id,
-        "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
-        "reason": selectedMessage.message,
-      }
-      console.log('payload', payload)
-      cancelAcceptedRequest(payload)
-    } else {
-      setErrorMessage(true);
-    }
-  };
-
-  const Actions = <>
-    <Pressable
-      android_ripple={{ color: '#fff' }}
-      style={[FindRideStyles.button, { backgroundColor: COLORS.bg_dark }]}
-      onPress={closeModal}>
-      <Text
-        style={[
-          FindRideStyles.text,
-          { fontWeight: 'bold', color: COLORS.black },
-        ]}>
-        {'Close'}
-      </Text>
-    </Pressable>
-    <Pressable
-      android_ripple={{ color: '#fff' }}
-      style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
-      onPress={handleSubmit}>
-      <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
-        {'Submit'}
-      </Text>
-    </Pressable></>
-  return (
-    <CustomDialog
-      openDialog={modalVisible}
-      actions={Actions}
-      title={'Reason to Cancel'}
-    >
-      {message.map(item => {
-        return (
-          <Pressable
-            key={item.id}
-            style={ActiveRidePageStyles.list}
-            onPress={() => handleCancelReason(item)}>
-            <Icon
-              name={
-                selectedMessage.id === item.id
-                  ? 'radiobox-marked'
-                  : 'radiobox-blank'
-              }
-              size={'large'}
-              color={COLORS.black}
-            />
-            <Text style={[ActiveRidePageStyles.listTxt]}>
-              {item.message}
-            </Text>
-          </Pressable>
-        );
-      })}
-      {errorMsg && (
-        <Text style={{ color: COLORS.primary }}>
-          Please select a reason
-        </Text>
-      )}
-
-    </CustomDialog>
-  );
-};
 
 const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
   const avatarUri = get(activeRequest, avatar, null);
@@ -183,8 +65,9 @@ const VehicleCard = ({ activeRequest, details, avatar, showOtp = false }) => {
 };
 
 const cancelRide = (setModalVisible) => {
+  const dispatch = useDispatch();
   return <Pressable
-    onPress={() => setModalVisible(true)}
+    onPress={() => dispatch(setDialogStatus(true))}
     style={[
       FindRideStyles.button,
       { backgroundColor: COLORS.primary },
@@ -253,7 +136,7 @@ const Card = ({ activeRequest, currentLocation, setModalVisible, isDriverLogged 
       dispatch(updateRideStatus(res))
     }).catch((err) => {
       console.log(err)
-      if(err?.status == 400){
+      if (err?.status == 400) {
         dispatch(clearDriverState())
       }
     })
@@ -429,12 +312,12 @@ const ActiveRidePage = ({ currentLocation }) => {
         <Cards title={'Driver & Ride Details'}>
           {!isEmpty(activeRequest) && <Card isDriverLogged={isDriverLogged} activeRequest={activeRequest} currentLocation={location || currentLocation} setModalVisible={setModalVisible} />}
         </Cards>
-        <Modalpopup
+        {/* <CancelReasonDialog
           modalVisible={modalVisible}
           handleModalVisible={setModalVisible}
           activeReq={activeRequest}
           isDriverLogged={isDriverLogged}
-        />
+        /> */}
         {rideStatusModalInfo ? <>
           <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
             <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>

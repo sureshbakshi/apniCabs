@@ -4,31 +4,23 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
 import ActiveRidePage from '../pages/ActiveRidePage';
-import ActiveMapPage from '../pages/ActiveMap';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import AppContainer from '../components/AppContainer';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-native';
-import { useCancelAllRequestMutation } from '../slices/apiSlice';
-import { cancelRideRequest } from '../slices/userSlice';
+import { useSelector } from 'react-redux';
+
 import CustomButton from '../components/common/CustomButton';
+import useCancelAllRequest from '../hooks/useCancelAllRequest';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = [ROUTES_NAMES.findCaptain, ROUTES_NAMES.activeRide];
+const tabHiddenRoutes = [ ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
-  const dispatch = useDispatch();
-  const { activeRequest, rideRequests } = useSelector((state) => state.user);
-  const [cancelAllRequest] = useCancelAllRequestMutation();
-  const handleCancelRequest = () => {
-    cancelAllRequest(rideRequests.request_id).unwrap().then((res) => {
-      dispatch(cancelRideRequest())
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
+
+  const { activeRequest } = useSelector((state) => state.user);
+  const { cancelAllActiveRequest } = useCancelAllRequest();
+
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -69,7 +61,7 @@ export default function UserStackNavigator({ navigation, route }) {
             headerBackVisible: false,
             headerRight: () => {
               return <CustomButton
-                onClick={handleCancelRequest}
+                onClick={cancelAllActiveRequest}
                 styles={{ paddingRight: 0, width: 'auto' }}
                 textStyles={{ color: COLORS.brand_yellow }}
                 label='Cancel & Back'

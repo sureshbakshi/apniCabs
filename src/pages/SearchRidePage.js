@@ -38,7 +38,6 @@ const SearchRidePage = () => {
   const searchHandler = async () => {
     const { distance, duration } = await getDistance();
     const { from, to } = location;
-    console.log(distance, duration, from, to)
     if (from && to && distance && duration) {
       let fromCity = filter(from.address_components, {
         types: ['locality'],

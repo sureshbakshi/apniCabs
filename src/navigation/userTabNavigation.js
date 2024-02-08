@@ -8,9 +8,11 @@ import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import useUserSocketEvents from '../hooks/useUserSocketEvents';
 import UserRideHistory from '../pages/user/UserRideHistory';
+import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandler';
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
   useUserSocketEvents();
+  useActiveRequestBackHandler();
   return (
     <AppProvider>
       <Tab.Navigator

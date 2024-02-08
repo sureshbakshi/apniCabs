@@ -6,7 +6,8 @@ const initialState = {
   userInfo: null,
   access_token: null,
   driverInfo: null,
-  isSocketConnected: false
+  isSocketConnected: false,
+  isDialogOpen:false
 };
 
 const authSlice = createSlice({
@@ -46,6 +47,10 @@ const authSlice = createSlice({
     updatedSocketConnectionStatus: (state, action) => {
       state.isSocketConnected = action.payload;
     },
+    setDialogStatus:(state, action)=>{
+      state.isDialogOpen = action.payload;
+    }
+
   },
 });
 export const {
@@ -55,6 +60,7 @@ export const {
   updateLoginToken,
   clearAuthData,
   setDriverDetails,
-  updatedSocketConnectionStatus
+  updatedSocketConnectionStatus,
+  setDialogStatus
 } = authSlice.actions;
 export default authSlice.reducer;
