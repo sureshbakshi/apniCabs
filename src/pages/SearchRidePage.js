@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Pressable, ImageBackground } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
@@ -15,6 +15,7 @@ import images from '../util/images';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter, delay } from 'lodash';
 import { requestInfo, setRideRequest } from '../slices/userSlice';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SearchRidePage = () => {
   useGetActiveRequests();
@@ -23,11 +24,13 @@ const SearchRidePage = () => {
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const { location, updateLocation, getDistance } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
-  useEffect(() => {
-    if (!isEmpty(list)) {
-      delay(() => navigate(ROUTES_NAMES.findCaptain), 0)
-    }
-  }, [list]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!isEmpty(list)) {
+        delay(() => navigate(ROUTES_NAMES.findCaptain), 0)
+      }
+    }, [list])
+  );
   useEffect(() => {
     if (error) {
       console.log({ error });

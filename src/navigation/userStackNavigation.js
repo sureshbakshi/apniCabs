@@ -63,8 +63,9 @@ export default function UserStackNavigator({ navigation, route }) {
               return <CustomButton
                 onClick={cancelAllActiveRequest}
                 styles={{ paddingRight: 0, width: 'auto' }}
-                textStyles={{ color: COLORS.brand_yellow }}
-                label='Cancel & Back'
+                textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
+                label={`Cancel & Go Back`}
+                isLowerCase={true}
               />
             }
           }}
