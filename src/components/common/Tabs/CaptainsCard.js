@@ -29,10 +29,19 @@ const Card = item => {
     } else if (!item.status) {
       sendRequest(payload);
     } else {
-      showErrorMessage('Request already sent.')
+      showErrorMessage('No action performed on this request.')
     }
   };
 
+  useEffect(() => {
+    if (cancelRequestError) {
+      console.log('cancelRequestError', cancelRequestError);
+    } else if (cancelRequestData) {
+      if (cancelRequestData?.status === 'success') {
+        dispatch(updateDriversRequest({ ...item, status: RideStatus.CLOSED }));
+      }
+    }
+  }, [cancelRequestData, cancelRequestError]);
 
   useEffect(() => {
     if (requestError) {
@@ -61,6 +70,13 @@ const Card = item => {
           color: COLORS.white
         }
       }
+      case 'CLOSED': {
+        return {
+          label: 'Cancelled',
+          bg: COLORS.gray,
+          color: COLORS.black
+        }
+      }
 
       default: {
         return {
@@ -74,7 +90,7 @@ const Card = item => {
   const actionButtonInfo = getButtonStyles(item?.status)
   const vehicleImage = (item) => item?.vehicle_details?.photo ? { uri: item?.vehicle_details?.photo } : images[`captain4`]
   return (
-    <View style={FindRideStyles.card} key={item?.driver_id}>
+    <View style={[FindRideStyles.card, { opacity: item?.status === RideStatus.CLOSED ? 0.6 : 1 }]} key={item?.driver_id}>
       <Timeline />
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
