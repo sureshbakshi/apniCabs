@@ -18,12 +18,12 @@ export default () => {
     const timestampRef = useRef(Date.now()).current;
     const status = isOnline !== DriverAvailableStatus.OFFLINE;
     const { data: activeDriverRideDetails, error: isDriverError, refetch: fetchDriverActiveRequest } = useDriverActiveRideQuery(undefined, { skip: !status || !isDriverLogged, refetchOnMountOrArgChange: true, sessionId: timestampRef });
-    const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true , sessionId: timestampRef});
-    
+    const { data: activeUserRideDetails, error: isUserError, refetch: fetchUserActiveRequest } = useUserActiveRideQuery(undefined, { skip: isDriverLogged, refetchOnMountOrArgChange: true, sessionId: timestampRef });
+
     useFocusEffect(
         useCallback(() => {
             console.log('useFocusEffect')
-            isDriverLogged ? fetchDriverActiveRequest?.() : fetchUserActiveRequest?.()
+            !isDriverLogged ? fetchUserActiveRequest?.() : status ? fetchDriverActiveRequest?.() : ''
         }, [])
     );
 
@@ -31,9 +31,9 @@ export default () => {
         if (isDriverError) {
             dispatch(clearDriverState())
         } else if (activeDriverRideDetails || activeDriverRideDetails === null) {
-            if(Array.isArray(activeDriverRideDetails)){
+            if (Array.isArray(activeDriverRideDetails)) {
                 dispatch(setRideRequest(activeDriverRideDetails));
-            }else{
+            } else {
                 dispatch(setActiveRide(activeDriverRideDetails))
             }
         }
