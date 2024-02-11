@@ -7,31 +7,31 @@ import { setDialogStatus } from '../slices/authSlice';
 import { delay } from 'lodash';
 let backButtonListener = undefined;
 
-export function useRequestAlertHandler() {
+export function useRequestAlertHandler(title = 'Alert!', message = `You currently have a pending request. Would you like to cancel it? If you click 'Yes', your request will be cancelled.`) {
     const { rideRequests, activeRequest } = useSelector(state => state.user);
     const { cancelAllActiveRequest } = useCancelAllRequest();
     const dispatch = useDispatch();
 
     const requestAlertHandler = (cb) => {
-        if(rideRequests?.request_id || activeRequest?.id){
-            Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        if (rideRequests?.request_id || activeRequest?.id) {
+            Alert.alert(title, message, [
                 {
-                    text: 'Cancel',
+                    text: 'Close',
                     onPress: () => null,
                     style: 'cancel',
                 },
                 {
-                    text: 'YES',
+                    text: 'YES, Cancel',
                     onPress: () => {
                         if (rideRequests?.request_id) {
-                           cancelAllActiveRequest(cb);
+                            cancelAllActiveRequest(cb);
                         } else if (activeRequest?.id) {
                             dispatch(setDialogStatus(true))
                         }
                     }
                 },
             ]);
-        }else{
+        } else {
             cb?.()
         }
        

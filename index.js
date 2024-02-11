@@ -11,25 +11,13 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/constants';
 import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
-import { StrictMode, useEffect } from 'react';
 
 if (!__DEV__) {
-  console.log = () => {};
+  console.log = () => { };
 }
 
 function AppWithProvider() {
-
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      nextAppState => {
-        console.log('Next AppState is: ', nextAppState);
-      },
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
+ 
 
   return (
 
@@ -37,7 +25,7 @@ function AppWithProvider() {
       <PersistGate loading={null} persistor={persistor}>
         <AuthProvider>
           {/* <StrictMode> */}
-            <App />
+          <App />
           {/* </StrictMode> */}
         </AuthProvider>
       </PersistGate>

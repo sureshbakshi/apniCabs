@@ -9,10 +9,32 @@ import { AppProvider } from '../context/App.context';
 import useUserSocketEvents from '../hooks/useUserSocketEvents';
 import UserRideHistory from '../pages/user/UserRideHistory';
 import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandler';
+import { useEffect } from 'react';
+import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
+import { AppState } from 'react-native';
+
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
   useUserSocketEvents();
   useActiveRequestBackHandler();
+
+  const { validateRequestExpiry } = useValidateRequestExpiry();
+
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      nextAppState => {
+        if (nextAppState === 'active') {
+          validateRequestExpiry();
+        }
+        console.log('Next AppState is: ', nextAppState);
+      },
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
   return (
     <AppProvider>
       <Tab.Navigator

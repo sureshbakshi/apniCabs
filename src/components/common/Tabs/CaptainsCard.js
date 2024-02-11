@@ -37,9 +37,7 @@ const Card = item => {
     if (cancelRequestError) {
       console.log('cancelRequestError', cancelRequestError);
     } else if (cancelRequestData) {
-      if (cancelRequestData?.status === 'success') {
-        dispatch(updateDriversRequest({ ...item, status: RideStatus.CLOSED }));
-      }
+        dispatch(updateDriversRequest({ ...item, status: cancelRequestData?.status }));
     }
   }, [cancelRequestData, cancelRequestError]);
 

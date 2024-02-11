@@ -16,6 +16,7 @@ import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter, delay } from 'lodash';
 import { requestInfo, setRideRequest } from '../slices/userSlice';
 import { useFocusEffect } from '@react-navigation/native';
+import moment from 'moment';
 
 const SearchRidePage = () => {
   useGetActiveRequests();
@@ -35,7 +36,7 @@ const SearchRidePage = () => {
     if (error) {
       console.log({ error });
     } else if (rideList) {
-      dispatch(setRideRequest(rideList));
+      dispatch(setRideRequest({ ...rideList, created_at: moment()}));
     }
   }, [error, rideList]);
   const searchHandler = async () => {
