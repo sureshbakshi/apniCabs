@@ -26,7 +26,6 @@ const MorePage = () => {
               </View>
               <View style={MoreStyles.middle}>
                 <Text style={MoreStyles.name}>{profile?.name}</Text>
-                {/* <Text style={MoreStyles.review}>11 Reviews</Text> */}
               </View>
             </View>
           </View>
@@ -40,18 +39,31 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>My Profile</Text>
             </Pressable>
-            {!isDriver() ? <Pressable
-              style={MoreStyles.list}
-              android_ripple={{ color: '#ccc' }}
-              onPress={() => {
-                logOut()
-                openOwnerPortal()
+            {!isDriver() ? <>
+              <Pressable
+                style={MoreStyles.list}
+                android_ripple={{ color: '#ccc' }}
+                onPress={() => {
+                  logOut()
+                  openOwnerPortal()
                 }}>
-              <View style={MoreStyles.listIcon}>
-                <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
-              </View>
-              <Text style={MoreStyles.name}>Become Driver</Text>
-            </Pressable> : null}
+                <View style={MoreStyles.listIcon}>
+                  <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
+                </View>
+                <Text style={MoreStyles.name}>Become Driver</Text>
+              </Pressable>
+              {/* <Pressable
+                style={MoreStyles.list}
+                android_ripple={{ color: '#ccc' }}
+                onPress={() => navigate('Contacts')}
+              >
+                <View style={MoreStyles.listIcon}>
+                  <Icon name="account-hard-hat" size="large" color={COLORS.primary} />
+                </View>
+                <Text style={MoreStyles.name}>Emergency contacts</Text>
+              </Pressable> */}
+            </> 
+            : null}
             {isDriver() ? <><Pressable
               style={MoreStyles.list}
               android_ripple={{ color: '#ccc' }}
@@ -61,16 +73,7 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>Edit Fare</Text>
             </Pressable>
-              {/* <Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => navigate('Contacts')}
-                >
-                <View style={MoreStyles.listIcon}>
-                  <Icon name="account-hard-hat" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>Emergency contacts</Text>
-              </Pressable> */}
+
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}

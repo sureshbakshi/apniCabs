@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView } from 'react-native';
 import { useSelector } from "react-redux";
 import { Controller, FormProvider, useForm } from "react-hook-form";
@@ -12,31 +12,53 @@ import SearchLoader from "../components/common/SearchLoader";
 import { contactsSchema } from "../schema";
 import ScreenContainer from "../components/ScreenContainer";
 import FindRideStyles from "../styles/FindRidePageStyles";
-
+import { useSosAddMutation, useSosListQuery } from "../slices/apiSlice";
 
 export default function Contacts() {
+    const { userInfo: profile } = useSelector(state => state.auth);
 
+    const { data: contactList, error: sosError } = useSosListQuery(profile?.id);
+    const [sosAdd, { data: sosAddData, error: sosAddError }] = useSosAddMutation();
     const {
         watch,
         control,
         handleSubmit,
         formState: { errors, isDirty },
+        setValue,
         ...methods
     } = useForm({
         mode: "onSubmit",
-        defaultValues: {
-            phone_number1: '',
-            phone_number2: '',
-            phone_number3: '',
-            phone_number4: '',
-        },
+        defaultValues: {},
         resolver: yupResolver(contactsSchema),
     });
 
+    useEffect(() => {
+        if (sosError) {
+            console.log('sosError', sosError)
+        } else if (contactList?.length) {
+            contactList.map((obj, i) => {
+                setValue(`phone_number${i + 1}`, obj.mobile_number);
+            });
+        }
+
+    }, [contactList, sosError])
+
+    useEffect(() => {
+        if (sosAddError) {
+            console.log('sosError', sosAddError)
+        } else if (sosAddData) {
+            console.log('contactList', sosAddData)
+        }
+    }, [sosAddData, sosAddError])
+
+
+
     const onSubmit = (data) => {
-        console.log(data)
+        const numbersList = Object.entries(data).map(([key, value]) => ({ mobile_number: value }))
         if (isDirty) {
             if (data) {
+                const payload = { id: profile?.id, numbersList }
+                sosAdd(payload)
             }
         }
     };
@@ -68,7 +90,7 @@ export default function Contacts() {
                                                         onChangeText={(value) => {
                                                             onChange(value);
                                                         }}
-                                                        value={value.toString()}
+                                                        value={value?.toString()}
                                                         placeholderTextColor={COLORS.gray}
                                                         type={"number"}
                                                         keyboardType='number-pad'

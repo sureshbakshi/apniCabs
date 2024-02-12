@@ -51,6 +51,7 @@ const api_path = {
   vehicle: path => `vehicle/${path}`,
   request: path => `request/${path}`,
   transactions: path => `transactions/${path}`,
+  sos: path => `sos/${path}`,
 };
 const api_urls = {
   login: 'login',
@@ -66,9 +67,10 @@ const api_urls = {
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
   location: 'location',
-  userActiveRide:'active-rides/user',
+  userActiveRide: 'active-rides/user',
   list: 'list',
-  cancelRequest:'cancel-request'
+  cancelRequest: 'cancel-request',
+  sosAdd: 'add'
 };
 
 export const apiSlice = createApi({
@@ -158,7 +160,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["RideStatus","RideComplete"]
+      providesTags: ["RideStatus", "RideComplete"]
     }),
     userActiveRide: builder.query({
       query: () => ({
@@ -198,7 +200,7 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
     cancelRequest: builder.mutation({
-      query: ({request_id,driver_id}) => ({
+      query: ({ request_id, driver_id }) => ({
         method: 'PUT',
         url: api_path.request(`${api_urls.cancelRequest}/${request_id}/${driver_id}`),
       }),
@@ -257,7 +259,7 @@ export const apiSlice = createApi({
         return history
       },
       transformErrorResponse: response => response,
-      providesTags: ["RideStatus","RideComplete"]
+      providesTags: ["RideStatus", "RideComplete"]
     }),
     // transaction end
 
@@ -272,6 +274,24 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
       providesTags: ["FARE"]
+    }),
+    //SOS
+    sosAdd: builder.mutation({
+      query: ({ id, numbersList }) => ({
+        method: 'POST',
+        url: api_path.sos(`${api_urls.sosAdd}/${id}`),
+        body: numbersList
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    sosList: builder.query({
+      query: (id) => ({
+        method: 'GET',
+        url: api_path.sos(`${api_urls.list}/${id}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
     }),
   }),
 
@@ -298,5 +318,7 @@ export const {
   useLazyGetDriverTransactionsQuery,
   useEditFareMutation,
   useCancelRequestMutation,
-  useCancelAllRequestMutation
+  useCancelAllRequestMutation,
+  useSosAddMutation,
+  useSosListQuery
 } = apiSlice;

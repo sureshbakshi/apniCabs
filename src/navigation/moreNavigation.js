@@ -46,11 +46,11 @@ export default function MoreNavigator({ navigation, route }) {
         options={{ title: 'Fare Settings' }}
         component={FareSettings}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Contacts"
         options={{ title: 'Contacts' }}
         component={Contacts}
-      /> */}
+      />
     </Stack.Navigator>
   );
 }
