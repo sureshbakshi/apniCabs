@@ -10,7 +10,8 @@ import AppContainer from '../components/AppContainer';
 import { useSelector } from 'react-redux';
 
 import CustomButton from '../components/common/CustomButton';
-import useCancelAllRequest from '../hooks/useCancelAllRequest';
+// import useCancelAllRequest from '../hooks/useCancelAllRequest';
+import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -19,7 +20,8 @@ const tabHiddenRoutes = [ ROUTES_NAMES.activeRide];
 export default function UserStackNavigator({ navigation, route }) {
 
   const { activeRequest } = useSelector((state) => state.user);
-  const { cancelAllActiveRequest } = useCancelAllRequest();
+  // const { cancelAllActiveRequest } = useCancelAllRequest();
+  const { requestAlertHandler } = useRequestAlertHandler('Cancel & Go Back!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
 
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
@@ -61,7 +63,7 @@ export default function UserStackNavigator({ navigation, route }) {
             headerBackVisible: false,
             headerRight: () => {
               return <CustomButton
-                onClick={cancelAllActiveRequest}
+                onClick={requestAlertHandler}
                 styles={{ paddingRight: 0, width: 'auto' }}
                 textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
                 label={`Cancel & Go Back`}
