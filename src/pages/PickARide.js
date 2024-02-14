@@ -7,14 +7,13 @@ import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, RideStatus } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import useGetDriverDetails from '../hooks/useGetDriverDetails';
+import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
-import { useUpdateDriverStatusMutation, useUpdateRequestMutation } from '../slices/apiSlice';
-import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+import { useUpdateRequestMutation } from '../slices/apiSlice';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -108,7 +107,7 @@ export const PickARide = () => {
   const { status } = useGetActiveRequests()
   const [isOnline, setToggleSwitch] = useState(status)
 
-  const [updateDriverStatus] = useUpdateDriverStatusMutation();
+  const updateDriverStatus = useUpdateDriverStatus();
 
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
@@ -118,9 +117,7 @@ export const PickARide = () => {
 
   useEffect(() => {
     if (!isEqual(status, isOnline)) {
-      updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
-        dispatch(setDriverStatus(res))
-      }).catch(() => setToggleSwitch(!val))
+      updateDriverStatus(isOnline, setToggleSwitch)
     }
   }, [isOnline]);
 
