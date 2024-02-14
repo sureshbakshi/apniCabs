@@ -13,10 +13,8 @@ import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import images from '../util/images';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
-import { filter, delay } from 'lodash';
+import { filter } from 'lodash';
 import { requestInfo, setRideRequest } from '../slices/userSlice';
-import { useFocusEffect } from '@react-navigation/native';
-import moment from 'moment';
 
 const SearchRidePage = () => {
   useGetActiveRequests();
@@ -25,18 +23,12 @@ const SearchRidePage = () => {
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const { location, updateLocation, getDistance } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
-  useFocusEffect(
-    useCallback(() => {
-      if (!isEmpty(list)) {
-        delay(() => navigate(ROUTES_NAMES.findCaptain), 0)
-      }
-    }, [list])
-  );
+
   useEffect(() => {
     if (error) {
       console.log({ error });
     } else if (rideList) {
-      dispatch(setRideRequest({ ...rideList, created_at: moment()}));
+      dispatch(setRideRequest(rideList));
     }
   }, [error, rideList]);
   const searchHandler = async () => {

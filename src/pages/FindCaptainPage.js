@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import { CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
-
 import { filter, isEmpty } from 'lodash';
-import { useAppContext } from '../context/App.context';
-import { useGetRideRequestMutation } from '../slices/apiSlice';
-import { setRideRequest } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchLoader from '../components/common/SearchLoader';
 import CaptainsCard from '../components/common/Tabs/CaptainsCard';
 import { COLORS, ROUTES_NAMES, VEHICLE_TYPES } from '../constants';
 import { Text } from 'react-native-paper';
 import { Icon } from '../components/common';
 import { navigate } from '../util/navigationService';
+import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
+// import { useFocusEffect } from '@react-navigation/native';
 
 const FindCaptainPage = () => {
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const { requestInfo } = useSelector(state => state.user);
+  // const { validateRequestExpiry } = useValidateRequestExpiry();
 
+  // useFocusEffect(useCallback(() => {
+  //   validateRequestExpiry()
+  // }, []))
 
   const extraProps = {
     from: requestInfo?.from.location || '',

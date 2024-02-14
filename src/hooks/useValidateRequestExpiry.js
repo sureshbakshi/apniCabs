@@ -12,14 +12,15 @@ export default useValidateRequestExpiry = () => {
         const __startTime = rideRequests?.created_at;
         if (__startTime) {
             const __endTime = moment();
-            const __duration = moment.duration(__endTime.diff(__startTime));
+            const __localStartTime= moment.utc(__startTime).local()
+            const __duration = moment.duration(__endTime.diff(moment(__localStartTime)));
             const __minutes = __duration.minutes();
             if (__minutes >= expiryTime) {
                 requestAlertHandler();
             }
         }
     }
-    const validateRequestExpiry = () => delay(() => _validateRequestExpiry(), 100)
+    const validateRequestExpiry = () => delay(() => _validateRequestExpiry(), 1000)
     return { validateRequestExpiry }
 
 }

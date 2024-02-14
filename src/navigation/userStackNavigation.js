@@ -15,12 +15,12 @@ import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = [ ROUTES_NAMES.activeRide];
+const tabHiddenRoutes = [ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
 
   const { activeRequest } = useSelector((state) => state.user);
-  // const { cancelAllActiveRequest } = useCancelAllRequest();
+  const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler('Cancel & Go Back!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
 
   useEffect(() => {
@@ -50,30 +50,29 @@ export default function UserStackNavigator({ navigation, route }) {
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePage}
-      /> : <>
-        <Stack.Screen
-          name={ROUTES_NAMES.searchRide}
-          options={{ title: 'Find A Ride' }}
-          component={SearchRidePageContainer}
-        />
-        <Stack.Screen
-          name={ROUTES_NAMES.findCaptain}
-          options={{
-            title: 'Captains',
-            headerBackVisible: false,
-            headerRight: () => {
-              return <CustomButton
-                onClick={requestAlertHandler}
-                styles={{ paddingRight: 0, width: 'auto' }}
-                textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
-                label={`Cancel & Go Back`}
-                isLowerCase={true}
-              />
-            }
-          }}
-          component={FindCaptain}
-        />
-      </>
+      /> :
+        rideRequests?.vehicles ?
+          <Stack.Screen
+            name={ROUTES_NAMES.findCaptain}
+            options={{
+              title: 'Captains',
+              headerBackVisible: false,
+              headerRight: () => {
+                return <CustomButton
+                  onClick={requestAlertHandler}
+                  styles={{ paddingRight: 0, width: 'auto' }}
+                  textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
+                  label={`Cancel & Go Back`}
+                  isLowerCase={true}
+                />
+              }
+            }}
+            component={FindCaptain}
+          /> : <Stack.Screen
+            name={ROUTES_NAMES.searchRide}
+            options={{ title: 'Find A Ride' }}
+            component={SearchRidePageContainer}
+          />
       }
 
     </Stack.Navigator>
