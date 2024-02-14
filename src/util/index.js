@@ -3,7 +3,7 @@ import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES } from '../constants';
+import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES, VerificationStatus } from '../constants';
 import { store } from '../store';
 import images from './images';
 
@@ -141,4 +141,8 @@ export const formatRideRequest = (newRequest, oldRequests) => {
     oldRequests = [newRequest,...oldRequests ];
   }
   return oldRequests;
+}
+
+export const isDriverVerified =(driverInfo)=>{
+  return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
 }

@@ -74,7 +74,8 @@ export const ROUTES_NAMES = {
   signIn: 'SignIn',
   signUp: 'SignUp',
   searchRide: 'SearchRide',
-  activeMap: 'ActiveMap'
+  activeMap: 'ActiveMap',
+  messageInfo:'MessageInfo'
 }
 
 export const RideStatus = {
@@ -120,6 +121,13 @@ export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.myRides]: ['account-reactivate', 'account-reactivate-outline'],
   [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
   [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
+}
+
+export const ExpiryStatus = {
+  'pollution_expiry': `Pollution certificate`,
+  'registration_expiry': `Registration certificate`,
+  'road_tax_expiry': `Road tax certificate`,
+  "insurance_expiry": "Insurance certificate"
 }
 
 export const toastConfig = {

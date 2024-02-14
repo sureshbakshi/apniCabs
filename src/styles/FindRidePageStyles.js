@@ -51,6 +51,11 @@ const FindRideStyles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'space-between'
   },
+  center:{
+      flexDirection: 'row',
+      alignItems:'center',
+      justifyContent: 'center'
+  },
   left: {
     padding: 10,
   },

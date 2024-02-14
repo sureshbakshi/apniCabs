@@ -45,7 +45,7 @@ const driverSlice = createSlice({
       }
     },
     setDriverStatus: (state, action) => {
-      const status = action.payload?.is_available
+      const status = action.payload?.is_available || action.payload?.driver_detail?.is_available
       if (status) {
         state.isOnline = status;
       }

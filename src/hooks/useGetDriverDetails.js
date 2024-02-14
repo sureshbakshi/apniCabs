@@ -17,7 +17,7 @@ export const useDisptachDriverDetails = (details) => {
 
 
 export default useGetDriverDetails = (id, options) => {
-    const { data: driverDetails } = useGetDriverDetailsQuery(id, options)
+    const { data: driverDetails, refetch } = useGetDriverDetailsQuery(id, options)
     useDisptachDriverDetails(driverDetails)
-    return driverDetails
+    return { driverDetails, refetch }
 }
