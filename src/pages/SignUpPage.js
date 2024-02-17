@@ -49,8 +49,7 @@ const SignUpPage = () => {
       name: googleInfo?.name || '',
       email: googleInfo?.email || '',
       phone: '',
-      phone: '',
-      referral_phone_number: '',
+      // referred_by:''
     },
     resolver: yupResolver(signupSchema),
   });

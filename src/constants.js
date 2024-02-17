@@ -347,14 +347,14 @@ export const SIGN_UP_FORM = [
       secureTextEntry: true,
     },
   },
-  {
-    name: 'referral_phone_number',
-    label: "Referral Phone Number",
-    props: {
-      placeholder: "Enter referral number",
-      required: false,
-      inputMode: 'numeric',
-      keyboardType: 'number-pad',
-    },
-  },
+  // {
+  //   name: 'referred_by',
+  //   label: "Referral Code",
+  //   props: {
+  //     placeholder: "Referral Code",
+  //     required: false,
+  //     inputMode: 'numeric',
+  //     keyboardType: 'number-pad',
+  //   },
+  // },
 ];

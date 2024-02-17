@@ -87,6 +87,9 @@ export const signupSchema = yup.object().shape({
         .min(6, {
             message: 'Minimum 6 Characters required'
         }),
-    "referral_phone_number": yup
-        .string(),
+    // "referred_by": yup
+    //     .string()
+    //     .min(8, {
+    //         message: 'Minimum 8 Characters required'
+    //     }),
 });
