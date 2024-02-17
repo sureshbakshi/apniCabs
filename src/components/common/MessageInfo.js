@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
 import { openOwnerPortal } from '../../util/config';
 import { formattedDate } from '../../util';
+import { scheduleLocalNotification } from '../../hooks/useLocalNotifications';
 
 
 const MessageInfo = () => {
@@ -49,7 +50,9 @@ const MessageInfo = () => {
                     <CustomButton label={'Update here'} styles={{
                         margin: 5, paddingVertical: 10,
                         paddingHorizontal: 10,
-                    }} onClick={openOwnerPortal} />
+                    }} onClick={() => {        
+                        scheduleLocalNotification('Local Notification', 'This is a test local notification', { customData: {'a': 2}});
+                    }} />
                 </View>
 
             </View>

@@ -30,7 +30,12 @@ const walletCopy = {
     title: 'Credited Amount ',
     color: COLORS.green,
     image: images.accepted
-  }
+  },
+  'REFERRAL':  {
+    title: 'Referral Amount ',
+    color: COLORS.green,
+    image: images.accepted
+  },
 }
 
 const WalletPage = ({ navigation }) => {
