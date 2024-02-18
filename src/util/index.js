@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES, VerificationStatus } from '../constants';
 import { store } from '../store';
 import images from './images';
+import { Notifications } from 'react-native-notifications';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -151,3 +152,14 @@ export const formatRideRequest = (newRequest, oldRequests) => {
 export const isDriverVerified =(driverInfo)=>{
   return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
 }
+
+export const scheduleLocalNotification = (title, message, data = {}) => {
+  const options = {
+    title,
+    body: message,
+    data,
+  };
+  console.log('scheduleLocalNotification', Notifications)
+
+  Notifications?.postLocalNotification(options);
+};

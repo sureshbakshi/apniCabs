@@ -16,6 +16,7 @@ export default function DriverTabNavigator() {
   useDriverSocketEvents()
   const {registerRemoteNotifications} = useLocalNotifications()
   useEffect(() =>{
+    console.log('registerRemoteNotifications')
     registerRemoteNotifications()
   },[])
   return (

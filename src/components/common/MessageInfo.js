@@ -9,8 +9,7 @@ import useGetDriverDetails, { useUpdateDriverStatus } from '../../hooks/useGetDr
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
 import { openOwnerPortal } from '../../util/config';
-import { formattedDate } from '../../util';
-import { scheduleLocalNotification } from '../../hooks/useLocalNotifications';
+import { formattedDate, scheduleLocalNotification } from '../../util';
 
 
 const MessageInfo = () => {
