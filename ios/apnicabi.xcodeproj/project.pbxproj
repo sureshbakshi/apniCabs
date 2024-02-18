@@ -48,6 +48,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-apnicabi-apnicabiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiTests.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests.release.xcconfig"; sourceTree = "<group>"; };
 		9309ACAC2B42C8B10020BDC4 /* apnicabi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "apnicabi-Bridging-Header.h"; sourceTree = "<group>"; };
 		9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoLocation.swift; sourceTree = "<group>"; };
+		930D07B62B81E3C8002CA68D /* apnicabi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = apnicabi.entitlements; path = apnicabi/apnicabi.entitlements; sourceTree = "<group>"; };
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -93,6 +94,7 @@
 		13B07FAE1A68108700A75B9A /* apnicabi */ = {
 			isa = PBXGroup;
 			children = (
+				930D07B62B81E3C8002CA68D /* apnicabi.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */,
@@ -508,9 +510,13 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-apnicabi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MYW49D7MA3;
+				DEVELOPMENT_TEAM = FA3L3KDW78;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni cabi";
@@ -527,6 +533,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apnicabi;
 				PRODUCT_NAME = apnicabi;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "apnicabi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -539,7 +546,11 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-apnicabi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				INFOPLIST_FILE = apnicabi/Info.plist;
@@ -557,6 +568,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apnicabi;
 				PRODUCT_NAME = apnicabi;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "apnicabi-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -596,6 +608,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
