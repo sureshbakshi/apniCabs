@@ -3,7 +3,7 @@ import { View, Pressable, ScrollView } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { navigate } from '../util/navigationService';
 import { Icon, Text } from '../components/common';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal } from '../util/config';
@@ -62,8 +62,8 @@ const MorePage = () => {
                 </View>
                 <Text style={MoreStyles.name}>Emergency contacts</Text>
               </Pressable> */}
-            </> 
-            : null}
+            </>
+              : null}
             {isDriver() ? <><Pressable
               style={MoreStyles.list}
               android_ripple={{ color: '#ccc' }}
@@ -73,7 +73,15 @@ const MorePage = () => {
               </View>
               <Text style={MoreStyles.name}>Edit Fare</Text>
             </Pressable>
-
+              <Pressable
+                style={MoreStyles.list}
+                android_ripple={{ color: '#ccc' }}
+                onPress={() => navigate(ROUTES_NAMES.refer)}>
+                <View style={MoreStyles.listIcon}>
+                  <Icon name="cash" size="large" color={COLORS.primary} />
+                </View>
+                <Text style={MoreStyles.name}>Refer Now</Text>
+              </Pressable>
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}

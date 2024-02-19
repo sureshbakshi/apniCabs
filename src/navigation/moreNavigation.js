@@ -7,6 +7,7 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import FareSettings from '../pages/FareSettings';
 import Contacts from '../pages/Contacts';
+import Refer from '../pages/Refer';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -45,6 +46,11 @@ export default function MoreNavigator({ navigation, route }) {
         name="FareSettings"
         options={{ title: 'Fare Settings' }}
         component={FareSettings}
+      />
+       <Stack.Screen
+        name={ROUTES_NAMES.refer}
+        options={{ title: 'Refer Now' }}
+        component={Refer}
       />
       <Stack.Screen
         name="Contacts"

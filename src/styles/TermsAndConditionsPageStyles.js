@@ -7,7 +7,7 @@ const TermsAndConditionsStyles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   image: {
-    height: 260,
+    height: 360,
   },
   header: {
     flexDirection: 'row',
@@ -34,7 +34,8 @@ const TermsAndConditionsStyles = StyleSheet.create({
     padding:20
   },
   list:{
-    marginBottom:20
+    marginBottom:20,
+    flex: 1,
   },
   listIcon:{
     width:20,

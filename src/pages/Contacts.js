@@ -63,12 +63,6 @@ export default function Contacts() {
         }
     };
 
-    // if (isEmpty('contacts')) {
-    //     return (
-    //         <SearchLoader msg='No Vehicles assigned' isLoader={false} />
-    //     );
-    // }
-
     const isDisabled = !isDirty || !isEmpty(errors)
     return (
         <ScrollView>
