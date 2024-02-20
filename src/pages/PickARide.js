@@ -5,7 +5,7 @@ import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, RideStatus } from '../constants';
+import { COLORS, ROUTES_NAMES, RideStatus } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline } from '../util';
@@ -14,6 +14,8 @@ import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateRequestMutation } from '../slices/apiSlice';
+import { Icon } from '../components/common';
+import { navigate } from '../util/navigationService';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -132,13 +134,26 @@ export const PickARide = () => {
         <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
         </Text>
-        <Switch
-          trackColor={{ false: COLORS.white, true: COLORS.white }}
-          thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={Boolean(isOnline)}
-        />
+        <View style={[{
+          padding: 0, alignItems: 'center',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+        }]}>
+          <Pressable
+            style={{ paddingHorizontal: 5 }}
+            android_ripple={{ color: '#ccc' }}
+            onPress={() => navigate(ROUTES_NAMES.notifications)}>
+            <Icon name="bell-badge-outline" size="large" color={COLORS.white} />
+          </Pressable>
+          <Switch
+            trackColor={{ false: COLORS.white, true: COLORS.white }}
+            thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={Boolean(isOnline)}
+          />
+        </View>
+
       </View>
       {isOnline ? (
         <>

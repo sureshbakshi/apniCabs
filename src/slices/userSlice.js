@@ -17,7 +17,7 @@ const intialState = {
   activeRequest: null,
   driverLocation: null,
   statusUpdate: null,
-  requestInfo:null,
+  requestInfo: null,
 
 }
 const userSlice = createSlice({
@@ -27,30 +27,31 @@ const userSlice = createSlice({
     setRideRequest: (state, action) => {
       state.rideRequests = action.payload;
     },
-    requestInfo:(state, action)=>{
+    requestInfo: (state, action) => {
       state.requestInfo = action.payload
     },
-    cancelRideRequest:(state, action)=>{
-      state.requestInfo =null;
+    cancelRideRequest: (state, action) => {
+      state.requestInfo = null;
       state.rideRequests = null;
+      state.activeRequest = null;
     },
     setActiveRequest: (state, action) => {
-      if(_.isEmpty(action.payload)) {
+      if (_.isEmpty(action.payload)) {
         state.activeRequest = null;
         state.activeRideId = null
-      }else{
+      } else {
         const { status, id } = action.payload
         state.activeRequest = action.payload;
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
       }
     },
     clearUserState: (state, action) => {
-      return Object.assign(state, { ...intialState})
+      return Object.assign(state, { ...intialState })
     },
-   
+
     updateDriversRequest: (state, action) => {
       const { driver_id, status, id } = action.payload;
-      if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE ) {
+      if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         state.activeRequest = action.payload
         state.rideRequests = []
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId

@@ -8,6 +8,7 @@ import { PickARide } from '../pages/PickARide';
 import { useSelector } from 'react-redux';
 import { isDriverVerified } from '../util';
 import MessageInfo from '../components/common/MessageInfo';
+import Notifications from '../components/common/Notifications';
 
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
@@ -42,6 +43,12 @@ export default function DriverStackNavigator({ navigation, route }) {
         options={{ title: null }}
         component={MessageInfo}
       />}
+      <Stack.Screen
+        name={ROUTES_NAMES.notifications}
+        options={{ title: 'Notifications',headerShown:true}}
+        component={Notifications}
+      />
+
 
 
     </Stack.Navigator>

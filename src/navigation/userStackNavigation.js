@@ -21,7 +21,7 @@ export default function UserStackNavigator({ navigation, route }) {
 
   const { activeRequest } = useSelector((state) => state.user);
   const { rideRequests } = useSelector(state => state.user);
-  const { requestAlertHandler } = useRequestAlertHandler('Cancel & Go Back!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
+  const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
 
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
@@ -62,7 +62,7 @@ export default function UserStackNavigator({ navigation, route }) {
                   onClick={requestAlertHandler}
                   styles={{ paddingRight: 0, width: 'auto' }}
                   textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
-                  label={`Cancel & Go Back`}
+                  label={`Cancel All`}
                   isLowerCase={true}
                 />
               }

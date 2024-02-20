@@ -76,7 +76,8 @@ export const ROUTES_NAMES = {
   searchRide: 'SearchRide',
   activeMap: 'ActiveMap',
   messageInfo:'MessageInfo',
-  refer:'Refer'
+  refer:'Refer',
+  notifications:'Notifications'
 }
 
 export const RideStatus = {

@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserState } from '../slices/userSlice';
 import useCancelAllRequest from './useCancelAllRequest';
 import { setDialogStatus } from '../slices/authSlice';
-import { delay } from 'lodash';
 let backButtonListener = undefined;
 
 export function useRequestAlertHandler(title = 'Alert!', message = `You currently have a pending request. Would you like to cancel it? If you click 'Yes', your request will be cancelled.`) {
