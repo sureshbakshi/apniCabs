@@ -7,13 +7,18 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS } from '../constants';
 import Share from 'react-native-share';
 import { useSelector } from 'react-redux';
-
+import Clipboard from '@react-native-clipboard/clipboard';
+import { showSuccessMessage } from '../util';
 const Refer = () => {
     const { userInfo: profile } = useSelector(state => state.auth);
-
+   const message = `Upon successful registration and verification, you will receive an excellent joining bonus. Please use the referral code: ${profile?.referral_code}`
+    const writeToClipboard =  () => {
+        Clipboard.setString(message)
+        showSuccessMessage('Copied')
+    };
     const shareReferralCode = () => {
         const options = {
-            message:`Referral Code: ${profile?.referral_code}`
+            message
         }
         Share.open(options)
             .then((res) => {
@@ -23,6 +28,7 @@ const Refer = () => {
                 err && console.log(err);
             });
     }
+
     return (
         <View style={TermsAndConditionsStyles.container}>
             <ImageBackground
@@ -51,11 +57,14 @@ const Refer = () => {
                             <Text style={[TermsAndConditionsStyles.name, [{ textAlign: 'center', marginBottom: 10 }]]}>
                                 Refferal Code
                             </Text>
+                            {/* <Text>Copied value: {copiedText ?? 'Nothing is copied yet!'}</Text> */}
+
                             <Pressable
                                 android_ripple={{ color: '#fff' }}
-                                style={[FindRideStyles.button, { width: 120, alignSelf: 'center', borderColor: COLORS.bg_dark, borderWidth: 1, backgroundColor: COLORS.bg_light }]}
+                                onPress={writeToClipboard}
+                                style={[FindRideStyles.button, { alignSelf: 'center', borderColor: COLORS.bg_dark, borderWidth: 1, backgroundColor: COLORS.bg_light }]}
                             >
-                                <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: '#000', fontSize: 16 }]}>
+                                <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: '#000', fontSize: 16 }]} selectable={true}>
                                     {profile?.referral_code}
                                 </Text>
                             </Pressable>
