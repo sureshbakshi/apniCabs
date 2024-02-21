@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Notifications } from 'react-native-notifications';
+import { scheduleLocalNotification } from '../util';
 let isInitialized = false;
 
 const useLocalNotifications = () => {
@@ -13,6 +14,7 @@ const useLocalNotifications = () => {
       Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
         console.log('Local Notification received in foreground:', notification);
         // Handle foreground notifications
+        scheduleLocalNotification()
         completion({ alert: true, sound: true, badge: false });
       });
 
@@ -43,14 +45,14 @@ const useLocalNotifications = () => {
   const registerRemoteNotifications = async () => {
     const isAndroid = Platform.OS === 'android'
     if (isAndroid) {
-      const hasPermissions = await Notifications.isRegisteredForRemoteNotifications();
-      console.log({ hasPermissions })
-      if (!hasPermissions) {
+      // const hasPermissions = await Notifications.isRegisteredForRemoteNotifications();
+      // console.log({ hasPermissions })
+      // if (!hasPermissions) {
         Notifications.registerRemoteNotifications();
-      }
+      // }
     } else {
       const hasPermissions = Notifications.ios.checkPermissions();
-      if (!hasPermissions) {
+      if (true) {
         Notifications.ios.registerRemoteNotifications({
           providesAppNotificationSettings: true,
           provisional: true,

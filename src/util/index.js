@@ -153,7 +153,7 @@ export const isDriverVerified =(driverInfo)=>{
   return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
 }
 
-export const scheduleLocalNotification = (title, message, data = {}) => {
+export const scheduleLocalNotification = (title='test', message='message', data = {}) => {
   const options = {
     title,
     body: message,

@@ -130,7 +130,7 @@ export default (isWatchPosition = false) => {
                     if (!watchId) {
                         watchId = Geolocation.watchPosition(
                             position => {
-                                console.log('watchPosition', position)
+                                // console.log('watchPosition', position)
                                 getLocation(position.coords);
                             },
                             error => console.log(error),

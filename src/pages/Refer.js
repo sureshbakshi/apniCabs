@@ -13,8 +13,8 @@ const Refer = () => {
     const { userInfo: profile } = useSelector(state => state.auth);
    const message = `Upon successful registration and verification, you will receive an excellent joining bonus. Please use the referral code: ${profile?.referral_code}`
     const writeToClipboard =  () => {
-        Clipboard.setString(message)
-        showSuccessMessage('Copied')
+        // Clipboard.setString(message)
+        // showSuccessMessage('Copied')
     };
     const shareReferralCode = () => {
         const options = {
@@ -45,27 +45,26 @@ const Refer = () => {
                         </View>
                         <View style={TermsAndConditionsStyles.list}>
                             <Text style={[TermsAndConditionsStyles.address, { textAlign: 'center' }]}>
-                                Send a Refferal link to your friends via SMS/Watsup/Email
+                                Send a Refferal code to your friends via SMS/Watsup/Email
                             </Text>
                         </View>
-                        <View style={TermsAndConditionsStyles.list}>
+                        {/* <View style={TermsAndConditionsStyles.list}>
                             <Text style={[TermsAndConditionsStyles.name, [{ textAlign: 'center' }]]}>
                                 How does it work?
                             </Text>
-                        </View>
+                        </View> */}
                         <View style={[TermsAndConditionsStyles.list, { marginVertical: 5 }]}>
                             <Text style={[TermsAndConditionsStyles.name, [{ textAlign: 'center', marginBottom: 10 }]]}>
                                 Refferal Code
                             </Text>
                             {/* <Text>Copied value: {copiedText ?? 'Nothing is copied yet!'}</Text> */}
-
                             <Pressable
                                 android_ripple={{ color: '#fff' }}
                                 onPress={writeToClipboard}
-                                style={[FindRideStyles.button, { alignSelf: 'center', borderColor: COLORS.bg_dark, borderWidth: 1, backgroundColor: COLORS.bg_light }]}
+                                style={[FindRideStyles.button, { alignSelf: 'center', borderColor: COLORS.black, borderWidth: 1, backgroundColor: COLORS.bg_light, borderStyle: 'dashed'}]}
                             >
                                 <Text style={[FindRideStyles.text, { fontWeight: 'bold', color: '#000', fontSize: 16 }]} selectable={true}>
-                                    {profile?.referral_code}
+                                    {profile?.referral_code} 
                                 </Text>
                             </Pressable>
                         </View>
@@ -74,7 +73,7 @@ const Refer = () => {
                     <Pressable
                         android_ripple={{ color: '#fff' }}
                         onPress={shareReferralCode}
-                        style={[FindRideStyles.button, { alignSelf: 'center', width: '50%', backgroundColor: COLORS.primary, bottom: 0 }]}
+                        style={[FindRideStyles.button, { alignSelf: 'center', width: '50%', backgroundColor: COLORS.primary}]}
                     >
                         <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
                             {'Refer Now'}

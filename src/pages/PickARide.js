@@ -140,10 +140,10 @@ export const PickARide = () => {
           flexDirection: 'row',
         }]}>
           <Pressable
-            style={{ paddingHorizontal: 5 }}
+            style={{ paddingHorizontal: 5, marginRight: 5 }}
             android_ripple={{ color: '#ccc' }}
             onPress={() => navigate(ROUTES_NAMES.notifications)}>
-            <Icon name="bell-badge-outline" size="large" color={COLORS.white} />
+            <Icon name="bell-badge" size="large" color={COLORS.white} />
           </Pressable>
           <Switch
             trackColor={{ false: COLORS.white, true: COLORS.white }}
@@ -151,9 +151,9 @@ export const PickARide = () => {
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={Boolean(isOnline)}
+            style={{ transform:[{ scaleX: .9 }, { scaleY: .9 }] }}
           />
         </View>
-
       </View>
       {isOnline ? (
         <>

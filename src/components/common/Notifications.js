@@ -1,36 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { COLORS, ExpiryStatus } from '../../constants';
+import React from 'react';
+import { View } from 'react-native';
+import { ExpiryStatus } from '../../constants';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { Text } from './Text';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import useGetDriverDetails, { useUpdateDriverStatus } from '../../hooks/useGetDriverDetails';
-import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
-import { formattedDate, scheduleLocalNotification } from '../../util';
+import { formattedDate } from '../../util';
 import { openOwnerPortal } from '../../util/config';
 
-
 const Notifications = () => {
-    const { userInfo, driverInfo } = useSelector(state => state.auth);
-    const { refetch } = useGetDriverDetails(userInfo?.id, { refetchOnMountOrArgChange: true })
-    const updateDriverStatus = useUpdateDriverStatus();
-
-    useFocusEffect(
-        useCallback(() => {
-            refetch();
-        }, [])
-    );
-
-    useEffect(() => {
-        updateDriverStatus(false)
-    },[])
+    const { driverInfo } = useSelector(state => state.auth);
 
     return (
-        <View style={[FindRideStyles.container, { padding: 10, }]}>
+        !isEmpty(driverInfo?.expiredFields) ?  <View style={[FindRideStyles.container, { padding: 10, }]}>
             <View style={[FindRideStyles.card, { width: '100%', padding: 10, }]} >
-                {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
+                {<View style={[FindRideStyles.subHeader, { margin: 10 }]}>
                     <Text style={[FindRideStyles.name, { fontSize: 14, fontWeight: 'bold' }]}>Below are the documents that will expire within a week:</Text>
                     {driverInfo?.expiredFields.map((item, i) => {
                         return <View key={i} style={[FindRideStyles.center,{justifyContent:'flex-start',alignItems:'flex-start'}]}>
@@ -47,7 +32,7 @@ const Notifications = () => {
                 </View>
 
             </View>
-        </View>
+        </View>: <Text style={{fontWeight: 'bold', alignSelf: 'center', margin: 30}}>No Notifications found.</Text>
     );
 };
 export default Notifications;
