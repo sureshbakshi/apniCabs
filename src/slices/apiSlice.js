@@ -3,6 +3,7 @@ import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { getUserId, showErrorMessage } from '../util';
+import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://www.apnicabi.com/api/',
@@ -15,6 +16,10 @@ const baseQuery = fetchBaseQuery({
     if (getState().auth.access_token) {
       headers.set('Authorization', `${getState().auth.access_token}`);
     }
+    if (getState().auth.device_token) {
+      headers.set('device_token', `${getState().auth.device_token}`);
+    }
+    headers.set('device_type', Platform.os);
     return headers;
   },
 });
@@ -71,7 +76,8 @@ const api_urls = {
   userActiveRide: 'active-rides/user',
   list: 'list',
   cancelRequest: 'cancel-request',
-  sosAdd: 'add'
+  sosAdd: 'add',
+  device: 'device'
 };
 
 export const apiSlice = createApi({
@@ -126,6 +132,7 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
 
+    // users start
     userRideHistory: builder.query({
       query: () => ({
         method: 'GET',
@@ -145,6 +152,19 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    sendDeviceToken: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.users(api_urls.device),
+        body,
+      }),
+      transformResponse: response => {
+        return response;
+      },
+      transformErrorResponse: response => response,
+    }),
+
+    // users end
     driverActiveRide: builder.query({
       query: () => ({
         method: 'GET',
@@ -305,6 +325,7 @@ export const {
   useUserCheckMutation,
   useSendRequestMutation,
   useUpdateRequestMutation,
+  useSendDeviceTokenMutation,
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
   useGetDriverDetailsQuery,

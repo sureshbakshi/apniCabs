@@ -3,16 +3,23 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Notifications } from 'react-native-notifications';
 import { scheduleLocalNotification } from '../util';
+import { useDispatch } from 'react-redux';
+import { delay } from 'lodash';
+import { setDeviceToken } from '../slices/authSlice';
+import { useSendDeviceTokenMutation } from '../slices/apiSlice';
 let isInitialized = false;
 
 const useLocalNotifications = () => {
+  const dispatch = useDispatch()
+  const [sendDeviceToken] =
+    useSendDeviceTokenMutation();
   const registerRemoteNotifications = async () => {
     const isAndroid = Platform.OS === 'android'
     if (isAndroid) {
       const hasPermissions = await Notifications.isRegisteredForRemoteNotifications();
       console.log({ hasPermissions })
       // if (!hasPermissions) {
-        Notifications.registerRemoteNotifications();
+      Notifications.registerRemoteNotifications();
       // }
     } else {
       const hasPermissions = Notifications.ios.checkPermissions();
@@ -28,9 +35,9 @@ const useLocalNotifications = () => {
     }
   }
 
-  const getInitialNotification = async() => {
+  const getInitialNotification = async () => {
     const notification = await Notifications.getInitialNotification();
-    console.log({getInitialNotification: notification})
+    console.log({ getInitialNotification: notification })
   }
   useEffect(() => {
     // Configure local notifications
@@ -59,6 +66,11 @@ const useLocalNotifications = () => {
 
       Notifications.events().registerRemoteNotificationsRegistered((event) => {
         console.log("registerRemoteNotificationsRegistered Device token:", event.deviceToken);
+        const device_token = event.deviceToken
+        if (device_token) {
+          dispatch(setDeviceToken(device_token))
+          sendDeviceToken({device_token, device_type: Platform.OS})
+        }
       });
       Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
         console.error({ registerRemoteNotificationsRegistrationFailed: event });
@@ -66,7 +78,7 @@ const useLocalNotifications = () => {
       Notifications.events().registerRemoteNotificationsRegistrationDenied((event) => {
         console.error({ registerRemoteNotificationsRegistrationDenied: event });
       });
-      
+
     }
     // Set up notification listeners
     isInitialized = true
