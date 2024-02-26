@@ -5,8 +5,6 @@ import { useCallback, useEffect, useRef } from "react";
 import { clearDriverState, setActiveRide, setRideRequest } from "../slices/driverSlice";
 import { isDriver } from "../util";
 import { clearUserState, setActiveRequest } from "../slices/userSlice";
-import { isEmpty } from 'lodash';
-import { activeReq } from "../mock/activeRequest";
 import { useFocusEffect } from "@react-navigation/native";
 
 // pickaride, search ride - always

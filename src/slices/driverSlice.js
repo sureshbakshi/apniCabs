@@ -1,7 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { navigate } from '../util/navigationService';
-import { ClearRideStatus, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
-import { activeReq, requestObj } from '../mock/activeRequest';
+import { ClearRideStatus, RideStatus } from '../constants';
 import { isEmpty } from 'lodash'
 import { formatRideRequest } from '../util';
 

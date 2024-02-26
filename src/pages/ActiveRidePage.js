@@ -321,7 +321,7 @@ const ActiveRidePage = ({ currentLocation }) => {
         {rideStatusModalInfo ? <>
           <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
             <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
-            {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: <br /> {rideStatusModalInfo.reason}</Text> : null}
+            {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: {rideStatusModalInfo.reason}</Text> : null}
             {rideStatusModalInfo?.subText ? <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.subText}</Text> : null}
           </CustomDialog>
         </> : null}

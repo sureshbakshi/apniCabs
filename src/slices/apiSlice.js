@@ -23,8 +23,9 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   let result = await baseQuery(args, api, extraOptions);
   console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
-  if (result?.error) {
-    showErrorMessage(result.error)
+  const err =  result?.error?.data?.error || result?.error
+  if (err ) {
+    showErrorMessage(err)
   }
   if (result.error && result.error.status === 401) {
     console.log(result.error)

@@ -6,19 +6,16 @@ import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import DriverStackNavigator from './driverStackNavigation';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
-import MyRidePage from '../pages/MyRidesPage';
 import DriverRideHistory from '../pages/driver/DriverRideHistory';
 import useLocalNotifications from '../hooks/useLocalNotifications';
-import { useEffect } from 'react';
+import useHandleDeeplinks from '../hooks/useHandleDeeplinks';
 const Tab = createBottomTabNavigator();
 
 export default function DriverTabNavigator() {
   useDriverSocketEvents()
-  const {registerRemoteNotifications} = useLocalNotifications()
-  useEffect(() =>{
-    console.log('registerRemoteNotifications')
-    registerRemoteNotifications()
-  },[])
+  useLocalNotifications()
+  useHandleDeeplinks()
+
   return (
     <AppProvider>
       <Tab.Navigator

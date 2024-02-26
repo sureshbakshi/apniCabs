@@ -7,6 +7,7 @@ import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES, VerificationStatus }
 import { store } from '../store';
 import images from './images';
 import { Notifications } from 'react-native-notifications';
+import { navigate } from './navigationService';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -162,4 +163,13 @@ export const scheduleLocalNotification = (title='test', message='message', data 
   console.log('scheduleLocalNotification', Notifications)
 
   Notifications?.postLocalNotification(options);
+};
+
+export const handleDeepLink = ({ url }) => {
+  const { path, queryParams } = Linking.parse(url);
+  console.log(url)
+  if (path === '/details') {
+    // Navigate to details screen
+    navigate?.('Details', queryParams);
+  }
 };

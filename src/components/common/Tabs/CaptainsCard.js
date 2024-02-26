@@ -44,6 +44,7 @@ const Card = item => {
   useEffect(() => {
     if (requestError) {
       console.log('requestError', requestError);
+      dispatch(updateDriversRequest({ ...item, status: RideStatus.UNAVAILABLE }));
     } else if (requestData) {
       dispatch(updateDriversRequest(requestData));
     }
@@ -75,6 +76,13 @@ const Card = item => {
           color: COLORS.black
         }
       }
+      case 'UNAVAILABLE': {
+        return {
+          label: 'Unavailable',
+          bg: COLORS.gray,
+          color: COLORS.black
+        }
+      }
 
       default: {
         return {
@@ -87,8 +95,9 @@ const Card = item => {
   }
   const actionButtonInfo = getButtonStyles(item?.status)
   const vehicleImage = (item) => item?.vehicle_details?.photo ? { uri: item?.vehicle_details?.photo } : images[`captain4`]
+  const isDisabled = item?.status === RideStatus.CLOSED || item?.status === RideStatus.UNAVAILABLE
   return (
-    <View style={[FindRideStyles.card, { opacity: item?.status === RideStatus.CLOSED ? 0.6 : 1 }]} key={item?.driver_id}>
+    <View style={[FindRideStyles.card, { opacity: isDisabled ? 0.6 : 1 }]} key={item?.driver_id}>
       <Timeline />
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
@@ -125,7 +134,7 @@ const Card = item => {
         <View style={[FindRideStyles.right, { padding: 0, paddingBottom: 5 }]}>
           <Pressable
             style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginHorizontal: 3, paddingVertical: 0 }]}
-            onPress={() => handleSendRequest(item)}>
+            onPress={() => isDisabled ? null: handleSendRequest(item)}>
             <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
               {actionButtonInfo.label}
             </Text>

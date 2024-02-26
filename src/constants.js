@@ -91,7 +91,8 @@ export const RideStatus = {
   COMPLETED: 'COMPLETED',
   USER_CANCELLED: 'USER_CANCELLED',
   DRIVER_CANCELLED: 'DRIVER_CANCELLED',
-  PENDING: 'PENDING'
+  PENDING: 'PENDING',
+  UNAVAILABLE: 'UNAVAILABLE'
 }
 
 export const VerificationStatus = {
