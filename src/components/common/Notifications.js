@@ -8,10 +8,11 @@ import { isEmpty } from 'lodash';
 import CustomButton from './CustomButton';
 import { formattedDate } from '../../util';
 import { openOwnerPortal } from '../../util/config';
+import useGetDriverDetails from '../../hooks/useGetDriverDetails';
 
 const Notifications = () => {
-    const { driverInfo } = useSelector(state => state.auth);
-
+    const { driverInfo, userInfo } = useSelector(state => state.auth);
+    useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
     return (
         !isEmpty(driverInfo?.expiredFields) ?  <View style={[FindRideStyles.container, { padding: 10, }]}>
             <View style={[FindRideStyles.card, { width: '100%', padding: 10, }]} >
