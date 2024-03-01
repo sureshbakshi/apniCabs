@@ -15,7 +15,6 @@ import { useCancelAcceptedRequestMutation, useCompleteRideRequestMutation, useRi
 import { updateRideStatus, setActiveRide, clearDriverState } from '../slices/driverSlice';
 import { clearUserState } from '../slices/userSlice';
 import { getScreen, getVehicleImage, isDriver, isUser, showErrorMessage } from '../util';
-import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import openMap from 'react-native-open-maps';
 import ActiveMapPage from './ActiveMap';
@@ -245,7 +244,6 @@ const ActiveRidePage = ({ currentLocation }) => {
   const dispatch = useDispatch()
   const isDriverLogged = isDriver();
   const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged)
-  useGetActiveRequests()
 
 
   const { activeRequest, activeRideId, statusUpdate } = useSelector((state) => isDriverLogged ? state.driver : state.user);

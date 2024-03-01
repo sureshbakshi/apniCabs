@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { updatedSocketConnectionStatus } from "../slices/authSlice";
 
-import { _isLoggedIn } from "../util";
+import { _isLoggedIn, isValidEvent } from "../util";
 import userSocket from '../sockets/socketConfig';
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
 import { store } from "../store";
@@ -17,7 +17,7 @@ export const disconnectUserSocket = () => {
     console.log(`============= user Client disconnection - request ==========`)
     userSocket.disconnect()
 }
-
+const ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location] 
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
 
@@ -25,24 +25,21 @@ export default (() => {
     const isLoggedIn = _isLoggedIn();
     const baseSocketOn = userSocket.on;
 
-    userSocket.on = function() {
-        var ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location] 
-
-        if (userSocket._callbacks !== undefined &&
-            typeof userSocket._callbacks[`$${arguments[0]}`] !== 'undefined' &&
-            ignoreEvents.indexOf(arguments[0]) === -1) {
-               return;
+    userSocket.on = function (eventName) {
+        if (isValidEvent.call(this, eventName, ignoreEvents)) {
+          return;
         }
-        return baseSocketOn.apply(this, arguments)
-    };
+        console.log({new: eventName, cb: this._callbacks, arguments})
+        return baseSocketOn.apply(this, arguments);
+      };
 
     const addDevice = () => {
         const id = store.getState().auth.userInfo?.id
         console.log({addDeviceId: id})
         if (id) {
-            console.log(`============= User add device emit ==========`)
+            // console.log(`============= User add device emit ==========`)
             userSocket.emit('addDevice', id, (cbRes) => {
-                console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
+                // console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
                 dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
             })
         }
@@ -59,7 +56,7 @@ export default (() => {
     };
 
     const onDriverLocationUpdate = () =>{
-        console.log('socket._callbacks', userSocket._callbacks)
+        // console.log('socket._callbacks', userSocket._callbacks)
         userSocket.on(SOCKET_EVENTS.driver_location, (updatedLocation) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
@@ -71,10 +68,10 @@ export default (() => {
 
     const connectSocket = () => {
         if (userSocket.connected) {
-            console.log(`============= user Client connection - add device ==========`)
+            // console.log(`============= user Client connection - add device ==========`)
             addDevice()
         } else {
-            console.log(`============= user Client connection - request ==========`)
+            // console.log(`============= user Client connection - request ==========`)
             userSocket.connect()
         }
     }
@@ -91,7 +88,7 @@ export default (() => {
 
     useEffect(() => {
         userSocket.on('connect', () => {
-            console.log('onconnect - add device')
+            // console.log('onconnect - add device')
             onRequestUpdate()
             onDriverLocationUpdate()
             addDevice()

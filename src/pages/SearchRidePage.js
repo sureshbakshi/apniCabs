@@ -9,7 +9,6 @@ import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import images from '../util/images';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
@@ -17,7 +16,6 @@ import { filter } from 'lodash';
 import { requestInfo, setRideRequest } from '../slices/userSlice';
 
 const SearchRidePage = () => {
-  useGetActiveRequests();
   const dispatch = useDispatch();
   const { isSocketConnected } = useSelector((state) => state.auth);
   const list = useSelector(state => state.user?.rideRequests?.vehicles);

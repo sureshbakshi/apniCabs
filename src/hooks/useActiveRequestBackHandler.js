@@ -50,7 +50,7 @@ export function useActiveRequestBackHandler() {
     }, [])
     useEffect(() => {
         if ((rideRequests?.request_id || activeRequest?.id) && !backButtonListener) {
-            console.log('hardwareBackPress listenner')
+            // console.log('hardwareBackPress listenner')
             backButtonListener = BackHandler.addEventListener("hardwareBackPress", requestAlertHandler);
         }
     }, [rideRequests, activeRequest, backButtonListener]);

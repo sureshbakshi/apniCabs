@@ -1,8 +1,8 @@
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import driverSocket from "../sockets/socketConfig"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
-import { _isDriverOnline, _isLoggedIn } from "../util"
+import { _isLoggedIn, isValidEvent } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 import { store } from "../store"
@@ -16,20 +16,20 @@ const SOCKET_EVENTS = {
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
 
-    const setSoundConfig= () => {
+    const setSoundConfig = () => {
         SoundPlayer.setSpeaker(true)
         SoundPlayer.setVolume(1);
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
-            if(success) {
+            if (success) {
                 setSoundConfig()
             }
-          })
+        })
         return () => _onFinishedLoadingSubscription.remove()
 
-    },[])
+    }, [])
 
     const updateRideRequests = (request) => {
         const { status } = request?.data || {}
@@ -52,14 +52,17 @@ export const useDriverEvents = () => {
 
 const onGetRideRequests = (cb) => {
     driverSocket.on(SOCKET_EVENTS.get_ride_requests, (request) => {
+        console.log('on new request')
         cb(request)
     });
 };
 
 export const disconnectDriverSocket = () => {
-    console.log(`============= Driver Client disconnection - request ==========`)
+    console.log(`============= Driver Client disconnection - request ==========`, driverSocket)
     driverSocket.disconnect()
 }
+const ignoreEvents = [];
+// ['connect', 'disconnect', SOCKET_EVENTS.get_ride_requests];
 
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
@@ -71,50 +74,44 @@ export default (() => {
     const isLoggedIn = _isLoggedIn();
     const baseSocketOn = driverSocket.on;
 
-    driverSocket.on = function() {
-        var ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.get_ride_requests] 
-
-        if (driverSocket._callbacks !== undefined &&
-            typeof driverSocket._callbacks[`$${arguments[0]}`] !== 'undefined' &&
-            ignoreEvents.indexOf(arguments[0]) === -1) {
-               return;
+      driverSocket.on = function (eventName) {
+        if (isValidEvent.call(this, eventName, ignoreEvents)) {
+          return;
         }
-        return baseSocketOn.apply(this, arguments)
-    };
+        return baseSocketOn.apply(this, arguments);
+      };
 
 
-    const addDevice = () => {
+    const addDevice = useCallback(() => {
         const id = store.getState().auth.userInfo?.id
         if (id) {
-            console.log(`============= Driver add device emit ==========: ${id}`)
+            // console.log(`============= Driver add device emit ==========: ${id}`)
             driverSocket.emit('addDevice', id, (cbRes) => {
-                console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
+                // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
                 dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
             })
         }
-    }
+    },[driverSocket])
 
-    const connectSocket = () => {
+    const connectSocket = useCallback(() => {
         if (driverSocket.connected) {
-            console.log(`============= Driver Client connection - add device ==========`)
-            addDevice()
+          addDevice();
         } else {
-            console.log(`============= Driver Client connection - request ==========`)
-            driverSocket.connect()
+          driverSocket.connect();
         }
-    }
+      }, [addDevice, driverSocket]);
 
-   
+
 
     useEffect(() => {
+        console.log({isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline})
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
-            console.log('isDriverOnline', isDriverOnline, isLoggedIn)
             connectSocket()
             onGetRideRequests(updateRideRequests);
         } else if (!isLoggedIn || !isDriverOnline) {
             disconnectDriverSocket();
         }
-    }, [isDriverOnline, isLoggedIn, isSocketConnected])
+    }, [isDriverOnline, isLoggedIn, isSocketConnected, driverSocket?.connected])
 
     useEffect(() => {
         driverSocket.on('connect', () => {
@@ -123,6 +120,10 @@ export default (() => {
             onGetRideRequests(updateRideRequests);
 
         })
-        driverSocket.on('disconnect', err => { console.log('disconnected', err); dispatch(updatedSocketConnectionStatus(null)) })
-    },[driverSocket])
+        driverSocket.on('disconnect', err => {
+            console.log('disconnected', err)
+            dispatch(updatedSocketConnectionStatus(null)) 
+        })
+    }, [driverSocket])
 })
+

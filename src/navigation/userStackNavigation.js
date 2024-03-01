@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 // import useCancelAllRequest from '../hooks/useCancelAllRequest';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
+import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -22,7 +23,7 @@ export default function UserStackNavigator({ navigation, route }) {
   const { activeRequest } = useSelector((state) => state.user);
   const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
-
+  useGetUserActiveRequests()
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });

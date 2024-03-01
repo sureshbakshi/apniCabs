@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
-import useGetActiveRequests from '../hooks/useGetActiveRequests';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateRequestMutation } from '../slices/apiSlice';
@@ -101,12 +100,10 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
-  const dispatch = useDispatch()
   const { isSocketConnected } = useSelector((state) => state.auth)
-  const { rideRequests, isOnline: driverStoredOnlineStatus } = useSelector(state => state.driver);
+  const { rideRequests } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-
-  const { status } = useGetActiveRequests()
+  const status = _isDriverOnline()
   const [isOnline, setToggleSwitch] = useState(status)
 
   const updateDriverStatus = useUpdateDriverStatus();
@@ -151,7 +148,7 @@ export const PickARide = () => {
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={Boolean(isOnline)}
-            style={{ transform:[{ scaleX: .9 }, { scaleY: .9 }] }}
+            style={{ transform: [{ scaleX: .9 }, { scaleY: .9 }] }}
           />
         </View>
       </View>

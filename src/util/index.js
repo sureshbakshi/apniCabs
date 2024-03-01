@@ -78,7 +78,7 @@ export const Capitalize = (str) => {
 
 export const _isDriverOnline = () => {
   const { isOnline } = store.getState().driver
-  return Boolean(isOnline !== DriverAvailableStatus.OFFLINE)
+  return Boolean(isOnline === DriverAvailableStatus.ONLINE)
 }
 
 export const _isLoggedIn = () => {
@@ -154,15 +154,11 @@ export const isDriverVerified =(driverInfo)=>{
   return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
 }
 
-export const scheduleLocalNotification = (title='test', message='message', data = {}) => {
-  const options = {
-    title,
-    body: message,
-    data,
-  };
-  console.log('scheduleLocalNotification', Notifications)
 
-  Notifications?.postLocalNotification(options);
+export const scheduleLocalNotification = (notfication) => {
+  if(notfication){
+    Notifications?.postLocalNotification(notfication);
+  }
 };
 
 export const handleDeepLink = ({ url }) => {
@@ -173,3 +169,13 @@ export const handleDeepLink = ({ url }) => {
     navigate?.('Details', queryParams);
   }
 };
+
+// ignore event
+
+export function isValidEvent(eventName, ignoreEvents) {
+  return (
+    this._callbacks !== undefined &&
+    typeof this._callbacks[`$${eventName}`] !== 'undefined' &&
+    ignoreEvents.indexOf(eventName) === -1
+  );
+}

@@ -1,7 +1,6 @@
 // Driver Socket Configuration
 import io from 'socket.io-client';
 
-import config from '../util/config';
 // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
 const socketUri = 'http://ec2-65-0-142-176.ap-south-1.compute.amazonaws.com:8080/'
 // const socketUri = 'http://192.168.0.105:3000'
@@ -10,7 +9,7 @@ const socket = io(socketUri, {
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss
   reconnectionAttempts: Infinity, // Number of reconnection attempts
-  reconnectionDelay: 5000, // Delay between reconnection attempts in milliseconds
+  reconnectionDelay: 50000, // Delay between reconnection attempts in milliseconds
   origins: '*',
   extraHeaders: {
 

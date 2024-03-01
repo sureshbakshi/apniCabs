@@ -55,10 +55,13 @@ const driverSlice = createSlice({
     setRideRequest: (state, action) => {
       const newRequest = action.payload;
       let updatedRequest = state.rideRequests;
+      console.log({updatedRequest})
       if (Array.isArray(newRequest)) {
-        newRequest.map((item) => {
-          updatedRequest = formatRideRequest(item, updatedRequest)
-        });
+        if(newRequest.length) {
+            updatedRequest = newRequest
+        }else{
+          updatedRequest = []
+        }
       } else {
         updatedRequest = formatRideRequest(newRequest, state.rideRequests)
       }

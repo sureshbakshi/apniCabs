@@ -49,9 +49,7 @@ const MessageInfo = () => {
                     <CustomButton label={'Update here'} styles={{
                         margin: 5, paddingVertical: 10,
                         paddingHorizontal: 10,
-                    }} onClick={() => {        
-                        scheduleLocalNotification('Local Notification', 'This is a test local notification', { customData: {'a': 2}});
-                    }} />
+                    }} onClick={openOwnerPortal} />
                 </View>
 
             </View>

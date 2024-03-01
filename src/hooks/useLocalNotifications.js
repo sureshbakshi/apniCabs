@@ -31,7 +31,6 @@ const useLocalNotifications = () => {
           criticalAlert: true,
         });
       }
-
     }
   }
 
@@ -49,7 +48,7 @@ const useLocalNotifications = () => {
       Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
         console.log('Local Notification received in foreground:', notification);
         // Handle foreground notifications
-        scheduleLocalNotification()
+        scheduleLocalNotification(notification)
         completion({ alert: true, sound: true, badge: false });
       });
 
@@ -61,6 +60,7 @@ const useLocalNotifications = () => {
       Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
         console.log('registerNotificationReceivedBackground:', notification);
         // Handle notification click or deep link here
+        scheduleLocalNotification(notification)
         completion();
       });
 

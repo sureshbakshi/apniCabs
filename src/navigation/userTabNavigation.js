@@ -12,10 +12,13 @@ import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandle
 import { useEffect } from 'react';
 import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
 import { AppState } from 'react-native';
+import useLocalNotifications from '../hooks/useLocalNotifications';
 
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
   useUserSocketEvents();
+  useLocalNotifications()
+  useHandleDeeplinks()
   useActiveRequestBackHandler();
 
   const { validateRequestExpiry } = useValidateRequestExpiry();
