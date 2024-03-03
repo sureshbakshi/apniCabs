@@ -85,7 +85,7 @@ export default (() => {
     const addDevice = useCallback(() => {
         const id = store.getState().auth.userInfo?.id
         if (id) {
-            // console.log(`============= Driver add device emit ==========: ${id}`)
+            console.log(`============= Driver add device emit ==========: ${id}`)
             driverSocket.emit('addDevice', id, (cbRes) => {
                 // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
                 dispatch(updatedSocketConnectionStatus(cbRes?.socketId))

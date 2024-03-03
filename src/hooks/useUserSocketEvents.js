@@ -14,7 +14,6 @@ const SOCKET_EVENTS = {
 
 
 export const disconnectUserSocket = () => {
-    console.log(`============= user Client disconnection - request ==========`)
     userSocket.disconnect()
 }
 const ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location] 
@@ -68,10 +67,10 @@ export default (() => {
 
     const connectSocket = () => {
         if (userSocket.connected) {
-            // console.log(`============= user Client connection - add device ==========`)
+            console.log(`============= user Client connection - add device ==========`)
             addDevice()
         } else {
-            // console.log(`============= user Client connection - request ==========`)
+            console.log(`============= user Client connection - request ==========`)
             userSocket.connect()
         }
     }
@@ -88,7 +87,6 @@ export default (() => {
 
     useEffect(() => {
         userSocket.on('connect', () => {
-            // console.log('onconnect - add device')
             onRequestUpdate()
             onDriverLocationUpdate()
             addDevice()

@@ -120,6 +120,10 @@ export const PickARide = () => {
     }
   }, [isOnline]);
 
+  useEffect(() => {
+    setToggleSwitch(status)
+  },[status])
+
 
   return (
     <SafeAreaView style={FindRideStyles.container}>
