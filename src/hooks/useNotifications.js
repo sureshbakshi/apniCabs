@@ -1,18 +1,19 @@
 // useLocalNotifications.js
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Notifications } from 'react-native-notifications';
 import { scheduleLocalNotification } from '../util';
 import { useDispatch } from 'react-redux';
-import { delay } from 'lodash';
 import { setDeviceToken } from '../slices/authSlice';
-import { useSendDeviceTokenMutation } from '../slices/apiSlice';
+import useRegisterDeviceToken from './useRegisterDeviceToken';
+import useHandleDeeplinks from './useHandleDeeplinks';
 let isInitialized = false;
 
-const useLocalNotifications = () => {
+export default () => {
   const dispatch = useDispatch()
-  const [sendDeviceToken] =
-    useSendDeviceTokenMutation();
+  useRegisterDeviceToken()
+  useHandleDeeplinks()
+
   const registerRemoteNotifications = async () => {
     const isAndroid = Platform.OS === 'android'
     if (isAndroid) {
@@ -69,7 +70,6 @@ const useLocalNotifications = () => {
         const device_token = event.deviceToken
         if (device_token) {
           dispatch(setDeviceToken(device_token))
-          sendDeviceToken({device_token, device_type: Platform.OS})
         }
       });
       Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
@@ -78,10 +78,9 @@ const useLocalNotifications = () => {
       Notifications.events().registerRemoteNotificationsRegistrationDenied((event) => {
         console.error({ registerRemoteNotificationsRegistrationDenied: event });
       });
+      isInitialized = true
 
     }
-    // Set up notification listeners
-    isInitialized = true
 
     return () => {
       // Clean up notification listeners on component unmount
@@ -95,5 +94,3 @@ const useLocalNotifications = () => {
   return { registerRemoteNotifications };
 };
 
-
-export default useLocalNotifications;

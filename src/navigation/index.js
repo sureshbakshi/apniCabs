@@ -10,9 +10,10 @@ import { useSelector } from 'react-redux';
 import { isDriver, isUser } from '../util';
 import { isEmpty } from 'lodash';
 import { CancelReasonDialog } from '../components/common/cancelReasonDialog';
+import useNotifications from '../hooks/useNotifications';
 function App() {
   const { access_token } = useSelector(state => state.auth);
-
+  useNotifications()
   useEffect(() => {
     SplashScreen.hide();
   });

@@ -29,7 +29,7 @@ export default (() => {
         if (isValidEvent.call(this, eventName, ignoreEvents)) {
           return;
         }
-        console.log({new: eventName, cb: this._callbacks, arguments})
+        // console.log({new: eventName, cb: this._callbacks, arguments})
         return baseSocketOn.apply(this, arguments);
       };
 

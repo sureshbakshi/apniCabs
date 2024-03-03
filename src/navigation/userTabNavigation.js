@@ -1,7 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserStackNavigator from './userStackNavigation';
-import WalletPage from '../pages/WalletPage';
-import MyRidePage from '../pages/MyRidesPage';
 import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
@@ -12,13 +10,10 @@ import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandle
 import { useEffect } from 'react';
 import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
 import { AppState } from 'react-native';
-import useLocalNotifications from '../hooks/useLocalNotifications';
 
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
   useUserSocketEvents();
-  useLocalNotifications()
-  useHandleDeeplinks()
   useActiveRequestBackHandler();
 
   const { validateRequestExpiry } = useValidateRequestExpiry();

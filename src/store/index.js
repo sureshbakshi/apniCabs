@@ -16,7 +16,7 @@ import userReducer from '../slices/userSlice';
 import driverReducer from '../slices/driverSlice';
 import persistConfig from './reduxPersistConfig';
 import storage from '@react-native-async-storage/async-storage';
-
+import {authInitialState} from '../constants'
 const appReducer = combineReducers({
   auth: authReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -28,7 +28,12 @@ const appReducer = combineReducers({
 const rootReducer = (state, action) => {
   if (action.type === 'auth/clearAuthData') {
     storage.removeItem('persist:root')
-    state = {} 
+    state = {
+      auth: {
+        ...authInitialState,
+        device_token: state?.auth?.device_token
+      }
+    } 
   }
   return appReducer(state, action)
 }

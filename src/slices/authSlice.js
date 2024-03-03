@@ -1,19 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {USER_ROLES} from '../constants';
+import {USER_ROLES, authInitialState} from '../constants';
 
-const initialState = {
-  googleInfo: null,
-  userInfo: null,
-  access_token: null,
-  driverInfo: null,
-  isSocketConnected: false,
-  isDialogOpen:false,
-  device_token: null,
-};
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: authInitialState,
   reducers: {
     updateGoogleUserInfo(state, action) {
       state.googleInfo = action.payload;

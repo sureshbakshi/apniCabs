@@ -20,8 +20,7 @@ export const AuthProvider = props => {
       const {password} = await Keychain.getGenericPassword();
       if (password) {
         setIsLoggedIn(true);
-        dispatch(updateLoginToken({token: password}));
-        console.log('Credentials successfully loaded for user ' + password);
+        // dispatch(updateLoginToken({token: password}));
       } else {
         console.log('No credentials stored');
       }

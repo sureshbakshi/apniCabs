@@ -2,6 +2,16 @@ import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import images from './util/images';
 
 
+export const authInitialState = {
+  googleInfo: null,
+  userInfo: null,
+  access_token: null,
+  driverInfo: null,
+  isSocketConnected: false,
+  isDialogOpen:false,
+  device_token: null,
+};
+
 export const USER_ROLES = {
   USER: "USER",
   DRIVER: "DRIVER",
