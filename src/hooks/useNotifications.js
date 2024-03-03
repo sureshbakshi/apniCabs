@@ -1,14 +1,13 @@
-// useLocalNotifications.js
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Notifications } from 'react-native-notifications';
-import { scheduleLocalNotification } from '../util';
+import { scheduleLocalNotification, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
 import { setDeviceToken } from '../slices/authSlice';
 import useRegisterDeviceToken from './useRegisterDeviceToken';
 import useHandleDeeplinks from './useHandleDeeplinks';
 let isInitialized = false;
-
+const notificationKey = 'gcm.notification'
 export default () => {
   const dispatch = useDispatch()
   useRegisterDeviceToken()
@@ -39,6 +38,17 @@ export default () => {
     const notification = await Notifications.getInitialNotification();
     console.log({ getInitialNotification: notification })
   }
+
+  const triggerNotfication = (remoteNotification) => {
+    if(remoteNotification?.payload){
+      const notification = unflattenObj(remoteNotification.payload, notificationKey )
+      if(notification){
+        scheduleLocalNotification(notification)
+      }
+    }
+  }
+
+
   useEffect(() => {
     // Configure local notifications
     console.log({ Notifications })
@@ -46,22 +56,17 @@ export default () => {
     if (!isInitialized) {
       registerRemoteNotifications()
       getInitialNotification()
-      Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-        console.log('Local Notification received in foreground:', notification);
+      Notifications.events().registerNotificationReceivedForeground((remoteNotification, completion) => {
+        console.log('Local Notification received in foreground:', remoteNotification);
         // Handle foreground notifications
-        scheduleLocalNotification(notification)
+        triggerNotfication(remoteNotification)
         completion({ alert: true, sound: true, badge: false });
       });
 
-      Notifications.events().registerNotificationOpened((notification, completion) => {
-        console.log('Local Notification opened:', notification);
+      Notifications.events().registerNotificationReceivedBackground((remoteNotification, completion) => {
+        console.log('registerNotificationReceivedBackground:', remoteNotification);
         // Handle notification click or deep link here
-        completion();
-      });
-      Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
-        console.log('registerNotificationReceivedBackground:', notification);
-        // Handle notification click or deep link here
-        scheduleLocalNotification(notification)
+        triggerNotfication(remoteNotification)
         completion();
       });
 
@@ -72,6 +77,13 @@ export default () => {
           dispatch(setDeviceToken(device_token))
         }
       });
+
+      Notifications.events().registerNotificationOpened((notification, completion) => {
+        console.log('Local Notification opened:', notification);
+        // Handle notification click or deep link here
+        completion();
+      });
+
       Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
         console.error({ registerRemoteNotificationsRegistrationFailed: event });
       });

@@ -8,6 +8,7 @@ import { store } from '../store';
 import images from './images';
 import { Notifications } from 'react-native-notifications';
 import { navigate } from './navigationService';
+import {set, get} from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -179,3 +180,16 @@ export function isValidEvent(eventName, ignoreEvents) {
     ignoreEvents.indexOf(eventName) === -1
   );
 }
+
+
+  // unflattern forground notfication to get notficationobj
+ export const unflattenObj = (obj, key) => {
+    const result = {};
+    for (const key in obj) {
+     set(result, key, obj[key]);
+    }
+    if(key) {
+      return get(result, key, null)
+    }
+    return result || null;
+  }
