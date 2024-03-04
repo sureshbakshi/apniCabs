@@ -30,6 +30,7 @@ const driverSlice = createSlice({
       if (isEmpty(requestObj)) {
         state.activeRequest = null;
         state.activeRideId = null;
+        state.statusUpdate = null;
       } else {
         const { id } = requestObj || {}
         state.activeRideId = requestObj.status === RideStatus.ONRIDE ? id : null;

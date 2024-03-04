@@ -12,7 +12,7 @@ export default () => {
 
     useFocusEffect(
         useCallback(() => {
-            refetch?.() 
+            refetch?.('1') 
         }, [])
     );
 

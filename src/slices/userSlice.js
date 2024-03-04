@@ -39,6 +39,7 @@ const userSlice = createSlice({
       if (_.isEmpty(action.payload)) {
         state.activeRequest = null;
         state.activeRideId = null
+        state.statusUpdate = null;
       } else {
         const { status, id } = action.payload
         state.activeRequest = action.payload;

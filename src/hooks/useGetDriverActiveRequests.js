@@ -13,7 +13,7 @@ export default () => {
     useFocusEffect(
         useCallback(() => {
             if(!isOffline) {
-                refetch?.()
+                refetch?.('1')
             }
         },[])
     );
