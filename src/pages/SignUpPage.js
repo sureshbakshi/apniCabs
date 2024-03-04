@@ -15,27 +15,19 @@ import { Text } from '../components/common';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSingUpMutation } from '../slices/apiSlice';
 import { updateUserInfo, updateUserCheck } from '../slices/authSlice';
-import { useSetState } from 'react-use';
 import { COLORS, ROUTES_NAMES, SIGN_UP_FORM, USER_ROLES } from '../constants';
 import images from '../util/images';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signupSchema } from '../schema';
 import { isEmpty } from 'lodash';
+import { isUndefined } from '../util';
 
-const initialState = {
-  email: '',
-  password: '',
-  phone: '',
-  name: '',
-};
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const [singUp, { data: signUpdata, error: singUpError, isLoading }] =
     useSingUpMutation();
   const googleInfo = useSelector(state => state.auth.googleInfo?.user);
-  const [state, setState] = useSetState(initialState);
-  const [error, setError] = useSetState();
 
   const {
     watch,
@@ -54,15 +46,6 @@ const SignUpPage = () => {
     resolver: yupResolver(signupSchema),
   });
 
-  useEffect(() => {
-    if (googleInfo) {
-      setState({
-        email: googleInfo?.email,
-        name: googleInfo?.name,
-      });
-    }
-  }, [googleInfo]);
-
   const handleSignUp = (data) => {
     const payload = { ...data }
     if (googleInfo?.photo) {
@@ -77,7 +60,7 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (singUpError) {
-      setError(singUpError?.data?.error);
+      console.log(singUpError?.data?.error);
     } else if (signUpdata) {
       dispatch(updateUserCheck(signUpdata));
       dispatch(updateUserInfo(signUpdata));
@@ -126,7 +109,7 @@ const SignUpPage = () => {
                       name={field.name}
                       rules={{ required: `${field.label} is required` }}
                     />
-                    {errors[field.name] && <Text style={[CommonStyles.errorTxt]}>{errors[field.name].message}</Text>}
+                    {errors[field.name] && <Text style={[CommonStyles.errorTxt]}>{errors[field.name]?.message}</Text>}
                   </View>
                 );
               })}

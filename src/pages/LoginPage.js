@@ -5,14 +5,11 @@ import {
   Pressable,
   ImageBackground,
   ScrollView,
-  Linking,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
-import { useSetState } from 'react-use';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { Icon, ImageView, Text } from '../components/common';
@@ -56,12 +53,8 @@ const LoginPage = () => {
     useLoginMutation();
   const [userCheck, { data: userCheckData, error: userCheckError }] =
     useUserCheckMutation();
-  // console.log({ userCheckData,userCheckError, logindata , loginError})
   const dispatch = useDispatch();
-  const [state, setState] = useSetState(initialState);
-  // const onSubmit = e => {
-  //   login(state);
-  // };
+
   const handleLogin = data => {
     const token = data.token;
     const username = data.id;

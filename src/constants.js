@@ -337,7 +337,8 @@ export const SIGN_UP_FORM = [
     props: {
       placeholder: "Enter email address*",
       required: true,
-
+      editable: false,
+      selectTextOnFocus: false  
     },
   },
   {
