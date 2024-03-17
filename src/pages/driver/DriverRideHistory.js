@@ -19,7 +19,7 @@ export default () => {
         model: '',
         rideTime: 'driver_requests.updated_at',
         avatar: '',
-        fare: 'fare'
+        fare: 'ride.fare'
     }
     if (isLoading) {
         return <ActivityIndicator />

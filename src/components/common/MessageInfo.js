@@ -9,7 +9,7 @@ import useGetDriverDetails, { useUpdateDriverStatus } from '../../hooks/useGetDr
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
 import { openOwnerPortal } from '../../util/config';
-import { formattedDate, scheduleLocalNotification } from '../../util';
+import { formattedDate, isDriverVerified } from '../../util';
 
 
 const MessageInfo = () => {
@@ -27,13 +27,18 @@ const MessageInfo = () => {
         updateDriverStatus(false)
     },[])
 
+    const isNotVehicleAssigned = isEmpty(driverInfo?.vehicle)
+    const message = isNotVehicleAssigned ? 'Vehicle assigned to you': 'your profile is verified'
+
     return (
         <View style={[FindRideStyles.container, FindRideStyles.center, { padding: 10, }]}>
             <View style={[FindRideStyles.card, { width: '100%', padding: 10, }]} >
-                <Text style={[FindRideStyles.name, {color: COLORS.red, fontWeight: 'bold'}]}>You cannot receive any ride requests until your profile is verified. Please update below info as soon as possible.</Text>
+                <Text style={[FindRideStyles.name, {color: COLORS.red, fontWeight: 'bold'}]}>You cannot receive any ride requests until {message}. Please update below info as soon as possible.</Text>
                 <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
                     <Text style={[FindRideStyles.name, { fontSize: 18, fontWeight: 'bold' , color: COLORS.red}]}>Reason: </Text>
-                    <Text style={[FindRideStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>
+                    {!isDriverVerified(driverInfo) && <Text style={[FindRideStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
+                    {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>Vehicle not yet assigned.</Text>}
+
                 </View>
                 {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
                     <Text style={[FindRideStyles.name, { fontSize: 18, fontWeight: 'bold' , color: COLORS.brand_blue}]}>Notice:</Text>
