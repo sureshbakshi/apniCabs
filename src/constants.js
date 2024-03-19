@@ -116,7 +116,7 @@ export const DriverAvailableStatus = {
   OFFLINE: 'OFFLINE',
   ONLINE: 'ONLINE',
   ONRIDE: 'ONRIDE',
-  ACCEPTED: 'ACCEPTED'
+  ACCEPTED: 'REQUEST_ACCEPTED'
 }
 
 export const RequestStatus = {

@@ -5,10 +5,10 @@ import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, ROUTES_NAMES, RideStatus } from '../constants';
+import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
-import { _isDriverOnline } from '../util';
+import { _isDriverOnline, isDriverAcceptedOrOnline } from '../util';
 import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
@@ -101,9 +101,9 @@ const DriverCard = ({ list }) => {
 
 export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
-  const { rideRequests } = useSelector(state => state.driver);
+  const { rideRequests , isOnline: driverStatus} = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const status = _isDriverOnline()
+  const status = isDriverAcceptedOrOnline()
   const [isOnline, setToggleSwitch] = useState(status)
 
   const updateDriverStatus = useUpdateDriverStatus();
@@ -116,7 +116,9 @@ export const PickARide = () => {
 
   useEffect(() => {
     if (!isEqual(status, isOnline)) {
-      updateDriverStatus(isOnline, setToggleSwitch)
+      if(driverStatus !== DriverAvailableStatus.ACCEPTED) {
+        updateDriverStatus(isOnline, setToggleSwitch)
+      }
     }
   }, [isOnline]);
 

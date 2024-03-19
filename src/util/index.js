@@ -82,6 +82,11 @@ export const _isDriverOnline = () => {
   return Boolean(isOnline === DriverAvailableStatus.ONLINE)
 }
 
+export const isDriverAcceptedOrOnline = () =>{
+  const { isOnline } = store.getState().driver
+  return Boolean(isOnline === DriverAvailableStatus.ONLINE) || Boolean(isOnline === DriverAvailableStatus.ACCEPTED) 
+}
+
 export const _isLoggedIn = () => {
   const { userInfo } = store.getState().auth
 

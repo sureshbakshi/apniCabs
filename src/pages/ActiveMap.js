@@ -12,6 +12,8 @@ import { ImageView } from '../components/common';
 import images from '../util/images';
 import { isEmpty, delay,get } from 'lodash';
 import { RideStatus } from '../constants';
+import { Text } from 'react-native-paper';
+import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -105,6 +107,10 @@ const markerIDs = ['Marker1', 'Marker2'];
 const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
+  const { isSocketConnected } = useSelector((state) => state.auth)
+
+  const updateDriverLocationToServer = useUpdateDriverLocation()
+
   const { driverLocation } = useSelector(state => state.user);
   const mapRef = useRef(null);
   const currentLocation = {
@@ -122,6 +128,10 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
       getCurrentLocation();
     }
   }, [location]);
+
+  useEffect(() =>{
+    updateDriverLocationToServer(location)
+  },[location])
 
   const focusMap = (markers) => {
     mapRef.current?.fitToSuppliedMarkers(markers, {
@@ -153,6 +163,10 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{backgroundColor: 'yellow', padding: 10, position: 'absolute',  zIndex: 1000, top: 0}}>
+        <Text>current location: {JSON.stringify(to_location)}</Text>
+        <Text>Socket ID: {isSocketConnected}</Text>
+      </View>
       {activeRequest?.from_latitude ? (
         <MapView
           style={styles.map}
