@@ -2,7 +2,8 @@
 import io from 'socket.io-client';
 
 // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
-const socketUri = 'http://ec2-65-0-142-176.ap-south-1.compute.amazonaws.com:8080/'
+// const socketUri = 'http://ec2-65-0-142-176.ap-south-1.compute.amazonaws.com:8080/'
+const socketUri =  "https://apnicabi.com"
 // const socketUri = 'http://192.168.0.105:3000'
 const socket = io(socketUri, {
   // Additional configuration options can be set here
