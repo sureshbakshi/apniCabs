@@ -8,6 +8,7 @@ import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants
 import { store } from "../store"
 import SoundPlayer from 'react-native-sound-player'
 import audio from "../assets/audio"
+import useNotificationSound from "./useNotificationSound"
 
 const SOCKET_EVENTS = {
     get_ride_requests: 'request',
@@ -15,21 +16,7 @@ const SOCKET_EVENTS = {
 
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
-
-    const setSoundConfig = () => {
-        SoundPlayer.setSpeaker(true)
-        SoundPlayer.setVolume(1);
-    }
-
-    useEffect(() => {
-        const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
-            if (success) {
-                setSoundConfig()
-            }
-        })
-        return () => _onFinishedLoadingSubscription.remove()
-
-    }, [])
+    const { playSound } = useNotificationSound()
 
     const updateRideRequests = (request) => {
         const { status } = request?.data || {}
@@ -37,7 +24,7 @@ export const useDriverEvents = () => {
         if (status) {
             if (status === RideStatus.REQUESTED) {
                 dispatch(setRideRequest(request?.data))
-                SoundPlayer.playUrl(audio.notify)
+                playSound()
             } else if (ClearRideStatus.includes(status)) {
                 dispatch(updateRideStatus(request?.data))
             } else {
@@ -74,12 +61,12 @@ export default (() => {
     const isLoggedIn = _isLoggedIn();
     const baseSocketOn = driverSocket.on;
 
-      driverSocket.on = function (eventName) {
+    driverSocket.on = function (eventName) {
         if (isValidEvent.call(this, eventName, ignoreEvents)) {
-          return;
+            return;
         }
         return baseSocketOn.apply(this, arguments);
-      };
+    };
 
 
     const addDevice = useCallback(() => {
@@ -91,20 +78,20 @@ export default (() => {
                 dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
             })
         }
-    },[driverSocket])
+    }, [driverSocket])
 
     const connectSocket = useCallback(() => {
         if (driverSocket.connected) {
-          addDevice();
+            addDevice();
         } else {
-          driverSocket.connect();
+            driverSocket.connect();
         }
-      }, [addDevice, driverSocket]);
+    }, [addDevice, driverSocket]);
 
 
 
     useEffect(() => {
-        console.log({isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline})
+        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline })
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
             connectSocket()
             onGetRideRequests(updateRideRequests);
@@ -122,7 +109,7 @@ export default (() => {
         })
         driverSocket.on('disconnect', err => {
             console.log('disconnected', err)
-            dispatch(updatedSocketConnectionStatus(null)) 
+            dispatch(updatedSocketConnectionStatus(null))
         })
     }, [driverSocket])
 })

@@ -6,6 +6,9 @@ import { _isLoggedIn, isValidEvent } from "../util";
 import userSocket from '../sockets/socketConfig';
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
 import { store } from "../store";
+import useNotificationSound from "./useNotificationSound";
+import audio from "../assets/audio";
+import { RideStatus } from "../constants";
 
 const SOCKET_EVENTS = {
     request_status: 'useRequestUpdate',
@@ -16,9 +19,10 @@ const SOCKET_EVENTS = {
 export const disconnectUserSocket = () => {
     userSocket.disconnect()
 }
-const ignoreEvents = ['connect','disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location] 
+const ignoreEvents = ['connect', 'disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location]
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
+    const { playSound } = useNotificationSound()
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
@@ -26,15 +30,15 @@ export default (() => {
 
     userSocket.on = function (eventName) {
         if (isValidEvent.call(this, eventName, ignoreEvents)) {
-          return;
+            return;
         }
         // console.log({new: eventName, cb: this._callbacks, arguments})
         return baseSocketOn.apply(this, arguments);
-      };
+    };
 
     const addDevice = () => {
         const id = store.getState().auth.userInfo?.id
-        console.log({addDeviceId: id})
+        console.log({ addDeviceId: id })
         if (id) {
             // console.log(`============= User add device emit ==========`)
             userSocket.emit('addDevice', id, (cbRes) => {
@@ -48,21 +52,27 @@ export default (() => {
         userSocket.on(SOCKET_EVENTS.request_status, (updatedRequest) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
-            if(updatedRequest?.data){
+            if (updatedRequest?.data) {
+                const { status } = updatedRequest?.data || {}
+                if (status) {
+                    if (status === RideStatus.ACCEPTED) {
+                        playSound(audio.booking)
+                    }
+                }
                 dispatch(updateDriversRequest(updatedRequest?.data))
             }
         });
     };
 
-    const onDriverLocationUpdate = () =>{
+    const onDriverLocationUpdate = () => {
         // console.log('socket._callbacks', userSocket._callbacks)
         userSocket.on(SOCKET_EVENTS.driver_location, (updatedLocation) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
-            if(updatedLocation?.data) {
+            if (updatedLocation?.data) {
                 dispatch(updateDriverLocation(updatedLocation.data))
             }
-        }); 
+        });
     }
 
     const connectSocket = () => {
@@ -83,7 +93,7 @@ export default (() => {
         } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
-    }, [isLoggedIn,isSocketConnected])
+    }, [isLoggedIn, isSocketConnected])
 
     useEffect(() => {
         userSocket.on('connect', () => {
