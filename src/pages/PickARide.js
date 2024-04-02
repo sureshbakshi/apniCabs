@@ -101,7 +101,7 @@ const DriverCard = ({ list }) => {
 
 export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
-  const { rideRequests , isOnline: driverStatus} = useSelector(state => state.driver);
+  const { rideRequests, isOnline: driverStatus } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
   const status = isDriverAcceptedOrOnline()
   const [isOnline, setToggleSwitch] = useState(status)
@@ -116,7 +116,7 @@ export const PickARide = () => {
 
   useEffect(() => {
     if (!isEqual(status, isOnline)) {
-      if(driverStatus !== DriverAvailableStatus.ACCEPTED) {
+      if (driverStatus !== DriverAvailableStatus.ACCEPTED || driverStatus !== DriverAvailableStatus.ONRIDE) {
         updateDriverStatus(isOnline, setToggleSwitch)
       }
     }
@@ -124,7 +124,7 @@ export const PickARide = () => {
 
   useEffect(() => {
     setToggleSwitch(status)
-  },[status])
+  }, [status])
 
 
   return (

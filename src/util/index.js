@@ -198,3 +198,21 @@ export function isValidEvent(eventName, ignoreEvents) {
     }
     return result || null;
   }
+
+
+  export const formatTransactions = (transactionHistory) => {
+    if (transactionHistory?.length) {
+      const groupedTransactions = transactionHistory.reduce((acc, transaction) => {
+        const requestId = transaction.request_id || ''; // If requestId is empty, set it to ''
+        if (!acc[requestId]) {
+          acc[requestId] = { request_id: requestId, transactions: [] };
+        }
+        acc[requestId].transactions.push(transaction);
+        return acc;
+      }, {});
+
+      // Convert grouped transactions object to array
+      return Object.values(groupedTransactions);
+    }
+    return []
+  }

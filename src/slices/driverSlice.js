@@ -62,6 +62,9 @@ const driverSlice = createSlice({
             updatedRequest = newRequest
         }else{
           updatedRequest = []
+          state.activeRequest = null;
+          state.activeRideId = null;
+          state.statusUpdate = null;
         }
       } else {
         updatedRequest = formatRideRequest(newRequest, state.rideRequests)

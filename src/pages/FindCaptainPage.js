@@ -20,8 +20,8 @@ const FindCaptainPage = () => {
   };
 
   if (isEmpty(list)) {
-    navigate(ROUTES_NAMES.searchRide)
-    return null
+    // navigate(ROUTES_NAMES.searchRide)
+    return <Text style={{padding: 15, textAlign:'center', fontWeight: 'bold'}}>Drivers not found at the moment. Please try later!</Text>
   }
   return (
     <View style={FindRideStyles.container}>

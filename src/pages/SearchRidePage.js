@@ -19,7 +19,7 @@ const SearchRidePage = () => {
   const dispatch = useDispatch();
   const { isSocketConnected } = useSelector((state) => state.auth);
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
-  const { location, updateLocation, getDistance } = useAppContext();
+  const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
 
   useEffect(() => {
@@ -29,6 +29,11 @@ const SearchRidePage = () => {
       dispatch(setRideRequest(rideList));
     }
   }, [error, rideList]);
+
+  useEffect(() =>{
+    resetState()
+  },[])
+  
   const searchHandler = async () => {
     const { distance, duration } = await getDistance();
     const { from, to } = location;

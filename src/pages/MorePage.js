@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, ScrollView } from 'react-native';
+import { View, Pressable, ScrollView, Linking } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { navigate } from '../util/navigationService';
 import { Icon, Text } from '../components/common';
@@ -9,6 +9,8 @@ import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal } from '../util/config';
 import { isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
+import SupportLinks from '../components/SupportLinks';
+
 
 const MorePage = () => {
   const { logOut } = useLogout();
@@ -62,6 +64,8 @@ const MorePage = () => {
                 </View>
                 <Text style={MoreStyles.name}>Emergency contacts</Text>
               </Pressable> */}
+              <SupportLinks />
+
             </>
               : null}
             {isDriver() ? <><Pressable
@@ -91,6 +95,8 @@ const MorePage = () => {
                 </View>
                 <Text style={MoreStyles.name}>More settings</Text>
               </Pressable>
+              <SupportLinks />
+
             </> : null}
 
 

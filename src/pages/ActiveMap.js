@@ -14,6 +14,7 @@ import { isEmpty, delay,get } from 'lodash';
 import { RideStatus } from '../constants';
 import { Text } from 'react-native-paper';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
+import useLocationWatcher from '../hooks/useLocationWatcher';
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -106,26 +107,28 @@ const markerIDs = ['Marker1', 'Marker2'];
 
 const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const isDriverLogged = isDriver();
-  const { getCurrentLocation, location } = useGetCurrentLocation(isDriverLogged);
+  const { getCurrentLocation, currentLocation } = useGetCurrentLocation();
+  const { watchPosition, location: watchedLocation } = useLocationWatcher();
+  const location =  isDriverLogged ? watchedLocation :  currentLocation;
   const { isSocketConnected } = useSelector((state) => state.auth)
 
   const updateDriverLocationToServer = useUpdateDriverLocation()
 
   const { driverLocation } = useSelector(state => state.user);
   const mapRef = useRef(null);
-  const currentLocation = {
+  const activeLocation = {
     latitude: isDriverLogged ? Number(location?.latitude) : Number(driverLocation?.latitude),
     longitude: isDriverLogged ? Number(location?.longitude) : Number(driverLocation?.longitude)
   }
 
   const to_location = {
-    latitude: activeRideId ? Number(activeRequest?.to_latitude) : currentLocation?.latitude,
-    longitude: activeRideId ? Number(activeRequest?.to_longitude) : currentLocation?.longitude
+    latitude: activeRideId ? Number(activeRequest?.to_latitude) : activeLocation?.latitude,
+    longitude: activeRideId ? Number(activeRequest?.to_longitude) : activeLocation?.longitude
   }
 
   useEffect(() => {
     if (!location.latitude) {
-      getCurrentLocation();
+      isDriverLogged ? watchPosition (): getCurrentLocation();
     }
   }, [location]);
 
@@ -188,7 +191,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
               longitude: Number(activeRequest?.from_longitude) + SPACE,
             }}>
             <ImageView
-              source={activeRequest.status === RideStatus.ONRIDE ? getVehicleImage(vehicleImage): images.pin}
+              source={(activeRequest.status === RideStatus.ONRIDE || isDriverLogged)? getVehicleImage(vehicleImage): images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
@@ -201,7 +204,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={activeRequest.status === RideStatus.ONRIDE ? images.pin : getVehicleImage(vehicleImage)}
+            <ImageView source={(activeRequest.status === RideStatus.ONRIDE || isDriverLogged) ? images.pin : getVehicleImage(vehicleImage)}
               style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker> : null}
         </MapView>

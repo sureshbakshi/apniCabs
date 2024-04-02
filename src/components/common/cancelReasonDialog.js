@@ -41,7 +41,7 @@ export const CancelReasonDialog = () => {
     const [selectedMessage, setSelectedMessage] = useState({});
     const [errorMsg, setErrorMessage] = useState(null);
     const { isDialogOpen } = useSelector(state => state.auth);
-    const { activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
+    const { activeRequest, rideRequests } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 
     const [cancelAcceptedRequest, { data: cancelAcceptedRequestData, error: cancelAcceptedRequestError, cancelAcceptedRequestDataLoading }] =
       useCancelAcceptedRequestMutation();
@@ -53,13 +53,17 @@ export const CancelReasonDialog = () => {
     };
   
     const closeModal = () => dispatch(setDialogStatus(false));
+
+    const closeAndClearRequest = () =>{
+      closeModal();
+      delay(() => {
+        dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
+      }, 10)
+    }
   
     useEffect(() => {
       if (cancelAcceptedRequestData || cancelAcceptedRequestData === null) {
-        closeModal();
-        delay(() => {
-          dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
-        }, 10)
+        closeAndClearRequest()
       } else if (cancelAcceptedRequestError) {
         closeModal();
         console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
@@ -67,7 +71,7 @@ export const CancelReasonDialog = () => {
   
     }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
     const handleSubmit = () => {
-      if (selectedMessage.id) {
+      if (selectedMessage.id && activeRequest?.id) {
         let payload = {
           "request_id": activeRequest.id,
           "driver_id": activeRequest.driver.id,
@@ -78,6 +82,7 @@ export const CancelReasonDialog = () => {
         cancelAcceptedRequest(payload)
       } else {
         setErrorMessage(true);
+        closeAndClearRequest()
       }
     };
   

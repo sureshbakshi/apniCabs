@@ -36,9 +36,8 @@ import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
 
 const initialState = {
-  email: 'rajeshcharmi22@gmail.com',
-  password: 'test@123',
-  // email: 'driver@gmail.com',
+  email: 'sureshbakshi88@gmail.com',
+  password: 'abc123',
 };
 
 GoogleSignin.configure({

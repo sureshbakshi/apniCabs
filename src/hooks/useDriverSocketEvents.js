@@ -95,7 +95,7 @@ export default (() => {
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
             connectSocket()
             onGetRideRequests(updateRideRequests);
-        } else if (!isLoggedIn || !isDriverOnline) {
+        } else if ((!isLoggedIn || !isDriverOnline)) {
             disconnectDriverSocket();
         }
     }, [isDriverOnline, isLoggedIn, isSocketConnected, driverSocket?.connected])

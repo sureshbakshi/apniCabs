@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
+import { RESULTS } from 'react-native-permissions';
 import { Notifications } from 'react-native-notifications';
 import { scheduleLocalNotification, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
@@ -13,10 +14,30 @@ export default () => {
   useRegisterDeviceToken()
   useHandleDeeplinks()
 
+  const requestNotificationPermission = async () => {
+    if (Platform.Version >= 33) {
+      try {
+        const result = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+        )
+        // Handling the result of the permit request
+        if (result === RESULTS.GRANTED) {
+          console.log('Permissions granted');
+        } else {
+          console.log('Permissions not granted');
+        }
+      } catch (error) {
+        // Error handling during permission request
+        console.error(error);
+      }
+    }
+  }
+
   const registerRemoteNotifications = async () => {
     const isAndroid = Platform.OS === 'android'
     if (isAndroid) {
       const hasPermissions = await Notifications.isRegisteredForRemoteNotifications();
+      requestNotificationPermission()
       console.log({ hasPermissions })
       // if (!hasPermissions) {
       Notifications.registerRemoteNotifications();
@@ -40,9 +61,9 @@ export default () => {
   }
 
   const triggerNotfication = (remoteNotification) => {
-    if(remoteNotification?.payload){
-      const notification = unflattenObj(remoteNotification.payload, notificationKey )
-      if(notification){
+    if (remoteNotification?.payload) {
+      const notification = unflattenObj(remoteNotification.payload, notificationKey)
+      if (notification) {
         scheduleLocalNotification(notification)
       }
     }

@@ -6,11 +6,12 @@ export const AppContext = createContext(null);
 
 const initialState = {
   location: { from: {}, to: null },
+  route: {distance: null, duration: null}
 }
 
 export const AppProvider = (props) => {
   const [location, setLocation] = useState(initialState.location);
-  const [route, setRoute] = useState({distance: null, duration: null})
+  const [route, setRoute] = useState(initialState.route)
   const [noOfSeats, setNoOfSeats] = useState(null)
 
   const updateLocation = (key, details) => {
@@ -18,7 +19,12 @@ export const AppProvider = (props) => {
     setLocation(updatedLocation)
   }
 
-  const getDistance = async() =>{
+  const resetState = () => {
+    setLocation(initialState.location)
+    setRoute(initialState.route)
+  }
+
+  const getDistance = async() => {
     const { from, to } = location
     if (!isEmpty(from) && !isEmpty(to)) {
       const origin = from.geometry.location
@@ -41,7 +47,7 @@ export const AppProvider = (props) => {
   }
   
 
-  return (<AppContext.Provider value={{ location, route, updateLocation, getDistance, setNoOfSeats, noOfSeats }}>
+  return (<AppContext.Provider value={{ location, route, updateLocation, getDistance, setNoOfSeats, resetState, noOfSeats }}>
     {props.children}
   </AppContext.Provider>);
 };

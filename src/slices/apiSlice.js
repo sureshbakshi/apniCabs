@@ -2,13 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
-import { getUserId, showErrorMessage } from '../util';
+import { formatTransactions, getUserId, showErrorMessage } from '../util';
 import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.103:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.102:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.0.104:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -275,7 +275,8 @@ export const apiSlice = createApi({
       transformResponse: (response) => {
         const history = response
         if (history?.transactions) {
-          history.transactions = history.transactions.filter((item) => item.type !== 'HOLD')
+          const unholdTransactions = history.transactions.filter((item) => item.type !== 'HOLD')
+          history.transactions = formatTransactions(unholdTransactions)
         }
         return history
       },

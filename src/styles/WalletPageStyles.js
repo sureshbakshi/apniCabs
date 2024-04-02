@@ -92,7 +92,6 @@ const WalletStyles = StyleSheet.create({
   review: {
     color: COLORS.gray,
     fontSize: 13,
-    marginBottom: 20,
   },
   greenTxt: {
     color: COLORS.primary,

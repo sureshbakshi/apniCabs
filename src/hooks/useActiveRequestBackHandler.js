@@ -3,14 +3,15 @@ import { Alert, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import useCancelAllRequest from './useCancelAllRequest';
 import { setDialogStatus } from '../slices/authSlice';
+import { store } from '../store';
 let backButtonListener = undefined;
 
 export function useRequestAlertHandler(title = 'Alert!', message = `You currently have a pending request. Would you like to cancel it? If you click 'Yes', your request will be cancelled.`) {
-    const { rideRequests, activeRequest } = useSelector(state => state.user);
     const { cancelAllActiveRequest } = useCancelAllRequest();
     const dispatch = useDispatch();
 
     const requestAlertHandler = (cb) => {
+        const { rideRequests, activeRequest } = store.getState().user
         if (rideRequests?.request_id || activeRequest?.id) {
             Alert.alert(title, message, [
                 {
