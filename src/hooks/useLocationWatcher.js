@@ -25,11 +25,11 @@ export default () => {
             granted = await checkAndroidPermissions();
         }
         if (granted) {
-            if (!watchId) {
+            if (watchId === undefined) {
                 watchId = Geolocation.watchPosition(
                     async(position) => {
                         // console.log('watchPosition', position)
-                       await getLocation(position.coords, setLocation);
+                       getLocation(position.coords, setLocation);
                     },
                     error => console.log(error),
                     defaultOptions,
@@ -44,10 +44,11 @@ export default () => {
         //Get current location and set initial region to this
         return () => {
             if (watchId) {
+                watchId = undefined
                 Geolocation?.clearWatch(watchId)
             }
         };
     }, []);
 
-    return { location, watchPosition }
+    return { location, watchPosition, watchId }
 }

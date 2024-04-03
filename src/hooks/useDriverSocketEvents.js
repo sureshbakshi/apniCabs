@@ -91,7 +91,7 @@ export default (() => {
 
 
     useEffect(() => {
-        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline })
+        // console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline })
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
             connectSocket()
             onGetRideRequests(updateRideRequests);

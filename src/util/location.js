@@ -74,7 +74,7 @@ export const getLocation = async (coords, cb) => {
                     address: formatted_address,
                     city,
                 };
-                cb(location);
+                cb?.(location);
                 return location
             }
         } else {

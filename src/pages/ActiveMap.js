@@ -2,17 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { getScreen, getVehicleImage, isDriver } from '../util';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { ImageView } from '../components/common';
 import images from '../util/images';
-import { isEmpty, delay,get } from 'lodash';
+import {  delay, get } from 'lodash';
 import { RideStatus } from '../constants';
-import { Text } from 'react-native-paper';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 import useLocationWatcher from '../hooks/useLocationWatcher';
 
@@ -109,8 +107,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation, currentLocation } = useGetCurrentLocation();
   const { watchPosition, location: watchedLocation } = useLocationWatcher();
-  const location =  isDriverLogged ? watchedLocation :  currentLocation;
-  const { isSocketConnected } = useSelector((state) => state.auth)
+  const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
 
   const updateDriverLocationToServer = useUpdateDriverLocation()
 
@@ -127,14 +124,14 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   }
 
   useEffect(() => {
-    if (!location.latitude) {
-      isDriverLogged ? watchPosition (): getCurrentLocation();
+    if (!watchedLocation.latitude || !currentLocation.latitude) {
+      isDriverLogged ? watchPosition() : getCurrentLocation();
     }
-  }, [location]);
+  }, [watchedLocation, currentLocation]);
 
-  useEffect(() =>{
+  useEffect(() => {
     updateDriverLocationToServer(location)
-  },[location])
+  }, [location])
 
   const focusMap = (markers) => {
     mapRef.current?.fitToSuppliedMarkers(markers, {
@@ -166,10 +163,10 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{backgroundColor: 'yellow', padding: 10, position: 'absolute',  zIndex: 1000, top: 0}}>
-        <Text>current location: {JSON.stringify(to_location)}</Text>
+      {/* <View style={{ backgroundColor: 'yellow', padding: 10, position: 'absolute', zIndex: 1000, top: 0 }}>
+        <Text>current location: {JSON.stringify(watchedLocation)}</Text>
         <Text>Socket ID: {isSocketConnected}</Text>
-      </View>
+      </View> */}
       {activeRequest?.from_latitude ? (
         <MapView
           style={styles.map}
@@ -182,29 +179,30 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           }}
           onMapReady={() => focusMap(markerIDs)}
           // customMapStyle={mapStyle}
-          >
+          provider={PROVIDER_GOOGLE}
+        >
           <Marker
             identifier="Marker1"
-            title={"Your are here"}
+            title={isDriverLogged ? 'Your User' : "Your are here"}
             coordinate={{
               latitude: Number(activeRequest?.from_latitude) + SPACE,
               longitude: Number(activeRequest?.from_longitude) + SPACE,
             }}>
             <ImageView
-              source={(activeRequest.status === RideStatus.ONRIDE || isDriverLogged)? getVehicleImage(vehicleImage): images.pin}
+              source={(activeRequest.status === RideStatus.ONRIDE) ? getVehicleImage(vehicleImage) : images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
           {to_location?.latitude ? <Marker
             identifier="Marker2"
-            title={isDriverLogged ? "Your User" : "Your Driver"}
-            description={isDriverLogged ? `Waiting at ${activeRequest?.from_location}` : `On the way to ${activeRequest?.from_location}`}
+            title={isDriverLogged ? "Your are here" : "Your Driver"}
+            description={isDriverLogged ? `User Waiting at ${activeRequest?.from_location}` : `On the way to ${activeRequest?.from_location}`}
             coordinate={{
               latitude: Number(to_location?.latitude) - SPACE,
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={(activeRequest.status === RideStatus.ONRIDE || isDriverLogged) ? images.pin : getVehicleImage(vehicleImage)}
+            <ImageView source={(activeRequest.status === RideStatus.ONRIDE) ? images.pin : getVehicleImage(vehicleImage)}
               style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker> : null}
         </MapView>
