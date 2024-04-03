@@ -9,7 +9,7 @@ import { getScreen, getVehicleImage, isDriver } from '../util';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { ImageView } from '../components/common';
 import images from '../util/images';
-import {  delay, get } from 'lodash';
+import { delay, get } from 'lodash';
 import { RideStatus } from '../constants';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 import useLocationWatcher from '../hooks/useLocationWatcher';
@@ -159,7 +159,11 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   }, [to_location, location, mapRef]);
 
   const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
-
+  const isOnRide = activeRequest.status === RideStatus.ONRIDE
+  const regionLatnLng = {
+    latitude: isOnRide ? activeLocation?.latitude : Number(activeRequest?.from_latitude),
+    longitude: isOnRide ? activeLocation?.longitude : Number(activeRequest?.from_longitude),
+  }
 
   return (
     <View style={styles.container}>
@@ -172,8 +176,8 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           style={styles.map}
           ref={mapRef}
           initialRegion={{
-            latitude: Number(activeRequest?.from_latitude),
-            longitude: Number(activeRequest?.from_longitude),
+            latitude: regionLatnLng.latitude,
+            longitude: regionLatnLng.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
@@ -185,11 +189,11 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
             identifier="Marker1"
             title={isDriverLogged ? 'Your User' : "Your are here"}
             coordinate={{
-              latitude: Number(activeRequest?.from_latitude) + SPACE,
-              longitude: Number(activeRequest?.from_longitude) + SPACE,
+              latitude: regionLatnLng.latitude + SPACE,
+              longitude: regionLatnLng.longitude + SPACE,
             }}>
             <ImageView
-              source={(activeRequest.status === RideStatus.ONRIDE) ? getVehicleImage(vehicleImage) : images.pin}
+              source={(isOnRide) ? getVehicleImage(vehicleImage) : images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
           </Marker>
@@ -202,7 +206,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
-            <ImageView source={(activeRequest.status === RideStatus.ONRIDE) ? images.pin : getVehicleImage(vehicleImage)}
+            <ImageView source={(isOnRide) ? images.pin : getVehicleImage(vehicleImage)}
               style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker> : null}
         </MapView>
