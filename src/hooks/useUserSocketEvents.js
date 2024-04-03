@@ -19,7 +19,8 @@ const SOCKET_EVENTS = {
 export const disconnectUserSocket = () => {
     userSocket.disconnect()
 }
-const ignoreEvents = ['connect', 'disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location]
+const ignoreEvents = []
+// ['connect', 'disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location]
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
     const { playSound } = useNotificationSound()

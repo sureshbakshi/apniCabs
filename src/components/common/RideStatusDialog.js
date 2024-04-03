@@ -31,7 +31,6 @@ export default ({ activeRequest, isDriverLogged }) => {
         }
     }
     const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
-
     const clearRideState = () => {
         delay(() => {
             dispatch(isDriverLogged ? clearDriverState() : clearUserState())
@@ -48,7 +47,7 @@ export default ({ activeRequest, isDriverLogged }) => {
             </> : null
         )
     }, [
-        activeRequest, isDriverLogged
+        statusUpdate
     ])
     return DialogComponent
 }
