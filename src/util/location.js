@@ -35,7 +35,7 @@ export const checkAndroidPermissions = async () => {
             {
                 title: 'Apnicabi',
                 message:
-                    'Apnicabi needs to use your location to show routes and get taxis',
+                    'Apnicabi needs to use your location to show routes and to find drivers.',
             },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
