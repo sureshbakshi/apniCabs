@@ -15,6 +15,7 @@ import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateRequestMutation } from '../slices/apiSlice';
 import { Icon } from '../components/common';
 import { navigate } from '../util/navigationService';
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
@@ -105,6 +106,8 @@ export const PickARide = () => {
   const { driverInfo, userInfo } = useSelector(state => state.auth);
   const status = isDriverAcceptedOrOnline()
   const [isOnline, setToggleSwitch] = useState(status)
+  const { getCurrentLocation } = useGetCurrentLocation();
+
 
   const updateDriverStatus = useUpdateDriverStatus();
 
@@ -121,6 +124,10 @@ export const PickARide = () => {
       }
     }
   }, [isOnline]);
+
+  useEffect(()=>{
+   if(status) getCurrentLocation(() =>{}, true)
+  },[status])
 
   useEffect(() => {
     setToggleSwitch(status)

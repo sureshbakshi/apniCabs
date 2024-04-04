@@ -108,7 +108,6 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   const { getCurrentLocation, currentLocation } = useGetCurrentLocation();
   const { watchPosition, location: watchedLocation } = useLocationWatcher();
   const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
-
   const updateDriverLocationToServer = useUpdateDriverLocation()
 
   const { driverLocation } = useSelector(state => state.user);
@@ -130,8 +129,10 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   }, [watchedLocation, currentLocation]);
 
   useEffect(() => {
-    updateDriverLocationToServer(location)
-  }, [location])
+    if(isDriverLogged) {
+      updateDriverLocationToServer(location)
+    }
+  }, [location, isDriverLogged])
 
   const focusMap = (markers) => {
     mapRef.current?.fitToSuppliedMarkers(markers, {
