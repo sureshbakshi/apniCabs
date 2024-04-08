@@ -16,6 +16,8 @@ import { fareSchema } from "../schema";
 import useGetDriverDetails from "../hooks/useGetDriverDetails";
 import ScreenContainer from "../components/ScreenContainer";
 import FindRideStyles from "../styles/FindRidePageStyles";
+import { showSuccessMessage } from "../util";
+import { goBack } from "../util/navigationService";
 
 const defaultProps = {
     margin: "2",
@@ -61,7 +63,12 @@ export default function FareSettings() {
                     fare_20_50_km,
                     fare_above_50_km,
                     id: driverInfo.vehicle.id,
-                });
+                }).unwrap()
+                .then(data => {
+                  showSuccessMessage('Updated successfully')
+                  goBack()
+                })
+                .catch(error => console.log(error));
             }
         }
     };

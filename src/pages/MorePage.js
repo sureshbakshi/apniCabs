@@ -6,7 +6,7 @@ import { Icon, Text } from '../components/common';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
-import { openOwnerPortal } from '../util/config';
+import { openUrl, webLinks } from '../util/config';
 import { isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
 import SupportLinks from '../components/SupportLinks';
@@ -20,17 +20,17 @@ const MorePage = () => {
   return (
     <View style={MoreStyles.container}>
       <View style={MoreStyles.section}>
-        <ScrollView>
-          <View style={MoreStyles.card}>
-            <View style={MoreStyles.cardtop}>
-              <View style={MoreStyles.left}>
-                <ProfileImage />
-              </View>
-              <View style={MoreStyles.middle}>
-                <Text style={MoreStyles.name}>{profile?.name}</Text>
-              </View>
+        <View style={MoreStyles.card}>
+          <View style={MoreStyles.cardtop}>
+            <View style={MoreStyles.left}>
+              <ProfileImage />
+            </View>
+            <View style={MoreStyles.middle}>
+              <Text style={MoreStyles.name}>{profile?.name}</Text>
             </View>
           </View>
+        </View>
+        <ScrollView persistentScrollbar>
           <View style={MoreStyles.listSection}>
             <Pressable
               style={MoreStyles.list}
@@ -89,7 +89,7 @@ const MorePage = () => {
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
-                onPress={openOwnerPortal}>
+                onPress={() => openUrl(webLinks.ownerPortal)}>
                 <View style={MoreStyles.listIcon}>
                   <Icon name="web" size="large" color={COLORS.primary} />
                 </View>
@@ -98,7 +98,6 @@ const MorePage = () => {
               <SupportLinks />
 
             </> : null}
-
 
           </View>
           <Pressable

@@ -9,8 +9,14 @@ export default {
     GOOGLE_MAPS_KEY:Config.GOOGLE_MAPS_KEY
 }
 
-export const openOwnerPortal = () => {
-    Linking.openURL('http://owner.apnicabi.com/').catch(err =>
+export const openUrl = (uri) => {
+    Linking.openURL(uri).catch(err =>
       console.error('An error occurred', err),
     );
   };
+
+  export const webLinks = {
+    ownerPortal: 'http://owner.apnicabi.com/',
+    terms: 'https://www.apnidukandari.com/terms-and-conditions',
+    privacy: 'https://www.apnidukandari.com/privacy-policy'
+  }
