@@ -35,10 +35,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
 
+// const initialState = {
+//   email: 'sureshbakshi88@gmail.com',
+//   password: 'abc123',
+// };
+
 const initialState = {
-  email: 'sureshbakshi88@gmail.com',
-  password: 'abc123',
-};
+  email: '',
+  password: ''
+}
 
 GoogleSignin.configure({
   androidClientId: Config.ANDROID_GOOGLE_SIGN_IN_KEY, // client ID of type WEB for your server (needed to verify user ID and offline access)

@@ -6,7 +6,7 @@ import { Icon, Text } from '../components/common';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
-import { openUrl, webLinks } from '../util/config';
+import { openOwnerPortal} from '../util/config';
 import { isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
 import SupportLinks from '../components/SupportLinks';
@@ -89,7 +89,7 @@ const MorePage = () => {
               <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
-                onPress={() => openUrl(webLinks.ownerPortal)}>
+                onPress={openOwnerPortal}>
                 <View style={MoreStyles.listIcon}>
                   <Icon name="web" size="large" color={COLORS.primary} />
                 </View>
