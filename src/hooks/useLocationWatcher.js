@@ -31,12 +31,15 @@ export default () => {
                         // console.log('watchPosition', position)
                        getLocation(position.coords, setLocation);
                     },
-                    error => console.log(error),
+                    (error) => {
+                        // See error code charts below.
+                        showErrorMessage('Please enable GPS');
+                    },
                     defaultOptions,
                 );
             }
         } else {
-            showErrorMessage('Please enable location service');
+            showErrorMessage('Please enable GPS');
         }
     };
 

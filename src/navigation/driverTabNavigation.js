@@ -7,11 +7,12 @@ import { AppProvider } from '../context/App.context';
 import DriverStackNavigator from './driverStackNavigation';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
 import DriverRideHistory from '../pages/driver/DriverRideHistory';
+import useAppStateListner from '../hooks/useAppStateListner';
 const Tab = createBottomTabNavigator();
 
 export default function DriverTabNavigator() {
   useDriverSocketEvents()
-
+  useAppStateListner()
   return (
     <AppProvider>
       <Tab.Navigator

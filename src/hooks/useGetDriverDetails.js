@@ -29,7 +29,7 @@ export const useUpdateDriverStatus = () => {
     const updateDriverStatus = (isOnline, cb) => {
         _updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
             dispatch(setDriverStatus(res))
-        }).catch(() => cb?.(!val))
+        }).catch(() => cb?.(!isOnline))
     }
     return updateDriverStatus
 }

@@ -15,7 +15,8 @@ export default () => {
 
 
     const getCurrentLocation = async (cb, isDriver = false) => {
-        if (checkAndroidPermissions()) {
+        const granted = await checkAndroidPermissions();
+        if (granted) {
          await Geolocation.getCurrentPosition(
                 async (position) => {
                     if (position?.coords) {
@@ -30,7 +31,7 @@ export default () => {
                 (error) => {
                     // See error code charts below.
                     console.log(error?.code, error?.message);
-                    showErrorMessage('Please enable location service');
+                    showErrorMessage('Please enable GPS');
                 },
                 defaultOptions
             );

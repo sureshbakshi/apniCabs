@@ -18,7 +18,7 @@ import { navigate } from '../util/navigationService';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 
-const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
+const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
   return (
     <View style={FindRideStyles.card} key={item.id}>
       <View style={{ padding: 10 }}>
@@ -57,12 +57,14 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
       </View>
       <View style={FindRideStyles.cardBottom}>
         <Pressable
-          style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
+          style={[FindRideStyles.button, { backgroundColor: COLORS.primary, opacity: isLoading ? 0.8 : 1 }]}
+          disabled={isLoading}
           onPress={() => handleDeclineRequest(item)}>
           <Text style={FindRideStyles.text}>{'Decline'}</Text>
         </Pressable>
         <Pressable
-          style={[FindRideStyles.button, { backgroundColor: COLORS.green }]}
+          style={[FindRideStyles.button, { backgroundColor: COLORS.green, opacity: isLoading ? 0.8 : 1 }]}
+          disabled={isLoading}
           onPress={() => handleAcceptRequest(item)}>
           <Text style={FindRideStyles.text}>{'Accept'}</Text>
         </Pressable>
@@ -72,7 +74,7 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest }) => {
 };
 const DriverCard = ({ list }) => {
   const dispatch = useDispatch()
-  const [updateRequest, { data: updatedRequest }] = useUpdateRequestMutation();
+  const [updateRequest, { data: updatedRequest, isLoading }] = useUpdateRequestMutation();
 
   const requestHandler = (status, request) => {
     const payload = {
@@ -94,6 +96,7 @@ const DriverCard = ({ list }) => {
         item={item}
         handleAcceptRequest={(request) => requestHandler(RideStatus.ACCEPTED, request)}
         handleDeclineRequest={(request) => requestHandler(RideStatus.DECLINED, request)}
+        isLoading={isLoading}
         key={`${key}_${item.id}`}
       />
     );
@@ -125,9 +128,9 @@ export const PickARide = () => {
     }
   }, [isOnline]);
 
-  useEffect(()=>{
-   if(status) getCurrentLocation(() =>{}, true)
-  },[status])
+  useEffect(() => {
+    if (status) getCurrentLocation(() => { }, true)
+  }, [status])
 
   useEffect(() => {
     setToggleSwitch(status)

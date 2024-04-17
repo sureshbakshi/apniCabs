@@ -62,16 +62,19 @@ export const CancelReasonDialog = () => {
   }
 
   useEffect(() => {
-    if (cancelAcceptedRequestData || cancelAcceptedRequestData === null) {
+    if (cancelAcceptedRequestData || cancelAcceptedRequestData === null || cancelAcceptedRequestError) {
       closeAndClearRequest()
-    } else if (cancelAcceptedRequestError) {
-      if (cancelAcceptedRequestError?.status === 400) {
-        closeAndClearRequest()
-      } else {
-        closeModal();
-      }
-      // console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
     }
+    // else if (cancelAcceptedRequestError) {
+    //   console.log({ cancelAcceptedRequestError })
+    //   if (cancelAcceptedRequestError?.status === 400) {
+    //     closeAndClearRequest()
+    //   } else {
+    //     closeModal();
+    //   }
+    //   closeAndClearRequest()
+    //   // console.log('cancelAcceptedRequestError', cancelAcceptedRequestError)
+    // }
 
   }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
   const handleSubmit = () => {

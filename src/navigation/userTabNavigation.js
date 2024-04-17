@@ -10,6 +10,7 @@ import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandle
 import { useEffect } from 'react';
 import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
 import { AppState } from 'react-native';
+import useAppStateListner from '../hooks/useAppStateListner';
 
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {
@@ -17,22 +18,7 @@ export default function UserTabNavigator() {
   useActiveRequestBackHandler();
 
   const { validateRequestExpiry } = useValidateRequestExpiry();
-
-
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      nextAppState => {
-        if (nextAppState === 'active') {
-          validateRequestExpiry();
-        }
-        console.log('Next AppState is: ', nextAppState);
-      },
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
+  useAppStateListner(validateRequestExpiry)
   return (
     <AppProvider>
       <Tab.Navigator

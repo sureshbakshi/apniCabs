@@ -19,7 +19,7 @@ const Card = item => {
   const [sendRequest, { data: requestData, error: requestError, isLoading }] =
     useSendRequestMutation();
 
-  const [cancelRequest, { data: cancelRequestData, error: cancelRequestError, isLoading: cancelRequestLoading }] =
+  const [cancelRequest, { data: cancelRequestData, error: cancelRequestError, isLoading: isCancelRequestLoading }] =
     useCancelRequestMutation();
 
   const handleSendRequest = item => {
@@ -133,10 +133,11 @@ const Card = item => {
         </View>
         <View style={[FindRideStyles.right, { padding: 0, paddingBottom: 5 }]}>
           <Pressable
-            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginHorizontal: 3, paddingVertical: 0 }]}
-            onPress={() => isDisabled ? null: handleSendRequest(item)}>
+            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginHorizontal: 3, paddingVertical: 0 , opacity: isLoading || isCancelRequestLoading ? 0.6: 1}]}
+            onPress={() => isDisabled ? null: handleSendRequest(item)}
+            disabled={isLoading || isCancelRequestLoading}>
             <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
-              {actionButtonInfo.label}
+              {isLoading || isCancelRequestLoading ? 'Loading...': actionButtonInfo.label}
             </Text>
           </Pressable>
         </View>

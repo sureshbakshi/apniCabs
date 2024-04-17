@@ -7,12 +7,12 @@ import {filter} from 'lodash'
 
 export  const defaultOptions = {
     enableHighAccuracy: true,
-    maximumAge: 5 * 1000,
+    maximumAge: 3 * 1000,
     timeout: 30 * 1000,
     forceRequestLocation: true,
-    interval: 10 * 1000,
+    interval: 3 * 1000,
     useSignificantChanges: true,
-    distanceFilter: 5,
+    distanceFilter: 3,
     showLocationDialog: true,
     forceRequestLocation: true
 }
@@ -41,12 +41,12 @@ export const checkAndroidPermissions = async () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             return true;
         } else {
-            checkAndroidPermissions();
+            await checkAndroidPermissions();
             return false
         }
     } catch (err) {
         console.warn(err);
-        checkAndroidPermissions();
+        await checkAndroidPermissions();
         return false
     }
 };

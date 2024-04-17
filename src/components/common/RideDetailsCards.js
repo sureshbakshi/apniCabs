@@ -1,36 +1,36 @@
-import React, {  useRef, useState } from 'react';
-import { View, Pressable,  TextInput } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Pressable, TextInput } from 'react-native';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { ImageView, Text } from '../common';
 import styles from '../../styles/MyRidePageStyles';
 import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
-import { COLORS, RideStatus} from '../../constants';
+import { COLORS, RideStatus } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useCompleteRideRequestMutation, useRideRequestMutation } from '../../slices/apiSlice';
 import { updateRideStatus, setActiveRide, clearDriverState } from '../../slices/driverSlice';
-import {  showErrorMessage } from '../../util';
+import { showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
 import { setDialogStatus } from '../../slices/authSlice';
 
 const cancelRide = () => {
     const dispatch = useDispatch();
     return <Pressable
-      onPress={() => dispatch(setDialogStatus(true))}
-      style={[
-        FindRideStyles.button,
-        { backgroundColor: COLORS.primary },
-      ]}>
-      <Text
+        onPress={() => dispatch(setDialogStatus(true))}
         style={[
-          FindRideStyles.text,
-          { fontWeight: 'bold', color: COLORS.white },
+            FindRideStyles.button,
+            { backgroundColor: COLORS.primary },
         ]}>
-        {'Cancel Ride'}
-      </Text>
+        <Text
+            style={[
+                FindRideStyles.text,
+                { fontWeight: 'bold', color: COLORS.white },
+            ]}>
+            {'Cancel Ride'}
+        </Text>
     </Pressable>
-  }
+}
 
 export default ({ activeRequest, isDriverLogged }) => {
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
@@ -39,10 +39,10 @@ export default ({ activeRequest, isDriverLogged }) => {
     const [otp, setOtp] = useState('');
     const { activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user)
 
-    const [rideRequest, { data: rideRequestData, error: rideRequestError, rideRequestDataLoading }] =
+    const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
         useRideRequestMutation();
 
-    const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, completeRideRequestDataLoading }] =
+    const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
         useCompleteRideRequestMutation();
 
     const getFromLocation = (location = currentLocation) => {
@@ -141,9 +141,10 @@ export default ({ activeRequest, isDriverLogged }) => {
                 {activeRideId || activeRequest.status === RideStatus.ONRIDE ? <View style={FindRideStyles.cardBottom}>
                     <Pressable
                         onPress={() => getCurrentLocation(completeRideHandler)}
+                        disabled={isCompleteRideLoading}
                         style={[
                             FindRideStyles.button,
-                            { backgroundColor: COLORS.brand_yellow },
+                            { backgroundColor: COLORS.brand_yellow, opacity: isCompleteRideLoading ? 0.8 : 1 },
                         ]}>
                         <Text
                             style={[
@@ -173,9 +174,10 @@ export default ({ activeRequest, isDriverLogged }) => {
                         {cancelRide()}
                         <Pressable
                             onPress={() => handleSubmitOtp()}
+                            disabled={isSubmitOtpLoading}
                             style={[
                                 FindRideStyles.button,
-                                { backgroundColor: COLORS.brand_yellow },
+                                { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.8 : 1 },
                             ]}>
                             <Text
                                 style={[

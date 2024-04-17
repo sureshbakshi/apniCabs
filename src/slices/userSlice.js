@@ -47,7 +47,7 @@ const userSlice = createSlice({
       }
     },
     clearUserState: (state, action) => {
-      return intialState
+      return Object.assign(state, { ...intialState })
     },
 
     updateDriversRequest: (state, action) => {

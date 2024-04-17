@@ -3,9 +3,13 @@ import { checkAndroidPermissions } from '../util/location';
 
 function AppContainer(WrappedComponent) {
   return props => {
+    const fetchLocation = async () => {
+      await checkAndroidPermissions()
+    }
     useEffect(() => {
-      checkAndroidPermissions();
+      fetchLocation();
     }, []);
+    
     return <WrappedComponent  {...props} />;
   };
 }

@@ -29,6 +29,30 @@ const requestLocationPermission = async () => {
   }
 };
 
+
+export const requestExactAlarmPermission = async() =>{
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.SCHEDULE_EXACT_ALARM,
+      {
+        title: 'Permission Request',
+        message: 'This app requires access to schedule exact alarms.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Exact alarm permission granted');
+    } else {
+      console.log('Exact alarm permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+}
+
+
 const GeoLocationScreen = () => {
   const [location, setLocation] = React.useState(false);
 

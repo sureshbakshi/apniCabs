@@ -13,6 +13,7 @@ import { delay, get } from 'lodash';
 import { RideStatus } from '../constants';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 import useLocationWatcher from '../hooks/useLocationWatcher';
+import { debounce } from 'lodash';
 
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -126,10 +127,10 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     if (!watchedLocation.latitude || !currentLocation.latitude) {
       isDriverLogged ? watchPosition() : getCurrentLocation();
     }
-  }, [watchedLocation, currentLocation]);
+  }, [watchedLocation?.latitude, watchPosition?.longitude, currentLocation?.latitude, currentLocation?.longitude]);
 
   useEffect(() => {
-    if(isDriverLogged) {
+    if (isDriverLogged) {
       updateDriverLocationToServer(location)
     }
   }, [location, isDriverLogged])
@@ -147,17 +148,9 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     });
   };
 
-  const focus = () => {
+  const debouncedFocusMap = debounce(() => {
     focusMap(markerIDs);
-  };
-
-  useEffect(() => {
-    if (to_location?.latitude) {
-      delay(() => {
-        focus();
-      }, 512)
-    }
-  }, [to_location, location, mapRef]);
+  }, 3 * 1000);
 
   const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
   const isOnRide = activeRequest.status === RideStatus.ONRIDE
@@ -165,6 +158,14 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     latitude: isOnRide ? activeLocation?.latitude : Number(activeRequest?.from_latitude),
     longitude: isOnRide ? activeLocation?.longitude : Number(activeRequest?.from_longitude),
   }
+  
+  useEffect(() => {
+    if (to_location?.latitude) {
+      debouncedFocusMap();
+    }
+  }, [to_location?.latitude, to_location?.longitude, regionLatnLng?.longitude, regionLatnLng?.latitude]);
+
+  const isNotNaN = !isNaN(regionLatnLng?.latitude);
 
   return (
     <View style={styles.container}>
@@ -172,13 +173,13 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
         <Text>current location: {JSON.stringify(watchedLocation)}</Text>
         <Text>Socket ID: {isSocketConnected}</Text>
       </View> */}
-      {activeRequest?.from_latitude ? (
+      {(activeRequest?.from_latitude && isNotNaN) ? (
         <MapView
           style={styles.map}
           ref={mapRef}
           initialRegion={{
-            latitude: regionLatnLng.latitude,
-            longitude: regionLatnLng.longitude,
+            latitude: isNotNaN ? regionLatnLng?.latitude : activeRequest?.from_latitude,
+            longitude: isNotNaN ? regionLatnLng?.longitude : activeRequest?.from_longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
@@ -186,18 +187,18 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           // customMapStyle={mapStyle}
           provider={PROVIDER_GOOGLE}
         >
-          <Marker
+          {isNotNaN && <Marker
             identifier="Marker1"
             title={isDriverLogged ? 'Your User' : "Your are here"}
             coordinate={{
-              latitude: regionLatnLng.latitude + SPACE,
-              longitude: regionLatnLng.longitude + SPACE,
+              latitude: regionLatnLng?.latitude + SPACE,
+              longitude: regionLatnLng?.longitude + SPACE,
             }}>
             <ImageView
               source={(isOnRide) ? getVehicleImage(vehicleImage) : images.pin}
               style={{ minHeight: 5, minWidth: 5, height: 40, width: 40 }}
             />
-          </Marker>
+          </Marker>}
           {to_location?.latitude ? <Marker
             identifier="Marker2"
             title={isDriverLogged ? "Your are here" : "Your Driver"}
