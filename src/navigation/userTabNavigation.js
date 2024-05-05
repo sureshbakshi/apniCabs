@@ -34,12 +34,12 @@ export default function UserTabNavigator() {
           tabBarLabelStyle: { fontSize: 12 }
         })}
       >
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={RideStackNavigation} />
         <Tab.Screen
           name={ROUTES_NAMES.findRide}
           options={{ title: 'Find a Ride' }}
           component={UserStackNavigator}
         />
+        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={RideStackNavigation} />
         {/* <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} /> */}
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>
