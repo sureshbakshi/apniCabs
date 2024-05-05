@@ -1,5 +1,6 @@
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import images from './util/images';
+import { formatStatusText, formattedDate } from './util';
 
 
 export const authInitialState = {
@@ -8,8 +9,9 @@ export const authInitialState = {
   access_token: null,
   driverInfo: null,
   isSocketConnected: false,
-  isDialogOpen:false,
+  isDialogOpen: false,
   device_token: null,
+  vehicleTypes: null
 };
 
 export const USER_ROLES = {
@@ -17,6 +19,25 @@ export const USER_ROLES = {
   DRIVER: "DRIVER",
   OWNER: "OWNER",
 };
+
+export const DEFAULT_VEHICLE_TYPES = [
+  {
+    "id": "60670798-84a5-11ee-a1cc-06a7f9e34a98",
+    "code": "BIKE",
+    "name": "Bike"
+  },
+  {
+    "id": "856ca5e1-89f3-11ee-a1cc-06a7f9e34a98",
+    "code": "AUTO",
+    "name": "Auto"
+  },
+  {
+    "id": "a043f775-84a5-11ee-a1cc-06a7f9e34a98",
+    "code": "CAR",
+    "name": "Car"
+  }
+]
+
 
 export const COLORS = {
   primary: "#f85c70",
@@ -85,9 +106,10 @@ export const ROUTES_NAMES = {
   signUp: 'SignUp',
   searchRide: 'SearchRide',
   activeMap: 'ActiveMap',
-  messageInfo:'MessageInfo',
-  refer:'Refer',
-  notifications:'Notifications'
+  messageInfo: 'MessageInfo',
+  refer: 'Refer',
+  notifications: 'Notifications',
+  rideDetails: 'RideDetails',
 }
 
 export const RideStatus = {
@@ -103,6 +125,20 @@ export const RideStatus = {
   DRIVER_CANCELLED: 'DRIVER_CANCELLED',
   PENDING: 'PENDING',
   UNAVAILABLE: 'UNAVAILABLE'
+}
+
+export const RIDE_STATUS_LABELS = {
+  [RideStatus.USER_CANCELLED]:  'User Cancelled',
+  [RideStatus.DRIVER_CANCELLED]: 'Driver Cancelled',
+  [RideStatus.COMPLETED]:  'Completed',
+  [RideStatus.ACCEPTED]: 'On Going',
+}
+
+export const colorsNBg = {
+  [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
+  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
+  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
+  [RideStatus.ACCEPTED]: { color: COLORS.white, bg: COLORS.brand_blue, label: 'On Going', image: images.rideAccept },
 }
 
 export const VerificationStatus = {
@@ -122,6 +158,17 @@ export const DriverAvailableStatus = {
 export const RequestStatus = {
   REQUESTED: 'REQUESTED',
 
+}
+export const RideProxyNumber = '08071175144'
+export const SUPPORT = {
+  mobile: {
+    label: '1800 309 5959',
+    value: '18003095959'
+  },
+  email: {
+    label: 'contact@apnicabi.com',
+    value: 'contact@apnicabi.com?subject=Support'
+  }
 }
 
 export const ClearRideStatus = [RideStatus.USER_CANCELLED, RideStatus.DRIVER_CANCELLED, RideStatus.COMPLETED]
@@ -201,10 +248,10 @@ export const toastConfig = {
 };
 
 
-export const VEHICLE_IMAGES ={
-  BIKE:images.bike,
-  AUTO:images.auto,
-  CAR:images.carYellow
+export const VEHICLE_IMAGES = {
+  BIKE: images.bike,
+  AUTO: images.auto,
+  CAR: images.carYellow
 }
 
 export const VEHICLE_TYPES = {
@@ -226,7 +273,37 @@ export const VEHICLE_INFORMATION = [{
 }]
 
 export const USER_INFORMATION = [{
-  key: 'user.name',
+  key: 'userDetails.name',
+  props: {
+    style: { fontWeight: 'bold' }
+  }
+}]
+export const RIDE_HISTOY_DETAILS = [{
+  key: 'request.ride.driver.vehicle.registration_number',
+  props: {
+    style: { fontWeight: 'bold' }
+  }
+}, {
+  key: 'request.ride.created_at',
+  formatter: formattedDate
+}, {
+  key: 'request.ride.status',
+  formatter: formatStatusText
+}]
+
+export const RIDE_CANCEL_INFO = [{
+  key: 'request.status',
+  formatter: formatStatusText
+},{
+  key: 'request.reason',
+},{
+  key: 'request.created_at',
+  formatter: formattedDate
+
+}]
+
+export const USER_DETAILS = [{
+  key: 'userDetails.name',
   props: {
     style: { fontWeight: 'bold' }
   }
@@ -299,7 +376,6 @@ export const CONTACTS_FORM = [
       placeholder: "Enter Phone Number 4",
     },
   },
-  
 ];
 
 
@@ -338,7 +414,7 @@ export const SIGN_UP_FORM = [
       placeholder: "Enter email address*",
       required: true,
       editable: false,
-      selectTextOnFocus: false  
+      selectTextOnFocus: false
     },
   },
   {

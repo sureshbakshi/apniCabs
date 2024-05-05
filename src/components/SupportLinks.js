@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Pressable, Linking } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { Icon, Text } from './common';
-import { COLORS } from '../constants';
+import { COLORS, SUPPORT } from '../constants';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import { openUrl, webLinks } from '../util/config';
 
@@ -12,20 +12,20 @@ export default () => {
             <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
-                onPress={() => RNImmediatePhoneCall?.immediatePhoneCall('18003095959')}>
+                onPress={() => RNImmediatePhoneCall?.immediatePhoneCall(SUPPORT.mobile.value)}>
                 <View style={MoreStyles.listIcon}>
                     <Icon name="phone" size="large" color={COLORS.primary} />
                 </View>
-                <Text style={MoreStyles.name}>1800 309 5959</Text>
+                <Text style={MoreStyles.name}>{SUPPORT.mobile.label}</Text>
             </Pressable>
             <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
-                onPress={() => Linking.openURL('mailto:contact@apnicabi.com?subject=Support')}>
+                onPress={() => Linking.openURL(`mailto:${SUPPORT.email.value}`)}>
                 <View style={MoreStyles.listIcon}>
                     <Icon name="email" size="large" color={COLORS.primary} />
                 </View>
-                <Text style={MoreStyles.name}>contact@apnicabi.com</Text>
+                <Text style={MoreStyles.name}>{SUPPORT.email.label}</Text>
             </Pressable>
             <Pressable
                 style={MoreStyles.list}

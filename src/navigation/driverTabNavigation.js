@@ -6,8 +6,8 @@ import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import DriverStackNavigator from './driverStackNavigation';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
-import DriverRideHistory from '../pages/driver/DriverRideHistory';
 import useAppStateListner from '../hooks/useAppStateListner';
+import RideStackNavigation from './RideStackNavigation';
 const Tab = createBottomTabNavigator();
 
 export default function DriverTabNavigator() {
@@ -30,7 +30,7 @@ export default function DriverTabNavigator() {
       >
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={DriverStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={DriverRideHistory} />
+        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={RideStackNavigation} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>

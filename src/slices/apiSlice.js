@@ -266,6 +266,14 @@ export const apiSlice = createApi({
       transformErrorResponse: (response) => response,
       invalidatesTags: ["FARE"]
     }),
+    getVehicleTypes: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.vehicle('vehicle-types'),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     // transaction starts
     getDriverTransactions: builder.query({
       query: id => ({
@@ -296,6 +304,14 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
       providesTags: ["FARE"]
+    }),
+    getRideDetails: builder.query({
+      query: id => ({
+        method: 'GET',
+        url: api_path.request(id),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
     }),
     //SOS
     sosAdd: builder.mutation({
@@ -343,5 +359,7 @@ export const {
   useCancelRequestMutation,
   useCancelAllRequestMutation,
   useSosAddMutation,
-  useSosListQuery
+  useSosListQuery,
+  useGetVehicleTypesQuery,
+  useGetRideDetailsQuery,
 } = apiSlice;

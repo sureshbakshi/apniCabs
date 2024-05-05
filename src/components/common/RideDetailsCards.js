@@ -32,6 +32,55 @@ const cancelRide = () => {
     </Pressable>
 }
 
+export const RideDetailsView = ({ activeRequest, driverDetails = null }) => {
+    const driver_details = driverDetails || activeRequest?.driver
+    const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
+    const fare = activeRequest.fare || activeRequest?.ride?.fare
+    return (
+        <View style={{ padding: 10 }}>
+            <View style={FindRideStyles.cardtop}>
+
+                {driver_details?.name && <View style={FindRideStyles.left}>
+                    <ImageView
+                        source={driver_avatar ? { uri: driver_avatar } : images[`captain1`]}
+                        style={[styles.avatar]}
+                    />
+                </View>}
+                <View style={FindRideStyles.middle}>
+                    {driver_details?.name && <Text style={[FindRideStyles.name, styles.bold, { marginTop: 0 }]}>{driver_details?.name}</Text>}
+                    <Timeline
+                        data={[
+                            activeRequest.from_location,
+                            activeRequest.to_location,
+                        ]}
+                    />
+                </View>
+                {fare && <View style={FindRideStyles.right}>
+                    <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
+                        {'\u20B9'}
+                        {fare}
+                    </Text>
+                </View>}
+            </View>
+            <View style={FindRideStyles.cardBottom}>
+                <View style={FindRideStyles.left}>
+                    {activeRequest.duration && (
+                        <Text style={[styles.text, styles.bold]}>
+                            Duration: {activeRequest.duration}
+                        </Text>
+                    )}
+                </View>
+                <View style={FindRideStyles.right}>
+                    <Text style={[styles.text, styles.bold]}>
+                        Distance: {activeRequest.distance} km
+                    </Text>
+                </View>
+            </View>
+            {activeRequest?.ride?.id && <Text style={[styles.text, styles.bold, { alignSelf: 'flex-start', paddingLeft: 10 }]}>Ride ID : {activeRequest?.ride?.id}</Text>}
+        </View>
+    )
+}
+
 export default ({ activeRequest, isDriverLogged }) => {
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
     const dispatch = useDispatch()
@@ -94,50 +143,11 @@ export default ({ activeRequest, isDriverLogged }) => {
         })
     }
 
-    const driver_avatar = activeRequest?.driver?.driver_detail?.photo || activeRequest?.driver?.vehicle?.vehicle_image
 
     return (
         <View style={FindRideStyles.card}>
-            <View style={{ padding: 10 }}>
-                <View style={FindRideStyles.cardtop}>
-                    <View style={FindRideStyles.left}>
-                        <ImageView
-                            source={driver_avatar ? { uri: driver_avatar } : images[`captain1`]}
-                            style={[styles.avatar]}
-                        />
-                    </View>
-                    <View style={FindRideStyles.middle}>
-                        <Text style={[FindRideStyles.name, styles.bold]}>{activeRequest?.driver?.name}</Text>
-                        <Timeline
-                            data={[
-                                activeRequest.from_location,
-                                activeRequest.to_location,
-                            ]}
-                        />
-                    </View>
-                    <View style={FindRideStyles.right}>
-                        <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
-                            {'\u20B9'}
-                            {activeRequest.fare}
-                        </Text>
-                    </View>
-                </View>
-                <View style={FindRideStyles.cardBottom}>
-                    <View style={FindRideStyles.left}>
-                        {activeRequest.duration && (
-                            <Text style={[styles.text, styles.bold]}>
-                                Duration: {activeRequest.duration}
-                            </Text>
-                        )}
-                    </View>
-                    <View style={FindRideStyles.right}>
-                        <Text style={[styles.text, styles.bold]}>
-                            Distance: {activeRequest.distance} km
-                        </Text>
-                    </View>
-                </View>
-            </View>
-            {isDriverLogged ? <View>
+            <RideDetailsView {...{ activeRequest }} />
+            {(isDriverLogged) ? <View>
                 {activeRideId || activeRequest.status === RideStatus.ONRIDE ? <View style={FindRideStyles.cardBottom}>
                     <Pressable
                         onPress={() => getCurrentLocation(completeRideHandler)}
@@ -190,7 +200,6 @@ export default ({ activeRequest, isDriverLogged }) => {
 
                     </View>
                 </View>}</View> : <View>{!activeRideId ? cancelRide() : null}</View>}
-
         </View>
     );
 };

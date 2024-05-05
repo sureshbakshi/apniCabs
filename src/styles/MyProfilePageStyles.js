@@ -6,6 +6,11 @@ const MyProfileStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f4f6',
   },
+  avatar: {
+    borderRadius: 50,
+    minHeight: 40,
+    minWidth: 40
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

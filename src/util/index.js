@@ -3,7 +3,7 @@ import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { DriverAvailableStatus, USER_ROLES, VEHICLE_IMAGES, VerificationStatus } from '../constants';
+import { DEFAULT_VEHICLE_TYPES, DriverAvailableStatus, RIDE_STATUS_LABELS, USER_ROLES, VEHICLE_IMAGES, VEHICLE_TYPES, VerificationStatus, colorsNBg } from '../constants';
 import { store } from '../store';
 import images from './images';
 import { Notifications } from 'react-native-notifications';
@@ -146,6 +146,14 @@ export const getVehicleImage = (type) => {
   return type ? (VEHICLE_IMAGES[type] || images.car) : images.car
 }
 
+export const getVehicleImageById = (id) => {
+  const { vehicleTypes } = store.getState().auth
+  const types = vehicleTypes || DEFAULT_VEHICLE_TYPES
+  const vehicleCode =  types.filter((item) => item.id === id)
+  const code = vehicleCode?.length ? vehicleCode[0].code : null
+   return getVehicleImage(code)
+}
+
 export const formatRideRequest = (newRequest, oldRequests) => {
   const index = oldRequests?.findIndex((item) => item.id === newRequest.id)
   if (index > -1) {
@@ -215,4 +223,8 @@ export function isValidEvent(eventName, ignoreEvents) {
       return Object.values(groupedTransactions);
     }
     return []
+  }
+
+  export const formatStatusText = (status) => {
+    return RIDE_STATUS_LABELS[status]
   }

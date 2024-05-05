@@ -44,6 +44,9 @@ const authSlice = createSlice({
     },
     setDialogStatus:(state, action)=>{
       state.isDialogOpen = action.payload;
+    },
+    setVehicleTypes:(state, action)=>{
+      state.vehicleTypes = action.payload;
     }
 
   },
@@ -57,6 +60,7 @@ export const {
   setDriverDetails,
   updatedSocketConnectionStatus,
   setDialogStatus,
-  setDeviceToken
+  setDeviceToken,
+  setVehicleTypes
 } = authSlice.actions;
 export default authSlice.reducer;

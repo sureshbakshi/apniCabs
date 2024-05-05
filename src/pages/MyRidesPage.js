@@ -1,21 +1,14 @@
 import * as React from 'react';
-import { View, Button, Pressable, ScrollView, FlatList, SafeAreaView } from 'react-native';
+import { View, Pressable, FlatList, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
-import { COLORS, RideStatus } from '../constants';
+import { COLORS, ROUTES_NAMES, colorsNBg } from '../constants';
 import { ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import { formattedDate, getRandomNumber, getScreen } from '../util';
+import { formattedDate, getRandomNumber } from '../util';
 import { get } from 'lodash'
 import SearchLoader from '../components/common/SearchLoader';
-
-const colorsNBg = {
-  [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
-  [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
-  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
-  [RideStatus.ACCEPTED]: { color: COLORS.white, bg: COLORS.brand_blue, label: 'On Going', image: images.rideAccept },
-
-}
+import { navigate } from '../util/navigationService';
 
 const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -31,10 +24,12 @@ const Card = ({ item, keys }) => {
   const time = getValue(item, keys.rideTime)
   const { color, bg, label, image } = getColorNBg(status)
 
-  return <View style={styles.card} key={item.id}>
-    <Pressable style={[styles.status, { backgroundColor: bg }]}>
+  return <Pressable style={styles.card} key={item.id}
+    android_ripple={{ color: '#ccc' }}
+    onPress={() => item?.id ? navigate(ROUTES_NAMES.rideDetails, { id: item?.id }) : null}>
+    <View style={[styles.status, { backgroundColor: bg }]}>
       <Text style={[styles.text, styles.whiteColor, { color: color }]}>{label}</Text>
-    </Pressable>
+    </View>
     <View style={styles.cardtop}>
       <View style={[styles.left, { paddingRight: 0, paddingLeft: 20 }]}>
         <ImageView source={image || images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
@@ -53,30 +48,18 @@ const Card = ({ item, keys }) => {
       {time && <View style={[styles.right, { right: -10, position: 'absolute' }]}>
         {<Text style={styles.text}>{formattedDate(time)}</Text>}
       </View>}
-      {/* <View style={styles.middle}>
-          <Text style={styles.text}>10:00 am</Text>
-          <Text style={styles.text}>Honda Civic | White</Text>
-        </View> */}
-      {/* <View style={styles.right}>
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>{'More Info'}</Text>
-          </Pressable>
-        </View> */}
     </View>
-  </View>
+  </Pressable>
 }
 const MyRidePage = ({ data, keys }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>{'My Rides'.toUpperCase()}</Text>
-      </View>
       {data?.length ? <View style={styles.section}>
         <FlatList
-        data={data}
-        renderItem={({item, i}) => <Card item={item} key={i} keys={keys} />}
-        keyExtractor={item => item.id}
-      />
+          data={data}
+          renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
+          keyExtractor={item => item.id}
+        />
       </View> :
         <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
     </SafeAreaView>

@@ -1,8 +1,9 @@
-import { Pressable } from "react-native"
+import { Pressable, View } from "react-native"
 import LoginStyles from "../../styles/LoginPageStyles"
-import {upperCase} from  'lodash';
+import { upperCase } from 'lodash';
 import { Text } from "react-native-paper";
-export default ({ onClick, styles, textStyles, label , isLowerCase=false}) => {
+
+export default ({ onClick, styles, textStyles, label, isLowerCase = false }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = () => {
@@ -13,10 +14,10 @@ export default ({ onClick, styles, textStyles, label , isLowerCase=false}) => {
             onPress={clickHandler}
             style={[
                 LoginStyles.button,
-                {...(styles || {})}
+                { ...(styles || {}) }
             ]}
             android_ripple={{ color: '#ccc' }}>
-            <Text style={[LoginStyles.text, {...(textStyles || {})}]}>
+            <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
                 {formattedLabel}
             </Text>
         </Pressable>

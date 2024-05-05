@@ -79,7 +79,7 @@ export const getLocation = async (coords, cb) => {
             }
         } else {
             // return new Error('Distance calculation error');
-            showErrorMessage('Error while fetching location address')
+            showErrorMessage(`Error while location request ${status}`)
         }
     } catch (error) {
         showErrorMessage('Error while fetching location')

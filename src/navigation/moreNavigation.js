@@ -31,7 +31,7 @@ export default function MoreNavigator({ navigation, route }) {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen name="More" component={MorePage} />
+      <Stack.Screen name="More Details" component={MorePage} />
       <Stack.Screen
         name="MyProfile"
         options={{ title: 'My Profile' }}
