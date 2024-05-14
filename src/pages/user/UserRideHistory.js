@@ -5,13 +5,13 @@ import ActivityIndicator from "../../components/common/ActivityIndicator";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default () => {
-    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading }] = useLazyUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading , isUninitialized}] = useLazyUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
     useFocusEffect(
         useCallback(() => {
             refetch?.()
         }, [])
     );
-    if (isLoading) {
+    if (isLoading || isUninitialized) {
         return  <ActivityIndicator/>
     }
 
@@ -25,7 +25,6 @@ export default () => {
         avatar: '',
         fare: 'ride.fare'
       }
-      
     return (
        <MyRidePage data={rideHistory} keys={rideHistoryKeys}/>
     )

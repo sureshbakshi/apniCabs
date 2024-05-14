@@ -109,7 +109,6 @@ export default ({ activeRequest, isDriverLogged }) => {
             from: getFromLocation(location)
         }
         rideRequest(payload).unwrap().then((res) => {
-            console.log(res);
             dispatch(setActiveRide(res))
         }).then((err) => {
             console.log(err)
@@ -131,9 +130,7 @@ export default ({ activeRequest, isDriverLogged }) => {
             request_id: activeRideId || activeRequest?.id,
             to: getFromLocation(location)
         }
-        console.log('completeRideRequest', payload)
         completeRideRequest(payload).unwrap().then((res) => {
-            console.log(res);
             dispatch(updateRideStatus(res))
         }).catch((err) => {
             console.log(err)

@@ -85,7 +85,6 @@ export const CancelReasonDialog = () => {
         "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
       }
-      console.log('payload', payload)
       cancelAcceptedRequest(payload)
     } else {
       setErrorMessage(true);

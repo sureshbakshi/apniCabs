@@ -117,7 +117,7 @@ const WalletPage = ({ navigation }) => {
         <FlatList
           data={formattedTransactions}
           renderItem={({ item, i }) => <RequestCard item={item} key={i} />}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => index}
           ListEmptyComponent={<SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
         />
       </View>

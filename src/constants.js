@@ -97,6 +97,7 @@ export const ROUTES_NAMES = {
   chat: 'Chat',
   findCaptain: 'FindCaptain',
   activeRide: 'ActiveRide',
+  rideHistoryStack: 'RideHistoryStack',
   myRides: 'MyRides',
   wallet: 'Wallet',
   profile: 'Profile',
@@ -178,7 +179,7 @@ export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.chat]: ['chat', 'chat'],
   [ROUTES_NAMES.pickRide]: ['map-search', 'map-search-outline'],
   [ROUTES_NAMES.findRide]: ['map-search', 'map-search-outline'],
-  [ROUTES_NAMES.myRides]: ['account-reactivate', 'account-reactivate-outline'],
+  [ROUTES_NAMES.rideHistoryStack]: ['account-reactivate', 'account-reactivate-outline'],
   [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
   [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
 }
@@ -273,7 +274,7 @@ export const VEHICLE_INFORMATION = [{
 }]
 
 export const USER_INFORMATION = [{
-  key: 'userDetails.name',
+  key: 'user.name',
   props: {
     style: { fontWeight: 'bold' }
   }

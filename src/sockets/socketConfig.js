@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
 // const socketUri = 'http://ec2-65-0-142-176.ap-south-1.compute.amazonaws.com:8080/'
 const socketUri =  "https://apnicabi.com"
-// const socketUri = 'http://192.168.0.105:3000'
+// const socketUri = 'http://192.168.150.226:8080/'
 const socket = io(socketUri, {
   // Additional configuration options can be set here
   autoConnect: true, // Automatically establish a connection on creation
@@ -15,8 +15,8 @@ const socket = io(socketUri, {
   extraHeaders: {
 
   },
-  transports: [ 'websocket' ]
-
+  transports: [ 'websocket' ],
+  path: '/ws/'
 });
 
 socket.on('connect_error', err => console.log({ 'connect_error': err }))

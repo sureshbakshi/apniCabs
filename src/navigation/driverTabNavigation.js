@@ -30,7 +30,7 @@ export default function DriverTabNavigator() {
       >
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={DriverStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={RideStackNavigation} />
+        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: 'My Rides' }} component={RideStackNavigation} />
         <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>

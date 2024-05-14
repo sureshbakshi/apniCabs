@@ -10,17 +10,22 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import CustomButton from '../components/common/CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import { useGetRideDetailsQuery } from '../slices/apiSlice';
+import ActivityIndicator from '../components/common/ActivityIndicator';
 
 export default ({ route }) => {
     let type = null
     const id = route.params?.id
-    const { data: rideDetails } = useGetRideDetailsQuery(id)
+    const { data: rideDetails, isLoading } = useGetRideDetailsQuery(id)
 
     useEffect(() => {
         if (id) {
             type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
         }
     }, [rideDetails])
+    
+    if (isLoading) {
+        return <ActivityIndicator />
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ margin: 10 }}>

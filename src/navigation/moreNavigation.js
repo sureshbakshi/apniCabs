@@ -18,7 +18,6 @@ export default function MoreNavigator({ navigation, route }) {
     } else {
       navigation.setOptions({ tabBarStyle: { display: 'flex' } });
     }
-
   }, [navigation, route])
   return (
     <Stack.Navigator

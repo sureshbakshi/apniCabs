@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.103:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.101:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.150.226:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);

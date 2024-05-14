@@ -9,7 +9,9 @@ const MyProfileStyles = StyleSheet.create({
   avatar: {
     borderRadius: 50,
     minHeight: 40,
-    minWidth: 40
+    minWidth: 40,
+    height: 40,
+    width: 40
   },
   header: {
     flexDirection: 'row',

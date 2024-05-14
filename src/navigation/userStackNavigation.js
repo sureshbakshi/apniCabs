@@ -24,13 +24,13 @@ export default function UserStackNavigator({ navigation, route }) {
   const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
   useGetUserActiveRequests()
-  useEffect(() => {
-    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
-      navigation.setOptions({ tabBarStyle: { display: 'none' } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: 'flex' } });
-    }
-  }, [navigation, route]);
+  // useEffect(() => {
+  //   if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+  //     navigation.setOptions({ tabBarStyle: { display: 'none' } });
+  //   } else {
+  //     navigation.setOptions({ tabBarStyle: { display: 'flex' } });
+  //   }
+  // }, [navigation, route]);
   return (
     <Stack.Navigator
       screenOptions={{

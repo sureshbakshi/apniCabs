@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Pressable, FlatList, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, ROUTES_NAMES, colorsNBg } from '../constants';
-import { ImageView, Text } from '../components/common';
+import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { formattedDate, getRandomNumber } from '../util';
@@ -26,7 +26,8 @@ const Card = ({ item, keys }) => {
 
   return <Pressable style={styles.card} key={item.id}
     android_ripple={{ color: '#ccc' }}
-    onPress={() => item?.id ? navigate(ROUTES_NAMES.rideDetails, { id: item?.id }) : null}>
+    onPress={() => item?.id ? navigate(ROUTES_NAMES.rideDetails, { id: item?.id }) : null}
+    >
     <View style={[styles.status, { backgroundColor: bg }]}>
       <Text style={[styles.text, styles.whiteColor, { color: color }]}>{label}</Text>
     </View>
@@ -42,6 +43,9 @@ const Card = ({ item, keys }) => {
       {fare && <View style={styles.right}>
         <Text style={[styles.greenColor, styles.bold]}>{'\u20B9'}{fare}</Text>
         {/* <Text style={styles.address}>3 Seats left</Text> */}
+        <View style={{ alignItems: 'flex-end', marginVertical: 10 }}>
+          <Icon name='chevron-right' size='large' color={COLORS.gray}/>
+        </View>
       </View>}
     </View>
     <View style={styles.cardBottom}>

@@ -22,7 +22,7 @@ const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, 
                 ref={ref}
 
                 placeholder={placeholder}
-                // debounce={25}
+                debounce={250}
                 keepResultsAfterBlur={false}
                 isRowScrollable={true}
                 onPress={(data, details = null) => {

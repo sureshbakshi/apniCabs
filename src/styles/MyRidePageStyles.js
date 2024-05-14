@@ -123,8 +123,8 @@ const MyRideStyles = StyleSheet.create({
   },
   avatar: {
     minWidth: 10,
-    width: 24,
-    height: 24,
+    width: 40,
+    height: 40,
     minHeight: 10,
     borderRadius: 25
   },

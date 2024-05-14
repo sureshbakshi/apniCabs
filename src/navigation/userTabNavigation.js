@@ -39,7 +39,7 @@ export default function UserTabNavigator() {
           options={{ title: 'Find a Ride' }}
           component={UserStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.myRides} options={{ title: 'My Rides' }} component={RideStackNavigation} />
+        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: 'My Rides' }} component={RideStackNavigation} />
         {/* <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} /> */}
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>
