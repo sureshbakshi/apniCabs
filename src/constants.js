@@ -11,7 +11,8 @@ export const authInitialState = {
   isSocketConnected: false,
   isDialogOpen: false,
   device_token: null,
-  vehicleTypes: null
+  vehicleTypes: null,
+  androidDeviceCode: null
 };
 
 export const USER_ROLES = {
@@ -111,6 +112,8 @@ export const ROUTES_NAMES = {
   refer: 'Refer',
   notifications: 'Notifications',
   rideDetails: 'RideDetails',
+  otp: 'OTP',
+  forgotPassword: 'ForgotPassword'
 }
 
 export const RideStatus = {
@@ -393,6 +396,32 @@ export const LOGIN_FORM = [
     label: "Password",
     props: {
       placeholder: "12345",
+      secureTextEntry: true,
+    },
+  },
+];
+
+export const FORGOT_PASSWORD = [
+  {
+    name: 'mobile',
+    label: "Phone number",
+    props: {
+      placeholder: "Enter Phone number",
+    },
+  },
+  {
+    name: 'password',
+    label: "New password",
+    props: {
+      placeholder: "Enter new password",
+      secureTextEntry: true,
+    },
+  },
+  {
+    name: 'confirm_password',
+    label: "Confirm new password",
+    props: {
+      placeholder: "Enter confirm new password",
       secureTextEntry: true,
     },
   },

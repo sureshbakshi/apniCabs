@@ -1,7 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
-import { ROUTES_NAMES } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
+import OTPAutoFill from '../components/OTPAutoFill';
+import ForgotPassword from '../pages/ForgotPassword';
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({navigation, route}) {
@@ -27,6 +29,16 @@ export default function LoginNavigator({navigation, route}) {
         name={ROUTES_NAMES.signUp}
         options={{title: 'Sign Up'}}
         component={SignUpPage}
+      />
+      <Stack.Screen
+        name={ROUTES_NAMES.forgotPassword}
+        options={{title: 'Forgot Password', headerTintColor: COLORS.primary}}
+        component={ForgotPassword}
+      />
+      <Stack.Screen
+        name={ROUTES_NAMES.otp}
+        options={{title: 'Submit OTP', headerTintColor: COLORS.primary}}
+        component={OTPAutoFill}
       />
     </Stack.Navigator>
   );

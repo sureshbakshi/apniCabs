@@ -2,7 +2,6 @@ import React, {createContext, useContext, useState} from 'react';
 export const AuthContext = createContext(null);
 import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
-import {updateLoginToken} from '../slices/authSlice';
 const initialState = {
   isLoggedIn: false,
 };
@@ -20,7 +19,6 @@ export const AuthProvider = props => {
       const {password} = await Keychain.getGenericPassword();
       if (password) {
         setIsLoggedIn(true);
-        // dispatch(updateLoginToken({token: password}));
       } else {
         console.log('No credentials stored');
       }

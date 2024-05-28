@@ -17,9 +17,7 @@ import { COLORS, LOGIN_FORM, ROUTES_NAMES } from '../constants';
 import { useDispatch } from 'react-redux';
 import {
   updateGoogleUserInfo,
-  updateLoginToken,
   updateUserCheck,
-  updateUserInfo,
 } from '../slices/authSlice';
 import { useLoginMutation, useUserCheckMutation } from '../slices/apiSlice';
 import { isEmpty } from 'lodash';
@@ -52,24 +50,15 @@ GoogleSignin.configure({
 });
 
 const LoginPage = () => {
-  const { signIn } = useAuthContext();
   const [login, { data: logindata, error: loginError, isLoginLoading }] =
     useLoginMutation();
   const [userCheck, { data: userCheckData, error: userCheckError }] =
     useUserCheckMutation();
   const dispatch = useDispatch();
 
-  const handleLogin = data => {
-    const token = data.token;
-    const username = data.id;
-    signIn(username, token);
-  };
-
   useEffect(() => {
     if (!isEmpty(logindata)) {
-      handleLogin(logindata);
-      dispatch(updateLoginToken(logindata));
-      dispatch(updateUserInfo(logindata));
+      dispatch(updateUserCheck(logindata));
     }
   }, [logindata]);
 
@@ -96,7 +85,6 @@ const LoginPage = () => {
       userCheck(email)
         .unwrap()
         .then(data => {
-          handleLogin(data);
           dispatch(updateUserCheck(data));
         })
         .catch(error => navigate(ROUTES_NAMES.signUp));
@@ -190,12 +178,9 @@ const LoginPage = () => {
                   />
                 </View>
               </FormProvider>
-              {/* <View style={LoginStyles.signUpContainer}>
-              <View style={LoginStyles.forgotSection}>
-                <Text style={LoginStyles.headerText}>Forgot</Text>
-                <Text style={LoginStyles.greenTxt}>Password?</Text>
-              </View>
-            </View> */}
+              <Pressable style={[LoginStyles.forgotSection, {paddingVertical: 15, justifyContent: 'flex-end'}]} onPress={() => navigate(ROUTES_NAMES.forgotPassword)}>
+                <Text style={[{color: COLORS.primary,textAlign: 'right' }]}>Forgot Password?</Text>
+              </Pressable>
             </View>
             <View>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>

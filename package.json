@@ -36,6 +36,7 @@
     "react-native-material-ripple": "^0.9.1",
     "react-native-notifications": "^5.1.0",
     "react-native-open-maps": "^0.4.3",
+    "react-native-otp-auto-fill": "^0.1.17",
     "react-native-pager-view": "^6.2.1",
     "react-native-paper-tabs": "^0.10.1",
     "react-native-permissions": "^4.1.5",

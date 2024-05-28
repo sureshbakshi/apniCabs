@@ -3,7 +3,7 @@ import LoginStyles from "../../styles/LoginPageStyles"
 import { upperCase } from 'lodash';
 import { Text } from "react-native-paper";
 
-export default ({ onClick, styles, textStyles, label, isLowerCase = false }) => {
+export default ({ onClick, styles, textStyles, label, isLowerCase = false , ...rest}) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = () => {
@@ -14,9 +14,11 @@ export default ({ onClick, styles, textStyles, label, isLowerCase = false }) => 
             onPress={clickHandler}
             style={[
                 LoginStyles.button,
-                { ...(styles || {}) }
+                { ...(styles || {}), opacity: rest?.disabled ? 0.6 : 1 }
             ]}
-            android_ripple={{ color: '#ccc' }}>
+            android_ripple={{ color: '#ccc' }}
+            {...rest}
+            >
             <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
                 {formattedLabel}
             </Text>

@@ -6173,6 +6173,11 @@
   dependencies:
     "query-string" "^7.1.0"
 
+"react-native-otp-auto-fill@^0.1.17":
+  "integrity" "sha512-BqFS9FIta18gtq8Z4wyoCLwaNxzPJWvvnu73L+yEu2ITI+izYGwwt8Rm9XwavdS+IiOZ9tilWKmCl+VhhGztQQ=="
+  "resolved" "https://registry.npmjs.org/react-native-otp-auto-fill/-/react-native-otp-auto-fill-0.1.17.tgz"
+  "version" "0.1.17"
+
 "react-native-pager-view@*", "react-native-pager-view@^6.2.1":
   "integrity" "sha512-fZ8chez5J+w831nSnbtK8hwlCiMy1DgpFv8xG6ajXLsAI8uMkGvP554QDIDNlUoCuVwMf7OFyd32Y2Nm2Iaj9Q=="
   "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.2.1.tgz"

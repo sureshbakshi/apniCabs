@@ -17,6 +17,22 @@ export const signInSchema = yup.object().shape({
 
 });
 
+
+export const forgotPasswordSchema = yup.object().shape({
+    "mobile": yup
+        .string()
+        .required("Phone number is required")
+        .matches(phone, {
+            message: "Please enter valid Phone number",
+        }),
+    "password": yup
+        .string()
+        .required("Please enter password")
+        .min(6, 'Minimum 6 Characters required'),
+    "confirm_password": yup.string()
+        .oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
+
 export const contactsSchema = yup.object().shape({
     "phone_number1": yup
         .string()

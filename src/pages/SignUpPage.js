@@ -14,14 +14,13 @@ import { navigate } from '../util/navigationService';
 import { Text } from '../components/common';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSingUpMutation } from '../slices/apiSlice';
-import { updateUserInfo, updateUserCheck } from '../slices/authSlice';
+import { updateUserCheck } from '../slices/authSlice';
 import { COLORS, ROUTES_NAMES, SIGN_UP_FORM, USER_ROLES } from '../constants';
 import images from '../util/images';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signupSchema } from '../schema';
 import { isEmpty } from 'lodash';
-import { isUndefined } from '../util';
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -63,7 +62,6 @@ const SignUpPage = () => {
       console.log(singUpError?.data?.error);
     } else if (signUpdata) {
       dispatch(updateUserCheck(signUpdata));
-      dispatch(updateUserInfo(signUpdata));
       navigate(ROUTES_NAMES.signIn)
     }
   }, [signUpdata, singUpError]);

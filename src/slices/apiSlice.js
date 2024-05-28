@@ -62,6 +62,8 @@ const api_path = {
 const api_urls = {
   login: 'login',
   signUp: 'user',
+  forgot: 'forgot',
+  verifyOTP: 'verifyOTP',
   userCheck: 'checkUser',
   driverAvailabilty: 'driver-availabilty',
   driverActiveRide: 'active-rides/driver',
@@ -102,6 +104,28 @@ export const apiSlice = createApi({
         body,
       }),
       transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    forgotPassword: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.public(api_urls.forgot),
+        body,
+      }),
+      transformResponse: response => {
+        return response;
+      },
+      transformErrorResponse: response => response,
+    }),
+    verifyOTP: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.public(api_urls.verifyOTP),
+        body,
+      }),
+      transformResponse: response => {
+        return response;
+      },
       transformErrorResponse: response => response,
     }),
     userCheck: builder.mutation({
@@ -339,6 +363,8 @@ export const apiSlice = createApi({
 export const {
   useLoginMutation,
   useSingUpMutation,
+  useForgotPasswordMutation,
+  useVerifyOTPMutation,
   useUserCheckMutation,
   useSendRequestMutation,
   useUpdateRequestMutation,

@@ -15,21 +15,6 @@ const authSlice = createSlice({
         state.userInfo = action.payload
       }
     },
-    updateLoginToken(state, action) {
-      if (action.payload?.token) {
-        state.access_token = action.payload.token;
-      }
-    },
-    updateUserInfo(state, action) {
-      const {roles, token, id} = action.payload;
-      if (token) {
-        state.userInfo = action.payload;
-        state.access_token = token;
-        if (roles.includes(USER_ROLES.DRIVER)) {
-          // getProfileDetails(id);
-        }
-      }
-    },
     clearAuthData(state, action) {
       state.access_token = null;
     },
@@ -47,20 +32,21 @@ const authSlice = createSlice({
     },
     setVehicleTypes:(state, action)=>{
       state.vehicleTypes = action.payload;
+    },
+    setAndroidDeviceCode: (state, action)=>{
+      state.androidDeviceCode = action.payload;
     }
-
   },
 });
 export const {
   updateGoogleUserInfo,
   updateUserCheck,
-  updateUserInfo,
-  updateLoginToken,
   clearAuthData,
   setDriverDetails,
   updatedSocketConnectionStatus,
   setDialogStatus,
   setDeviceToken,
-  setVehicleTypes
+  setVehicleTypes,
+  setAndroidDeviceCode
 } = authSlice.actions;
 export default authSlice.reducer;
