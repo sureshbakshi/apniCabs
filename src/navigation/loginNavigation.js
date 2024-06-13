@@ -22,7 +22,7 @@ export default function LoginNavigator({navigation, route}) {
       }}>
       <Stack.Screen
         name={ROUTES_NAMES.signIn}
-        options={{title: 'Sign In'}}
+        options={{title: ''}}
         component={LoginPage}
       />
       <Stack.Screen

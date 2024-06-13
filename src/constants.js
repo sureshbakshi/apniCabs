@@ -385,20 +385,20 @@ export const CONTACTS_FORM = [
 
 export const LOGIN_FORM = [
   {
-    name: 'email',
-    label: "Email",
+    name: 'mobile',
+    label: "Phone number",
     props: {
-      placeholder: "example@example.com",
+      placeholder: "Enter phone number",
     },
   },
-  {
-    name: 'password',
-    label: "Password",
-    props: {
-      placeholder: "12345",
-      secureTextEntry: true,
-    },
-  },
+  // {
+  //   name: 'password',
+  //   label: "Password",
+  //   props: {
+  //     placeholder: "12345",
+  //     secureTextEntry: true,
+  //   },
+  // },
 ];
 
 export const FORGOT_PASSWORD = [
@@ -458,23 +458,21 @@ export const SIGN_UP_FORM = [
 
     },
   },
-  {
-    name: 'password',
-    label: "Password*",
-    props: {
-      placeholder: "Enter password*",
-      required: true,
-      secureTextEntry: true,
-    },
-  },
   // {
-  //   name: 'referred_by',
-  //   label: "Referral Code",
+  //   name: 'password',
+  //   label: "Password*",
   //   props: {
-  //     placeholder: "Referral Code",
-  //     required: false,
-  //     inputMode: 'numeric',
-  //     keyboardType: 'number-pad',
+  //     placeholder: "Enter password*",
+  //     required: true,
+  //     secureTextEntry: true,
   //   },
   // },
+  {
+    name: 'referred_by',
+    label: "Referral Code",
+    props: {
+      placeholder: "Referral Code",
+      required: false,
+    },
+  },
 ];

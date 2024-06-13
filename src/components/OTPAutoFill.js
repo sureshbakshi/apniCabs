@@ -1,31 +1,29 @@
 import * as React from 'react';
-import { Alert, StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, Keyboard } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
-import { COLORS, ROUTES_NAMES } from '../constants';
-import { useVerifyOTPMutation } from '../slices/apiSlice';
+import { COLORS } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAndroidDeviceCode, updateUserCheck } from '../slices/authSlice';
+import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
-import { navigate } from '../util/navigationService';
 
 export default ({ route, data, callbackFunctions }) => {
     const otpInfo = route?.params?.data || data
     const dispatch = useDispatch()
     const [submitOTPHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
-        useVerifyOTPMutation();
+        callbackFunctions.verifyOTPMutation();
     const { androidDeviceCode } = useSelector(state => state.auth)
-
 
     const handleComplete = ({
         nativeEvent: { code },
     }) => {
+        Keyboard?.dismiss()
         submitOTPHandler({ ...otpInfo, otp: code }).unwrap()
             .then(data => {
                 if(data){
-                    callbackFunctions?.successHandler?.()
+                    callbackFunctions?.successHandler?.(data)
                 }
             })
-            .catch(error => callbackFunctions?.errorHandler?.());
+            .catch(error => callbackFunctions?.errorHandler?.(error));
     };
 
 

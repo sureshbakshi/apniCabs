@@ -4,16 +4,29 @@ const noSplCharExp = /^[^*|\":<>[\]{}`\\()';@&$]+$/
 const phone = /^[0-9]{10}$/
 
 
+const validateEmail = (emailVal) => {
+    return email.test(emailVal)
+};
+
+const validatePhone = (number) => {
+    return phone.test(number);
+};
+
 export const signInSchema = yup.object().shape({
-    "email": yup
+    "mobile": yup
         .string()
-        .required("Email is required")
-        .matches(email, {
-            message: "Please enter valid email",
+        .required("mobile number is required")
+        .matches(phone, {
+            message: "Please enter valid mobile number",
         }),
-    'password': yup
-        .string()
-        .required("Password is required"),
+    // "email": yup.string()
+    //     .required('Email / Phone is required')
+    //     .test('email_or_phone', 'Email / Phone is invalid', (value) => {
+    //         return validateEmail(value) || validatePhone(parseInt(value ?? '0'));
+    //     }),
+    // 'password': yup
+    //     .string()
+    //     .required("Password is required"),
 
 });
 
@@ -95,13 +108,17 @@ export const signupSchema = yup.object().shape({
         .string()
         .required("Please enter phone number")
         .matches(phone, "Please enter valid 10 digit phone number"),
-    "password": yup
-        .string()
-        .required("Please enter password")
-        .min(6, 'Minimum 6 Characters required'),
-    // "referred_by": yup
+    // "password": yup
     //     .string()
-    //     .min(8, {
-    //         message: 'Minimum 8 Characters required'
-    //     }),
+    //     .required("Please enter password")
+    //     .min(6, 'Minimum 6 Characters required'),
+    "referred_by": yup
+        .string()
+        .test('valid-referral-code', 'Please enter a valid referral code', (value, context) => {
+            if (value && value.length > 0) {
+                return value.match(noSplCharExp) !== null;
+            }
+            return true;
+        })
+        .nullable(true),
 });

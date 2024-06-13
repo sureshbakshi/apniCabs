@@ -228,3 +228,12 @@ export function isValidEvent(eventName, ignoreEvents) {
   export const formatStatusText = (status) => {
     return RIDE_STATUS_LABELS[status]
   }
+
+  export const extractKeys = (fullDetails, keysToExtract) => {
+    return keysToExtract.reduce((newObj, key) => {
+      if (fullDetails.hasOwnProperty(key)) {
+        newObj[key] = fullDetails[key];
+      }
+      return newObj;
+    }, {});
+  }

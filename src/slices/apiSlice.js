@@ -61,7 +61,9 @@ const api_path = {
 };
 const api_urls = {
   login: 'login',
+  loginOTP: 'loginOtp',
   signUp: 'user',
+  signupOTP: 'registerUserOTP',
   forgot: 'forgot',
   verifyOTP: 'verifyOTP',
   userCheck: 'checkUser',
@@ -97,10 +99,28 @@ export const apiSlice = createApi({
       },
       transformErrorResponse: response => response,
     }),
-    singUp: builder.mutation({
+    getLoginOTP: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.public(api_urls.loginOTP),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    signup: builder.mutation({
       query: body => ({
         method: 'POST',
         url: api_path.public(api_urls.signUp),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    getSignupOTP: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.public(api_urls.signupOTP),
         body,
       }),
       transformResponse: response => response,
@@ -362,7 +382,9 @@ export const apiSlice = createApi({
 
 export const {
   useLoginMutation,
-  useSingUpMutation,
+  useGetLoginOTPMutation,
+  useSignupMutation,
+  useGetSignupOTPMutation,
   useForgotPasswordMutation,
   useVerifyOTPMutation,
   useUserCheckMutation,

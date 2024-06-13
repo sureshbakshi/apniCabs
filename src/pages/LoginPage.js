@@ -19,7 +19,7 @@ import {
   updateGoogleUserInfo,
   updateUserCheck,
 } from '../slices/authSlice';
-import { useLoginMutation, useUserCheckMutation } from '../slices/apiSlice';
+import { useGetLoginOTPMutation, useLoginMutation, useUserCheckMutation, useVerifyOTPMutation } from '../slices/apiSlice';
 import { isEmpty } from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
 import { useAuthContext } from '../context/Auth.context';
@@ -32,6 +32,7 @@ import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
+import OTPForm from '../components/OTPForm';
 
 // const initialState = {
 //   email: 'sureshbakshi88@gmail.com',
@@ -39,8 +40,8 @@ import CustomButton from '../components/common/CustomButton';
 // };
 
 const initialState = {
-  email: '',
-  password: ''
+  mobile: '',
+  // password: ''
 }
 
 GoogleSignin.configure({
@@ -80,8 +81,9 @@ const LoginPage = () => {
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const googleUserInfo = await GoogleSignin.signIn();
+      const { accessToken } = await GoogleSignin.getTokens()
       const { email } = googleUserInfo.user;
-      dispatch(updateGoogleUserInfo(googleUserInfo));
+      dispatch(updateGoogleUserInfo({ accessToken, ...googleUserInfo }));
       userCheck(email)
         .unwrap()
         .then(data => {
@@ -123,21 +125,28 @@ const LoginPage = () => {
     };
     login(payload);
   };
+  const successHandler = (logindata) => {
+    console.log('otp info', logindata)
+    if (!isEmpty(logindata)) {
+      dispatch(updateUserCheck(logindata));
+    }
+  }
 
   return (
-    <ScrollView>
-      <View style={LoginStyles.container}>
-        <ImageBackground
-          source={images.backgroundImage}
-          resizeMode="cover"
-          style={LoginStyles.image}>
-          <View style={LoginStyles.logoSection}>
-            <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
-          </View>
-        </ImageBackground>
+    <View style={LoginStyles.container}>
+      <ImageBackground
+        source={images.backgroundImage}
+        resizeMode="cover"
+        style={LoginStyles.image}>
+        <View style={LoginStyles.logoSection}>
+          <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
+        </View>
+      </ImageBackground>
+      <ScrollView>
+
         <ScreenContainer>
           <View style={LoginStyles.section}>
-            <View>
+            {/* <View>
               <FormProvider {...methods}>
                 {LOGIN_FORM.map((field, index) => {
                   return (
@@ -181,17 +190,31 @@ const LoginPage = () => {
               <Pressable style={[LoginStyles.forgotSection, {paddingVertical: 15, justifyContent: 'flex-end'}]} onPress={() => navigate(ROUTES_NAMES.forgotPassword)}>
                 <Text style={[{color: COLORS.primary,textAlign: 'right' }]}>Forgot Password?</Text>
               </Pressable>
-            </View>
+            </View> */}
+            <OTPForm
+              successHandler={successHandler}
+              formFields={LOGIN_FORM}
+              formSchema={signInSchema}
+              formMutation={useGetLoginOTPMutation}
+              initialState={initialState}
+              getOTPPayloadKeys={['mobile']}
+              verifyOTPMutation={useVerifyOTPMutation}
+              formPayloadKeys={['mobile']}
+              submitBtnLabel={'GET OTP'}
+            />
             <View>
-              <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
+              {/* <Text style={[LoginStyles.headerText]}>
                 {'or'}
-              </Text>
+              </Text> */}
               {/* <GoogleSigninButton
                 style={{ width: '100%', height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={GoogleSignIn}
               /> */}
+              <Text style={[LoginStyles.headerText, {color: COLORS.primary, fontWeight: 'bold', marginTop: 50, paddingVertical: 5}]}>
+                For New Registration 
+              </Text>
               <Pressable
                 onPress={GoogleSignIn}
                 style={[LoginStyles.googleBtn, CommonStyles.mb10]}
@@ -207,7 +230,7 @@ const LoginPage = () => {
                 </View>
               </Pressable>
             </View>
-            <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
+            {/* <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
                 {"Don't have an account?"}
               </Text>
@@ -231,11 +254,11 @@ const LoginPage = () => {
               </Pressable>
 
 
-            </View>
+            </View> */}
           </View>
         </ScreenContainer>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 export default LoginPage;

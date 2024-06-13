@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
 import { COLORS } from '../constants';
+import { getScreen } from '../util';
 
 const LoginStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    height: getScreen().screenHeight
   },
 
   logoSection: {
@@ -20,9 +22,7 @@ const LoginStyles = StyleSheet.create({
   },
   section: {
     flex: 1,
-    justifyContent: 'space-between',
     padding: 20,
-    backgroundColor: COLORS.white,
   },
   textInputPickup: {
     backgroundColor: '#f2f4f6',
