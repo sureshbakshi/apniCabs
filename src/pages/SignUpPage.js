@@ -28,7 +28,7 @@ import { showSuccessMessage } from '../util';
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const { user: googleInfo, accessToken } = useSelector(state => state.auth.googleInfo);
-  const [role, setRole] = useState(USER_ROLES.OWNER)
+  // const [role, setRole] = useState(USER_ROLES.OWNER)
   const initialState = {
     name: googleInfo?.name || '',
     email: googleInfo?.email || '',
@@ -45,7 +45,7 @@ const SignUpPage = () => {
   const additionalVerifyOTPPayload = {
     avatar: googleInfo?.photo || '',
     provider: Platform.OS || 'mobile',
-    user_type: role
+    user_type: USER_ROLES.OWNER
   }
   return (
     <View style={LoginStyles.container}>
@@ -63,7 +63,7 @@ const SignUpPage = () => {
           <View style={[LoginStyles.section]}>
             <View>
               <View>
-                <RadioButton.Group onValueChange={newValue => setRole(newValue)} value={role}  >
+                {/* <RadioButton.Group onValueChange={newValue => setRole(newValue)} value={role}  >
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15 }}>
                       <RadioButton value={USER_ROLES.OWNER} color={COLORS.primary} />
@@ -74,7 +74,7 @@ const SignUpPage = () => {
                       <Text style={{ color: COLORS.black, fontWeight: 'bold' }}>DRIVER</Text>
                     </View>
                   </View>
-                </RadioButton.Group>
+                </RadioButton.Group> */}
                 <OTPForm
                   successHandler={successHandler}
                   formFields={SIGN_UP_FORM}

@@ -212,23 +212,39 @@ const LoginPage = () => {
                 color={GoogleSigninButton.Color.Dark}
                 onPress={GoogleSignIn}
               /> */}
-              <Text style={[LoginStyles.headerText, {color: COLORS.primary, fontWeight: 'bold', marginTop: 50, paddingVertical: 5}]}>
-                For New Registration 
+              <Text style={[LoginStyles.headerText, { color: COLORS.primary, fontWeight: 'bold', marginTop: 50, paddingVertical: 5 }]}>
+                For New Registration
               </Text>
-              <Pressable
-                onPress={GoogleSignIn}
-                style={[LoginStyles.googleBtn, CommonStyles.mb10]}
-                android_ripple={{ color: '#ccc' }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                  <ImageView
-                    source={images.google}
-                    style={{ minHeight: 5, minWidth: 5, height: 20, width: 20, marginRight: 10 }}
-                  />
-                  <Text style={[LoginStyles.googleTxt]}>
-                    {'Sign in / Sign up with google'}
-                  </Text>
-                </View>
-              </Pressable>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Pressable
+                  onPress={GoogleSignIn}
+                  style={[LoginStyles.googleBtn, {flex: 1, marginRight: 15}]}
+                  android_ripple={{ color: '#ccc' }}>
+                  <View style={{  flexDirection: 'row',justifyContent: 'center', alignItems: 'center' }}>
+                    <ImageView
+                      source={images.user}
+                      style={{ minHeight: 5, minWidth: 5, height: 30, width: 30, marginRight: 10 }}
+                    />
+                    <Text style={[LoginStyles.googleTxt]}>
+                      User
+                    </Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={openOwnerPortal}
+                  style={[LoginStyles.googleBtn, {flex: 1}]}
+                  android_ripple={{ color: '#ccc' }}>
+                  <View style={{  flexDirection: 'row',justifyContent: 'center', alignItems: 'center' }}>
+                    <ImageView
+                      source={images.taxiDriver}
+                      style={{ minHeight: 5, minWidth: 5, height: 30, width: 30, marginRight: 10 }}
+                    />
+                    <Text style={[LoginStyles.googleTxt]}>
+                      Driver
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
             </View>
             {/* <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>

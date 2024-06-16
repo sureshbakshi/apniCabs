@@ -65,10 +65,10 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
         submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) });//add device code
     }
 
-    const errorHandler = () => {
+    const errorHandler = ({data}) => {
         setOTPInfo(null)
         setPayload(null)
-        showErrorMessage('OTP not sent. Please retry.')
+        showErrorMessage(data?.error || 'Something went wrong. Please retry.')
     }
 
     const isError = Object.entries(errors).length > 0

@@ -20,4 +20,7 @@ export default {
     carYellow: require('../assets/images/car.png'),
     google: require('../assets/images/google.png'),
     captain:  require('../assets/images/captain_icon.png'),
+    user:  require('../assets/images/group.png'),
+    taxiDriver:  require('../assets/images/taxi-driver.png'),
+
 }   
