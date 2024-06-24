@@ -28,6 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.208090810105-iu8l88df74966gbp2nb947p47bc8aocg</string>
+				<string>apnicabi</string>
 			</array>
 		</dict>
 	</array>
@@ -80,6 +81,7 @@
     <array>
         <string>tel</string>
         <string>telprompt</string>
+		<string>apnicabi</string>
     </array>
 </dict>
 </plist>

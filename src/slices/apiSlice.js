@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.103:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.107:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -57,6 +57,8 @@ const api_path = {
   vehicle: path => `vehicle/${path}`,
   request: path => `request/${path}`,
   transactions: path => `transactions/${path}`,
+  subscription: path => `subscription/${path}`,
+  payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
 };
 const api_urls = {
@@ -81,7 +83,9 @@ const api_urls = {
   list: 'list',
   cancelRequest: 'cancel-request',
   sosAdd: 'add',
-  device: 'device'
+  device: 'device',
+  order:'order',
+  payment:'payment'
 };
 
 export const apiSlice = createApi({
@@ -375,6 +379,37 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    //subscription
+    subscriptionList: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.subscription(`${api_urls.list}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    //subscription end
+
+    //payment start
+    // createOrder: builder.mutation({
+    //   query: ({user_id, id}) => ({
+    //     method: 'POST',
+    //     url: api_path.subscription(`${api_urls.order}/${user_id}/${id}`),
+    //   }),
+    //   transformResponse: response => response,
+    //   transformErrorResponse: response => response,
+    // }),
+    createOrder: builder.mutation({
+      query: (body) => ({
+        method: 'POST',
+        url: api_path.payment(api_urls.order),
+        body: body
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    //payment end
+
   }),
 
   tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus'],
@@ -410,4 +445,7 @@ export const {
   useSosListQuery,
   useGetVehicleTypesQuery,
   useGetRideDetailsQuery,
+  useSubscriptionListQuery,
+  // useLazyCreateOrderQuery
+  useCreateOrderMutation,
 } = apiSlice;

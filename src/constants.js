@@ -100,6 +100,8 @@ export const ROUTES_NAMES = {
   activeRide: 'ActiveRide',
   rideHistoryStack: 'RideHistoryStack',
   myRides: 'MyRides',
+  myPlans: 'MyPlans',
+  payment: 'Payment',
   wallet: 'Wallet',
   profile: 'Profile',
   moreDetails: 'MoreDetails',

@@ -4,29 +4,29 @@ import { COLORS } from '../constants';
 const WalletStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f4f6',
+    backgroundColor: COLORS.bg_gray_primary
   },
   header: {
-    alignItems: 'center',
     backgroundColor: COLORS.primary,
-    height: 170,
+    height: 140,
     padding: 10,
-    width: '100%',
-    alignContent: 'center',
-    flexDirection: 'column',
+    margin: 10,
+    borderRadius: 10
   },
   headerText: {
-    color: '#fff',
     fontSize: 20,
     fontWeight: '800',
     letterSpacing: 0.5,
+    textAlign:'center'
   },
   section: {
     flex: 1,
     justifyContent: 'space-between',
+    backgroundColor: COLORS.bg_light,
+
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     padding: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -77,12 +77,12 @@ const WalletStyles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
-    color: '#fff',
-    marginTop:30
+    color: COLORS.white,
+    marginTop:20
   },
   balTxt:{
     fontSize: 40,
-    color: '#fff',
+    color: COLORS.white,
     fontWeight: '800',
   },
   address: {
@@ -111,8 +111,9 @@ const WalletStyles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
-    fontWeight: '500',
+    fontWeight: 'bold',
     color: COLORS.black,
+    textTransform: 'uppercase'
   },
 });
 export default WalletStyles;

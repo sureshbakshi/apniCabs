@@ -1,14 +1,14 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Linking } from 'react-native';
 import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { DEFAULT_VEHICLE_TYPES, DriverAvailableStatus, RIDE_STATUS_LABELS, USER_ROLES, VEHICLE_IMAGES, VEHICLE_TYPES, VerificationStatus, colorsNBg } from '../constants';
+import { DEFAULT_VEHICLE_TYPES, DriverAvailableStatus, RIDE_STATUS_LABELS, ROUTES_NAMES, USER_ROLES, VEHICLE_IMAGES, VEHICLE_TYPES, VerificationStatus, colorsNBg } from '../constants';
 import { store } from '../store';
 import images from './images';
 import { Notifications } from 'react-native-notifications';
 import { navigate } from './navigationService';
-import {set, get} from 'lodash';
+import { set, get } from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -82,9 +82,9 @@ export const _isDriverOnline = () => {
   return Boolean(isOnline === DriverAvailableStatus.ONLINE)
 }
 
-export const isDriverAcceptedOrOnline = () =>{
+export const isDriverAcceptedOrOnline = () => {
   const { isOnline } = store.getState().driver
-  return Boolean(isOnline === DriverAvailableStatus.ONLINE) || Boolean(isOnline === DriverAvailableStatus.ACCEPTED) || Boolean(isOnline === DriverAvailableStatus.ONRIDE) 
+  return Boolean(isOnline === DriverAvailableStatus.ONLINE) || Boolean(isOnline === DriverAvailableStatus.ACCEPTED) || Boolean(isOnline === DriverAvailableStatus.ONRIDE)
 }
 
 export const _isLoggedIn = () => {
@@ -119,13 +119,13 @@ export const fakeLogin = () => {
     });
 }
 
-export const formattedDate = (dateString, isDateOnly=false) => {
+export const formattedDate = (dateString, isDateOnly = false) => {
   const originalDate = new Date(dateString)
   const format = isDateOnly ? {
     month: '2-digit',
     day: '2-digit',
     year: 'numeric',
-  }: {
+  } : {
     month: '2-digit',
     day: '2-digit',
     year: 'numeric',
@@ -149,9 +149,9 @@ export const getVehicleImage = (type) => {
 export const getVehicleImageById = (id) => {
   const { vehicleTypes } = store.getState().auth
   const types = vehicleTypes || DEFAULT_VEHICLE_TYPES
-  const vehicleCode =  types.filter((item) => item.id === id)
+  const vehicleCode = types.filter((item) => item.id === id)
   const code = vehicleCode?.length ? vehicleCode[0].code : null
-   return getVehicleImage(code)
+  return getVehicleImage(code)
 }
 
 export const formatRideRequest = (newRequest, oldRequests) => {
@@ -159,28 +159,29 @@ export const formatRideRequest = (newRequest, oldRequests) => {
   if (index > -1) {
     oldRequests[index] = newRequest
   } else {
-    oldRequests = [newRequest,...oldRequests ];
+    oldRequests = [newRequest, ...oldRequests];
   }
   return oldRequests;
 }
 
-export const isDriverVerified =(driverInfo)=>{
+export const isDriverVerified = (driverInfo) => {
   return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
 }
 
 
 export const scheduleLocalNotification = (notfication) => {
-  if(notfication){
+  if (notfication) {
     Notifications?.postLocalNotification(notfication);
   }
 };
 
 export const handleDeepLink = ({ url }) => {
-  const { path, queryParams } = Linking.parse(url);
-  console.log(url)
-  if (path === '/details') {
-    // Navigate to details screen
-    navigate?.('Details', queryParams);
+  if (url) {
+    const route = url.replace(/.*?:\/\//g, '');
+    const routeName = route.split('/')[0];
+    if (routeName === 'payment') {
+      navigate(ROUTES_NAMES.wallet)
+    }
   }
 };
 
@@ -195,45 +196,45 @@ export function isValidEvent(eventName, ignoreEvents) {
 }
 
 
-  // unflattern forground notfication to get notficationobj
- export const unflattenObj = (obj, key) => {
-    const result = {};
-    for (const key in obj) {
-     set(result, key, obj[key]);
-    }
-    if(key) {
-      return get(result, key, null)
-    }
-    return result || null;
+// unflattern forground notfication to get notficationobj
+export const unflattenObj = (obj, key) => {
+  const result = {};
+  for (const key in obj) {
+    set(result, key, obj[key]);
   }
-
-
-  export const formatTransactions = (transactionHistory) => {
-    if (transactionHistory?.length) {
-      const groupedTransactions = transactionHistory.reduce((acc, transaction) => {
-        const requestId = transaction.request_id || ''; // If requestId is empty, set it to ''
-        if (!acc[requestId]) {
-          acc[requestId] = { request_id: requestId, transactions: [] };
-        }
-        acc[requestId].transactions.push(transaction);
-        return acc;
-      }, {});
-
-      // Convert grouped transactions object to array
-      return Object.values(groupedTransactions);
-    }
-    return []
+  if (key) {
+    return get(result, key, null)
   }
+  return result || null;
+}
 
-  export const formatStatusText = (status) => {
-    return RIDE_STATUS_LABELS[status]
-  }
 
-  export const extractKeys = (fullDetails, keysToExtract) => {
-    return keysToExtract.reduce((newObj, key) => {
-      if (fullDetails.hasOwnProperty(key)) {
-        newObj[key] = fullDetails[key];
+export const formatTransactions = (transactionHistory) => {
+  if (transactionHistory?.length) {
+    const groupedTransactions = transactionHistory.reduce((acc, transaction) => {
+      const requestId = transaction.request_id || ''; // If requestId is empty, set it to ''
+      if (!acc[requestId]) {
+        acc[requestId] = { request_id: requestId, transactions: [] };
       }
-      return newObj;
+      acc[requestId].transactions.push(transaction);
+      return acc;
     }, {});
+
+    // Convert grouped transactions object to array
+    return Object.values(groupedTransactions);
   }
+  return []
+}
+
+export const formatStatusText = (status) => {
+  return RIDE_STATUS_LABELS[status]
+}
+
+export const extractKeys = (fullDetails, keysToExtract) => {
+  return keysToExtract.reduce((newObj, key) => {
+    if (fullDetails.hasOwnProperty(key)) {
+      newObj[key] = fullDetails[key];
+    }
+    return newObj;
+  }, {});
+}

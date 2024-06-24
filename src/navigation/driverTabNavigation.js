@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import WalletPage from '../pages/WalletPage';
 import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
@@ -8,6 +7,7 @@ import DriverStackNavigator from './driverStackNavigation';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
 import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
+import WalletStackNavigator from './walletNavigationStack';
 const Tab = createBottomTabNavigator();
 
 export default function DriverTabNavigator() {
@@ -31,7 +31,7 @@ export default function DriverTabNavigator() {
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Pick A Ride' }} component={DriverStackNavigator}
         />
         <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: 'My Rides' }} component={RideStackNavigation} />
-        <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} />
+        <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletStackNavigator} />
         <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More Details' }} component={MoreNavigator} />
       </Tab.Navigator>
     </AppProvider>
