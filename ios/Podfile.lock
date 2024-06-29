@@ -335,9 +335,6 @@ PODS:
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
-  - react-native-webview (13.10.3):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
   - React-perflogger (0.71.2)
   - React-RCTActionSheet (0.71.2):
     - React-Core/RCTActionSheetHeaders (= 0.71.2)
@@ -498,7 +495,6 @@ DEPENDENCIES:
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
-  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -605,8 +601,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
-  react-native-webview:
-    :path: "../node_modules/react-native-webview"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -702,7 +696,6 @@ SPEC CHECKSUMS:
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-webview: 8c5ca05ee27dc9622b07b13050c0edd411c2c596
   React-perflogger: c7ccda3d1d1da837f7ff4e54e816022a6803ee87
   React-RCTActionSheet: 01c125aebbad462a24228f68c584c7a921d6c28e
   React-RCTAnimation: 5277a9440acffc4a5b7baa6ae3880fe467277ae6
@@ -720,7 +713,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
   RNKeychain: a65256b6ca6ba6976132cc4124b238a5b13b3d9c
-  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
+  RNPermissions: 291897442ea8c0cc518e28f34e218685a279b094
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSoundPlayer: 369105c565b8fe6ea0a43fc882dc81eba444e842
@@ -729,6 +722,6 @@ SPEC CHECKSUMS:
   Yoga: 5b0304b3dbef2b52e078052138e23a19c7dacaef
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e69a68d6126469811696e4e825d17ff7eb35c893
+PODFILE CHECKSUM: 55c8bd4cd6a3a8a0374945cc94ca185082f09c11
 
 COCOAPODS: 1.11.3

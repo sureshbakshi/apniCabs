@@ -83,5 +83,10 @@
         <string>telprompt</string>
 		<string>apnicabi</string>
     </array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  	<string>Your location is needed to provide accurate pick-up and drop-off locations, find nearby drivers, and ensure a smooth and efficient ride experience.</string>
+  	<key>NSLocationWhenInUseUsageDescription</key>
+  	<string>We need your location to find nearby drivers, provide accurate pick-up and drop-off locations, and ensure a smooth and efficient ride experience while using the app.</string>
+
 </dict>
 </plist>

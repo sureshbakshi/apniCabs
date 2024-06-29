@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { getScreen, getVehicleImage, isDriver } from '../util';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
@@ -185,7 +185,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           }}
           onMapReady={() => focusMap(markerIDs)}
           // customMapStyle={mapStyle}
-          provider={PROVIDER_GOOGLE}
+          provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
         >
           {isNotNaN && <Marker
             identifier="Marker1"
