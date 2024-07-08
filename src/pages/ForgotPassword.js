@@ -27,13 +27,11 @@ export default () => {
 
     return (
         <View style={[LoginStyles.container, { paddingTop: 50 }]}>
-            <ScrollView>
                 <ScreenContainer>
                     <View style={LoginStyles.section}>
                         <OTPForm successHandler={successHandler} formFields={FORGOT_PASSWORD} formSchema={forgotPasswordSchema} formMutation={useForgotPasswordMutation} initialState={initialState} getOTPPayloadKeys={['mobile']} verifyOTPMutation={useVerifyOTPMutation}/>
                     </View>
                 </ScreenContainer>
-            </ScrollView>
         </View>
     );
 };

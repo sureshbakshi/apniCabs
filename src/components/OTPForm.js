@@ -3,6 +3,7 @@ import {
     View,
     TextInput,
     Keyboard,
+    Platform,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
@@ -51,7 +52,7 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
     const onSubmit = (formData) => {
         // const { confirm_password, ...otpPayload } = formData
         const OTPPayload = extractKeys(formData, getOTPPayloadKeys)
-        if (androidDeviceCode) {
+        if (androidDeviceCode || Platform.OS === 'ios') {
             submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) }); //add device code
         }
         const formPayload = extractKeys(formData, formPayloadKeys)

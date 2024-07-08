@@ -142,7 +142,6 @@ const LoginPage = () => {
           <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
         </View>
       </ImageBackground>
-      <ScrollView>
 
         <ScreenContainer>
           <View style={LoginStyles.section}>
@@ -273,7 +272,6 @@ const LoginPage = () => {
             </View> */}
           </View>
         </ScreenContainer>
-      </ScrollView>
     </View>
   );
 };

@@ -65,7 +65,6 @@ export default function Contacts() {
 
     const isDisabled = !isDirty || !isEmpty(errors)
     return (
-        <ScrollView>
             <ScreenContainer>
                 <FormProvider {...methods}>
                     <View style={{ margin: 10 }}>
@@ -117,6 +116,5 @@ export default function Contacts() {
                     </View>
                 </FormProvider>
             </ScreenContainer>
-        </ScrollView>
     );
 }
