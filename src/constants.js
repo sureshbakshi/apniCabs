@@ -21,6 +21,11 @@ export const USER_ROLES = {
   OWNER: "OWNER",
 };
 
+export const ROLE_IDS = {
+  [USER_ROLES.USER]: '8d9b7a03-dc12-4d5d-a8ee-6575bc5342e0',
+  [USER_ROLES.DRIVER]: '7f4f1d06-8387-4bc3-8855-c8e0956b1c50'
+}
+
 export const DEFAULT_VEHICLE_TYPES = [
   {
     "id": "60670798-84a5-11ee-a1cc-06a7f9e34a98",

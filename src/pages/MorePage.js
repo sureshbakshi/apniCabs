@@ -10,6 +10,7 @@ import { openOwnerPortal} from '../util/config';
 import { isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
 import SupportLinks from '../components/SupportLinks';
+import useGetDriverDetails from '../hooks/useGetDriverDetails';
 
 
 const MorePage = () => {

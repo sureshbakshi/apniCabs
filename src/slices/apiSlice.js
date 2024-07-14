@@ -60,6 +60,7 @@ const api_path = {
   subscription: path => `subscription/${path}`,
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
+  links: path => `links/${path}`,
 };
 const api_urls = {
   login: 'login',
@@ -409,10 +410,22 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
     //payment end
+    //appLinks
+    getAppLinks: builder.query({
+      query: (body) => ({
+        method: 'GET',
+        url: api_path.links(api_urls.list),
+        params: body
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      providesTags: ['AppLinks']
+    }),
+    //appLinks end
 
   }),
 
-  tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus'],
+  tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus', 'AppLinks'],
 });
 
 export const {
@@ -448,4 +461,5 @@ export const {
   useSubscriptionListQuery,
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
+  useLazyGetAppLinksQuery,
 } = apiSlice;

@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Pressable, Linking } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { Icon, Text } from './common';
-import { COLORS, SUPPORT } from '../constants';
+import { COLORS, ROLE_IDS, SUPPORT, USER_ROLES } from '../constants';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import { openUrl, webLinks } from '../util/config';
+import { useLazyGetAppLinksQuery } from '../slices/apiSlice';
+import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { isDriver } from '../util';
 
 export default () => {
+    const [refetch, { data: appLinks }] = useLazyGetAppLinksQuery({}, { refetchOnMountOrArgChange: true })
+    const auth = useSelector(state => state.auth)
+    const roleId = isDriver() ? ROLE_IDS[USER_ROLES.DRIVER] : ROLE_IDS[USER_ROLES.USER]
+
+    useFocusEffect(
+        useCallback(() => {
+            refetch?.()
+        }, [])
+    );
+    const activeLinks = appLinks?.filter((link) => link?.role_id?.includes(roleId))
     return (
         <>
             <Pressable
@@ -27,24 +41,20 @@ export default () => {
                 </View>
                 <Text style={MoreStyles.name}>{SUPPORT.email.label}</Text>
             </Pressable>
-            <Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => openUrl(webLinks.terms)}>
-                <View style={MoreStyles.listIcon}>
-                    <Icon name="web" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>Terms & Conditions</Text>
-            </Pressable>
-            <Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => openUrl(webLinks.privacy)}>
-                <View style={MoreStyles.listIcon}>
-                    <Icon name="web" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>Privacy Policy</Text>
-            </Pressable>
+            {activeLinks?.map((linkItem) => {
+                return (
+                    <Pressable
+                        key={linkItem.id}
+                        style={MoreStyles.list}
+                        android_ripple={{ color: '#ccc' }}
+                        onPress={() => openUrl(linkItem.link)}>
+                        <View style={MoreStyles.listIcon}>
+                            <Icon name="web" size="large" color={COLORS.primary} />
+                        </View>
+                        <Text style={MoreStyles.name}>{linkItem.label}</Text>
+                    </Pressable>
+                )
+            })}
         </>
     )
 }
