@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { isDriver, isUser, showErrorMessage } from '../util';
+import { getBugSnagUserInfo, isDriver, isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
 import UserTabNavigator from './userTabNavigation';
 import DriverTabNavigator from './driverTabNavigation';
@@ -9,13 +9,14 @@ import useLogout from '../hooks/useLogout';
 
 export const GetAuthRoutes = () => {
     const isDriverLogged = isDriver()
-    const isUserLogged= isUser()
-    const {logOut} = useLogout()
-   if (isDriverLogged) {
+    const isUserLogged = isUser()
+    const { logOut } = useLogout()
+
+    if (isDriverLogged) {
         route = <DriverTabNavigator />;
     } else if (isUserLogged) {
-      route = <UserTabNavigator />;
-    } else{
+        route = <UserTabNavigator />;
+    } else {
         logOut()
         showErrorMessage(`You don't have enough permission to login.`)
         route = <LoginNavigator />;
@@ -30,7 +31,7 @@ export default () => {
     if (isEmpty(access_token)) {
         route = <LoginNavigator />;
     } else {
-        route = <GetAuthRoutes/>
+        route = <GetAuthRoutes />
     }
     return route
-  };
+};

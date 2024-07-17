@@ -5,13 +5,13 @@ import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
 import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import useUserSocketEvents from '../hooks/useUserSocketEvents';
-import UserRideHistory from '../pages/user/UserRideHistory';
 import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandler';
-import { useEffect } from 'react';
 import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
-import { AppState } from 'react-native';
 import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
+import Bugsnag from '@bugsnag/react-native';
+import { getBugSnagUserInfo } from '../util';
+Bugsnag?.setUser(getBugSnagUserInfo())
 
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {

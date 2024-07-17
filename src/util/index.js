@@ -9,6 +9,7 @@ import images from './images';
 import { Notifications } from 'react-native-notifications';
 import { navigate } from './navigationService';
 import { set, get } from 'lodash';
+import Bugsnag from '@bugsnag/react-native'
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -35,9 +36,14 @@ export const getConfig = () => {
 
 export const showErrorMessage = (obj) => {
   const msg = typeof obj === 'string' ? obj : obj?.data?.message
-  Toast.show({
+  const error = {
     type: 'error',
     text1: msg || 'Something Went Wrong. Please try again!',
+  }
+  Bugsnag.notify(error)
+
+  Toast.show({
+    ...error,
     position: 'bottom',
     visibilityTime: 2000,
     autoHide: true,
@@ -45,16 +51,20 @@ export const showErrorMessage = (obj) => {
 }
 
 export const showSuccessMessage = (msg) => {
-  Toast.show({
+  const success = {
     type: 'success',
     text1: msg || 'Success!',
+  }
+  // Bugsnag.notify(success)
+  Toast.show({
+    ...success,
     position: 'bottom',
   })
 }
 
 export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
+  const apiKey = getConfig().GOOGLE_PLACES_KEY;
   try {
-    const apiKey = getConfig().GOOGLE_PLACES_KEY;
     const mode = 'driving'; // Set mode to 'bicycling' for bike transport
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orgLat},${orgLon}&destinations=${destLat},${destLong}&mode=${mode}&key=${apiKey}`;
 
@@ -65,10 +75,12 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
       const firstRoute = rows[0].elements[0]
       return { distance: firstRoute.distance, duration: firstRoute.duration };
     } else {
+      Bugsnag.notify({ response, msg: 'Distance calculation error', gk: apiKey })
       return new Error('Distance calculation error');
     }
   } catch (error) {
     console.error('Error calculating distance:', error);
+    Bugsnag.notify({ response, msg: 'Error calculating distance', gk: apiKey })
     return new Error('Error calculating distance');
   }
 };
@@ -95,6 +107,11 @@ export const _isLoggedIn = () => {
 export const getUserId = () => {
   const { userInfo } = store.getState().auth
   return userInfo?.id
+}
+
+export const getBugSnagUserInfo = () => {
+  const { userInfo } = store.getState().auth
+  return { id: userInfo?.id, email: userInfo?.email, name: userInfo?.name }
 }
 export const fakeLogin = () => {
   axios

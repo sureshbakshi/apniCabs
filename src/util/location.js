@@ -4,6 +4,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { getConfig, showErrorMessage } from '.';
 import axios from 'axios';
 import {filter} from 'lodash'
+import Bugsnag from '@bugsnag/react-native';
 
 export  const defaultOptions = {
     enableHighAccuracy: true,
@@ -79,6 +80,7 @@ export const getLocation = async (coords, cb) => {
             }
         } else {
             // return new Error('Distance calculation error');
+            Bugsnag.notify({status, results, gk: apiKey})
             showErrorMessage(`Error while location request ${status}`)
         }
     } catch (error) {
