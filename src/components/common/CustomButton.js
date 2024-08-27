@@ -1,27 +1,32 @@
 import { Pressable, View } from "react-native"
 import LoginStyles from "../../styles/LoginPageStyles"
 import { upperCase } from 'lodash';
-import { Text } from "react-native-paper";
+import { COLORS } from "../../constants";
+import { Text, Icon } from ".";
 
-export default ({ onClick, styles, textStyles, label, isLowerCase = false , ...rest}) => {
+export default ({ onClick, styles, textStyles, label, isLowerCase = false, contentContainerStyles, icon, ...rest }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = () => {
         onClick?.()
     }
     return (
-        <Pressable
-            onPress={clickHandler}
-            style={[
-                LoginStyles.button,
-                { ...(styles || {}), opacity: rest?.disabled ? 0.6 : 1 }
-            ]}
-            android_ripple={{ color: '#ccc' }}
-            {...rest}
+        <View style={[
+            LoginStyles.button,
+            { ...(styles || {}), opacity: rest?.disabled ? 0.6 : 1 }
+        ]}>
+            <Pressable
+                onPress={clickHandler}
+                android_ripple={{ color: styles?.backgroundColor, radius: 100}}
+                {...rest}
             >
-            <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
-                {formattedLabel}
-            </Text>
-        </Pressable>
+                <View style={{ justifyContent: 'center', ...contentContainerStyles }}>
+                    {icon && <Icon name={icon?.name} size={icon?.size || 'large'} color={COLORS.white} />}
+                    <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
+                        {formattedLabel}
+                    </Text>
+                </View>
+            </Pressable>
+        </View>
     )
 }

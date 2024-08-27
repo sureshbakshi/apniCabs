@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 import { getScreen } from '../util';
 
@@ -25,12 +25,12 @@ const LoginStyles = StyleSheet.create({
     padding: 20,
   },
   textInputPickup: {
-    backgroundColor: '#f2f4f6',
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 0.5,
-    padding: 15,
+    borderColor: '#CCCCCC',
+    borderRadius: 8,
+    borderWidth: 0.5,
+    paddingHorizontal: 15,
+    height: 44,
+    fontSize: 16,
   },
   textInputDrop: {
     backgroundColor: '#f2f4f6',
@@ -43,14 +43,14 @@ const LoginStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
+    paddingHorizontal: 14,
+    borderRadius: 8,
     backgroundColor: COLORS.primary,
+    height:48
   },
   text: {
-    fontSize: 16,
-    lineHeight: 21,
+    fontSize: 18,
+    lineHeight: 27,
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
@@ -65,7 +65,7 @@ const LoginStyles = StyleSheet.create({
   },
   googleTxt: {
     ...StyleSheet.text,
-    color:COLORS.black,
+    color: COLORS.black,
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -73,7 +73,7 @@ const LoginStyles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 16,
     fontWeight: '500',
-    marginLeft:10
+    marginLeft: 10
   },
   headerText: {
     color: '#000',
@@ -82,7 +82,7 @@ const LoginStyles = StyleSheet.create({
   signUpContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical:20
+    paddingVertical: 20
   },
   forgotSection: {
     flexDirection: 'row',

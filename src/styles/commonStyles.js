@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { shadow } from 'react-native-paper';
 
 const CommonStyles = StyleSheet.create({
   mb5: {
@@ -15,6 +16,16 @@ const CommonStyles = StyleSheet.create({
   },
   errorTxt:{
     color:'red'
+  },
+  shadow:{
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   }
 });
 export default CommonStyles;

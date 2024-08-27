@@ -18,7 +18,7 @@ export const Text = ({style, children, ...props}: TextProps) => {
 
 const styles = StyleSheet.create({
   font: {
-    fontFamily: 'Nunito-Regular',
+    fontFamily: 'Poppins-Regular',
     color: COLORS.black
   },
 });

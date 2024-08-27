@@ -8,7 +8,6 @@ import { View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import LoginStyles from "../styles/LoginPageStyles";
 import { COLORS, CONTACTS_FORM } from "../constants";
-import SearchLoader from "../components/common/SearchLoader";
 import { contactsSchema } from "../schema";
 import ScreenContainer from "../components/ScreenContainer";
 import FindRideStyles from "../styles/FindRidePageStyles";

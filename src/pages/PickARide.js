@@ -16,6 +16,8 @@ import { useUpdateRequestMutation } from '../slices/apiSlice';
 import { Icon } from '../components/common';
 import { navigate } from '../util/navigationService';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import CustomButton from '../components/common/CustomButton';
+import CommonStyles from '../styles/commonStyles';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
@@ -116,8 +118,8 @@ export const PickARide = () => {
 
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
-  const toggleSwitch = val => {
-    setToggleSwitch(val)
+  const toggleSwitch = () => {
+    setToggleSwitch(!isOnline)
   }
 
   useEffect(() => {
@@ -139,39 +141,43 @@ export const PickARide = () => {
 
   return (
     <SafeAreaView style={FindRideStyles.container}>
-      <View
-        style={[
-          FindRideStyles.switchBtn,
-          { backgroundColor: isOnline ? COLORS.green : COLORS.primary },
-        ]}>
-        <Text style={FindRideStyles.headerText}>
+      <View>
+        {/* <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
-        </Text>
+        </Text> */}
         <View style={[{
           padding: 0, alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           flexDirection: 'row',
         }]}>
           <Pressable
-            style={{ paddingHorizontal: 5, marginRight: 5 }}
-            android_ripple={{ color: '#ccc' }}
+            style={[CommonStyles.shadow, { width: 40, height: 40 , alignItems: 'center', justifyContent:'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white}]}
             onPress={() => navigate(ROUTES_NAMES.notifications)}>
-            <Icon name="bell-badge" size="large" color={COLORS.white} />
+            <Icon name="bell-badge-outline" size="large" color={COLORS.gray} />
           </Pressable>
-          <Switch
+          {/* <Switch
             trackColor={{ false: COLORS.white, true: COLORS.white }}
             thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={Boolean(isOnline)}
             style={{ transform: [{ scaleX: .9 }, { scaleY: .9 }] }}
-          />
+          /> */}
         </View>
       </View>
+          <CustomButton 
+            label={isOnline ? 'Online' : 'Offline'} 
+            styles={{width: 63,height: 63, borderRadius: 100, paddingHorizontal: 5, position: 'absolute', bottom: 80, right: 20, backgroundColor: isOnline ? COLORS.green : COLORS.orange, zIndex: 2}} 
+            textStyles={{fontSize: 12, lineHeight: 14, textAlign: 'center', marginTop: 2}} 
+            contentContainerStyles={{flexDirection: 'column', alignItems: 'center'}} 
+            isLowerCase 
+            icon={{name: 'account-circle-outline', size: 'large'}}
+            onClick={toggleSwitch}
+          /> 
       {isOnline ? (
         <>
           {!isSocketConnected ? <SocketStatus /> :
-            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.searchLoader} /> :
+            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.homeBanner} /> :
               <View style={FindRideStyles.section}>
                 {rideRequests?.length ? (
                   <ScrollView>

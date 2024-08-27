@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, SafeAreaView, Keyboard } from 'react-native';
+import { StyleSheet, SafeAreaView, Keyboard, View } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
 import { COLORS } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
+import LoginStyles from '../styles/LoginPageStyles';
 
 export default ({ route, data, callbackFunctions }) => {
     const otpInfo = route?.params?.data || data
@@ -19,7 +20,7 @@ export default ({ route, data, callbackFunctions }) => {
         Keyboard?.dismiss()
         submitOTPHandler({ ...otpInfo, otp: code }).unwrap()
             .then(data => {
-                if(data){
+                if (data) {
                     callbackFunctions?.successHandler?.(data)
                 }
             })
@@ -36,15 +37,17 @@ export default ({ route, data, callbackFunctions }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={{marginVertical: 10}}>Enter OTP</Text>
-            <OtpAutoFillViewManager
-                onComplete={handleComplete}
-                onAndroidSignature={androidDeviceCode ? () => { } : handleOnAndroidSignature}
-                style={styles.box}
-                length={4} // Define the length od OTP. This is a must
-                space={1}
-            />
+        <SafeAreaView style={[styles.container]}>
+            <Text style={{ marginBottom: 8, fontSize: 16 }}>Enter OTP</Text>
+            <View style={[LoginStyles.textInputPickup, {paddingTop: 10, paddingBottom:0}]}>
+                <OtpAutoFillViewManager
+                    onComplete={handleComplete}
+                    onAndroidSignature={androidDeviceCode ? () => { } : handleOnAndroidSignature}
+                    style={styles.textInputPickup}
+                    length={4} // Define the length od OTP. This is a must
+                    space={2}
+                />
+            </View>
             {/* <CustomButton label={'Submit OTP'} onClick={handleComplete} /> */}
         </SafeAreaView>
     );
@@ -53,12 +56,10 @@ export default ({ route, data, callbackFunctions }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 30,
-        alignItems: 'center',
     },
-    box: {
-        width: '100%',
-        height: 50,
-        backgroundColor: COLORS.bg_gray_primary
-    },
+    textInputPickup: {
+        paddingHorizontal: 15,
+        minHeight: 36,
+        fontSize: 16,
+      }
 });

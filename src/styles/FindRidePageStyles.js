@@ -4,7 +4,7 @@ import { COLORS } from '../constants';
 const FindRideStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f4f6',
+    backgroundColor: COLORS.white,
   },
   switchBtn:{
     alignItems:'center',

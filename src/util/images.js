@@ -22,5 +22,6 @@ export default {
     captain:  require('../assets/images/captain_icon.png'),
     user:  require('../assets/images/group.png'),
     taxiDriver:  require('../assets/images/taxi-driver.png'),
+    homeBanner: require('../assets/images/home_loader.png'),
 
 }   

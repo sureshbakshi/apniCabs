@@ -86,7 +86,7 @@ const SignUpPage = () => {
                   verifyOTPMutation={useSignupMutation}
                   additionalVerifyOTPPayload={additionalVerifyOTPPayload}
                   formPayloadKeys={['name', 'email', 'phone', 'referred_by']}
-                  submitBtnLabel={'GET OTP'}
+                  submitBtnLabel={'Get OTP'}
                 />
               </View>
               <View style={LoginStyles.signUpSection}>

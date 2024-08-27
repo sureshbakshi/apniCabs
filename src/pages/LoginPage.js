@@ -199,7 +199,7 @@ const LoginPage = () => {
               getOTPPayloadKeys={['mobile']}
               verifyOTPMutation={useVerifyOTPMutation}
               formPayloadKeys={['mobile']}
-              submitBtnLabel={'GET OTP'}
+              submitBtnLabel={'Get OTP'}
             />
             <View>
               {/* <Text style={[LoginStyles.headerText]}>

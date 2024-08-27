@@ -46,7 +46,7 @@ export const DEFAULT_VEHICLE_TYPES = [
 
 
 export const COLORS = {
-  primary: "#f85c70",
+  primary: "#ED3D01",
   primary_soft: "#ff8f9d",
   brand_yellow: '#ffe403',
   brand_blue: '#2399ff',
@@ -60,18 +60,18 @@ export const COLORS = {
   text_dark: "#111",
 
   white: "#fff",
-  black: "#000",
+  black: "#2F2A49",
   gray: "gray",
   blue: "#00f",
   red: "#f00",
   dark_green: "#155724",
-  green: "#11c874",
+  green: "#29BE70",
 
   light_green: "#d4edda",
   light_green_primary: "#a1d5ae",
   yellow: "yellow",
   dodgerblue: "dodgerblue",
-  orange: "#ff6600",
+  orange: "#F2AB01",
 
   pending_bg: '#d73eff',
   approved_bg: '#11c874',
@@ -187,9 +187,9 @@ export const ClearRideStatus = [RideStatus.USER_CANCELLED, RideStatus.DRIVER_CAN
 
 export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.chat]: ['chat', 'chat'],
-  [ROUTES_NAMES.pickRide]: ['map-search', 'map-search-outline'],
-  [ROUTES_NAMES.findRide]: ['map-search', 'map-search-outline'],
-  [ROUTES_NAMES.rideHistoryStack]: ['account-reactivate', 'account-reactivate-outline'],
+  [ROUTES_NAMES.pickRide]: ['home-search-outline', 'home-search-outline'],
+  [ROUTES_NAMES.findRide]: ['home-search-outline', 'home-search-outline'],
+  [ROUTES_NAMES.rideHistoryStack]: ['clock-outline', 'clock-outline'],
   [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
   [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
 }
