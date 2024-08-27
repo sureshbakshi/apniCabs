@@ -170,7 +170,7 @@ export const RequestStatus = {
   REQUESTED: 'REQUESTED',
 
 }
-export const RideProxyNumber = '08071175144'
+export const RideProxyNumber = '03368202999' //exotel: '08071175144' //'03368202999'
 export const SUPPORT = {
   mobile: {
     label: '1800 309 5959',

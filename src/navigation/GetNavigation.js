@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { getBugSnagUserInfo, isDriver, isUser, showErrorMessage } from '../util';
+import { isDriver, isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
 import UserTabNavigator from './userTabNavigation';
 import DriverTabNavigator from './driverTabNavigation';

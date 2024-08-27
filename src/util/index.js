@@ -40,7 +40,7 @@ export const showErrorMessage = (obj) => {
     type: 'error',
     text1: msg || 'Something Went Wrong. Please try again!',
   }
-  Bugsnag.notify(error)
+  bugLogger(error)
 
   Toast.show({
     ...error,
@@ -55,7 +55,6 @@ export const showSuccessMessage = (msg) => {
     type: 'success',
     text1: msg || 'Success!',
   }
-  // Bugsnag.notify(success)
   Toast.show({
     ...success,
     position: 'bottom',
@@ -75,12 +74,12 @@ export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
       const firstRoute = rows[0].elements[0]
       return { distance: firstRoute.distance, duration: firstRoute.duration };
     } else {
-      Bugsnag.notify({ response, msg: 'Distance calculation error', gk: apiKey })
+      bugLogger({ response, msg: 'Distance calculation error', gk: apiKey })
       return new Error('Distance calculation error');
     }
   } catch (error) {
     console.error('Error calculating distance:', error);
-    Bugsnag.notify({ response, msg: 'Error calculating distance', gk: apiKey })
+    bugLogger({ error, msg: 'Error calculating distance', gk: apiKey })
     return new Error('Error calculating distance');
   }
 };
@@ -109,10 +108,23 @@ export const getUserId = () => {
   return userInfo?.id
 }
 
-export const getBugSnagUserInfo = () => {
+export const setBugsnagUserInfo = (provider) => {
   const { userInfo } = store.getState().auth
-  return { id: userInfo?.id, email: userInfo?.email, name: userInfo?.name }
+  const info = { id: userInfo?.id, email: userInfo?.email, name: userInfo?.name }
+  const Provider = provider || Bugsnag
+  // Provider?.setUser(info.id, info.email, info.name)
 }
+
+export const bugLogger = (info) => {
+  if (__DEV__) {
+    console.log(info)
+  } else 
+  {
+    const loggingInfo = typeof info === 'object' ? JSON.stringify(info) : info
+    Bugsnag.notify(loggingInfo)
+  }
+}
+
 export const fakeLogin = () => {
   axios
     .post(

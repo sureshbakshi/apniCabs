@@ -9,9 +9,8 @@ import { useActiveRequestBackHandler } from '../hooks/useActiveRequestBackHandle
 import useValidateRequestExpiry from '../hooks/useValidateRequestExpiry';
 import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
-import Bugsnag from '@bugsnag/react-native';
-import { getBugSnagUserInfo } from '../util';
-Bugsnag?.setUser(getBugSnagUserInfo())
+import { setBugsnagUserInfo } from '../util';
+setBugsnagUserInfo()
 
 const Tab = createBottomTabNavigator();
 export default function UserTabNavigator() {

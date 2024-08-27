@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { navigationRef } from '../util/navigationService';
 import { ActivityIndicator } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -8,12 +7,12 @@ import { CancelReasonDialog } from '../components/common/cancelReasonDialog';
 import GetNavigation from './GetNavigation';
 import Bugsnag from '@bugsnag/react-native'
 import BugsnagPluginReactNavigation from '@bugsnag/plugin-react-navigation';
-import { getBugSnagUserInfo } from '../util';
+import { setBugsnagUserInfo } from '../util';
 
 Bugsnag.start({
   plugins: [new BugsnagPluginReactNavigation()],
   onError: function (event) {
-    event.setUser(getBugSnagUserInfo())
+    // setBugsnagUserInfo(event)
   }
 })
 const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)

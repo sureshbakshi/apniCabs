@@ -8,11 +8,10 @@ import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
 import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
 import WalletStackNavigator from './walletNavigationStack';
-import Bugsnag from '@bugsnag/react-native';
-import { getBugSnagUserInfo } from '../util';
+import { setBugsnagUserInfo } from '../util';
 const Tab = createBottomTabNavigator();
 
-Bugsnag.setUser(getBugSnagUserInfo())
+setBugsnagUserInfo()
 
 
 export default function DriverTabNavigator() {
