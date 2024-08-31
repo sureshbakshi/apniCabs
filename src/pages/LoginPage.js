@@ -5,6 +5,7 @@ import {
   Pressable,
   ImageBackground,
   ScrollView,
+  Image,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
@@ -33,6 +34,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
 import OTPForm from '../components/OTPForm';
+import HeaderImage from '../components/common/HeaderImage';
 
 // const initialState = {
 //   email: 'sureshbakshi88@gmail.com',
@@ -134,18 +136,11 @@ const LoginPage = () => {
 
   return (
     <View style={LoginStyles.container}>
-      <ImageBackground
-        source={images.backgroundImage}
-        resizeMode="cover"
-        style={LoginStyles.image}>
-        <View style={LoginStyles.logoSection}>
-          <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
-        </View>
-      </ImageBackground>
+      <HeaderImage/>
 
-        <ScreenContainer>
-          <View style={LoginStyles.section}>
-            {/* <View>
+      <ScreenContainer>
+        <View style={LoginStyles.section}>
+          {/* <View>
               <FormProvider {...methods}>
                 {LOGIN_FORM.map((field, index) => {
                   return (
@@ -190,31 +185,38 @@ const LoginPage = () => {
                 <Text style={[{color: COLORS.primary,textAlign: 'right' }]}>Forgot Password?</Text>
               </Pressable>
             </View> */}
-            <OTPForm
-              successHandler={successHandler}
-              formFields={LOGIN_FORM}
-              formSchema={signInSchema}
-              formMutation={useGetLoginOTPMutation}
-              initialState={initialState}
-              getOTPPayloadKeys={['mobile']}
-              verifyOTPMutation={useVerifyOTPMutation}
-              formPayloadKeys={['mobile']}
-              submitBtnLabel={'Get OTP'}
-            />
-            <View>
-              {/* <Text style={[LoginStyles.headerText]}>
+          <OTPForm
+            successHandler={successHandler}
+            formFields={LOGIN_FORM}
+            formSchema={signInSchema}
+            formMutation={useGetLoginOTPMutation}
+            initialState={initialState}
+            getOTPPayloadKeys={['mobile']}
+            verifyOTPMutation={useVerifyOTPMutation}
+            formPayloadKeys={['mobile']}
+            submitBtnLabel={'Get OTP'}
+            heading={'Sign In'}
+          />
+          <View>
+            {/* <Text style={[LoginStyles.headerText]}>
                 {'or'}
               </Text> */}
-              {/* <GoogleSigninButton
+            {/* <GoogleSigninButton
                 style={{ width: '100%', height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={GoogleSignIn}
               /> */}
-              <Text style={[LoginStyles.headerText, { color: COLORS.primary, fontWeight: 'bold', marginTop: 50, paddingVertical: 5 }]}>
-                For New Registration
-              </Text>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+
+              <View style={[LoginStyles.signUpSection,{ marginTop: 20}]}>
+                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>Don’t have an account?</Text>
+                <Pressable
+                  android_ripple={{ color: '#fff' }}
+                  onPress={GoogleSignIn}>
+                  <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign Up</Text>
+                </Pressable>
+              </View>
+            {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Pressable
                   onPress={GoogleSignIn}
                   style={[LoginStyles.googleBtn, {flex: 1, marginRight: 15}]}
@@ -243,9 +245,9 @@ const LoginPage = () => {
                     </Text>
                   </View>
                 </Pressable>
-              </View>
-            </View>
-            {/* <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
+              </View> */}
+          </View>
+          {/* <View style={[CommonStyles.mtb10, { marginTop: 50 }]}>
               <Text style={[LoginStyles.headerText, CommonStyles.mtb10]}>
                 {"Don't have an account?"}
               </Text>
@@ -270,8 +272,8 @@ const LoginPage = () => {
 
 
             </View> */}
-          </View>
-        </ScreenContainer>
+        </View>
+      </ScreenContainer>
     </View>
   );
 };

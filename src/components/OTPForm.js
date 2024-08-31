@@ -17,7 +17,7 @@ import CustomButton from '../components/common/CustomButton';
 import OTPAutoFill from '../components/OTPAutoFill';
 import { extractKeys, showErrorMessage } from '../util';
 
-export default ({ successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
+export default ({heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         formMutation();
     const { androidDeviceCode } = useSelector(state => state.auth)
@@ -82,6 +82,8 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
     return (
 
         <View>
+            <Text style={LoginStyles.logoHeardertext}>{heading} </Text>
+
             <FormProvider {...methods}>
                 {formFields.map((field, index) => {
                     return (
@@ -91,7 +93,7 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
                                 render={({ field: { onChange, onBlur, value } }) => {
                                     return (
                                         <>
-                                            <Text style={{ marginBottom: 8, fontSize: 16 }}>{field.props?.placeholder || field.label}</Text>
+                                            <Text style={{ marginBottom: 8, fontSize: 16, fontFamily:'Poppins' }}>{field.props?.placeholder || field.label}</Text>
                                             <TextInput
                                                 name={field.name}
                                                 onBlur={onBlur}
@@ -116,7 +118,7 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
                 })}
                 {
                     // true 
-                    (payload && !getOTPError)  && <View style={{ marginBottom: 10 }}>
+                    (payload && !getOTPError) && <View style={{ marginBottom: 10 }}>
                         <OTPAutoFill data={{ code: otpInfo?.code, otp: otpInfo?.otp, ...(payload && payload), ...additionalVerifyOTPPayload }} callbackFunctions={callbackFunctions} />
                     </View>
                 }
@@ -124,6 +126,7 @@ export default ({ successHandler, formFields, formSchema, formMutation, getOTPPa
                     onClick={handleSubmit(onSubmit)}
                     label={submitBtnLabel || 'Submit'}
                     disabled={Boolean(isError || otpInfo)}
+                    icon={{name: 'arrow-right', size: 'large'}}
                     isLowerCase
                 />}
             </FormProvider>

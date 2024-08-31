@@ -4,6 +4,7 @@ import SignUpPage from '../pages/SignUpPage';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import OTPAutoFill from '../components/OTPAutoFill';
 import ForgotPassword from '../pages/ForgotPassword';
+import GettingStartedPage from '../pages/GettingStartedPage';
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({navigation, route}) {
@@ -20,11 +21,16 @@ export default function LoginNavigator({navigation, route}) {
         },
         animation:'slide_from_right'
       }}>
-      <Stack.Screen
-        name={ROUTES_NAMES.signIn}
+        <Stack.Screen
+        name={ROUTES_NAMES.gettingStartedPage}
         options={{title: ''}}
-        component={LoginPage}
+        component={GettingStartedPage}
       />
+        <Stack.Screen
+          name={ROUTES_NAMES.signIn}
+          options={{title: ''}}
+          component={LoginPage}
+        />
       <Stack.Screen
         name={ROUTES_NAMES.signUp}
         options={{title: 'Sign Up'}}

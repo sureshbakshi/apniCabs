@@ -55,9 +55,14 @@ export const COLORS = {
   bg_dark: "#f0f0f0",
   bg_secondary: "#ccc",
   bg_gray_primary: "#ececec",
+  primary_blue:'#4D81E7',
+  button_blue_bg:'#2499FF',
+
 
   text_gray: "#838383",
   text_dark: "#111",
+  text_dark1:'#1A1C1E',
+  text_light_gray:'#6C7278',
 
   white: "#fff",
   black: "#2F2A49",
@@ -120,7 +125,8 @@ export const ROUTES_NAMES = {
   notifications: 'Notifications',
   rideDetails: 'RideDetails',
   otp: 'OTP',
-  forgotPassword: 'ForgotPassword'
+  forgotPassword: 'ForgotPassword',
+  gettingStartedPage:'GettingStartedPage'
 }
 
 export const RideStatus = {

@@ -15,7 +15,7 @@ export default {
     searchLoader: require('../assets/images/loading.json'),
     rideAccept: require('../assets/images/ride_accept.png'),
     rideCancel: require('../assets/images/ride_cancel.png'),
-    backgroundImage: require('../assets/images/bg.jpeg'),
+    backgroundImage: require('../assets/images/bg1.png'),
     pin: require('../assets/images/pin.png'),
     carYellow: require('../assets/images/car.png'),
     google: require('../assets/images/google.png'),
@@ -23,5 +23,7 @@ export default {
     user:  require('../assets/images/group.png'),
     taxiDriver:  require('../assets/images/taxi-driver.png'),
     homeBanner: require('../assets/images/home_loader.png'),
-
+    gettingStarted1:require('../assets/images/getting_started_1.png'),
+    gettingStarted2:require('../assets/images/getting_started_2.png'),
+    logo:require('../assets/images/logo.png')
 }   

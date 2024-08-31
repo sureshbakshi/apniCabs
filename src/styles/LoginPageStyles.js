@@ -12,8 +12,7 @@ const LoginStyles = StyleSheet.create({
   logoSection: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    height: 260,
+    height: 360,
   },
   logoTxt: {
     fontSize: 30,
@@ -78,6 +77,8 @@ const LoginStyles = StyleSheet.create({
   headerText: {
     color: '#000',
     textAlign: 'center',
+    justifyContent:'center',
+    alignItems:'center'
   },
   signUpContainer: {
     flexDirection: 'row',
@@ -93,5 +94,21 @@ const LoginStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logoHeardertext:{
+    fontSize: 32,
+    color: COLORS.text_dark1,
+    fontWeight: '700',
+    paddingBottom:10,
+    fontFamily: 'Poppins',
+},
+  logoBg: {
+    height:300,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+},
+  logo:{
+    width:280,
+    height:84
+  }
 });
 export default LoginStyles;

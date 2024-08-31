@@ -23,6 +23,8 @@ import { signupSchema } from '../schema';
 import { isEmpty } from 'lodash';
 import OTPForm from '../components/OTPForm';
 import { showSuccessMessage } from '../util';
+import HeaderImage from '../components/common/HeaderImage';
+import CustomButton from '../components/common/CustomButton';
 
 
 const SignUpPage = () => {
@@ -49,14 +51,7 @@ const SignUpPage = () => {
   }
   return (
     <View style={LoginStyles.container}>
-      <ImageBackground
-        source={images.backgroundImage}
-        resizeMode="cover"
-        style={LoginStyles.image}>
-        <View style={LoginStyles.logoSection}>
-          <Text style={LoginStyles.logoTxt}>{'Apni Cabi'.toUpperCase()}</Text>
-        </View>
-      </ImageBackground>
+       <HeaderImage/>
       <ScrollView>
 
         <ScreenContainer>
@@ -87,14 +82,21 @@ const SignUpPage = () => {
                   additionalVerifyOTPPayload={additionalVerifyOTPPayload}
                   formPayloadKeys={['name', 'email', 'phone', 'referred_by']}
                   submitBtnLabel={'Get OTP'}
+                  heading={'Sign Up'}
+                />
+                <CustomButton
+                    label={'Become a Driver'}
+                    icon={{name: 'arrow-top-right', size: 'large'}}
+                    styles={{backgroundColor:COLORS.button_blue_bg,marginTop:10}}
+                    isLowerCase
                 />
               </View>
-              <View style={LoginStyles.signUpSection}>
-                <Text style={LoginStyles.headerText}>Already Registered?</Text>
+              <View style={[LoginStyles.signUpSection,{ marginTop: 20}]}>
+                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>Already have an account?</Text>
                 <Pressable
                   android_ripple={{ color: '#fff' }}
                   onPress={() => navigate('SignIn')}>
-                  <Text style={LoginStyles.greenTxt}>Sign in</Text>
+                  <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign In</Text>
                 </Pressable>
               </View>
             </View>

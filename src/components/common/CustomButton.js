@@ -20,11 +20,13 @@ export default ({ onClick, styles, textStyles, label, isLowerCase = false, conte
                 android_ripple={{ color: styles?.backgroundColor, radius: 100}}
                 {...rest}
             >
-                <View style={{ justifyContent: 'center', ...contentContainerStyles }}>
-                    {icon && <Icon name={icon?.name} size={icon?.size || 'large'} color={COLORS.white} />}
+                <View style={{ justifyContent: 'center', ...contentContainerStyles, alignItems:'center',flexDirection:'row'}}>
                     <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
                         {formattedLabel}
                     </Text>
+                    <View style={{paddingLeft:10}}>
+                      {icon && <Icon name={icon?.name} size={icon?.size || 'large'} color={COLORS.white} />}
+                    </View>
                 </View>
             </Pressable>
         </View>
