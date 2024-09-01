@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import FareSettings from '../pages/FareSettings';
 import Contacts from '../pages/Contacts';
 import Refer from '../pages/Refer';
+import HeaderBackButton from '../components/common/HeaderBackButton';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -23,14 +24,13 @@ export default function MoreNavigator({ navigation, route }) {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: COLORS.primary,
         },
-        headerTintColor: '#fff',
+        headerTintColor: COLORS.black,
         headerTitleStyle: {
-          fontWeight: 'bold',
         },
+        headerTitleAlign: 'center',
       }}>
-      <Stack.Screen name="More Details" component={MorePage} />
+      <Stack.Screen name="More Details" component={MorePage} options={{headerShown: false}}/>
       <Stack.Screen
         name="MyProfile"
         options={{ title: 'My Profile' }}
@@ -43,7 +43,7 @@ export default function MoreNavigator({ navigation, route }) {
       />
       <Stack.Screen
         name="FareSettings"
-        options={{ title: 'Fare Settings' }}
+        options={{ title: 'Fare Settings', headerLeft: () => <HeaderBackButton />,  headerShadowVisible: false }}
         component={FareSettings}
       />
        <Stack.Screen

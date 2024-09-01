@@ -7,10 +7,11 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal} from '../util/config';
-import { isDriver } from '../util';
+import { getScreen, isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
 import SupportLinks from '../components/SupportLinks';
 import useGetDriverDetails from '../hooks/useGetDriverDetails';
+import ContainerWrapper from '../components/common/ContainerWrapper';
 
 
 const MorePage = () => {
@@ -20,6 +21,7 @@ const MorePage = () => {
 
   return (
     <View style={MoreStyles.container}>
+      <ContainerWrapper>
       <View style={MoreStyles.section}>
         <View style={MoreStyles.card}>
           <View style={MoreStyles.cardtop}>
@@ -109,6 +111,7 @@ const MorePage = () => {
           </Pressable>
         </ScrollView>
       </View>
+      </ContainerWrapper>
     </View>
   );
 };
