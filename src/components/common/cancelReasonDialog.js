@@ -119,7 +119,7 @@ export const CancelReasonDialog = () => {
         justifyContent: 'flex-end',
         padding: 0
       }}
-      modalContainerStyles={{ borderRadius: 18 }}
+      modalContainerStyles={{ borderTopLeftRadius: 18, borderTopRightRadius: 18 }}
     >
       {message.map(item => {
         return (

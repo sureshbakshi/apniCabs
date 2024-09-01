@@ -117,11 +117,11 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
                 </View>
             }
             {activeRequest?.ride?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequest?.ride?.id}</Text>}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+            {!isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                 {fare && <Text style={[FindRideStyles.name]}>{'\u20B9'}{fare}</Text>}
                 <Text style={[{ color: color }]}>{label}</Text>
                 {/* <Text style={styles.address}>3 Seats left</Text> */}
-            </View>
+            </View>}
         </View>
     )
 }
@@ -221,7 +221,7 @@ export default ({ activeRequest, isDriverLogged }) => {
                     </Pressable>
                 </View>}
             </View>
-            {isOnActiveRide && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
+            {(isOnActiveRide && isDriverLogged) &&  <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 {(activeRequest?.from_location) && <OpenMapButton route={{ start: activeRequest.from_location, end: activeRequest.to_location, navigate: true }} />}
                 <CustomButton
                     onClick={() => getCurrentLocation(completeRideHandler)}

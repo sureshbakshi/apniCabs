@@ -54,6 +54,7 @@ const FindRideStyles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 15,
     padding: 15,
+    marginHorizontal:1,
     ...commonStyles.shadow
   },
   cardtop:{

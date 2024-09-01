@@ -167,6 +167,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   const isNotNaN = !isNaN(regionLatnLng?.latitude);
 
+  console.log({activeRequest, activeLocation})
   return (
     <View style={styles.container}>
       {/* <View style={{ backgroundColor: 'yellow', padding: 10, position: 'absolute', zIndex: 1000, top: 0 }}>

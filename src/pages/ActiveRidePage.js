@@ -21,7 +21,6 @@ const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
   const { activeRequest, activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   const { screenHeight } = getScreen()
-
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
       <ContainerWrapper style={{ height: isDriverLogged ? screenHeight - 150 : screenHeight - 150 }}>
