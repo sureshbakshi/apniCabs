@@ -69,8 +69,8 @@ const WalletPage = ({ navigation }) => {
     return (
       <View style={WalletStyles.cardtop}>
         <View style={WalletStyles.left}>
-        <View style={[WalletStyles.box,{backgroundColor:copy.bg_color }]}>
-            <Icon name={copy.icon} size='large' color={COLORS.white}/>
+        <View style={[WalletStyles.box1,{backgroundColor:copy.bg_color }]}>
+            <Icon name={copy.icon} size='small' color={COLORS.white}/>
           </View>
           {/* <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' /> */}
         </View>
@@ -119,7 +119,7 @@ const WalletPage = ({ navigation }) => {
         {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
         <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
           <View style={WalletStyles.box}>
-            <Icon name='currency-inr' size='large' color={COLORS.white}/>
+            <Icon name='wallet-outline' size='large' color={COLORS.white}/>
           </View>
           <View>
             <Text style={WalletStyles.graytxt}>{'Total Credits'}</Text>

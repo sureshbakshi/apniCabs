@@ -36,7 +36,7 @@ const WalletStyles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     padding: 10,
-    paddingBottom:0
+    paddingBottom:0,
     // shadowColor: '#000',
     // shadowOffset: {
     //   width: 0,
@@ -46,6 +46,8 @@ const WalletStyles = StyleSheet.create({
     // shadowRadius: 2.22,
     // elevation: 3,
     // marginBottom: 10,
+    borderBottomWidth:1,
+    borderBottomColor:'#BCBCBC'
   },
   cardtop: {
     flexDirection: 'row',
@@ -126,6 +128,14 @@ const WalletStyles = StyleSheet.create({
     height: 50,
     borderRadius: 15,
     marginRight: 15,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box1: {
+    width: 30,
+    height: 30,
+    borderRadius: 10,
     backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
