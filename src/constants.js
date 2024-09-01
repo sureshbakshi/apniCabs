@@ -59,8 +59,11 @@ export const COLORS = {
   bg_secondary: "#ccc",
   bg_gray_primary: "#ececec",
   primary_blue: '#4D81E7',
+  secondary_blue: '#539DF3',
   button_blue_bg: '#2499FF',
   primary_light: '#FFE5E2',
+  neutral_gray: '#94A3B8',
+
   bg_blue_lite: '#EDF5FF',
   bg_gray_secondary: '#DFDFDF',
   brand_green: '#38C274',

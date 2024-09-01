@@ -12,6 +12,7 @@ import { formattedDate } from '../util';
 import { useFocusEffect } from '@react-navigation/native';
 import { isEmpty } from 'lodash';
 import { navigate } from '../util/navigationService';
+import ContainerWrapper from '../components/common/ContainerWrapper';
 
 const walletCopy = {
   'DEBIT': {
@@ -115,6 +116,7 @@ const WalletPage = ({ navigation }) => {
 
   return (
     <View style={WalletStyles.container}>
+      {/* <ContainerWrapper> */}
       <View style={WalletStyles.header}>
         {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
         <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
@@ -149,6 +151,7 @@ const WalletPage = ({ navigation }) => {
           ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
         />
       </View>
+      {/* </ContainerWrapper> */}
     </View>
   );
 };

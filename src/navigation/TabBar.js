@@ -37,7 +37,7 @@ export default function TabBar({ state, descriptors, navigation }) {
             });
           };
           const color = isFocused ? COLORS.white : COLORS.black
-          const bg = isFocused ? '#2499FF' : COLORS.white
+          const bg = isFocused ? COLORS.secondary_blue : COLORS.white
           return (
             <TouchableOpacity
               accessibilityRole="button"
@@ -51,7 +51,7 @@ export default function TabBar({ state, descriptors, navigation }) {
             >
               <View style={{ flexDirection: 'row' , backgroundColor: bg, paddingVertical: 8, paddingHorizontal: 16,  borderRadius: 100, alignItems: 'center', justifyContent: 'center'}}>
                 {options.tabBarIcon({ isFocused, color })}
-                { <Text style={{ color: color , marginLeft: 5, opacity: isFocused ? 1: 0}}>
+                { <Text style={{ color: color , marginLeft: 5, opacity: isFocused ? 1: 0, lineHeight: 20}}>
                   {label}
                 </Text>}
               </View>

@@ -52,7 +52,6 @@ const Timeline = ({ data = [], size = 'medium', height = 10, numberOfLines = 1, 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   timelineItem: {
     flexDirection: 'row',

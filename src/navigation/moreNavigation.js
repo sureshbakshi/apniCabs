@@ -29,6 +29,8 @@ export default function MoreNavigator({ navigation, route }) {
         headerTitleStyle: {
         },
         headerTitleAlign: 'center',
+        headerLeft: () => <HeaderBackButton />,  
+        headerShadowVisible: false 
       }}>
       <Stack.Screen name="More Details" component={MorePage} options={{headerShown: false}}/>
       <Stack.Screen
@@ -43,7 +45,7 @@ export default function MoreNavigator({ navigation, route }) {
       />
       <Stack.Screen
         name="FareSettings"
-        options={{ title: 'Fare Settings', headerLeft: () => <HeaderBackButton />,  headerShadowVisible: false }}
+        options={{ title: 'Fare Settings'}}
         component={FareSettings}
       />
        <Stack.Screen

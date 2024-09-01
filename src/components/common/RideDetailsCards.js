@@ -17,6 +17,7 @@ import CustomButton from './CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
 import CommonStyles from '../../styles/commonStyles';
+import { getColorNBg } from '../../pages/MyRidesPage';
 
 
 const cancelRide = () => {
@@ -44,40 +45,36 @@ const cancelRide = () => {
     </View>
 }
 
-export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false }) => {
+export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false, isOnRide = true, avatarStyles = {}, containerStyles = {} }) => {
     const driver_details = driverDetails || activeRequest?.driver
     const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
     const fare = activeRequest.fare || activeRequest?.ride?.fare
     const dp = (isDriverLogged) ? activeRequest?.user?.avatar : driver_avatar
     const name = isDriverLogged ? activeRequest?.user?.name : driver_details?.name
     const vehicle = activeRequest?.driver?.vehicle || driverDetails?.vehicle
+    const { color, label } = getColorNBg(activeRequest?.status)
+
     return (
-        <View style={{ padding: 10 }}>
-            <View style={FindRideStyles.cardtop}>
-                <View style={FindRideStyles.left}>
+        <View style={{ padding: 10, ...containerStyles }}>
+            <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>
+                <View style={[{ flexDirection: 'row', gap: 10, ...avatarStyles }]}>
                     <ImageView
                         source={dp ? { uri: dp } : images[`captain1`]}
                         style={[styles.avatar]}
                     />
+                    <View>
+                        <Text style={[styles.bold, CommonStyles.font16]}>{name}</Text>
+                        {vehicle && <>
+                            <Text style={[CommonStyles.font12, { color: COLORS.neutral_gray }]}>
+                                {vehicle.model}
+                            </Text>
+                            <Text style={[CommonStyles.font10, { letterSpacing: 1.5, color: COLORS.neutral_gray }]}>
+                                {vehicle.registration_number}
+                            </Text>
+                        </>}
+                    </View>
                 </View>
-                <View style={FindRideStyles.middle}>
-                    <Text style={[styles.bold, CommonStyles.font16]}>{name}</Text>
-                    {vehicle && <>
-                        <Text style={[CommonStyles.font12]}>
-                            {vehicle.model}
-                        </Text>
-                        <Text style={[CommonStyles.font10,{letterSpacing: 1.5}]}>
-                            {vehicle.registration_number}
-                        </Text>
-                    </>}
-                    {/* <Timeline
-                        data={[
-                            activeRequest.from_location,
-                            activeRequest.to_location,
-                        ]}
-                    /> */}
-                </View>
-                {fare && <View style={[FindRideStyles.right, { alignItems: 'flex-end' }]}>
+                {fare && isOnRide && <View style={[{ alignItems: 'flex-end' }]}>
                     <Text style={[FindRideStyles.name]}>
                         {'\u20B9'}{fare}
                     </Text>
@@ -91,6 +88,14 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
                     </>}
                 </View>}
             </View>
+            {!isOnRide && <View style={{ marginTop: 10 }}><Timeline
+                data={[
+                    activeRequest.from_location,
+                    activeRequest.to_location,
+                ]}
+                numberOfLines={1}
+                textStyles={{ fontSize: 12 }}
+            /></View>}
             {/* <View style={FindRideStyles.cardBottom}>
                 <View style={FindRideStyles.left}>
                     {activeRequest.duration && (
@@ -105,7 +110,18 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
                     </Text>
                 </View>
             </View> */}
-            {activeRequest?.ride?.id && <Text style={[styles.text, styles.bold, { alignSelf: 'flex-start', paddingLeft: 10 }]}>Ride ID : {activeRequest?.ride?.id}</Text>}
+            {
+                activeRequest?.distance && !isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                    <Text style={[styles.text2]}>Duration: {activeRequest?.duration}</Text>
+                    <Text style={[styles.text2]}>Distance: {activeRequest?.distance} Km</Text>
+                </View>
+            }
+            {activeRequest?.ride?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequest?.ride?.id}</Text>}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                {fare && <Text style={[FindRideStyles.name]}>{'\u20B9'}{fare}</Text>}
+                <Text style={[{ color: color }]}>{label}</Text>
+                {/* <Text style={styles.address}>3 Seats left</Text> */}
+            </View>
         </View>
     )
 }
@@ -173,7 +189,7 @@ export default ({ activeRequest, isDriverLogged }) => {
     const isOnActiveRide = isDriverLogged && activeRideId || activeRequest.status === RideStatus.ONRIDE
     return (
         <>
-            <View style={FindRideStyles.card}>
+            <View style={[FindRideStyles.card]}>
                 <RideDetailsView {...{ activeRequest, isDriverLogged }} />
                 {!isOnActiveRide && <View style={{ flexDirection: 'row' }}>
                     <TextInput

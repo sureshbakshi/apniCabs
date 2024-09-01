@@ -11,7 +11,7 @@ import SearchLoader from '../components/common/SearchLoader';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 
-const getColorNBg = (status) => {
+export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
 }
 

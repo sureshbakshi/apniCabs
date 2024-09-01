@@ -12,6 +12,7 @@ import { openOwnerPortal } from '../../util/config';
 import { formattedDate, isDriverVerified } from '../../util';
 import NotificationsPageStyles from '../../styles/Notifications';
 import { Icon } from './Icon';
+import CommonStyles from '../../styles/commonStyles';
 
 
 const MessageInfo = () => {

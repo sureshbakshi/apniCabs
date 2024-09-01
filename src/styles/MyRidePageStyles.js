@@ -1,7 +1,11 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 import CommonStyles from './commonStyles';
-
+const defaultText = {
+  fontSize: 13,
+  fontWeight: '500',
+  color: COLORS.black
+}
 const MyRideStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -10,15 +14,15 @@ const MyRideStyles = StyleSheet.create({
   },
   header: {
     backgroundColor: COLORS.primary,
-    height:60,
-    padding:10,
-    justifyContent:'center'
+    height: 60,
+    padding: 10,
+    justifyContent: 'center'
   },
   headerText: {
     color: '#fff',
     fontSize: 20,
     fontWeight: '500',
-    textAlign:'center'
+    textAlign: 'center'
   },
   section: {
     flex: 1,
@@ -30,14 +34,14 @@ const MyRideStyles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 24,
     ...CommonStyles.shadow,
-    marginBottom:10,
+    marginBottom: 10,
   },
-  cardtop:{
+  cardtop: {
     flexDirection: 'row',
   },
-  cardBottom:{
+  cardBottom: {
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
     paddingVertical: 3
   },
   left: {
@@ -72,11 +76,13 @@ const MyRideStyles = StyleSheet.create({
     fontSize: 13,
     marginBottom: 20,
   },
-  text:{
-    fontSize: 13,
-    fontWeight: '500',
-    alignSelf:'center',
-    color: COLORS.gray
+  text: {
+    alignSelf: 'center',
+    ...defaultText
+  },
+  text2: {
+    ...defaultText,
+    color: COLORS.sepator_line_dark,
   },
   time: {
     fontSize: 14,
@@ -84,16 +90,16 @@ const MyRideStyles = StyleSheet.create({
     color: COLORS.black,
     fontWeight: 700
   },
-  primaryColor:{
+  primaryColor: {
     color: COLORS.primary,
   },
   whiteColor: {
     color: COLORS.white
   },
-  greenColor:{
+  greenColor: {
     color: COLORS.green
   },
-  bold:{
+  bold: {
     fontWeight: 'bold'
   },
   button: {
@@ -106,23 +112,23 @@ const MyRideStyles = StyleSheet.create({
   },
   status: {
     ...StyleSheet.button,
-    transform: [{rotate: '-90deg'}],
+    transform: [{ rotate: '-90deg' }],
     width: 80,
     height: 22,
-    position:'absolute',
+    position: 'absolute',
     bottom: 42,
     left: -29,
     paddingVertical: 0,
     paddingHorizontal: 8,
-    borderBottomLeftRadius:10,
-    borderBottomRightRadius:10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   buttonText: {
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0.25,
     color: 'white',
-    textAlign:'center'
+    textAlign: 'center'
   },
   avatar: {
     minWidth: 10,
@@ -131,18 +137,18 @@ const MyRideStyles = StyleSheet.create({
     minHeight: 10,
     borderRadius: 25
   },
-  end:{
-    alignSelf:'flex-end',
+  end: {
+    alignSelf: 'flex-end',
     backgroundColor: COLORS.brand_blue,
-    paddingVertical:5,
-    paddingHorizontal:15,
-    borderRadius:20,
-    color:COLORS.white,
-    fontWeight:'bold',
-    fontSize:14,
-    position:'absolute',
-    top:-10,
-    height:30
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    color: COLORS.white,
+    fontWeight: 'bold',
+    fontSize: 14,
+    position: 'absolute',
+    top: -10,
+    height: 30
   }
 });
 export default MyRideStyles;

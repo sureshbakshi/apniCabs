@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { ExpiryStatus } from '../../constants';
+import { COLORS, ExpiryStatus } from '../../constants';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { Text } from './Text';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,7 @@ const Notifications = () => {
     useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
     return (
         !isEmpty(driverInfo?.expiredFields) ?  <View style={[FindRideStyles.container, { padding: 10, }]}>
-            <View style={[FindRideStyles.card, { width: '100%', padding: 10, }]} >
+            <View style={[FindRideStyles.card, { width: '100%', padding: 10}]} >
                 {<View style={[FindRideStyles.subHeader, { margin: 10 }]}>
                     <Text style={[FindRideStyles.name, { fontSize: 14, fontWeight: 'bold' }]}>Below are the documents that will expire within a week:</Text>
                     {driverInfo?.expiredFields.map((item, i) => {
