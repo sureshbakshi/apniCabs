@@ -10,6 +10,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
 import { openOwnerPortal } from '../../util/config';
 import { formattedDate, isDriverVerified } from '../../util';
+import NotificationsPageStyles from '../../styles/Notifications';
+import { Icon } from './Icon';
 
 
 const MessageInfo = () => {
@@ -25,36 +27,47 @@ const MessageInfo = () => {
 
     useEffect(() => {
         updateDriverStatus(false)
-    },[])
+    }, [])
 
     const isNotVehicleAssigned = isEmpty(driverInfo?.vehicle)
-    const message = isNotVehicleAssigned ? 'Vehicle assigned to you': 'your profile is verified'
+    const message = isNotVehicleAssigned ? 'Vehicle assigned to you' : 'your profile is verified'
 
     return (
-        <View style={[FindRideStyles.container, FindRideStyles.center, { padding: 10, }]}>
-            <View style={[FindRideStyles.card, { width: '100%', padding: 10, }]} >
-                <Text style={[FindRideStyles.name, {color: COLORS.red, fontWeight: 'bold'}]}>You cannot receive any ride requests until {message}. Please update below info as soon as possible.</Text>
+        <View style={[FindRideStyles.container, NotificationsPageStyles.center]}>
+            <View style={NotificationsPageStyles.box}>
+                <Icon name='flash' size='small' color={COLORS.black} />
+            </View>
+            <View style={[NotificationsPageStyles.card]} >
+                <Text style={[NotificationsPageStyles.info]}>You cannot receive any ride requests until {message}. Please update below info as soon as possible.</Text>
                 <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                    <Text style={[FindRideStyles.name, { fontSize: 18, fontWeight: 'bold' , color: COLORS.red}]}>Reason: </Text>
-                    {!isDriverVerified(driverInfo) && <Text style={[FindRideStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
+                    <View style={NotificationsPageStyles.blackQuote}>
+                        <Text style={[NotificationsPageStyles.heading]}>Reason: </Text>
+                    </View>
+                    {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
                     {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>Vehicle not yet assigned.</Text>}
 
                 </View>
                 {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                    <Text style={[FindRideStyles.name, { fontSize: 18, fontWeight: 'bold' , color: COLORS.brand_blue}]}>Notice:</Text>
-                    <Text style={[FindRideStyles.name, { fontSize: 14, fontWeight: 'bold' }]}>Below are the documents that will expire within a week:</Text>
+                    <View style={NotificationsPageStyles.blackQuote}>
+                        <Text style={[NotificationsPageStyles.heading]}>Notice:</Text>
+                    </View>
+                    <Text style={[NotificationsPageStyles.subHeading]}>Below are the documents that will expire within a week:</Text>
                     {driverInfo?.expiredFields.map((item, i) => {
-                        return <View key={i} style={[FindRideStyles.center,{justifyContent:'flex-start',alignItems:'flex-start'}]}>
-                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{i + 1}. </Text>
-                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{ExpiryStatus[item]} will expire on {formattedDate(driverInfo?.vehicle[item], true)}</Text>
+                        return <View key={i} style={[FindRideStyles.center, { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
+                            <Text style={[NotificationsPageStyles.name]}>{i + 1}. </Text>
+                            <Text style={[NotificationsPageStyles.name]}>{ExpiryStatus[item]} will expire on {formattedDate(driverInfo?.vehicle[item], true)}</Text>
                         </View>
                     })}
                 </View>}
-                <View style={[FindRideStyles.cardBottom, FindRideStyles.center, { justifyContent: 'flex-end' }]}>
-                    <CustomButton label={'Update here'} styles={{
-                        margin: 5, paddingVertical: 10,
-                        paddingHorizontal: 10,
-                    }} onClick={openOwnerPortal} />
+                <View style={[NotificationsPageStyles.cardBottom]}>
+                    <CustomButton
+                        label={'Update'}
+                        textStyles={{ lineHeight: 13, fontSize: 12, fontWeight: 400, textTransform: 'capitalize' }}
+                        styles={{
+                            margin: 5,
+                            width: 85, height: 32,
+                            borderRadius: 5
+                        }} onClick={openOwnerPortal} />
                 </View>
 
             </View>

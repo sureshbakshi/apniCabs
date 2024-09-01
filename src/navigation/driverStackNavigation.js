@@ -9,6 +9,7 @@ import { isDriverVerified } from '../util';
 import MessageInfo from '../components/common/MessageInfo';
 import Notifications from '../components/common/Notifications';
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
+import HeaderBackButton from '../components/common/HeaderBackButton';
 
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
@@ -38,7 +39,7 @@ export default function DriverStackNavigator({ navigation, route }) {
         component={ActiveRidePageContainer}
       /> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) ? <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
-        options={{ title: null }}
+        options={{ title: 'Notification', headerLeft: () => <HeaderBackButton/>,  headerShadowVisible: false }}
         component={MessageInfo}
       /> : <Stack.Screen
         name={ROUTES_NAMES.searchRide}
