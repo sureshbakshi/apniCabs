@@ -1,42 +1,51 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 
 const WalletStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.bg_gray_primary
+    backgroundColor: COLORS.white
   },
   header: {
-    backgroundColor: COLORS.primary,
-    height: 140,
-    padding: 10,
+    backgroundColor: COLORS.primary_light,
     margin: 10,
-    borderRadius: 10
+    borderRadius: 15,
+    height: 100,
+    padding: 20,
+    shadowColor: "#ed3d01",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.19,
+    shadowRadius: 5.62,
+    elevation: 6
   },
   headerText: {
     fontSize: 20,
     fontWeight: '800',
     letterSpacing: 0.5,
-    textAlign:'center'
+    textAlign: 'center'
   },
   section: {
     flex: 1,
     justifyContent: 'space-between',
     backgroundColor: COLORS.bg_light,
-
+    paddingBottom:65
   },
   card: {
     backgroundColor: COLORS.white,
     padding: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom: 10,
+    paddingBottom:0
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.22,
+    // shadowRadius: 2.22,
+    // elevation: 3,
+    // marginBottom: 10,
   },
   cardtop: {
     flexDirection: 'row',
@@ -73,47 +82,53 @@ const WalletStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  whitetxt: {
-    fontSize: 14,
+  graytxt: {
+    fontSize: 12,
     lineHeight: 21,
     letterSpacing: 0.25,
-    color: COLORS.white,
-    marginTop:20
+    color: COLORS.text_gray1,
   },
-  balTxt:{
-    fontSize: 40,
-    color: COLORS.white,
+  balTxt: {
+    fontSize: 16,
+    color: COLORS.text_dark2,
     fontWeight: '800',
   },
   address: {
-    color: '#a1a1a1',
-    fontSize: 13,
+    color: COLORS.text_gray1,
+    fontSize: 12,
   },
   review: {
-    color: COLORS.gray,
-    fontSize: 13,
+    color: COLORS.text_dark2,
+    fontSize: 14,
+    fontWeight: 500
   },
   greenTxt: {
     color: COLORS.primary,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '500',
     alignSelf: 'flex-end',
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
     borderRadius: 4,
-    backgroundColor: COLORS.brand_yellow,
+    flexDirection: 'row'
   },
   buttonTxt: {
-    fontSize: 14,
-    lineHeight: 21,
+    fontSize: 12,
+    lineHeight: 17,
     letterSpacing: 0.25,
-    fontWeight: 'bold',
-    color: COLORS.black,
-    textTransform: 'uppercase'
+    fontWeight: '700',
+    color: COLORS.primary,
   },
+  box: {
+    width: 50,
+    height: 50,
+    borderRadius: 15,
+    marginRight: 15,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 export default WalletStyles;

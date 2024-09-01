@@ -48,6 +48,8 @@ export const DEFAULT_VEHICLE_TYPES = [
 
 export const COLORS = {
   primary: "#ED3D01",
+  primary_dark:'#F6675A',
+  primary_green:'#59E081',
   primary_soft: "#ff8f9d",
   brand_yellow: '#ffe403',
   brand_blue: '#2399ff',
@@ -58,7 +60,7 @@ export const COLORS = {
   bg_gray_primary: "#ececec",
   primary_blue: '#4D81E7',
   button_blue_bg: '#2499FF',
-
+  primary_light: '#FFE5E2',
   bg_blue_lite: '#EDF5FF',
   bg_gray_secondary: '#DFDFDF',
   brand_green: '#38C274',
@@ -67,8 +69,10 @@ export const COLORS = {
   sepator_line_dark: '#475569',
 
   text_gray: "#838383",
+  text_gray1: "#8F92A1",
   text_dark: "#111",
   text_dark1: '#1A1C1E',
+  text_dark2: '#030319',
   text_light_gray: '#6C7278',
 
   white: "#fff",

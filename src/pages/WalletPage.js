@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Button, Pressable, ScrollView, FlatList } from 'react-native';
 import WalletStyles from '../styles/WalletPageStyles';
 import styles from '../styles/MyRidePageStyles';
-import { ImageView, Text } from '../components/common';
+import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
 import { useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS, ROUTES_NAMES } from '../constants';
@@ -16,28 +16,38 @@ import { navigate } from '../util/navigationService';
 const walletCopy = {
   'DEBIT': {
     title: "Requested Amount",
-    color: COLORS.primary,
-    image: images.requested
+    color: COLORS.black,
+    image: images.requested,
+    icon:'arrow-top-right',
+    bg_color:COLORS.primary_dark,
   },
   'HOLD': {
     title: "Holding",
-    color: COLORS.primary,
-    image: images.requested
+    color: COLORS.black,
+    image: images.requested,
+    icon:'arrow-top-right',
+    bg_color:COLORS.primary_dark,
   },
   'CREDIT': {
     title: 'Accepted Amount',
-    color: COLORS.green,
-    image: images.accepted
+    color: COLORS.black,
+    image: images.accepted,
+    icon:'arrow-bottom-left',
+    bg_color:COLORS.primary_green,
   },
   'REFUND': {
     title: 'Credited Amount ',
-    color: COLORS.green,
-    image: images.accepted
+    color: COLORS.black,
+    image: images.accepted,
+    icon:'arrow-bottom-left',
+    bg_color:COLORS.primary_green,
   },
   'REFERRAL': {
     title: 'Referral Amount ',
     color: COLORS.green,
-    image: images.accepted
+    image: images.accepted,
+    icon:'arrow-bottom-left',
+    bg_color:COLORS.primary_green,
   },
 }
 
@@ -59,7 +69,10 @@ const WalletPage = ({ navigation }) => {
     return (
       <View style={WalletStyles.cardtop}>
         <View style={WalletStyles.left}>
-          <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' />
+        <View style={[WalletStyles.box,{backgroundColor:copy.bg_color }]}>
+            <Icon name={copy.icon} size='large' color={COLORS.white}/>
+          </View>
+          {/* <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' /> */}
         </View>
         <View style={WalletStyles.middle}>
           <Text style={WalletStyles.review}>
@@ -104,16 +117,21 @@ const WalletPage = ({ navigation }) => {
     <View style={WalletStyles.container}>
       <View style={WalletStyles.header}>
         {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
+          <View style={WalletStyles.box}>
+            <Icon name='currency-inr' size='large' color={COLORS.white}/>
+          </View>
           <View>
-            <Text style={WalletStyles.whitetxt}>{'Total Credits'}</Text>
+            <Text style={WalletStyles.graytxt}>{'Total Credits'}</Text>
             {balance ? <Text style={WalletStyles.balTxt}>{balance}</Text> : null}
+            <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans)}}>
+              <Text style={WalletStyles.buttonTxt}>{'Add Credits'}</Text>
+              <Icon name='chevron-right' size='large' color={COLORS.primary}/>
+            </Pressable>
           </View>
           {/* <View style={WalletStyles.right}> */}
           <View>
-            <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans)}}>
-              <Text style={WalletStyles.buttonTxt}>{'Add Credits'}</Text>
-            </Pressable>
+           
           </View>
         </View>
       </View>
