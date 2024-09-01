@@ -18,6 +18,7 @@ import ScreenContainer from "../components/ScreenContainer";
 import FindRideStyles from "../styles/FindRidePageStyles";
 import { showSuccessMessage } from "../util";
 import { goBack } from "../util/navigationService";
+import MoreStyles from "../styles/MorePageStyles";
 
 const defaultProps = {
     margin: "2",
@@ -92,9 +93,10 @@ export default function FareSettings() {
                                         render={({ field: { onChange, onBlur, value } }) => {
                                             return (
                                                 <>
-                                                    <Text>{field.label}</Text>
+                                                    <Text style={{color:'#111111',fontWeight:500,fontSize:14}}>{field.label}</Text>
                                                     <TextInput
                                                         name={field.name}
+                                                        mode="outlined"
                                                         onBlur={onBlur}
                                                         onChangeText={(value) => {
                                                             onChange(value);
@@ -104,7 +106,7 @@ export default function FareSettings() {
                                                         // type={"number"}
                                                         keyboardType='number-pad'
                                                         inputMode="numeric"
-                                                        style={[LoginStyles.textInputDrop, { padding: 5, height: 40, backgroundColor: COLORS.white, marginBottom: 10 }]}
+                                                        style={[{ padding: 5, height: 36, backgroundColor: COLORS.white, marginVertical: 10,borderWidth:1,borderColor:'#BFBFBF',borderRadius:15 }]}
                                                         {...field.props}
                                                     />
                                                 </>
@@ -121,11 +123,11 @@ export default function FareSettings() {
                     </View>
                     <View >
                         <Pressable
-                            style={[FindRideStyles.button, { backgroundColor: isDisabled ? COLORS.gray : COLORS.brand_yellow, minHeight: 40, margin: 10 }]}
+                            style={[MoreStyles.button, { backgroundColor: isDisabled ? COLORS.gray : COLORS.primary, minHeight: 40, margin: 10 }]}
                             onPress={handleSubmit(onSubmit)}
                             disabled={isDisabled}
                         >
-                            <Text style={[FindRideStyles.text, { color: isDisabled ? COLORS.white : COLORS.black, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
+                            <Text style={[MoreStyles.greenTxt]}>
                                 Update
                             </Text>
                         </Pressable>

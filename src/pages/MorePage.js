@@ -42,7 +42,7 @@ const MorePage = () => {
               <View style={MoreStyles.listIcon}>
                 <Icon name="account" size="large" color={COLORS.primary} />
               </View>
-              <Text style={MoreStyles.name}>My Profile</Text>
+              <Text style={MoreStyles.menu_name}>My Profile</Text>
             </Pressable>
             {!isDriver() ? <>
               <Pressable

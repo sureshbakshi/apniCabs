@@ -4,7 +4,7 @@ import { COLORS } from '../constants';
 const MoreStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f4f6',
+    backgroundColor: '#fff',
   },
   header: {
     backgroundColor: COLORS.primary,
@@ -32,7 +32,9 @@ const MoreStyles = StyleSheet.create({
     flexDirection:'row',
     flex:1,
     alignItems:'center',
-    padding:20
+    padding:20,
+    borderBottomWidth:1,
+    borderBottomColor:'#BCBCBC'
   },
   listIcon:{
     width:20,
@@ -51,7 +53,6 @@ const MoreStyles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    marginBottom: 10,
   },
   cardtop: {
     flexDirection: 'row',
@@ -75,10 +76,15 @@ const MoreStyles = StyleSheet.create({
     backgroundColor: '#ccc',
   },
   name: {
-    color: '#000',
-    fontWeight: '500',
-    fontSize: 16,
+    color: '#080909',
+    fontWeight: '800',
+    fontSize: 14,
     marginVertical: 3,
+  },
+  menu_name:{
+    color: '#070707',
+    fontWeight: '700',
+    fontSize: 12,
   },
   smallTxt: {
     color: '#000',
@@ -107,19 +113,21 @@ const MoreStyles = StyleSheet.create({
     marginBottom: 20,
   },
   greenTxt: {
-    color: COLORS.primary,
-    fontSize: 18,
-    fontWeight: '500',
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '600',
     alignSelf: 'center',
-    padding:10
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
     backgroundColor: '#fff',
-    marginBottom:10
+    marginBottom:10,
+    backgroundColor:'#ED3D01',
+    marginHorizontal:20,
+    borderRadius:12,
+    height:56,
+    marginTop:20
   },
   buttonTxt: {
     fontSize: 14,
