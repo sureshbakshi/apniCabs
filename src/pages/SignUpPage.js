@@ -25,6 +25,7 @@ import OTPForm from '../components/OTPForm';
 import { showSuccessMessage } from '../util';
 import HeaderImage from '../components/common/HeaderImage';
 import CustomButton from '../components/common/CustomButton';
+import { openOwnerPortal } from '../util/config';
 
 
 const SignUpPage = () => {
@@ -51,9 +52,8 @@ const SignUpPage = () => {
   }
   return (
     <View style={LoginStyles.container}>
-       <HeaderImage/>
+      <HeaderImage />
       <ScrollView>
-
         <ScreenContainer>
           <View style={[LoginStyles.section]}>
             <View>
@@ -85,14 +85,15 @@ const SignUpPage = () => {
                   heading={'Sign Up'}
                 />
                 <CustomButton
-                    label={'Become a Driver'}
-                    icon={{name: 'arrow-top-right', size: 'large'}}
-                    styles={{backgroundColor:COLORS.button_blue_bg,marginTop:10}}
-                    isLowerCase
+                  onClick={openOwnerPortal}
+                  label={'Become a Driver'}
+                  iconRight={{ name: 'arrow-top-right', size: 'large' }}
+                  styles={{ backgroundColor: COLORS.button_blue_bg, marginTop: 10 }}
+                  isLowerCase
                 />
               </View>
-              <View style={[LoginStyles.signUpSection,{ marginTop: 20}]}>
-                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>Already have an account?</Text>
+              <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
+                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>Already have an account?</Text>
                 <Pressable
                   android_ripple={{ color: '#fff' }}
                   onPress={() => navigate('SignIn')}>

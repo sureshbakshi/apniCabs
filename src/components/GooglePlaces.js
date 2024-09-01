@@ -7,7 +7,7 @@ import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 
 
-const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, currentLocation }) => {
+const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
 
     const getLocation = () => {
@@ -51,10 +51,14 @@ const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, 
                     container: {
                         flex: 0,
                         marginTop: -5,
+                        backgroundColor: COLORS.bg_blue_lite,
+                        paddingHorizontal: 20,
                         ...containerStyles,
                     },
                     textInputContainer: {
                         height: 'auto',
+                        borderBottomColor: COLORS.gray,
+                        ...textContainerStyles
                     },
                     description: {
                         color: '#000',
@@ -71,16 +75,24 @@ const GooglePlaces = ({ placeholder, containerStyles, locationKey, onSelection, 
                         position: 'absolute',
                         top: 43,
                         zIndex: 4,
-                        height: 300,
+                        maxHeight: 300,
+                        right:0,
+                        left:0,
+                        borderWidth: 1,
+                        borderColor: COLORS.bg_gray_primary
                     },
                     row: {
                         flexDirection: 'row',
+                        paddingLeft: 20,
+                        backgroundColor: COLORS.white,
+                        borderBottomColor: COLORS.bg_gray_primary,
+                        borderBottomWidth: .5,
+                        flexShrink: 1
                     },
                     textInput: {
                         height: 45,
-                        borderRadius: 0,
-                        paddingLeft: 20,
-                        paddingRight: currentLocation? 45: 0
+                        paddingRight: currentLocation? 45: 0,
+                        backgroundColor: COLORS.bg_blue_lite,
                     },
                 }}
             />

@@ -51,6 +51,7 @@
 	<array>
 		<string>Nunito-Bold.ttf</string>
 		<string>Nunito-Regular.ttf</string>
+		<string>Poppins-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

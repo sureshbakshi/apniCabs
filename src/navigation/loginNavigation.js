@@ -19,6 +19,7 @@ export default function LoginNavigator({navigation, route}) {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerShown:false,
         animation:'slide_from_right'
       }}>
         <Stack.Screen

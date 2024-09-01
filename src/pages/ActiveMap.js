@@ -140,7 +140,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
       animated: true,
       edgePadding:
       {
-        top: 150,
+        top: 360,
         right: 100,
         bottom: 150,
         left: 100

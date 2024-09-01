@@ -1,7 +1,11 @@
 import {StyleSheet} from 'react-native';
 import { COLORS } from '../constants';
+import commonStyles  from '../styles/commonStyles';
 
 const FindRideStyles = StyleSheet.create({
+  pageContainer: {
+    padding: 15
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -30,9 +34,10 @@ const FindRideStyles = StyleSheet.create({
   section: {
     flex: 1,
     justifyContent: 'space-between',
+    marginTop: 15
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.card_bg,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -41,7 +46,15 @@ const FindRideStyles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    marginBottom:10
+    marginBottom: 15,
+    borderRadius: 12
+  },
+  pickCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: 30,
+    marginBottom: 15,
+    padding: 15,
+    ...commonStyles.shadow
   },
   cardtop:{
     flexDirection: 'row',
@@ -49,7 +62,8 @@ const FindRideStyles = StyleSheet.create({
   cardBottom:{
     flexDirection: 'row',
     alignItems:'center',
-    justifyContent: 'space-between'
+    justifyContent: 'center',
+    gap: 15
   },
   center:{
       flexDirection: 'row',
@@ -73,20 +87,33 @@ const FindRideStyles = StyleSheet.create({
     backgroundColor: '#ccc',
   },
   name: {
-    color: '#000',
-    fontWeight: '500',
+    color: COLORS.black,
+    fontWeight: '700',
     fontSize: 16,
+    lineHeight: 24,
     marginVertical: 3,
   },
-  address: {
-    color: '#a1a1a1',
+  vehicle: {
+    color: COLORS.black,
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  Paragraph: {
+    color: COLORS.black,
     fontSize: 14,
-    marginVertical: 3,
+    fontWeight: 700,
+    lineHeight: 21,
   },
   review: {
     color: '#ccc',
     fontSize: 13,
     marginBottom: 20,
+  },
+  otpText: {
+    fontSize: 18,
+    fontWeight: 700,
+    lineHeight: 27,
+    color: COLORS.blue
   },
   greenTxt:{
     color: COLORS.gray,
@@ -104,8 +131,8 @@ const FindRideStyles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    lineHeight: 21,
-    letterSpacing: 0.25,
+    lineHeight: 18,
+    // letterSpacing: 0.25,
     color: COLORS.white,
   },
   tabs:{
@@ -118,8 +145,9 @@ const FindRideStyles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    marginBottom:5,
     justifyContent:'space-between',
+    borderRadius: 12,
+    marginBottom: 8,
   },
   textInputPickup:{
     backgroundColor: '#f2f4f6',
@@ -127,7 +155,8 @@ const FindRideStyles = StyleSheet.create({
     borderTopRightRadius: 4,
     borderBottomColor: '#ccc',
     borderBottomWidth: 0.5,
-    padding: 15,
+    padding: 10,
+    paddingHorizontal: 15
   }
 });
 export default FindRideStyles;

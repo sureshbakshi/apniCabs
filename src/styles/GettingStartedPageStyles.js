@@ -13,7 +13,7 @@ const GettingStartedStyles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     image1: {
-        height: getScreen().screenHeight - 300,
+        height: getScreen().screenHeight - 350,
         justifyContent: 'flex-end',
         alignItems: 'center',
     },

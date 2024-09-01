@@ -1,6 +1,7 @@
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import images from './util/images';
 import { formatStatusText, formattedDate } from './util';
+import { styles } from './navigation/TabBar';
 
 
 export const authInitialState = {
@@ -55,14 +56,20 @@ export const COLORS = {
   bg_dark: "#f0f0f0",
   bg_secondary: "#ccc",
   bg_gray_primary: "#ececec",
-  primary_blue:'#4D81E7',
-  button_blue_bg:'#2499FF',
+  primary_blue: '#4D81E7',
+  button_blue_bg: '#2499FF',
 
+  bg_blue_lite: '#EDF5FF',
+  bg_gray_secondary: '#DFDFDF',
+  brand_green: '#38C274',
+  card_bg: '#F0F4F8',
+  sepator_line: '#F1F5F9',
+  sepator_line_dark: '#475569',
 
   text_gray: "#838383",
   text_dark: "#111",
-  text_dark1:'#1A1C1E',
-  text_light_gray:'#6C7278',
+  text_dark1: '#1A1C1E',
+  text_light_gray: '#6C7278',
 
   white: "#fff",
   black: "#2F2A49",
@@ -71,6 +78,8 @@ export const COLORS = {
   red: "#f00",
   dark_green: "#155724",
   green: "#29BE70",
+  blue: '#2499FF',
+
 
   light_green: "#d4edda",
   light_green_primary: "#a1d5ae",
@@ -102,6 +111,12 @@ export const COLORS = {
   },
 };
 
+export const default_btn_styles = {
+  styles: { height: 40, minWidth: 120},
+  textStyles: { color: COLORS.white, fontSize: 14, fontWeight: 400, lineHeight: 18 },
+  isLowerCase: true,
+}
+
 export const ROUTES_NAMES = {
   findRide: 'FindRide',
   pickRide: 'PickRide',
@@ -126,7 +141,7 @@ export const ROUTES_NAMES = {
   rideDetails: 'RideDetails',
   otp: 'OTP',
   forgotPassword: 'ForgotPassword',
-  gettingStartedPage:'GettingStartedPage'
+  gettingStartedPage: 'GettingStartedPage'
 }
 
 export const RideStatus = {
@@ -145,17 +160,17 @@ export const RideStatus = {
 }
 
 export const RIDE_STATUS_LABELS = {
-  [RideStatus.USER_CANCELLED]:  'User Cancelled',
+  [RideStatus.USER_CANCELLED]: 'User Cancelled',
   [RideStatus.DRIVER_CANCELLED]: 'Driver Cancelled',
-  [RideStatus.COMPLETED]:  'Completed',
+  [RideStatus.COMPLETED]: 'Completed',
   [RideStatus.ACCEPTED]: 'On Going',
 }
 
 export const colorsNBg = {
   [RideStatus.USER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
   [RideStatus.DRIVER_CANCELLED]: { color: COLORS.black, bg: COLORS.bg_secondary, label: 'Cancelled', image: images.rideCancel },
-  [RideStatus.COMPLETED]: { color: COLORS.white, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
-  [RideStatus.ACCEPTED]: { color: COLORS.white, bg: COLORS.brand_blue, label: 'On Going', image: images.rideAccept },
+  [RideStatus.COMPLETED]: { color: COLORS.primary, bg: COLORS.green, label: 'Completed', image: images.rideAccept },
+  [RideStatus.ACCEPTED]: { color: COLORS.primary, bg: COLORS.brand_blue, label: 'On Going', image: images.rideAccept },
 }
 
 export const VerificationStatus = {
@@ -311,9 +326,9 @@ export const RIDE_HISTOY_DETAILS = [{
 export const RIDE_CANCEL_INFO = [{
   key: 'request.status',
   formatter: formatStatusText
-},{
+}, {
   key: 'request.reason',
-},{
+}, {
   key: 'request.created_at',
   formatter: formattedDate
 

@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { View, Pressable, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import MyProfileStyles from '../styles/MyProfilePageStyles';
-import styles from '../styles/MyRidePageStyles';
-import { navigate } from '../util/navigationService';
-import { ImageView, Text } from '../components/common';
-import images from '../util/images';
+import { Text } from '../components/common';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
 

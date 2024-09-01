@@ -11,6 +11,7 @@ import CustomButton from '../components/common/CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import { useGetRideDetailsQuery } from '../slices/apiSlice';
 import ActivityIndicator from '../components/common/ActivityIndicator';
+import ContainerWrapper from '../components/common/ContainerWrapper';
 
 export default ({ route }) => {
     let type = null
@@ -22,13 +23,21 @@ export default ({ route }) => {
             type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
         }
     }, [rideDetails])
-    
+
     if (isLoading) {
         return <ActivityIndicator />
     }
+    console.log(rideDetails?.request)
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ margin: 10 }}>
+            <View style={[FindRideStyles.container, FindRideStyles.pageContainer]}>
+                <ContainerWrapper>
+                    <View>
+                        <RideDetailsView activeRequest={rideDetails.request} driverDetails={rideDetails?.request.ride?.driver} />
+                    </View>
+                </ContainerWrapper>
+            </View>
+            {/* <View style={{ margin: 10 }}>
                 <CardWrapper title={'USER DETAILS'}>
                     <VehicleCard activeRequest={rideDetails} details={USER_DETAILS} isonRide={false} avatar={'userDetails.avatar'} />
                 </CardWrapper>
@@ -43,7 +52,7 @@ export default ({ route }) => {
                         <CustomButton label={'Need help? Call Us!'} isLowerCase={true} onClick={() => RNImmediatePhoneCall?.immediatePhoneCall(SUPPORT.mobile.value)} />
                     </View>
                 </CardWrapper>}
-            </View>
+            </View> */}
         </SafeAreaView>
     );
 };

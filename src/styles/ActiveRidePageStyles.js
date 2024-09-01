@@ -24,21 +24,27 @@ const ActiveRidePageStyles = StyleSheet.create({
     backgroundColor:COLORS.white,
     borderRadius:4,
     width:'100%',
+    padding: 15,
   },
   content:{
-    padding:10,
+    // padding:10,
+    fontSize: 14,
+    lineHeight: 18, 
+    marginBottom: 10
   },
   modalText:{
     textAlign:'center',
-    fontSize:20,
-    fontWeight:'bold',
-    color: COLORS.primary,
-    padding:10
+    fontSize: 20,
+    fontWeight: 700,
+    color: COLORS.black,
+    lineHeight: 30,
+    marginBottom: 15
   },
   list:{
     alignItems:'center',
     flexDirection:'row',
-    padding:10
+    padding:10,
+    paddingVertical: 5
   },
   listTxt:{
     textAlign:'center',

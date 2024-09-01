@@ -4,7 +4,7 @@ import { upperCase } from 'lodash';
 import { COLORS } from "../../constants";
 import { Text, Icon } from ".";
 
-export default ({ onClick, styles, textStyles, label, isLowerCase = false, contentContainerStyles, icon, ...rest }) => {
+export default ({ onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles,containerStyles = {}, ...rest }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = () => {
@@ -17,18 +17,24 @@ export default ({ onClick, styles, textStyles, label, isLowerCase = false, conte
         ]}>
             <Pressable
                 onPress={clickHandler}
-                android_ripple={{ color: styles?.backgroundColor, radius: 100}}
+                android_ripple={{ color: styles?.backgroundColor, radius: 100 }}
                 {...rest}
             >
-                <View style={{ justifyContent: 'center', ...contentContainerStyles, alignItems:'center',flexDirection:'row'}}>
-                    <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' , ...contentContainerStyles}}>
+                    {iconLeft &&
+                        <View style={{ paddingRight: 8, ...iconStyles }}>
+                            <Icon name={iconLeft?.name} size={iconLeft?.size || 'large'} color={iconLeft?.color || COLORS.white} />
+                        </View>}
+
+                    {formattedLabel && <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
                         {formattedLabel}
-                    </Text>
-                    <View style={{paddingLeft:10}}>
-                      {icon && <Icon name={icon?.name} size={icon?.size || 'large'} color={COLORS.white} />}
-                    </View>
+                    </Text>}
+                    {iconRight && <View style={{ paddingLeft: 8 , ...iconStyles}}>
+                        <Icon name={iconRight?.name} size={iconRight?.size || 'large'} color={iconRight?.color ||  COLORS.white} />
+                    </View>}
                 </View>
             </Pressable>
         </View>
     )
 }
+

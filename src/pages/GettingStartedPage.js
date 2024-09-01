@@ -9,7 +9,7 @@ import GettingStartedStyles from '../styles/GettingStartedPageStyles';
 import images from '../util/images';
 import CustomButton from '../components/common/CustomButton';
 import { navigate } from '../util/navigationService';
-import { ROUTES_NAMES } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 
 export default () => {
 
@@ -30,7 +30,7 @@ export default () => {
                         <Text style={GettingStartedStyles.heardertext}>Start your journey with Apni Cabi </Text>
                         <Text style={GettingStartedStyles.subtext}>We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.</Text>
                     </View>
-                    <CustomButton label={'Get Started'} isLowerCase onClick={()=>navigate(ROUTES_NAMES.signIn)}/>
+                    <CustomButton label={'Get Started'} isLowerCase onClick={()=>navigate(ROUTES_NAMES.signIn)} styles={{backgroundColor: COLORS.primary, padding: 10}} textStyles={{fontWeight: 400}}/>
                 </View>
         </View>
     );

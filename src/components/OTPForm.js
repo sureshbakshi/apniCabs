@@ -126,7 +126,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
                     onClick={handleSubmit(onSubmit)}
                     label={submitBtnLabel || 'Submit'}
                     disabled={Boolean(isError || otpInfo)}
-                    icon={{name: 'arrow-right', size: 'large'}}
+                    iconRight={{name: 'arrow-right', size: 'large'}}
                     isLowerCase
                 />}
             </FormProvider>

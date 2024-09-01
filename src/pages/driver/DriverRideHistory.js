@@ -17,7 +17,7 @@ export default () => {
         from: 'from_location',
         to: 'to_location',
         model: '',
-        rideTime: 'driver_requests.updated_at',
+        rideTime: 'ride.start_time',
         avatar: '',
         fare: 'ride.fare'
     }

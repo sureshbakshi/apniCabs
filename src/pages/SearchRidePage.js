@@ -14,6 +14,9 @@ import images from '../util/images';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter } from 'lodash';
 import { requestInfo, setRideRequest } from '../slices/userSlice';
+import CustomButton from '../components/common/CustomButton';
+import SearchLoader from '../components/common/SearchLoader';
+import ContainerWrapper from '../components/common/ContainerWrapper';
 
 const SearchRidePage = () => {
   const dispatch = useDispatch();
@@ -30,10 +33,10 @@ const SearchRidePage = () => {
     }
   }, [error, rideList]);
 
-  useEffect(() =>{
+  useEffect(() => {
     resetState()
-  },[])
-  
+  }, [])
+
   const searchHandler = async () => {
     const { distance, duration } = await getDistance();
     const { from, to } = location;
@@ -67,31 +70,51 @@ const SearchRidePage = () => {
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)
   }
-
+console.log({location})
   return (
-    <ImageBackground
-      source={images.backgroundImage}
-      resizeMode="cover"
-      style={SearchRideStyles.image}>
-      <View style={SearchRideStyles.container}>
-        {isSocketConnected ? <View style={SearchRideStyles.section}>
-          <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
-            <Timeline data={['', '']} height={25} />
-          </View>
-          <GooglePlaces placeholder={'Pickup Location'} containerStyles={{ zIndex: 2 }} locationKey='from' onSelection={updateLocation} currentLocation={true} />
-          <GooglePlaces placeholder={'Drop Location'} containerStyles={{ zIndex: 1 }} locationKey='to' onSelection={updateLocation} />
-          <View>
-            <Pressable
+    // <ImageBackground
+    //   source={images.backgroundImage}
+    //   resizeMode="cover"
+    //   style={SearchRideStyles.image}>
+    <View style={SearchRideStyles.container}>
+      <ContainerWrapper>
+      {isSocketConnected ? <View style={SearchRideStyles.section}>
+        <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
+          <Timeline data={['', '']} height={25} />
+        </View>
+        <GooglePlaces
+          placeholder={'Pickup Location'}
+          containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+          textContainerStyles={{ borderBottomWidth: 0.5 }}
+          locationKey='from'
+          onSelection={updateLocation}
+          currentLocation={true}
+        />
+        <GooglePlaces placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} />
+        <View style={{ marginTop: 5 }}>
+          {/* <Pressable
               style={isSearchDisabled() ? [SearchRideStyles.button, { backgroundColor: COLORS.gray }] : [SearchRideStyles.button]}
               android_ripple={{ color: '#fff' }}
               disabled={isSearchDisabled()}
-              onPress={searchHandler}>
+              onPress={searchHandler}
+              >
               <Text style={SearchRideStyles.text}>{'Find Captain'}</Text>
-            </Pressable>
-          </View>
-        </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
-      </View>
-    </ImageBackground>
+            </Pressable> */}
+
+          <CustomButton
+            styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
+            disabled={isSearchDisabled()}
+            label={'Find Captain'}
+            isLowerCase
+            onClick={searchHandler}
+          />
+        </View>
+        <SearchLoader msg=' ' />
+      </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
+      </ContainerWrapper>
+    </View>
+
+    // </ImageBackground>
   );
 };
 export default SearchRidePage;

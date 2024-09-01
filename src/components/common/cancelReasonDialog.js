@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCancelAcceptedRequestMutation } from "../../slices/apiSlice";
 import { clearDriverState } from "../../slices/driverSlice";
 import { clearUserState } from "../../slices/userSlice";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
 import CustomDialog from "./CustomDialog";
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
@@ -12,7 +12,8 @@ import { COLORS, RideStatus } from "../../constants";
 import { Icon } from "./Icon";
 import { delay } from 'lodash';
 import { setDialogStatus } from "../../slices/authSlice";
-import { isDriver } from "../../util";
+import { getScreen, isDriver } from "../../util";
+import CustomButton from "./CustomButton";
 
 const driverReasons = [
   { message: 'Vehicle breakdown or mechanical issue', id: 1 },
@@ -92,32 +93,33 @@ export const CancelReasonDialog = () => {
     }
   };
 
-  const Actions = <>
-    <Pressable
-      android_ripple={{ color: '#fff' }}
-      style={[FindRideStyles.button, { backgroundColor: COLORS.bg_dark }]}
-      onPress={closeModal}>
-      <Text
-        style={[
-          FindRideStyles.text,
-          { fontWeight: 'bold', color: COLORS.black },
-        ]}>
-        {'Close'}
-      </Text>
-    </Pressable>
-    <Pressable
-      android_ripple={{ color: '#fff' }}
-      style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
-      onPress={handleSubmit}>
-      <Text style={[FindRideStyles.text, { fontWeight: 'bold' }]}>
-        {'Submit'}
-      </Text>
-    </Pressable></>
+  const Actions = <View style={{ flexDirection: 'row', gap: 15, margin: 15, width: getScreen().screenWidth - 30, justifyContent: 'center' }}>
+    <CustomButton
+      styles={{ height: 40, minWidth: 120 }}
+      textStyles={{ color: COLORS.white, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
+      onClick={handleSubmit}
+      label={'Submit'}
+      isLowerCase />
+    <CustomButton
+      styles={{ backgroundColor: COLORS.card_bg, height: 40, minWidth: 120 }}
+      textStyles={{ color: COLORS.black, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
+      onClick={closeModal}
+      label={'Close'}
+      isLowerCase />
+
+  </View>
+
   return (
     <CustomDialog
       openDialog={isDialogOpen}
       actions={Actions}
       title={'Reason to Cancel'}
+      containerStyles={{
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        padding: 0
+      }}
+      modalContainerStyles={{ borderRadius: 18 }}
     >
       {message.map(item => {
         return (
@@ -131,7 +133,7 @@ export const CancelReasonDialog = () => {
                   ? 'radiobox-marked'
                   : 'radiobox-blank'
               }
-              size={'large'}
+              size={'medium'}
               color={COLORS.black}
             />
             <Text style={[ActiveRidePageStyles.listTxt]}>

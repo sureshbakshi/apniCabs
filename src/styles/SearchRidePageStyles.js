@@ -1,38 +1,38 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 
 const SearchRideStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'rgba(0,0,0,0.65)',
-    padding:20,
+    backgroundColor: COLORS.white,
+    padding: 20,
   },
-  headerText:{
-    color:'#000',
-    fontSize:20,
-    fontWeight:'500',
-    marginBottom:50
+  headerText: {
+    color: '#000',
+    fontSize: 20,
+    fontWeight: '500',
+    marginBottom: 50
   },
   image: {
-    flex:1,
+    flex: 1,
   },
-  section:{
-    flex:1,
+  section: {
+    flex: 1,
   },
-  textInputPickup:{
+  textInputPickup: {
     backgroundColor: '#fff',
-    borderTopLeftRadius:4,
-    borderTopRightRadius:4,
-    borderBottomColor:'#ccc',
-    borderBottomWidth:0.5,
-    padding:15
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 0.5,
+    padding: 15
   },
-  textInputDrop:{
+  textInputDrop: {
     backgroundColor: '#fff',
-    borderBottomLeftRadius:4,
-    borderBottomRightRadius:4,
-    marginBottom:20,
-    padding:15
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    marginBottom: 20,
+    padding: 15
   },
   button: {
     alignItems: 'center',

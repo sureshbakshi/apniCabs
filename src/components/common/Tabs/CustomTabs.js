@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
-import {Tabs, TabScreen, TabsProvider} from 'react-native-paper-tabs';
+import {Tabs, TabScreen, TabsProvider, useTabIndex} from 'react-native-paper-tabs';
 import _ from 'lodash';
 import {COLORS, VEHICLE_TYPES} from '../../../constants';
 import {Capitalize} from '../../../util';
@@ -15,11 +15,13 @@ const CustomTabs = ({extraProps, data}) => {
       <TabsProvider defaultIndex={0}>
         <Tabs
           mode="scrollable"
-          style={FindRideStyles.tabs}
-          tabBarUnderlineStyle={{backgroundColor: COLORS.primary}}
+          style={[FindRideStyles.tabs]}
+          // tabBarUnderlineStyle={{backgroundColor: COLORS.blue}}
           theme={{
-            colors: {onSurface: COLORS.primary, onSurfaceVariant: COLORS.black},
-          }}>
+            colors: {onSurface: COLORS.blue},
+          }}
+          showLeadingSpace={false}
+          >
           {list && list.map((item, i) => {
               return (
                 <TabScreen

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
 import { Modal, Pressable, View } from 'react-native'
 import { Text } from "react-native-paper";
-import { COLORS } from "../../constants";
+import { COLORS, default_btn_styles } from "../../constants";
 import FindRideStyles from "../../styles/FindRidePageStyles";
+import CustomButton from "./CustomButton";
 
-export default ({ openDialog, actions, title, closeCb, children }) => {
+export default ({ openDialog, actions, title, closeCb, children, containerStyles={}, modalContainerStyles={} }) => {
     const [modalVisible, setModalVisible] = useState(openDialog)
 
     useEffect(() => {
@@ -25,30 +26,25 @@ export default ({ openDialog, actions, title, closeCb, children }) => {
             transparent={true}
             visible={modalVisible}
             onPress={closeDialog}>
-            <View style={ActiveRidePageStyles.centeredView}>
-                <View style={ActiveRidePageStyles.modalView}>
+            <View style={[ActiveRidePageStyles.centeredView, {...containerStyles}]}>
+                <View style={[ActiveRidePageStyles.modalView, {...modalContainerStyles}]}>
                     <View>
-                        <Text style={[ActiveRidePageStyles.modalText, { borderBottomColor: COLORS.bg_secondary, borderBottomWidth: 1 }]}>
+                        <Text style={[ActiveRidePageStyles.modalText]}>
                             {title}
                         </Text>
                         <View style={ActiveRidePageStyles.content}>
                             {children}
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', gap: 15, justifyContent: 'center' }}>
                         {actions ? actions : <>
-                            <Pressable
-                                android_ripple={{ color: '#fff' }}
-                                style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
-                                onPress={closeDialog}>
-                                <Text
-                                    style={[
-                                        FindRideStyles.text,
-                                        { fontWeight: 'bold', color: COLORS.white },
-                                    ]}>
-                                    Ok
-                                </Text>
-                            </Pressable></>}
+                            <CustomButton
+                                // style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
+                                onClick={closeDialog}
+                                label={'Okay'}
+                                {...default_btn_styles}
+                                />
+                            </>}
                     </View>
                 </View>
             </View>

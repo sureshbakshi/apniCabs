@@ -42,10 +42,19 @@ const LoginStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    borderRadius: 12,
+    padding: 10,
+    paddingHorizontal: 15,
+    backgroundColor: COLORS.primary
+  },
+  buttonContainer: {
     paddingHorizontal: 14,
     borderRadius: 8,
     backgroundColor: COLORS.primary,
-    height:48
+    height:48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   text: {
     fontSize: 18,
@@ -102,13 +111,15 @@ const LoginStyles = StyleSheet.create({
     fontFamily: 'Poppins',
 },
   logoBg: {
-    height:300,
+    height: 200,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    marginBottom: 15
 },
   logo:{
-    width:280,
-    height:84
+    top: 20,
+    width:260,
+    resizeMode: 'contain',
   }
 });
 export default LoginStyles;

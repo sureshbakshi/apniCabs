@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
 import { COLORS } from '../constants';
+import CommonStyles from './commonStyles';
 
 const MyRideStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f4f6',
+    backgroundColor: COLORS.white,
+    padding: 15
   },
   header: {
     backgroundColor: COLORS.primary,
@@ -23,17 +25,12 @@ const MyRideStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     padding: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom:10
+    paddingHorizontal: 15,
+    borderRadius: 24,
+    ...CommonStyles.shadow,
+    marginBottom:10,
   },
   cardtop:{
     flexDirection: 'row',
@@ -80,6 +77,12 @@ const MyRideStyles = StyleSheet.create({
     fontWeight: '500',
     alignSelf:'center',
     color: COLORS.gray
+  },
+  time: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: COLORS.black,
+    fontWeight: 700
   },
   primaryColor:{
     color: COLORS.primary,

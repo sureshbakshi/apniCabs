@@ -12,6 +12,10 @@ import RideDetailsCards from '../components/common/RideDetailsCards';
 import OpenMapButton from '../components/common/OpenMapButton';
 import VehicleCard from '../components/VehicleCard';
 import CardWrapper from '../components/CardWrapper';
+import ContainerWrapper from '../components/common/ContainerWrapper';
+import { Text } from '../components/common';
+import Timeline from '../components/common/timeline/Timeline';
+import { SafeAreaView } from 'react-native';
 
 const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
@@ -19,24 +23,35 @@ const ActiveRidePage = () => {
   const { screenHeight } = getScreen()
 
   return (
-    <View style={[FindRideStyles.container]}>
-      <View style={{ height: (screenHeight - 530) }}>
-        {activeRequest?.id && <ActiveMapPage activeRequest={activeRequest} activeRideId={activeRideId} />}
-      </View>
-      <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.bg_light, padding: 10, paddingBottom: 3 }]}>
-        {(activeRideId && activeRequest?.from_location) && <OpenMapButton route={{ start: activeRequest.from_location, end: activeRequest.to_location, navigate: true }} />}
-        {isDriverLogged ? <CardWrapper title={'User Details'}>
-          <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
-        </CardWrapper> :
-          <CardWrapper title={'Vehicle Details'}>
-            <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true} />
-          </CardWrapper>}
-        <CardWrapper title={'Driver & Ride Details'}>
+    <SafeAreaView style={[FindRideStyles.container]}>
+      <ContainerWrapper style={{ height: isDriverLogged ? screenHeight - 150 : screenHeight - 150 }}>
+        <View style={{ height: (screenHeight - 345) }}>
+          <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingTop: 10, paddingBottom: 0, borderRadius: 12, margin: 15, zIndex: 10000 }}>
+            <Timeline
+              data={[activeRequest.from_location, activeRequest.to_location]}
+              numberOfLines={1}
+              textStyles={{fontSize: 12}}
+            />
+          </View>
+          {activeRequest?.id && <ActiveMapPage activeRequest={activeRequest} activeRideId={activeRideId} />}
+        </View>
+        <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.white, padding:15, paddingBottom: 3, borderTopLeftRadius: 18, borderTopRightRadius: 18 }]}>
+          {/* {isDriverLogged ? <CardWrapper title={'User Details'}>
+            <VehicleCard activeRequest={activeRequest} details={USER_INFORMATION} avatar={'user.avatar'} />
+          </CardWrapper> :
+            <CardWrapper title={'Vehicle Details'}>
+              <VehicleCard activeRequest={activeRequest} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true} />
+            </CardWrapper>} */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' , marginBottom: 10}}>
+            <Text>Distance</Text>
+            <Text>{activeRequest.duration} - {activeRequest.distance} km</Text>
+          </View>
           {!isEmpty(activeRequest) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequest={activeRequest} />}
-        </CardWrapper>
-        <RideStatusDialog activeRequest={activeRequest} isDriverLogged={isDriverLogged} />
-      </View>
-    </View>
+          
+          <RideStatusDialog activeRequest={activeRequest} isDriverLogged={isDriverLogged} />
+        </View>
+      </ContainerWrapper>
+    </SafeAreaView>
   );
 };
 

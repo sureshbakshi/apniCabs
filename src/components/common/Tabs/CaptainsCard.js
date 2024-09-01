@@ -4,13 +4,13 @@ import { ImageView, Text } from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import styles from '../../../styles/MyRidePageStyles';
 import images from '../../../util/images';
-import Timeline from '../timeline/Timeline';
 import _ from 'lodash';
 import { COLORS, RideStatus } from '../../../constants';
 import { useCancelRequestMutation, useSendRequestMutation } from '../../../slices/apiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDriversRequest } from '../../../slices/userSlice';
 import { showErrorMessage } from '../../../util';
+import CustomButton from '../CustomButton';
 
 const Card = item => {
   const { request_id } = useSelector(state => state.user?.rideRequests);
@@ -37,7 +37,7 @@ const Card = item => {
     if (cancelRequestError) {
       console.log('cancelRequestError', cancelRequestError);
     } else if (cancelRequestData) {
-        dispatch(updateDriversRequest({ ...item, status: cancelRequestData?.status }));
+      dispatch(updateDriversRequest({ ...item, status: cancelRequestData?.status }));
     }
   }, [cancelRequestData, cancelRequestError]);
 
@@ -65,8 +65,8 @@ const Card = item => {
       case 'REQUESTED': {
         return {
           label: 'Cancel Request',
-          bg: COLORS.primary,
-          color: COLORS.white
+          bg: COLORS.brand_yellow,
+          color: COLORS.black
         }
       }
       case 'CLOSED': {
@@ -87,8 +87,8 @@ const Card = item => {
       default: {
         return {
           label: 'Send Request',
-          bg: COLORS.brand_yellow,
-          color: COLORS.black
+          bg: COLORS.primary,
+          color: COLORS.white
         }
       }
     }
@@ -98,7 +98,7 @@ const Card = item => {
   const isDisabled = item?.status === RideStatus.CLOSED || item?.status === RideStatus.UNAVAILABLE
   return (
     <View style={[FindRideStyles.card, { opacity: isDisabled ? 0.6 : 1 }]} key={item?.driver_id}>
-      <Timeline />
+      {/* <Timeline /> */}
       <View style={FindRideStyles.cardtop}>
         <View style={FindRideStyles.left}>
           <ImageView
@@ -108,17 +108,32 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.middle}>
           <Text style={FindRideStyles.name}>{item.name}</Text>
-          <Timeline data={[item.from, item.to]} />
+          <Text style={FindRideStyles.vehicle}>{item?.vehicle_details?.name}</Text>
+          <Text style={[FindRideStyles.vehicle]}>{item?.colour}</Text>
+
+          {/* <Timeline data={[item.from, item.to]} /> */}
         </View>
         <View style={FindRideStyles.right}>
-          <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
-            {'\u20B9'}
-            {item.price}
+          <Text style={[FindRideStyles.name, { alignSelf: 'flex-end' }]}>
+            ₹{item.price}
           </Text>
-          <Text style={FindRideStyles.address}>{item.distance?.text}</Text>
+          <CustomButton
+            // styles={[{ , height: 40, marginHorizontal: 3, paddingVertical: 0, opacity: isLoading || isCancelRequestLoading ? 0.6 : 1 }]}
+            styles={{ opacity: isLoading || isCancelRequestLoading ? 0.6 : 1, maxHeight: 38, backgroundColor: actionButtonInfo.bg, marginTop: 5 }}
+            textStyles={{ fontSize: 14, lineHeight: 18, color: actionButtonInfo.color }}
+            onClick={() => isDisabled ? null : handleSendRequest(item)}
+            disabled={isLoading || isCancelRequestLoading}
+            label={isLoading || isCancelRequestLoading ? 'Loading...' : actionButtonInfo.label}
+            isLowerCase
+          >
+            <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
+              {isLoading || isCancelRequestLoading ? 'Loading...' : actionButtonInfo.label}
+            </Text>
+          </CustomButton>
+          {/* <Text style={FindRideStyles.address}>{item.distance?.text}</Text> */}
         </View>
       </View>
-      <View style={FindRideStyles.cardBottom}>
+      {/* <View style={FindRideStyles.cardBottom}>
         <View style={FindRideStyles.left}>
           {item?.distance_away && (
             <Text style={[styles.text, styles.bold]}>
@@ -128,20 +143,10 @@ const Card = item => {
         </View>
         <View style={FindRideStyles.middle}>
           <Text style={[styles.text, styles.bold]}>
-            {item?.vehicle_details?.name} | {item.colour}
+            {item.colour}
           </Text>
         </View>
-        <View style={[FindRideStyles.right, { padding: 0, paddingBottom: 5 }]}>
-          <Pressable
-            style={[FindRideStyles.button, { backgroundColor: actionButtonInfo.bg, minHeight: 40, marginHorizontal: 3, paddingVertical: 0 , opacity: isLoading || isCancelRequestLoading ? 0.6: 1}]}
-            onPress={() => isDisabled ? null: handleSendRequest(item)}
-            disabled={isLoading || isCancelRequestLoading}>
-            <Text style={[FindRideStyles.text, { color: actionButtonInfo.color, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
-              {isLoading || isCancelRequestLoading ? 'Loading...': actionButtonInfo.label}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
+      </View> */}
     </View>
   );
 };

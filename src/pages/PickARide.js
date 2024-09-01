@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Pressable, ScrollView, Text, Switch, SafeAreaView } from 'react-native';
-import styles from '../styles/MyRidePageStyles';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus } from '../constants';
+import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus, default_btn_styles } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline, isDriverAcceptedOrOnline } from '../util';
@@ -18,58 +17,70 @@ import { navigate } from '../util/navigationService';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
+import CardWrapper from '../components/CardWrapper';
+import ContainerWrapper from '../components/common/ContainerWrapper';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
   return (
-    <View style={FindRideStyles.card} key={item.id}>
-      <View style={{ padding: 10 }}>
-        <View style={[FindRideStyles.cardtop]}>
-          <View style={[FindRideStyles.middle]}>
-            {/* <Text style={FindRideStyles.name}>{item.user_name}</Text> */}
-            <Timeline
-              data={[
-                item.from_location,
-                item.to_location,
-              ]}
-              numberOfLines={0}
-            />
-          </View>
-          <View style={[FindRideStyles.right]}>
-            <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
-              {'\u20B9'}
-              {item.fare || item?.driver_requests?.fare}
-            </Text>
-          </View>
+    <View style={FindRideStyles.pickCard} key={item.id}>
+      <View style={{ justifyContent: 'flex-end', marginBottom: 10 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text>Distance</Text>
+          <Text>{item.duration} - {item.distance || item?.driver_distance} km</Text>
         </View>
-        <View style={FindRideStyles.cardBottom}>
-          <View style={[FindRideStyles.left, { padding: 0 }]}>
-            {item?.driver_distance && (
-              <Text style={[styles.text, styles.bold]}>
-                {item.driver_distance} km away
-              </Text>
-            )}
-          </View>
-          <View style={[FindRideStyles.right, { padding: 0 }]}>
-            <Text style={[styles.text, styles.bold]}>
-              Distance: {item.distance} km
-            </Text>
-          </View>
-        </View>
+        <Text style={[FindRideStyles.name, { alignSelf: 'flex-end' , fontSize: 18, lineHeight: 24}]}>
+         {'\u20B9'}{item.fare || item?.driver_requests?.fare}
+        </Text>
       </View>
+      <View style={[FindRideStyles.cardtop]}>
+        <View style={{ flex: 1 }}>
+          {/* <Text style={FindRideStyles.name}>{item.user_name}</Text> */}
+          <Timeline
+            data={[
+              item.from_location,
+              item.to_location,
+            ]}
+            numberOfLines={2}
+          />
+        </View>
+        {/* <View style={[FindRideStyles.right]}>
+          <Text style={[FindRideStyles.name, { alignSelf: 'center' }]}>
+            {'\u20B9'}
+            {item.fare || item?.driver_requests?.fare}
+          </Text>
+        </View> */}
+      </View>
+      {/* <View style={FindRideStyles.cardBottom}>
+        <View style={[FindRideStyles.left, { padding: 0 }]}>
+          {item?.driver_distance && (
+            <Text style={[styles.text, styles.bold]}>
+              {item.driver_distance} km away
+            </Text>
+          )}
+        </View>
+        <View style={[FindRideStyles.right, { padding: 0 }]}>
+          <Text style={[styles.text, styles.bold]}>
+            Distance: {item.distance} km
+          </Text>
+        </View>
+      </View> */}
       <View style={FindRideStyles.cardBottom}>
-        <Pressable
-          style={[FindRideStyles.button, { backgroundColor: COLORS.primary, opacity: isLoading ? 0.8 : 1 }]}
+        <CustomButton
           disabled={isLoading}
-          onPress={() => handleDeclineRequest(item)}>
-          <Text style={FindRideStyles.text}>{'Decline'}</Text>
-        </Pressable>
-        <Pressable
-          style={[FindRideStyles.button, { backgroundColor: COLORS.green, opacity: isLoading ? 0.8 : 1 }]}
+          onClick={() => handleDeclineRequest(item)}
+          label={'Decline'}
+          {...default_btn_styles}
+          styles={{ backgroundColor: COLORS.card_bg, opacity: isLoading ? 0.8 : 1, ...default_btn_styles.styles }}
+          textStyles={{ ...default_btn_styles.textStyles, color: COLORS.black }}
+        />
+        <CustomButton
           disabled={isLoading}
-          onPress={() => handleAcceptRequest(item)}>
-          <Text style={FindRideStyles.text}>{'Accept'}</Text>
-        </Pressable>
+          onClick={() => handleAcceptRequest(item)}
+          label={'Accept'}
+          {...default_btn_styles}
+          styles={{ opacity: isLoading ? 0.8 : 1, ...default_btn_styles.styles }}
+        />
       </View>
     </View>
   );
@@ -140,22 +151,23 @@ export const PickARide = () => {
 
 
   return (
-    <SafeAreaView style={FindRideStyles.container}>
-      <View>
-        {/* <Text style={FindRideStyles.headerText}>
+    <SafeAreaView style={[FindRideStyles.pageContainer, FindRideStyles.container]}>
+      <ContainerWrapper>
+        <View>
+          {/* <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
         </Text> */}
-        <View style={[{
-          padding: 0, alignItems: 'center',
-          justifyContent: 'flex-end',
-          flexDirection: 'row',
-        }]}>
-          <Pressable
-            style={[CommonStyles.shadow, { width: 40, height: 40 , alignItems: 'center', justifyContent:'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white}]}
-            onPress={() => navigate(ROUTES_NAMES.notifications)}>
-            <Icon name="bell-badge-outline" size="large" color={COLORS.gray} />
-          </Pressable>
-          {/* <Switch
+          <View style={[{
+            padding: 0, alignItems: 'center',
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+          }]}>
+            <Pressable
+              style={[CommonStyles.shadow, { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white }]}
+              onPress={() => navigate(ROUTES_NAMES.notifications)}>
+              <Icon name="bell-badge-outline" size="large" color={COLORS.gray} />
+            </Pressable>
+            {/* <Switch
             trackColor={{ false: COLORS.white, true: COLORS.white }}
             thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
             ios_backgroundColor="#3e3e3e"
@@ -163,34 +175,36 @@ export const PickARide = () => {
             value={Boolean(isOnline)}
             style={{ transform: [{ scaleX: .9 }, { scaleY: .9 }] }}
           /> */}
+          </View>
         </View>
-      </View>
-          <CustomButton 
-            label={isOnline ? 'Online' : 'Offline'} 
-            styles={{width: 63,height: 63, borderRadius: 100, paddingHorizontal: 5, position: 'absolute', bottom: 80, right: 20, backgroundColor: isOnline ? COLORS.green : COLORS.orange, zIndex: 2}} 
-            textStyles={{fontSize: 12, lineHeight: 14, textAlign: 'center', marginTop: 2}} 
-            contentContainerStyles={{flexDirection: 'column', alignItems: 'center'}} 
-            isLowerCase 
-            icon={{name: 'account-circle-outline', size: 'large'}}
-            onClick={toggleSwitch}
-          /> 
-      {isOnline ? (
-        <>
-          {!isSocketConnected ? <SocketStatus /> :
-            rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.homeBanner} /> :
-              <View style={FindRideStyles.section}>
-                {rideRequests?.length ? (
-                  <ScrollView>
-                    <DriverCard list={rideRequests} />
-                  </ScrollView>
-                ) : null}
-              </View>
-          }
-        </>
-      ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-          You are currently offline. Turn on your availability to receive ride requests.</Text>
-      </View>}
+        <CustomButton
+          label={isOnline ? 'Online' : 'Offline'}
+          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, position: 'absolute', bottom: 0, right: 20, backgroundColor: isOnline ? COLORS.green : COLORS.orange, zIndex: 2, }}
+          textStyles={{ fontSize: 12, lineHeight: 14, textAlign: 'center', marginTop: 2 }}
+          contentContainerStyles={{ flexDirection: 'column', alignItems: 'center' , justifyContent: 'center'}}
+          isLowerCase
+          iconLeft={{ name: 'account-circle-outline', size: 'large' }}
+          iconStyles={{paddingRight: 0}}
+          onClick={toggleSwitch}
+        />
+        {isOnline ? (
+          <>
+            {!isSocketConnected ? <SocketStatus /> :
+              rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.homeBanner} /> :
+                <View style={FindRideStyles.section}>
+                  {rideRequests?.length ? (
+                    <ScrollView>
+                      <DriverCard list={rideRequests} />
+                    </ScrollView>
+                  ) : null}
+                </View>
+            }
+          </>
+        ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+            You are currently offline. Turn on your availability to receive ride requests.</Text>
+        </View>}
+      </ContainerWrapper>
     </SafeAreaView>
   );
 };

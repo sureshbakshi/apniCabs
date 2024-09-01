@@ -41,6 +41,7 @@ export default function UserStackNavigator({ navigation, route }) {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerShown: false,
       }}>
       {/* <Stack.Screen
         name={ROUTES_NAMES.activeMap}
@@ -71,7 +72,7 @@ export default function UserStackNavigator({ navigation, route }) {
             component={FindCaptain}
           /> : <Stack.Screen
             name={ROUTES_NAMES.searchRide}
-            options={{ title: 'Find A Ride' }}
+            options={{ title: '' , headerShown: false}}
             component={SearchRidePageContainer}
           />
       }
