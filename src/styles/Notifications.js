@@ -4,9 +4,11 @@ import {COLORS} from '../constants';
 const NotificationsPageStyles = StyleSheet.create({
   card:{
     backgroundColor: COLORS.white,
+    borderRadius: 24,
     borderBottomWidth:1,
-    borderBottomColor:'#BCBCBC',
-    paddingHorizontal:10
+    // borderBottomColor:'#BCBCBC',
+    margin: 15,
+    padding: 15,
   },
   center:{
     flexDirection: 'row',

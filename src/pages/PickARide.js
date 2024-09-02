@@ -29,8 +29,8 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) =>
           <Text>Distance</Text>
           <Text>{item.duration} - {item.distance || item?.driver_distance} km</Text>
         </View>
-        <Text style={[FindRideStyles.name, { alignSelf: 'flex-end' , fontSize: 18, lineHeight: 24}]}>
-         {'\u20B9'}{item.fare || item?.driver_requests?.fare}
+        <Text style={[FindRideStyles.name, { alignSelf: 'flex-end', fontSize: 18, lineHeight: 24 }]}>
+          {'\u20B9'}{item.fare || item?.driver_requests?.fare}
         </Text>
       </View>
       <View style={[FindRideStyles.cardtop]}>
@@ -177,16 +177,18 @@ export const PickARide = () => {
           /> */}
           </View>
         </View>
-        <CustomButton
-          label={isOnline ? 'Online' : 'Offline'}
-          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, position: 'absolute', bottom: 0, right: 20, backgroundColor: isOnline ? COLORS.green : COLORS.orange, zIndex: 2, }}
-          textStyles={{ fontSize: 12, lineHeight: 14, textAlign: 'center', marginTop: 2 }}
-          contentContainerStyles={{ flexDirection: 'column', alignItems: 'center' , justifyContent: 'center'}}
-          isLowerCase
-          iconLeft={{ name: 'account-circle-outline', size: 'large' }}
-          iconStyles={{paddingRight: 0}}
-          onClick={toggleSwitch}
-        />
+        {(rideRequests?.length < 1) && <View style={{ position: 'absolute', bottom: 10, right: 0, zIndex: 2 }}>
+          <CustomButton
+            label={isOnline ? 'Online' : 'Offline'}
+            styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
+            textStyles={{ fontSize: 12, lineHeight: 12, textAlign: 'center', marginTop: 2 }}
+            contentContainerStyles={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+            isLowerCase
+            iconLeft={{ name: 'account-circle-outline', size: 'large' }}
+            iconStyles={{ paddingRight: 0 }}
+            onClick={toggleSwitch}
+          />
+        </View>}
         {isOnline ? (
           <>
             {!isSocketConnected ? <SocketStatus /> :

@@ -2,13 +2,13 @@ import { ImageBackground, Image } from "react-native"
 import LoginStyles from "../../styles/LoginPageStyles"
 import images from "../../util/images"
 
-export default () => {
+export default ({fgImg, bgImg, bgStyles={}, fgStyles={}}) => {
     return <ImageBackground
-    source={images.backgroundImage}
+    source={bgImg || images.backgroundImage}
     resizeMode="cover"
-    style={LoginStyles.logoBg}>
+    style={[LoginStyles.logoBg, {...bgStyles}]}>
     <Image
-      source={images.logo}
-      style={LoginStyles.logo} />
+      source={fgImg || images.logo}
+      style={[LoginStyles.logo, {...fgStyles}]} />
   </ImageBackground>
 }

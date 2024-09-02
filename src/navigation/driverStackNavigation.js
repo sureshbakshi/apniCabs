@@ -10,7 +10,7 @@ import MessageInfo from '../components/common/MessageInfo';
 import Notifications from '../components/common/Notifications';
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import HeaderBackButton from '../components/common/HeaderBackButton';
-
+import CommonStyles from '../styles/commonStyles'
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -28,7 +28,8 @@ export default function DriverStackNavigator({ navigation, route }) {
         headerStyle: {
         },
         headerShown: false,
-        headerTitleStyle: {
+        headerTitleStyle:{
+          ...CommonStyles.headerFont
         },
         headerTitleAlign: 'center',
         headerLeft: () => <HeaderBackButton />,  

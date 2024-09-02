@@ -45,7 +45,29 @@ const cancelRide = () => {
     </View>
 }
 
-export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false, isOnRide = true, avatarStyles = {}, containerStyles = {} }) => {
+export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, name, canShowVehicleInfo }) => {
+    return (
+        <View style={[{ flexDirection: 'row', gap: 10, ...avatarContainerStyles }]}>
+            <ImageView
+                source={dp ? { uri: dp } : images[`captain1`]}
+                style={[styles.avatar, { ...avatarStyles }]}
+            />
+            <View>
+                <Text style={[styles.bold, CommonStyles.font16]}>{name}</Text>
+                {(canShowVehicleInfo && vehicle) && <>
+                    <Text style={[CommonStyles.font12, { color: COLORS.neutral_gray }]}>
+                        {vehicle.model}
+                    </Text>
+                    <Text style={[CommonStyles.font10, { letterSpacing: 1.5, color: COLORS.neutral_gray }]}>
+                        {vehicle.registration_number}
+                    </Text>
+                </>}
+            </View>
+        </View>
+    )
+}
+
+export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
     const driver_details = driverDetails || activeRequest?.driver
     const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
     const fare = activeRequest.fare || activeRequest?.ride?.fare
@@ -57,23 +79,7 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
     return (
         <View style={{ padding: 10, ...containerStyles }}>
             <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>
-                <View style={[{ flexDirection: 'row', gap: 10, ...avatarStyles }]}>
-                    <ImageView
-                        source={dp ? { uri: dp } : images[`captain1`]}
-                        style={[styles.avatar]}
-                    />
-                    <View>
-                        <Text style={[styles.bold, CommonStyles.font16]}>{name}</Text>
-                        {vehicle && <>
-                            <Text style={[CommonStyles.font12, { color: COLORS.neutral_gray }]}>
-                                {vehicle.model}
-                            </Text>
-                            <Text style={[CommonStyles.font10, { letterSpacing: 1.5, color: COLORS.neutral_gray }]}>
-                                {vehicle.registration_number}
-                            </Text>
-                        </>}
-                    </View>
-                </View>
+                <AvatarInfo {...{ dp, vehicle, name, avatarStyles, canShowVehicleInfo: !isDriverLogged }} avatarContainerStyles={{ alignItems: 'center', ...avatarContainerStyles }} />
                 {fare && isOnRide && <View style={[{ alignItems: 'flex-end' }]}>
                     <Text style={[FindRideStyles.name]}>
                         {'\u20B9'}{fare}
@@ -117,8 +123,8 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
                 </View>
             }
             {activeRequest?.ride?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequest?.ride?.id}</Text>}
-            {!isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                {fare && <Text style={[FindRideStyles.name]}>{'\u20B9'}{fare}</Text>}
+            {!isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, alignItems: 'center' }}>
+                <Text style={[FindRideStyles.name]}>{fare ? `\u20B9${fare}` : ''}</Text>
                 <Text style={[{ color: color }]}>{label}</Text>
                 {/* <Text style={styles.address}>3 Seats left</Text> */}
             </View>}
@@ -186,12 +192,12 @@ export default ({ activeRequest, isDriverLogged }) => {
         })
     }
 
-    const isOnActiveRide = isDriverLogged && activeRideId || activeRequest.status === RideStatus.ONRIDE
+    const isActiveRide = (activeRideId || activeRequest.status === RideStatus.ONRIDE)
     return (
         <>
             <View style={[FindRideStyles.card]}>
                 <RideDetailsView {...{ activeRequest, isDriverLogged }} />
-                {!isOnActiveRide && <View style={{ flexDirection: 'row' }}>
+                {(!isActiveRide && isDriverLogged) && <View style={{ flexDirection: 'row' }}>
                     <TextInput
                         keyboardType='numeric'
                         placeholder="Enter OTP here"
@@ -221,7 +227,7 @@ export default ({ activeRequest, isDriverLogged }) => {
                     </Pressable>
                 </View>}
             </View>
-            {(isOnActiveRide && isDriverLogged) &&  <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
+            {((isActiveRide && isDriverLogged)) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 {(activeRequest?.from_location) && <OpenMapButton route={{ start: activeRequest.from_location, end: activeRequest.to_location, navigate: true }} />}
                 <CustomButton
                     onClick={() => getCurrentLocation(completeRideHandler)}

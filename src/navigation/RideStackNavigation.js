@@ -21,7 +21,7 @@ export default function RideStackNavigation({ navigation, route }) {
                 },
                 headerTintColor: COLORS.black,
                 headerTitleStyle: {
-
+                    ...CommonStyles.headerFont
                 },
                 headerTitleAlign: 'center',
             }}>

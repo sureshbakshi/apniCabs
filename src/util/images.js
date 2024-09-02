@@ -16,6 +16,8 @@ export default {
     rideAccept: require('../assets/images/ride_accept.png'),
     rideCancel: require('../assets/images/ride_cancel.png'),
     backgroundImage: require('../assets/images/bg1.png'),
+    referBg:  require('../assets/images/refer_bg.png'),
+    referGiftBox:  require('../assets/images/refer_gift_box.png'),
     pin: require('../assets/images/pin.png'),
     carYellow: require('../assets/images/car.png'),
     google: require('../assets/images/google.png'),

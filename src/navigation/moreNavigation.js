@@ -9,6 +9,7 @@ import FareSettings from '../pages/FareSettings';
 import Contacts from '../pages/Contacts';
 import Refer from '../pages/Refer';
 import HeaderBackButton from '../components/common/HeaderBackButton';
+import CommonStyles from '../styles/commonStyles'
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -23,16 +24,16 @@ export default function MoreNavigator({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-        },
         headerTintColor: COLORS.black,
-        headerTitleStyle: {
-        },
         headerTitleAlign: 'center',
-        headerLeft: () => <HeaderBackButton />,  
-        headerShadowVisible: false 
+        headerLeft: () => <HeaderBackButton />,
+        headerShadowVisible: false,
+        headerTitleStyle:{
+          ...CommonStyles.headerFont
+        }
+        // headerTransparent: true
       }}>
-      <Stack.Screen name="More Details" component={MorePage} options={{headerShown: false}}/>
+      <Stack.Screen name="More Details" component={MorePage} options={{ headerShown: false }} />
       <Stack.Screen
         name="MyProfile"
         options={{ title: 'My Profile' }}
@@ -45,12 +46,15 @@ export default function MoreNavigator({ navigation, route }) {
       />
       <Stack.Screen
         name="FareSettings"
-        options={{ title: 'Fare Settings'}}
+        options={{ title: 'Fare Settings' }}
         component={FareSettings}
       />
-       <Stack.Screen
+      <Stack.Screen
         name={ROUTES_NAMES.refer}
-        options={{ title: 'Refer Now' }}
+        options={{
+          title: 'Refer Now',
+          headerTransparent: true,
+        }}
         component={Refer}
       />
       <Stack.Screen

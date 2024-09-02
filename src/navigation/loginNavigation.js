@@ -5,6 +5,7 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import OTPAutoFill from '../components/OTPAutoFill';
 import ForgotPassword from '../pages/ForgotPassword';
 import GettingStartedPage from '../pages/GettingStartedPage';
+import CommonStyles from '../styles/commonStyles'
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({navigation, route}) {
@@ -16,8 +17,8 @@ export default function LoginNavigator({navigation, route}) {
         headerStyle: {
           marginBottom: 50,
         },
-        headerTitleStyle: {
-          fontWeight: 'bold',
+        headerTitleStyle:{
+          ...CommonStyles.headerFont
         },
         headerShown:false,
         animation:'slide_from_right'

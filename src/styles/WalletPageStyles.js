@@ -35,7 +35,7 @@ const WalletStyles = StyleSheet.create({
   },
   card: {
     backgroundColor: COLORS.white,
-    margin: 10,
+    // margin: 10,
     paddingBottom:0,
     // shadowColor: '#000',
     // shadowOffset: {

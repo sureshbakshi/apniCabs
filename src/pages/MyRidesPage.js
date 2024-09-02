@@ -10,6 +10,7 @@ import { get } from 'lodash'
 import SearchLoader from '../components/common/SearchLoader';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
+import CommonStyles from '../styles/commonStyles';
 
 export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -52,8 +53,8 @@ const Card = ({ item, keys }) => {
       {/* <Text style={styles.review}></Text> */}
       <Timeline data={[getValue(item, keys.from), getValue(item, keys.to)]} numberOfLines={1} />
     </View>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-      {fare && <Text style={[styles.timw, styles.bold]}>{'\u20B9'}{fare}</Text>}
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 , alignItems: 'center'}}>
+      <Text style={[CommonStyles.font14, styles.bold]}>{fare ? `\u20B9${fare}` : ''}</Text>
       <Text style={[{ color: color }]}>{label}</Text>
       {/* <Text style={styles.address}>3 Seats left</Text> */}
     </View>

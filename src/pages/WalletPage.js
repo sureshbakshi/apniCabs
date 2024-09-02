@@ -13,6 +13,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { isEmpty } from 'lodash';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
+import FindRideStyles from '../styles/FindRidePageStyles';
 
 const walletCopy = {
   'DEBIT': {
@@ -69,8 +70,8 @@ const WalletPage = ({ navigation }) => {
     const copy = walletCopy[item.type]
     return (
       <View style={WalletStyles.cardtop}>
-        <View style={WalletStyles.left}>
-        <View style={[WalletStyles.box1,{backgroundColor:copy.bg_color }]}>
+        <View style={[WalletStyles.left,{paddingHorizontal: 0 }]}>
+        <View style={[WalletStyles.box1,{backgroundColor:copy.bg_color}]}>
             <Icon name={copy.icon} size='small' color={COLORS.white}/>
           </View>
           {/* <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' /> */}
@@ -115,9 +116,9 @@ const WalletPage = ({ navigation }) => {
 
 
   return (
-    <View style={WalletStyles.container}>
+    <View style={[WalletStyles.container, FindRideStyles.pageContainer]}>
       {/* <ContainerWrapper> */}
-      <View style={WalletStyles.header}>
+      <View style={[WalletStyles.header, {margin: 0}]}>
         {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
         <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
           <View style={WalletStyles.box}>

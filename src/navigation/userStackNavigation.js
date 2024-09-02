@@ -13,6 +13,7 @@ import CustomButton from '../components/common/CustomButton';
 // import useCancelAllRequest from '../hooks/useCancelAllRequest';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
+import CommonStyles from '../styles/commonStyles';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -38,8 +39,9 @@ export default function UserStackNavigator({ navigation, route }) {
           backgroundColor: COLORS.primary,
         },
         headerTintColor: '#fff',
+        
         headerTitleStyle: {
-          fontWeight: 'bold',
+          ...CommonStyles.headerFont
         },
         headerShown: false,
       }}>

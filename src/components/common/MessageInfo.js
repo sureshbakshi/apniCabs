@@ -34,44 +34,44 @@ const MessageInfo = () => {
     const message = isNotVehicleAssigned ? 'Vehicle assigned to you' : 'your profile is verified'
 
     return (
-        <View style={[FindRideStyles.container, NotificationsPageStyles.center]}>
-            <View style={NotificationsPageStyles.box}>
-                <Icon name='flash' size='small' color={COLORS.black} />
-            </View>
-            <View style={[NotificationsPageStyles.card]} >
-                <Text style={[NotificationsPageStyles.info]}>You cannot receive any ride requests until {message}. Please update below info as soon as possible.</Text>
-                <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                    <View style={NotificationsPageStyles.blackQuote}>
-                        <Text style={[NotificationsPageStyles.heading]}>Reason: </Text>
+        <View style={[FindRideStyles.container, { alignItems: 'center', justifyContent: 'center', padding: 15}]}>
+                <View style={[NotificationsPageStyles.card,CommonStyles.shadow, { flexDirection: 'row', gap: 15, height: 'auto' }]} >
+                    <View style={NotificationsPageStyles.box}>
+                        <Icon name='flash' size='small' color={COLORS.black} />
                     </View>
-                    {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
-                    {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>Vehicle not yet assigned.</Text>}
-
-                </View>
-                {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                    <View style={NotificationsPageStyles.blackQuote}>
-                        <Text style={[NotificationsPageStyles.heading]}>Notice:</Text>
-                    </View>
-                    <Text style={[NotificationsPageStyles.subHeading]}>Below are the documents that will expire within a week:</Text>
-                    {driverInfo?.expiredFields.map((item, i) => {
-                        return <View key={i} style={[FindRideStyles.center, { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
-                            <Text style={[NotificationsPageStyles.name]}>{i + 1}. </Text>
-                            <Text style={[NotificationsPageStyles.name]}>{ExpiryStatus[item]} will expire on {formattedDate(driverInfo?.vehicle[item], true)}</Text>
+                    <View>
+                        <Text style={[NotificationsPageStyles.info]}>You cannot receive any ride requests until {message}. Please update below info as soon as possible.</Text>
+                        <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
+                            <View style={NotificationsPageStyles.blackQuote}>
+                                <Text style={[NotificationsPageStyles.heading]}>Reason: </Text>
+                            </View>
+                            {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
+                            {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>Vehicle not yet assigned.</Text>}
                         </View>
-                    })}
-                </View>}
-                <View style={[NotificationsPageStyles.cardBottom]}>
-                    <CustomButton
-                        label={'Update'}
-                        textStyles={{ lineHeight: 13, fontSize: 12, fontWeight: 400, textTransform: 'capitalize' }}
-                        styles={{
-                            margin: 5,
-                            width: 85, height: 32,
-                            borderRadius: 5
-                        }} onClick={openOwnerPortal} />
+                        {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
+                            <View style={NotificationsPageStyles.blackQuote}>
+                                <Text style={[NotificationsPageStyles.heading]}>Notice:</Text>
+                            </View>
+                            <Text style={[NotificationsPageStyles.subHeading]}>Below are the documents that will expire within a week:</Text>
+                            {driverInfo?.expiredFields.map((item, i) => {
+                                return <View key={i} style={[FindRideStyles.center, { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
+                                    <Text style={[NotificationsPageStyles.name]}>{i + 1}. </Text>
+                                    <Text style={[NotificationsPageStyles.name]}>{ExpiryStatus[item]} will expire on {formattedDate(driverInfo?.vehicle[item], true)}</Text>
+                                </View>
+                            })}
+                        </View>}
+                        <View style={[NotificationsPageStyles.cardBottom]}>
+                            <CustomButton
+                                label={'Update'}
+                                textStyles={{ lineHeight: 13, fontSize: 12, fontWeight: 400, textTransform: 'capitalize' }}
+                                styles={{
+                                    margin: 5,
+                                    width: 85, height: 32,
+                                    borderRadius: 5
+                                }} onClick={openOwnerPortal} />
+                        </View>
+                    </View>
                 </View>
-
-            </View>
         </View>
     );
 };
