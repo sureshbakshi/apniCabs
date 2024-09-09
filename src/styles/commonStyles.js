@@ -28,6 +28,16 @@ const CommonStyles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 4,
   },
+  shadow2: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 6,
+  },
   font10: {
     fontSize: 10,
     lineHeight: 14,

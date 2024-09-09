@@ -8,7 +8,7 @@ export default function HeaderBackButton() {
     return (
         <CustomButton
             label={''}
-            styles={{ width: 40, height: 40, borderRadius: 100, backgroundColor: COLORS.white, ...CommonStyles.shadow, paddingHorizontal: 0, alignItems: 'center' }}
+            styles={{ width: 40, height: 40, borderRadius: 100, backgroundColor: COLORS.white, ...CommonStyles.shadow2, paddingHorizontal: 0, alignItems: 'center' }}
             isLowerCase
             iconLeft={{ name: 'arrow-left', size: 'large', color: COLORS.black }}
             iconStyles={{ paddingRight: 0 }}

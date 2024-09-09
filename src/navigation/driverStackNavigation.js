@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
 export default function DriverStackNavigator({ navigation, route }) {
   const { activeRequest } = useSelector(state => state.driver)
   const { driverInfo } = useSelector(state => state.auth);
-  
+
   // console.log({ driverInfo, 'driverstack': !isEmpty(driverInfo), verif: (!isDriverVerified(driverInfo)), empVeh: isEmpty(driverInfo?.vehicle), isValid: ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) })
   useGetDriverActiveRequests()
   return (
@@ -28,12 +28,12 @@ export default function DriverStackNavigator({ navigation, route }) {
         headerStyle: {
         },
         headerShown: false,
-        headerTitleStyle:{
+        headerTitleStyle: {
           ...CommonStyles.headerFont
         },
         headerTitleAlign: 'center',
-        headerLeft: () => <HeaderBackButton />,  
-        headerShadowVisible: false 
+        headerLeft: () => <HeaderBackButton />,
+        headerShadowVisible: false
       }}>
       {activeRequest?.id ? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
@@ -41,7 +41,7 @@ export default function DriverStackNavigator({ navigation, route }) {
         component={ActiveRidePageContainer}
       /> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) ? <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
-        options={{ title: 'Notification'}}
+        options={{ title: 'Notification' }}
         component={MessageInfo}
       /> : <Stack.Screen
         name={ROUTES_NAMES.searchRide}
@@ -50,7 +50,7 @@ export default function DriverStackNavigator({ navigation, route }) {
       />}
       <Stack.Screen
         name={ROUTES_NAMES.notifications}
-        options={{ title: 'Notifications', headerShown: true }}
+        options={{ title: 'Notifications', headerShown: true ,  headerShadowVisible: false}}
         component={Notifications}
       />
 
