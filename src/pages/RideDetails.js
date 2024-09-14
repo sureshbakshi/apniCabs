@@ -35,6 +35,7 @@ export default ({ route }) => {
     const { avatar, name } = rideDetails?.userDetails
     return (
         <SafeAreaView style={styles.container}>
+            <View style={[FindRideStyles.pageContainer]}>
             <View style={[FindRideStyles.container]}>
                 <ContainerWrapper>
                     <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
@@ -63,6 +64,7 @@ export default ({ route }) => {
                     </View>
                 </CardWrapper>}
             </View> */}
+            </View>
         </SafeAreaView>
     );
 };

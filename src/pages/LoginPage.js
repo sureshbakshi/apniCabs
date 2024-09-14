@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   Image,
+  StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
@@ -136,6 +137,7 @@ const LoginPage = () => {
 
   return (
     <View style={LoginStyles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
       <HeaderImage/>
 
       <ScreenContainer>

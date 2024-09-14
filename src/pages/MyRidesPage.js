@@ -11,6 +11,7 @@ import SearchLoader from '../components/common/SearchLoader';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import CommonStyles from '../styles/commonStyles';
+import FindRidePageStyles from '../styles/FindRidePageStyles';
 
 export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -69,6 +70,7 @@ const Card = ({ item, keys }) => {
 const MyRidePage = ({ data, keys }) => {
   return (
     <SafeAreaView style={styles.container}>
+      <View style={[FindRidePageStyles.pageContainer]}>
       <ContainerWrapper>
         {data?.length ? <View style={styles.section}>
           <FlatList
@@ -79,6 +81,7 @@ const MyRidePage = ({ data, keys }) => {
         </View> :
           <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
       </ContainerWrapper>
+      </View>
     </SafeAreaView>
   );
 };

@@ -10,7 +10,6 @@ const MyRideStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
-    padding: 15
   },
   header: {
     backgroundColor: COLORS.primary,

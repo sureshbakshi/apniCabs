@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   Platform,
+  StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import { RadioButton } from 'react-native-paper';
@@ -52,6 +53,7 @@ const SignUpPage = () => {
   }
   return (
     <View style={LoginStyles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
       <HeaderImage />
       <ScrollView>
         <ScreenContainer>

@@ -189,7 +189,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      invalidatesTags: ["RideComplete"]
+      providesTags: ["RideComplete"]
     }),
     // request Apis
     sendRequest: builder.mutation({
@@ -221,7 +221,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ['RideStatus', 'RideComplete'],
+      providesTags: ['RideStatus'],
     }),
     driverRideHistory: builder.query({
       query: () => ({

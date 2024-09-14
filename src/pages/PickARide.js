@@ -151,7 +151,8 @@ export const PickARide = () => {
 
 
   return (
-    <SafeAreaView style={[FindRideStyles.pageContainer, FindRideStyles.container]}>
+    <SafeAreaView style={[FindRideStyles.container]}>
+      <View style={[FindRideStyles.pageContainer]}>
       <ContainerWrapper>
         <View>
           {/* <Text style={FindRideStyles.headerText}>
@@ -177,7 +178,7 @@ export const PickARide = () => {
           /> */}
           </View>
         </View>
-        {(rideRequests?.length < 1) && <View style={{ position: 'absolute', bottom: 10, right: 0, zIndex: 2 }}>
+        {(rideRequests?.length < 1) && <View style={{ position: 'absolute', bottom: 10, right: 0, zIndex: 2, }}>
           <CustomButton
             label={isOnline ? 'Online' : 'Offline'}
             styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
@@ -207,6 +208,7 @@ export const PickARide = () => {
             You are currently offline. Turn on your availability to receive ride requests.</Text>
         </View>}
       </ContainerWrapper>
+      </View>
     </SafeAreaView>
   );
 };

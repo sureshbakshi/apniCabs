@@ -8,12 +8,13 @@ import { useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
-import { formattedDate } from '../util';
+import { formattedDate, getScreen } from '../util';
 import { useFocusEffect } from '@react-navigation/native';
 import { isEmpty } from 'lodash';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import FindRideStyles from '../styles/FindRidePageStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const walletCopy = {
   'DEBIT': {
@@ -116,9 +117,10 @@ const WalletPage = ({ navigation }) => {
 
 
   return (
-    <View style={[WalletStyles.container, FindRideStyles.pageContainer]}>
-      {/* <ContainerWrapper> */}
-      <View style={[WalletStyles.header, {margin: 0}]}>
+    <SafeAreaView style={[WalletStyles.container]}>
+      <View style={[ FindRideStyles.pageContainer]}>
+      <ContainerWrapper style={{ height: getScreen().screenHeight - 95}}>
+      <View style={[WalletStyles.header, {margin:0, marginBottom: 5}]}>
         {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
         <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
           <View style={WalletStyles.box}>
@@ -152,8 +154,9 @@ const WalletPage = ({ navigation }) => {
           ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
         />
       </View>
-      {/* </ContainerWrapper> */}
-    </View>
+      </ContainerWrapper>
+      </View>
+    </SafeAreaView>
   );
 };
 export default WalletPage;

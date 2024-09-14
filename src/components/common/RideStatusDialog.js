@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearDriverState } from "../../slices/driverSlice";
 import { clearUserState } from "../../slices/userSlice";
 import { delay } from 'lodash';
+import { isDriver } from "../../util";
 
-export default ({ activeRequest, isDriverLogged }) => {
-    const { statusUpdate } = useSelector((state) => isDriverLogged ? state.driver : state.user);
+export default () => {
+    const isDriverLogged = isDriver();
+    const { statusUpdate, activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const dispatch = useDispatch()
     const statusMessages = {
         [RideStatus.USER_CANCELLED]: {
@@ -34,7 +36,7 @@ export default ({ activeRequest, isDriverLogged }) => {
     const clearRideState = () => {
         delay(() => {
             dispatch(isDriverLogged ? clearDriverState() : clearUserState())
-        }, 10)
+        }, 1000)
     }
     const DialogComponent = useMemo(() => {
         return (

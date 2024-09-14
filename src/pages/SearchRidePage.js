@@ -17,6 +17,7 @@ import { requestInfo, setRideRequest } from '../slices/userSlice';
 import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
 import ContainerWrapper from '../components/common/ContainerWrapper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchRidePage = () => {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ console.log({location})
     //   source={images.backgroundImage}
     //   resizeMode="cover"
     //   style={SearchRideStyles.image}>
-    <View style={SearchRideStyles.container}>
+    <SafeAreaView style={SearchRideStyles.container}>
       <ContainerWrapper>
       {isSocketConnected ? <View style={SearchRideStyles.section}>
         <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
@@ -112,7 +113,7 @@ console.log({location})
         <SearchLoader msg=' ' />
       </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
       </ContainerWrapper>
-    </View>
+    </SafeAreaView>
 
     // </ImageBackground>
   );

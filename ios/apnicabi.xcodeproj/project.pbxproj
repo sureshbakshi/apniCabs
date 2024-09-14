@@ -16,6 +16,7 @@
 		7699B88040F8A987B510C191 /* libPods-apnicabi-apnicabiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-apnicabi-apnicabiTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9309ACAE2B42C8B10020BDC4 /* geoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */; };
+		93E52C6F2C9604CE00849876 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93E52C6E2C9604CD00849876 /* GoogleService-Info.plist */; };
 		B18C8683587F435887AE429F /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */; };
 		E6BF709FBF7144EF87817C0E /* poppins_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82525496D5E646C594764068 /* poppins_regular.ttf */; };
 /* End PBXBuildFile section */
@@ -46,14 +47,15 @@
 		5B7EB9410499542E8C5724F5 /* Pods-apnicabi-apnicabiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiTests.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-apnicabi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = apnicabi/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		82525496D5E646C594764068 /* poppins_regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = poppins_regular.ttf; path = ../assets/fonts/poppins_regular.ttf; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-apnicabi-apnicabiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiTests.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests.release.xcconfig"; sourceTree = "<group>"; };
 		9309ACAC2B42C8B10020BDC4 /* apnicabi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "apnicabi-Bridging-Header.h"; sourceTree = "<group>"; };
 		9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoLocation.swift; sourceTree = "<group>"; };
 		930D07B62B81E3C8002CA68D /* apnicabi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = apnicabi.entitlements; path = apnicabi/apnicabi.entitlements; sourceTree = "<group>"; };
+		93E52C6E2C9604CD00849876 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "apnicabi/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		82525496D5E646C594764068 /* poppins_regular.ttf */ = {isa = PBXFileReference; name = "poppins_regular.ttf"; path = "../assets/fonts/poppins_regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		13B07FAE1A68108700A75B9A /* apnicabi */ = {
 			isa = PBXGroup;
 			children = (
+				93E52C6E2C9604CD00849876 /* GoogleService-Info.plist */,
 				930D07B62B81E3C8002CA68D /* apnicabi.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -271,6 +274,7 @@
 				B18C8683587F435887AE429F /* Nunito-Bold.ttf in Resources */,
 				1BFF1C52EB9B42B4BC97AC4C /* Nunito-Regular.ttf in Resources */,
 				E6BF709FBF7144EF87817C0E /* poppins_regular.ttf in Resources */,
+				93E52C6F2C9604CE00849876 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,8 +523,8 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = FA3L3KDW78;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = MYW49D7MA3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni cabi";
@@ -529,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -555,7 +559,7 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni cabi";
@@ -564,7 +568,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

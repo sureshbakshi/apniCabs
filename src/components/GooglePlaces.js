@@ -30,7 +30,7 @@ const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locat
                 }
                 }
                 enableHighAccuracyLocation={true}
-                query={{ key: Config.GOOGLE_PLACES_KEY, components: 'country:in' }}
+                query={{ key: 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4', components: 'country:in' }}
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}

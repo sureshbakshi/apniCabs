@@ -27,13 +27,19 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.208090810105-iu8l88df74966gbp2nb947p47bc8aocg</string>
+				<string>com.googleusercontent.apps.208090810105-02q58t2mik4091c2nn1oqp4vqth9rsfk</string>
 				<string>apnicabi</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>telprompt</string>
+		<string>apnicabi</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -44,7 +50,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is needed to provide accurate pick-up and drop-off locations, find nearby drivers, and ensure a smooth and efficient ride experience.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to find nearby drivers, provide accurate pick-up and drop-off locations, and ensure a smooth and efficient ride experience while using the app.</string>
 	<key>UIAppFonts</key>
@@ -78,12 +84,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>tel</string>
-		<string>telprompt</string>
-		<string>apnicabi</string>
-	</array>
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>

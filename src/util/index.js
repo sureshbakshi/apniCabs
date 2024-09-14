@@ -62,7 +62,7 @@ export const showSuccessMessage = (msg) => {
 }
 
 export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
-  const apiKey = getConfig().GOOGLE_PLACES_KEY;
+  const apiKey = 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4';
   try {
     const mode = 'driving'; // Set mode to 'bicycling' for bike transport
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orgLat},${orgLon}&destinations=${destLat},${destLong}&mode=${mode}&key=${apiKey}`;

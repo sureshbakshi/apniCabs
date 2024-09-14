@@ -36,7 +36,7 @@ const GettingStartedStyles = StyleSheet.create({
     subtext:{
         fontSize: 12,
         color: COLORS.text_light_gray,
-        fontWeight: 500,
+        fontWeight: '500',
         fontFamily: 'Poppins',
     },
 

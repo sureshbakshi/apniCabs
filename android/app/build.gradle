@@ -102,8 +102,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
-        versionCode 12
-        versionName "1.1.11"
+        versionCode 16
+        versionName "1.1.16"
         manifestPlaceholders = [GOOGLE_MAPS_KEY: "AIzaSyC2O6D4Dyu8G1kP8eKfXjGM1-F_uqKCjr0"]
     }
 

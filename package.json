@@ -14,7 +14,8 @@
     "bugsnag:upload-rn-android": "bugsnag-cli upload react-native-android",
     "bugsnag:upload-dsym": "bugsnag-cli upload dsym ios/",
     "bugsnag:upload-rn-ios": "bugsnag-cli upload react-native-ios",
-    "bugsnag:upload": "bugsnag-cli upload android-ndk android/ && bugsnag-cli upload android-proguard android/ && bugsnag-cli upload react-native-android && bugsnag-cli upload dsym ios/ && bugsnag-cli upload react-native-ios"
+    "bugsnag:upload": "bugsnag-cli upload android-ndk android/ && bugsnag-cli upload android-proguard android/ && bugsnag-cli upload react-native-android && bugsnag-cli upload dsym ios/ && bugsnag-cli upload react-native-ios",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@bugsnag/plugin-react-navigation": "^7.25.0",
@@ -80,6 +81,8 @@
     "eslint": "^8.19.0",
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.73.7",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.4.1",
     "react-native-paper": "^5.11.4",
     "react-test-renderer": "18.2.0",

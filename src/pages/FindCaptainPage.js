@@ -14,6 +14,7 @@ import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
 import Timeline from '../components/common/timeline/Timeline';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FindCaptainPage = () => {
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
@@ -30,7 +31,7 @@ const FindCaptainPage = () => {
     return <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>Drivers not found at the moment. Please try later!</Text>
   }
   return (
-    <View style={[FindRideStyles.container, FindRideStyles.pageContainer]}>
+    <SafeAreaView style={[FindRideStyles.container, FindRideStyles.pageContainer]}>
       <ContainerWrapper>
         {/* <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingVertical: 5, borderRadius: 12, marginBottom: 10 }}>
           <Timeline data={[extraProps.from, extraProps.to]} />
@@ -61,7 +62,7 @@ const FindCaptainPage = () => {
           styles={{ backgroundColor: COLORS.white, paddingRight: 0, width: 'auto', ...CommonStyles.shadow }}
         />
       </ContainerWrapper>
-    </View>
+    </SafeAreaView>
   );
 };
 export default FindCaptainPage;

@@ -4,7 +4,7 @@ import { COLORS } from '../constants';
 const MoreStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   header: {
     backgroundColor: COLORS.primary,
