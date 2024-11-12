@@ -29,10 +29,10 @@ const MyProfilePage = () => {
             <View style={MyProfileStyles.list}>
               <Text style={MyProfileStyles.greenTxt}>Personal Info</Text>
             </View>
-            <View style={MyProfileStyles.list}>
+            {profile?.email && <View style={MyProfileStyles.list}>
               <Text style={MyProfileStyles.review}>Email address</Text>
               <Text style={MyProfileStyles.name}>{profile.email}</Text>
-            </View>
+            </View>}
             <View style={MyProfileStyles.list}>
               <Text style={MyProfileStyles.review}>Phone Number</Text>
               <Text style={MyProfileStyles.name}>{profile.phone}</Text>

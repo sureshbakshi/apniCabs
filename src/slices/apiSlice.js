@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://apnicabi.com/api/',
   // baseUrl: 'http://192.168.0.103:3000/api/', //rajesh IP
-  // baseUrl: 'http://192.168.0.105:8080/api/', //suresh IP
+  // baseUrl: 'http://192.168.29.235:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
@@ -35,7 +35,9 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   if (result.error && result.error.status === 401) {
     console.log(result.error)
     api.dispatch(clearAuthData());
-    navigate(ROUTES_NAMES.signIn);
+    setTimeout(() => {
+      navigate(ROUTES_NAMES.signIn);
+    },100)
     // try to get a new token
     // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
     // if (refreshResult.data) {

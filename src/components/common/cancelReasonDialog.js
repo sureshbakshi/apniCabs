@@ -7,7 +7,6 @@ import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
 import CustomDialog from "./CustomDialog";
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
-import FindRideStyles from "../../styles/FindRidePageStyles";
 import { COLORS, RideStatus } from "../../constants";
 import { Icon } from "./Icon";
 import { delay } from 'lodash';
@@ -82,7 +81,7 @@ export const CancelReasonDialog = () => {
     if (selectedMessage.id && activeRequest?.id) {
       let payload = {
         "request_id": activeRequest.id,
-        "driver_id": activeRequest.driver.id,
+        "driver_id": activeRequest.driver?.id || activeRequest?.driver_requests.driver_id,
         "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
       }

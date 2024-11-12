@@ -150,7 +150,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   const debouncedFocusMap = debounce(() => {
     focusMap(markerIDs);
-  }, 3 * 1000);
+  }, 5 * 1000);
 
   const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
   const isOnRide = activeRequest.status === RideStatus.ONRIDE
@@ -167,7 +167,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   const isNotNaN = !isNaN(regionLatnLng?.latitude);
 
-  console.log({activeRequest, activeLocation})
+  // console.log({activeRequest, activeLocation})
   return (
     <View style={styles.container}>
       {/* <View style={{ backgroundColor: 'yellow', padding: 10, position: 'absolute', zIndex: 1000, top: 0 }}>

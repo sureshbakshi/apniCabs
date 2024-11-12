@@ -294,8 +294,8 @@ export const VEHICLE_IMAGES = {
 }
 
 export const VEHICLE_TYPES = {
-  car: 'car-side',
-  auto: 'golf-cart',//rv-truck,truck
+  'Car': 'car-side',
+  'Auto': 'golf-cart',//rv-truck,truck
   'Bike': 'bike'
 }
 
@@ -474,12 +474,12 @@ export const SIGN_UP_FORM = [
   },
   {
     name: 'email',
-    label: "Email Address*",
+    label: "Email Address",
     props: {
-      placeholder: "Enter email address*",
-      required: true,
-      editable: false,
-      selectTextOnFocus: false
+      placeholder: "Enter email address",
+      // required: false,
+      // editable: false,
+      // selectTextOnFocus: false
     },
   },
   {

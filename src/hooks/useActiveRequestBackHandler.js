@@ -9,9 +9,11 @@ let backButtonListener = undefined;
 export function useRequestAlertHandler(title = 'Alert!', message = `You currently have a pending request. Would you like to cancel it? If you click 'Yes', your request will be cancelled.`) {
     const { cancelAllActiveRequest } = useCancelAllRequest();
     const dispatch = useDispatch();
+    // const { rideRequests, activeRequest } = useSelector(state => state.user)
 
     const requestAlertHandler = (cb) => {
         const { rideRequests, activeRequest } = store.getState().user
+        // console.log({rideRequests, activeRequest})
         if (rideRequests?.request_id || activeRequest?.id) {
             Alert.alert(title, message, [
                 {

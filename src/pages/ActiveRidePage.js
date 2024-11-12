@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS, USER_INFORMATION, VEHICLE_INFORMATION } from '../constants';
+import { COLORS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
@@ -9,17 +9,19 @@ import { getScreen, isDriver } from '../util';
 import ActiveMapPage from './ActiveMap';
 import RideStatusDialog from '../components/common/RideStatusDialog';
 import RideDetailsCards from '../components/common/RideDetailsCards';
-import OpenMapButton from '../components/common/OpenMapButton';
-import VehicleCard from '../components/VehicleCard';
-import CardWrapper from '../components/CardWrapper';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { Text } from '../components/common';
 import Timeline from '../components/common/timeline/Timeline';
 import { SafeAreaView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
+import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 
 const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
+  if (!activeRequest?.driver) {
+    isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
+  }
   const { activeRequest, activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   const { screenHeight } = getScreen()
   return (

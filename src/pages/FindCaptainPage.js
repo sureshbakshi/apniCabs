@@ -13,7 +13,6 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
-import Timeline from '../components/common/timeline/Timeline';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FindCaptainPage = () => {
@@ -40,7 +39,7 @@ const FindCaptainPage = () => {
           list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
             <>
               <View style={{ backgroundColor: COLORS.bg_gray_primary, marginBottom: 2 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120 , alignItems: 'center'}}>
                   <Icon name={VEHICLE_TYPES[list[0].name]} size="extraLarge" color={COLORS.primary} />
                   <Text style={{ marginLeft: 8 }} >{list[0].name}</Text>
                 </View>

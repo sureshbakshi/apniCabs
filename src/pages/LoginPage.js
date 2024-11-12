@@ -81,29 +81,30 @@ const LoginPage = () => {
   // }, [userCheckData, userCheckError]);
 
   const GoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const googleUserInfo = await GoogleSignin.signIn();
-      const { accessToken } = await GoogleSignin.getTokens()
-      const { email } = googleUserInfo.user;
-      dispatch(updateGoogleUserInfo({ accessToken, ...googleUserInfo }));
-      userCheck(email)
-        .unwrap()
-        .then(data => {
-          dispatch(updateUserCheck(data));
-        })
-        .catch(error => navigate(ROUTES_NAMES.signUp));
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
+    // try {
+    //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    //   const googleUserInfo = await GoogleSignin.signIn();
+    //   const { accessToken } = await GoogleSignin.getTokens()
+    //   const { email } = googleUserInfo.user;
+    //   dispatch(updateGoogleUserInfo({ accessToken, ...googleUserInfo }));
+    //   userCheck(email)
+    //     .unwrap()
+    //     .then(data => {
+    //       dispatch(updateUserCheck(data));
+    //     })
+    //     .catch(error => navigate(ROUTES_NAMES.signUp));
+    // } catch (error) {
+    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    //     // user cancelled the login flow
+    //   } else if (error.code === statusCodes.IN_PROGRESS) {
+    //     // operation (e.g. sign in) is in progress already
+    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    //     // play services not available or outdated
+    //   } else {
+    //     // some other error happened
+    //   }
+    // }
+    navigate(ROUTES_NAMES.signUp)
   };
 
   const {

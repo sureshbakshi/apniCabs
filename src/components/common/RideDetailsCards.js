@@ -75,7 +75,6 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
     const name = isDriverLogged ? activeRequest?.user?.name : driver_details?.name
     const vehicle = activeRequest?.driver?.vehicle || driverDetails?.vehicle
     const { color, label } = getColorNBg(activeRequest?.status)
-
     return (
         <View style={{ padding: 10, ...containerStyles }}>
             <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>

@@ -100,10 +100,12 @@ export const signupSchema = yup.object().shape({
         }),
     "email": yup
         .string()
-        .required("Please enter email")
-        .matches(email, {
-            message: "Please enter valid email",
-        }),
+        .test('validate-email', 'Please enter a valid valid email', (value, context) => {
+            if (value && value.length > 0) {
+                return value.match(email) !== null;
+            }
+            return true;
+        }).nullable(true),
     "phone": yup
         .string()
         .required("Please enter phone number")

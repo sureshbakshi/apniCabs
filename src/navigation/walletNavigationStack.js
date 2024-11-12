@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import WalletPage from '../pages/WalletPage';
 import SubscriptionPlans from '../pages/MyPlans';
 import CommonStyles from '../styles/commonStyles'
+import HeaderBackButton from '../components/common/HeaderBackButton';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.myPlans, ROUTES_NAMES.payment];
 
@@ -19,14 +20,16 @@ export default function WalletStackNavigator({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          ...CommonStyles.headerFont,
-        },
-      }}>
+        headerTintColor: COLORS.black,
+        headerTitleAlign: 'center',
+        headerLeft: () => <HeaderBackButton />,
+        headerShadowVisible: false,
+        headerTitleStyle:{
+          ...CommonStyles.headerFont
+        }
+        // headerTransparent: true
+      }}
+      >
       <Stack.Screen name="My Wallet" component={WalletPage} options={{ headerShown: false }} c />
       <Stack.Screen
         name={ROUTES_NAMES.myPlans}

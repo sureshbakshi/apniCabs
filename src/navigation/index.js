@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from '../util/navigationService';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { CancelReasonDialog } from '../components/common/cancelReasonDialog';
 import GetNavigation from './GetNavigation';
 import Bugsnag from '@bugsnag/react-native'
 import BugsnagPluginReactNavigation from '@bugsnag/plugin-react-navigation';
-import { setBugsnagUserInfo } from '../util';
+import { Text } from '../components/common';
 
 Bugsnag.start({
   plugins: [new BugsnagPluginReactNavigation()],
