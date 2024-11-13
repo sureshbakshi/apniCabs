@@ -20,11 +20,12 @@ import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 
 
-const cancelRide = () => {
+const cancelRide = (activeRequest, isDriverLogged) => {
     const dispatch = useDispatch();
+    const phoneNumber = isDriverLogged ? activeRequest?.user?.phone : activeRequest?.driver?.phone
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
-            onClick={() => RNImmediatePhoneCall.immediatePhoneCall(RideProxyNumber)}
+            onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`): null}
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.primary, minWidth: 160, height: 40 }
             }
@@ -192,6 +193,7 @@ export default ({ activeRequest, isDriverLogged }) => {
     }
 
     const isActiveRide = (activeRideId || activeRequest.status === RideStatus.ONRIDE)
+    console.log({activeRequest})
     return (
         <>
             <View style={[FindRideStyles.card]}>
@@ -240,7 +242,7 @@ export default ({ activeRequest, isDriverLogged }) => {
                 />
             </View>
             }
-            <View>{!activeRideId ? cancelRide() : null}</View>
+            <View>{!activeRideId ? cancelRide(activeRequest, isDriverLogged) : null}</View>
         </>
     );
 };
