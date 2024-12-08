@@ -30,8 +30,9 @@ export default () => {
                 },
                 (error) => {
                     // See error code charts below.
-                    console.log(error?.code, error?.message);
+                    // console.log(error?.code, error?.message);
                     showErrorMessage('Please enable GPS');
+                    getCurrentLocation()
                 },
                 defaultOptions
             );
@@ -39,7 +40,7 @@ export default () => {
     }
 
     useEffect(() => {
-        getCurrentLocation()
+        // getCurrentLocation()
     }, [])
     return { getCurrentLocation, currentLocation }
 }

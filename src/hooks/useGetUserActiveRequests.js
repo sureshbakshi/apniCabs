@@ -10,12 +10,12 @@ import useGetCurrentLocation from "./useGetCurrentLocation";
 export default () => {
     const dispatch = useDispatch()
     const [refetch, { data: activeUserRideDetails, error: isUserError }] = useLazyUserActiveRideQuery({}, { refetchOnMountOrArgChange: true });
-    const { getCurrentLocation } = useGetCurrentLocation();
+    // const { getCurrentLocation } = useGetCurrentLocation();
 
     useFocusEffect(
         useCallback(() => {
             refetch?.('1')
-            getCurrentLocation()
+            // getCurrentLocation()
         }, [])
     );
 

@@ -127,7 +127,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     if (!watchedLocation.latitude || !currentLocation.latitude) {
       isDriverLogged ? watchPosition() : getCurrentLocation();
     }
-  }, [watchedLocation?.latitude, watchPosition?.longitude, currentLocation?.latitude, currentLocation?.longitude]);
+  }, [watchedLocation?.latitude, watchedLocation?.longitude, currentLocation?.latitude, currentLocation?.longitude]);
 
   useEffect(() => {
     if (isDriverLogged) {

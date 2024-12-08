@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { View, Pressable, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Pressable, TextInput, Keyboard, Platform } from 'react-native';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { ImageView, Text } from '../common';
 import styles from '../../styles/MyRidePageStyles';
 import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
-import { COLORS, RideProxyNumber, RideStatus } from '../../constants';
+import { COLORS, RideStatus } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useCompleteRideRequestMutation, useRideRequestMutation } from '../../slices/apiSlice';
@@ -18,6 +18,7 @@ import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
 import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
+import ScreenContainer from '../ScreenContainer';
 
 
 const cancelRide = (activeRequest, isDriverLogged) => {
@@ -25,7 +26,7 @@ const cancelRide = (activeRequest, isDriverLogged) => {
     const phoneNumber = isDriverLogged ? activeRequest?.user?.phone : activeRequest?.driver?.phone
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
-            onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`): null}
+            onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`) : null}
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.primary, minWidth: 160, height: 40 }
             }
@@ -171,11 +172,18 @@ export default ({ activeRequest, isDriverLogged }) => {
         if (isEmpty(otp)) {
             showErrorMessage('Please enter valid code')
             // otpRef?.current?.focus()
-            return
+        }else{
+            getCurrentLocation(otpSubmitHandler)
         }
-        getCurrentLocation(otpSubmitHandler)
 
     }
+
+    useEffect(() =>{
+        if(otp.length === 4) {
+            handleSubmitOtp();
+            Keyboard.dismiss()
+        }
+    },[otp])
 
     const completeRideHandler = (location) => {
         let payload = {
@@ -193,40 +201,41 @@ export default ({ activeRequest, isDriverLogged }) => {
     }
 
     const isActiveRide = (activeRideId || activeRequest.status === RideStatus.ONRIDE)
-    console.log({activeRequest})
     return (
         <>
             <View style={[FindRideStyles.card]}>
-                <RideDetailsView {...{ activeRequest, isDriverLogged }} />
-                {(!isActiveRide && isDriverLogged) && <View style={{ flexDirection: 'row' }}>
-                    <TextInput
-                        keyboardType='numeric'
-                        placeholder="Enter OTP here"
-                        // autoComplete={'sms-otp'}
-                        onChangeText={newText => setOtp(newText)}
-                        value={otp}
-                        // autoFocus
-                        ref={otpRef}
-                        minLength={4}
-                        maxLength={4}
-                        style={[FindRideStyles.textInputPickup, { flex: 1, backgroundColor: COLORS.white }]}
-                    />
-                    <Pressable
-                        onPress={() => handleSubmitOtp()}
-                        disabled={isSubmitOtpLoading}
-                        style={[
-                            FindRideStyles.button,
-                            { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.8 : 1 },
-                        ]}>
-                        <Text
+                <ScreenContainer>
+                    <RideDetailsView {...{ activeRequest, isDriverLogged }} />
+                    {(!isActiveRide && isDriverLogged) && <View style={{ flexDirection: 'row' }}>
+                        <TextInput
+                            keyboardType='numeric'
+                            placeholder="Enter OTP here"
+                            // autoComplete={'sms-otp'}
+                            onChangeText={newText => setOtp(newText)}
+                            value={otp}
+                            // autoFocus
+                            ref={otpRef}
+                            minLength={4}
+                            maxLength={4}
+                            style={[FindRideStyles.textInputPickup, { flex: 1, backgroundColor: COLORS.white }]}
+                        />
+                        <Pressable
+                            onPress={() => handleSubmitOtp()}
+                            disabled={isSubmitOtpLoading}
                             style={[
-                                FindRideStyles.text,
-                                { fontWeight: 'bold', color: COLORS.black },
+                                FindRideStyles.button,
+                                { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.4 : 1 },
                             ]}>
-                            {'Submit OTP'}
-                        </Text>
-                    </Pressable>
-                </View>}
+                            <Text
+                                style={[
+                                    FindRideStyles.text,
+                                    { fontWeight: 'bold', color: COLORS.black },
+                                ]}>
+                                {'Submit OTP'}
+                            </Text>
+                        </Pressable>
+                    </View>}
+                </ScreenContainer>
             </View>
             {((isActiveRide && isDriverLogged)) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 {(activeRequest?.from_location) && <OpenMapButton route={{ start: activeRequest.from_location, end: activeRequest.to_location, navigate: true }} />}

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { CustomTabs } from '../components/common';
+import { View } from 'react-native';
+import { CustomScrollbar, CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
@@ -39,18 +39,18 @@ const FindCaptainPage = () => {
           list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
             <>
               <View style={{ backgroundColor: COLORS.bg_gray_primary, marginBottom: 2 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120 , alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, borderColor: COLORS.primary, borderBottomWidth: 2, maxWidth: 120, alignItems: 'center' }}>
                   <Icon name={VEHICLE_TYPES[list[0].name]} size="extraLarge" color={COLORS.primary} />
                   <Text style={{ marginLeft: 8 }} >{list[0].name}</Text>
                 </View>
               </View>
-              <ScrollView>
+              <CustomScrollbar >
                 <CaptainsCard
                   list={list[0]?.drivers}
                   keyProp={0}
                   extraProps={extraProps}
                 />
-              </ScrollView>
+              </CustomScrollbar>
             </>
         }
         <CustomButton

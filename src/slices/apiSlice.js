@@ -88,7 +88,8 @@ const api_urls = {
   sosAdd: 'add',
   device: 'device',
   order:'order',
-  payment:'payment'
+  payment:'payment',
+  wallet: 'wallet'
 };
 
 export const apiSlice = createApi({
@@ -342,6 +343,15 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       providesTags: ["RideStatus", "RideComplete"]
     }),
+    getDriverWallet: builder.query({
+      query: id => ({
+        method: 'GET',
+        url: api_path.transactions(`${api_urls.wallet}`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+      providesTags: ["RideStatus", "RideComplete"]
+    }),
     // transaction end
 
 
@@ -461,6 +471,7 @@ export const {
   useGetVehicleTypesQuery,
   useGetRideDetailsQuery,
   useSubscriptionListQuery,
+  useLazyGetDriverWalletQuery,
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,

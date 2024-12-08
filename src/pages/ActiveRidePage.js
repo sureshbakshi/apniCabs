@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS } from '../constants';
@@ -16,14 +16,19 @@ import { SafeAreaView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
   if (!activeRequest?.driver) {
     isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
   }
+  const { getCurrentLocation } = useGetCurrentLocation();
   const { activeRequest, activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   const { screenHeight } = getScreen()
+  useEffect(() => {
+    getCurrentLocation()
+  },[])
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
       <KeyboardAwareScrollView extraHeight={180} extraScrollHeight={-60} enableOnAndroid>

@@ -88,7 +88,7 @@ export default () => {
         console.log('registerNotificationReceivedBackground:', remoteNotification);
         // Handle notification click or deep link here
         triggerNotfication(remoteNotification)
-        completion();
+        completion({alert: true, sound: true, badge: false});
       });
 
       Notifications.events().registerRemoteNotificationsRegistered((event) => {

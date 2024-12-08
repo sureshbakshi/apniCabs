@@ -61,10 +61,10 @@ const userSlice = createSlice({
         state.statusUpdate = action.payload;
       } else {
         const vehicles = state.rideRequests?.vehicles;
-        if (vehicles.length) {
+        if (vehicles?.length) {
           const updatedData = _.cloneDeep(vehicles); // Ensure you're working with a copy
           const updateDrivers = updateStatusByDriverId(updatedData, driver_id, status);
-          if (updateDrivers.length) {
+          if (updateDrivers?.length) {
             state.rideRequests.vehicles = updateDrivers;
           }
         }

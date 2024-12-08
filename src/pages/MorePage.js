@@ -13,6 +13,7 @@ import SupportLinks from '../components/SupportLinks';
 import useGetDriverDetails from '../hooks/useGetDriverDetails';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DeviceInfo from 'react-native-device-info';
 
 
 const MorePage = () => {
@@ -24,7 +25,7 @@ const MorePage = () => {
     <>
      
       <SafeAreaView style={MoreStyles.container}>
-        <ContainerWrapper style={{ height: getScreen().screenHeight - 140 }}>
+        <ContainerWrapper style={{ height: getScreen().screenHeight - 150 }}>
           <View style={MoreStyles.section}>
             <View style={MoreStyles.card}>
               <View style={MoreStyles.cardtop}>
@@ -112,6 +113,7 @@ const MorePage = () => {
                 onPress={logOut}>
                 <Text style={MoreStyles.greenTxt}>{'Logout'}</Text>
               </Pressable>
+              <Text style={{textAlign: 'center', padding: 10}}>v{DeviceInfo.getReadableVersion()}</Text>
             </ScrollView>
           </View>
         </ContainerWrapper>

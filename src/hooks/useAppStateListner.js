@@ -1,5 +1,4 @@
 import { AppState } from "react-native";
-import { checkAndroidPermissions } from "../util/location";
 import { useEffect } from "react";
 import useGetCurrentLocation from "./useGetCurrentLocation";
 let appStateListener = undefined;

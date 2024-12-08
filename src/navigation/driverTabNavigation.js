@@ -1,8 +1,7 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MoreNavigator from './moreNavigation';
 import { COLORS, ROUTES_NAMES, TAB_BAR_ICONS } from '../constants';
-import { Icon, Text } from '../components/common';
+import { Icon } from '../components/common';
 import { AppProvider } from '../context/App.context';
 import DriverStackNavigator from './driverStackNavigation';
 import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
