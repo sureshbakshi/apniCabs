@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
@@ -90,23 +89,12 @@ def reactNativeArchitectures() {
     def value = project.getProperties().get("reactNativeArchitectures")
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
+def googleMapsKey = project.env.getOrDefault("GOOGLE_MAPS_KEY", "")
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
     compileSdkVersion rootProject.ext.compileSdkVersion
-
     namespace "com.apnicabi"
-    defaultConfig {
-        applicationId "com.apnicabi"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
-        versionCode 20
-        versionName "1.1.20"
-        manifestPlaceholders = [GOOGLE_MAPS_KEY: "AIzaSyC2O6D4Dyu8G1kP8eKfXjGM1-F_uqKCjr0"]
-    }
-
     splits {
         abi {
             reset()
@@ -114,6 +102,59 @@ android {
             universalApk false  // If true, also generate a universal APK
             include (*reactNativeArchitectures())
         }
+    }
+    flavorDimensions "user_type", "build_type"
+    //println "GOOGLE_MAPS_KEYhhh: ${googleMapsKey}"
+    productFlavors {
+        user {
+            dimension "user_type"
+            applicationId "com.apnicabi" // Unique package name for the rider app
+            versionCode 20
+            versionName "1.1.20"
+            resValue "string", "APP_NAME", "ApniCabi"
+            versionNameSuffix "-user"
+            buildConfigField "String", "APP_NAME", "\"ApniCabi\""
+
+        }
+        driver {
+            dimension "user_type"
+            applicationId "com.driver.apnicabi" // Unique package name for the driver app
+            versionCode 20
+            versionName "1.1.20"
+            resValue "string", "APP_NAME", "ApniCabi Driver"
+            versionNameSuffix "-driver"
+            buildConfigField "String", "APP_NAME", "\"ApniCabi Driver\""
+
+        }
+        // Development build variant
+        dev {
+            dimension "build_type"
+            applicationIdSuffix ".debug" // Makes package unique for debug builds
+            // buildConfigField "String", "GOOGLE_MAPS_KEY", googleMapsKey
+            // buildConfigField "String", "GOOGLE_MAPS_KEY", "\"${project.env.get("GOOGLE_MAPS_KEY")}\""
+            // Add manifestPlaceholders
+            manifestPlaceholders = [
+                GOOGLE_MAPS_KEY: googleMapsKey ?: ""
+            ]
+
+        }
+
+        // Production build variant
+        prod {
+            dimension "build_type"
+            // buildConfigField "String", "GOOGLE_MAPS_KEY", "\"${project.env.get("GOOGLE_MAPS_KEY")}\""
+                        // Add manifestPlaceholders
+            manifestPlaceholders = [
+                   GOOGLE_MAPS_KEY: googleMapsKey ?: ""
+            ]
+
+        }
+    }
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        resValue "string", "build_config_package", "com.apnicabi"
+        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60"
     }
     signingConfigs {
         debug {
@@ -134,6 +175,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

@@ -37,7 +37,7 @@
     "react": "18.2.0",
     "react-hook-form": "^7.49.2",
     "react-native": "0.71.2",
-    "react-native-config": "^1.5.1",
+    "react-native-config": "^1.5.3",
     "react-native-device-info": "^14.0.0",
     "react-native-env": "^0.0.6",
     "react-native-geolocation-service": "^5.3.1",
