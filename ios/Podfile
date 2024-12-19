@@ -71,6 +71,18 @@ target 'apnicabi' do
     # Pods for testing
   end
 
+  target 'apnicabiDev' do
+    inherit! :complete
+  end
+
+  target 'apnicabiDriverDev' do
+    inherit! :complete
+  end
+
+  target 'apnicabiDriver' do
+    inherit! :complete
+  end
+
   post_install do |installer|
     react_native_post_install(
       installer,
@@ -82,6 +94,16 @@ target 'apnicabi' do
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+      end
+      if target.name == 'Flipper'
+        file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
+        contents = File.read(file_path)
+        unless contents.include?('#include <functional>')
+          File.open(file_path, 'w') do |file|
+            file.puts('#include <functional>')
+            file.puts(contents)
+          end
+        end
       end
     end
     __apply_Xcode_12_5_M1_post_install_workaround(installer)

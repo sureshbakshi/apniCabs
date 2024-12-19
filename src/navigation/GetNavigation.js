@@ -1,21 +1,30 @@
+import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { isDriver, isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
-import UserTabNavigator from './userTabNavigation';
-import DriverTabNavigator from './driverTabNavigation';
+// import UserTabNavigator from './userTabNavigation';
+// import DriverTabNavigator from './driverTabNavigation';
 import LoginNavigator from './loginNavigation';
 import useNotifications from '../hooks/useNotifications';
 import useLogout from '../hooks/useLogout';
+import { ActivityIndicator } from 'react-native';
+
+const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
+const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
+
 
 export const GetAuthRoutes = () => {
     const isDriverLogged = isDriver()
     const isUserLogged = isUser()
     const { logOut } = useLogout()
-
     if (isDriverLogged) {
-        route = <DriverTabNavigator />;
+        route = <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+            <DriverTabNavigator />
+        </Suspense>
     } else if (isUserLogged) {
-        route = <UserTabNavigator />;
+        route = <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+            <UserTabNavigator />
+        </Suspense>
     } else {
         logOut()
         showErrorMessage(`You don't have enough permission to login.`)

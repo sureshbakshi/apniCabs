@@ -111,9 +111,9 @@ android {
             applicationId "com.apnicabi" // Unique package name for the rider app
             versionCode 20
             versionName "1.1.20"
-            resValue "string", "APP_NAME", "ApniCabi"
+            resValue "string", "APP_NAME", "Apni Cabi"
             versionNameSuffix "-user"
-            buildConfigField "String", "APP_NAME", "\"ApniCabi\""
+            buildConfigField "String", "APP_NAME", "\"Apni Cabi\""
 
         }
         driver {
@@ -121,9 +121,9 @@ android {
             applicationId "com.driver.apnicabi" // Unique package name for the driver app
             versionCode 20
             versionName "1.1.20"
-            resValue "string", "APP_NAME", "ApniCabi Driver"
+            resValue "string", "APP_NAME", "Apni Cabi Driver"
             versionNameSuffix "-driver"
-            buildConfigField "String", "APP_NAME", "\"ApniCabi Driver\""
+            buildConfigField "String", "APP_NAME", "\"Apni Cabi Driver\""
 
         }
         // Development build variant
