@@ -8,6 +8,9 @@ import GetNavigation from './GetNavigation';
 import Bugsnag from '@bugsnag/react-native'
 import BugsnagPluginReactNavigation from '@bugsnag/plugin-react-navigation';
 import { Text } from '../components/common';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import SomethingWentWrong from '../components/common/Error';
 
 Bugsnag.start({
   plugins: [new BugsnagPluginReactNavigation()],
@@ -18,13 +21,14 @@ Bugsnag.start({
 const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)
 const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation')
 const BugsnagNavigationContainer = createNavigationContainer(NavigationContainer)
-const ErrorView = () =>
-  <View>
-    <Text>Something went wrong. Please try after sometime.</Text>
-  </View>
+const ErrorView = () => <SomethingWentWrong />
 function App() {
+    const { i18n } = useTranslation();
+    const {selectedLanguage} = useSelector(state => state.auth);
+
   useEffect(() => {
     SplashScreen.hide();
+    i18n.changeLanguage(selectedLanguage);
   }, []);
 
   return (

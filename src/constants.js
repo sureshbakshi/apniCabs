@@ -13,7 +13,8 @@ export const authInitialState = {
   isDialogOpen: false,
   device_token: null,
   vehicleTypes: null,
-  androidDeviceCode: null
+  androidDeviceCode: null,
+  selectedLanguage: 'en'
 };
 
 export const USER_ROLES = {

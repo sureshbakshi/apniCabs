@@ -9,11 +9,10 @@ import {
   StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
-import { RadioButton } from 'react-native-paper';
 import ScreenContainer from '../components/ScreenContainer';
 import { navigate } from '../util/navigationService';
 import { Text } from '../components/common';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetSignupOTPMutation, useSignupMutation } from '../slices/apiSlice';
 import { updateUserCheck } from '../slices/authSlice';
 import { COLORS, ROUTES_NAMES, SIGN_UP_FORM, USER_ROLES } from '../constants';
@@ -27,8 +26,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
-  // const { user: googleInfo ={}, accessToken } = useSelector(state => state.auth.googleInfo);
-  // const [role, setRole] = useState(USER_ROLES.OWNER)
   const googleInfo = undefined
   const initialState = {
     name: googleInfo?.name || '',

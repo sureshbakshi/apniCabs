@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {USER_ROLES, authInitialState} from '../constants';
+import { authInitialState} from '../constants';
 
 
 const authSlice = createSlice({
@@ -35,7 +35,10 @@ const authSlice = createSlice({
     },
     setAndroidDeviceCode: (state, action)=>{
       state.androidDeviceCode = action.payload;
-    }
+    },
+    setSelectedLanguage: (state, action)=>{
+      state.selectedLanguage = action.payload;
+    },
   },
 });
 export const {
@@ -47,6 +50,7 @@ export const {
   setDialogStatus,
   setDeviceToken,
   setVehicleTypes,
-  setAndroidDeviceCode
+  setAndroidDeviceCode,
+  setSelectedLanguage
 } = authSlice.actions;
 export default authSlice.reducer;
