@@ -88,6 +88,8 @@
 	<dict>
 		<key>apiKey</key>
 		<string>e183ea16fe75fad110a7cf97e357f382</string>
+		<key>NSContactsUsageDescription</key>
+		<string>This app uses your contacts to book taxi for others.</string>
 	</dict>
 </dict>
 </plist>

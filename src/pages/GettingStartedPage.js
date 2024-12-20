@@ -12,6 +12,7 @@ import CustomButton from '../components/common/CustomButton';
 import { navigate } from '../util/navigationService';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useTranslation } from 'react-i18next';
+import { getPhoneNumber } from '../util/contactPicker';
 
 export default () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export default () => {
           <Text style={GettingStartedStyles.heardertext}>Start your journey with Apni Cabi </Text>
           <Text style={GettingStartedStyles.subtext}>We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.</Text>
         </View>
-        <CustomButton label={t('get_started')} isLowerCase onClick={() => navigate(ROUTES_NAMES.signIn)} styles={{ backgroundColor: COLORS.primary, padding: 10 }} textStyles={{ fontWeight: '400' }} />
+        <CustomButton label={t('get_started')} isLowerCase onClick={() => getPhoneNumber()} styles={{ backgroundColor: COLORS.primary, padding: 10 }} textStyles={{ fontWeight: '400' }} />
       </View>
     </View>
   );
