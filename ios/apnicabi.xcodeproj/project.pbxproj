@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* apnicabiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* apnicabiTests.m */; };
-		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -51,6 +51,7 @@
 		93E52C6F2C9604CE00849876 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93E52C6E2C9604CD00849876 /* GoogleService-Info.plist */; };
 		B18C8683587F435887AE429F /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */; };
 		B8D429E87C36D71CDAB99689 /* libPods-apnicabi-apnicabiDriver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30665B71B98177B0F38C8D75 /* libPods-apnicabi-apnicabiDriver.a */; };
+		BA0CE36F580407E1CA3B001B /* libPods-apnicabi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA757224CFE68CA59502D20 /* libPods-apnicabi.a */; };
 		CDABB647514C46397B91F6EE /* libPods-apnicabi-apnicabiDriverDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F27F6FB95AB9B41C7749AFBB /* libPods-apnicabi-apnicabiDriverDev.a */; };
 		E6BF709FBF7144EF87817C0E /* poppins_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82525496D5E646C594764068 /* poppins_regular.ttf */; };
 		ECE41B9020A28E25DBEB3B0E /* libPods-apnicabi-apnicabiDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6878515CCE479E780DFDB082 /* libPods-apnicabi-apnicabiDev.a */; };
@@ -100,6 +101,7 @@
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		B0B7F8790262C24174CD5A70 /* Pods-apnicabi-apnicabiDriverDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriverDev.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev.debug.xcconfig"; sourceTree = "<group>"; };
+		BDA757224CFE68CA59502D20 /* libPods-apnicabi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC35E3D20F7918307A3ABB9 /* Pods-apnicabi-apnicabiDriver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriver.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver.debug.xcconfig"; sourceTree = "<group>"; };
 		DFC03665D261566D984E03AA /* Pods-apnicabi-apnicabiDriver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriver.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver.release.xcconfig"; sourceTree = "<group>"; };
 		E12D5EFE3A7AC3A3DF74A630 /* Pods-apnicabi-apnicabiDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDev.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDev/Pods-apnicabi-apnicabiDev.release.xcconfig"; sourceTree = "<group>"; };
@@ -121,7 +123,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
+				BA0CE36F580407E1CA3B001B /* libPods-apnicabi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +198,7 @@
 				6878515CCE479E780DFDB082 /* libPods-apnicabi-apnicabiDev.a */,
 				30665B71B98177B0F38C8D75 /* libPods-apnicabi-apnicabiDriver.a */,
 				F27F6FB95AB9B41C7749AFBB /* libPods-apnicabi-apnicabiDriverDev.a */,
+				BDA757224CFE68CA59502D20 /* libPods-apnicabi.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

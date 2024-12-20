@@ -81,6 +81,24 @@ const CommonStyles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24
     // fontWeight: 'bold',
-  }
+  },
+
+  capsuleButton: {
+    backgroundColor: COLORS.brand_blue, // Primary button color
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 50, // Makes the button capsule-shaped
+    elevation: 3, // Adds shadow (Android)
+    maxWidth: 150
+  },
+  capsuleButtonPressed: {
+    backgroundColor: COLORS.secondary_blue, // Darker shade for pressed state
+  },
+  capsuleButtonText: {
+    fontSize: 16,
+    color: '#fff', // Button text color
+    fontWeight: '600',
+    textAlign: 'center',
+  },
 });
 export default CommonStyles;
