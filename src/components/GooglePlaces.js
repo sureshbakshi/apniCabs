@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 navigator.geolocation = require('react-native-geolocation-service');
@@ -7,20 +7,37 @@ import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 
 
-const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locationKey, onSelection, currentLocation }) => {
+const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
 
     const getLocation = () => {
-        if (ref){
+        if (ref) {
             ref.current.getCurrentLocation();
             ref.current.focus()
         }
     }
+    const cleanFormattedAddress = (formattedAddress) => {
+        // Regular expression to match Plus Codes (e.g., 7Q3J+3M or X123+456 Area, City)
+        const plusCodeRegex = /^[A-Z0-9]{4,}\+?[A-Z0-9]*,\s*/;
+
+        // Remove the Plus Code from the address
+        return formattedAddress.replace(plusCodeRegex, "").trim();
+    }
+    useEffect(() => {
+        if(mapParams){
+            const { address, focusKey } = mapParams;
+            if (address && focusKey === locationKey) {
+                ref.current?.setAddressText(cleanFormattedAddress(address?.formatted_address));
+                onSelection(focusKey, address);
+            }
+        }
+     
+    }, [mapParams]);
+
     return (
         <>
             <GooglePlacesAutocomplete
                 ref={ref}
-
                 placeholder={placeholder}
                 debounce={250}
                 keepResultsAfterBlur={false}
@@ -42,6 +59,7 @@ const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locat
                 textInputProps={{
                     InputComp: TextInput,
                     // selection: {start: 0},
+                    onFocus: () => onInputFocus(locationKey),
                     selectTextOnFocus: true
                 }}
                 listViewDisplayed={false}
@@ -76,8 +94,8 @@ const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locat
                         top: 43,
                         zIndex: 4,
                         maxHeight: 300,
-                        right:0,
-                        left:0,
+                        right: 0,
+                        left: 0,
                         borderWidth: 1,
                         borderColor: COLORS.bg_gray_primary
                     },
@@ -91,7 +109,7 @@ const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locat
                     },
                     textInput: {
                         height: 45,
-                        paddingRight: currentLocation? 45: 0,
+                        paddingRight: currentLocation ? 45 : 0,
                         backgroundColor: COLORS.bg_blue_lite,
                     },
                 }}
