@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ import CommonStyles from '../styles/commonStyles';
 import CustomButton from '../components/common/CustomButton';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { isEmpty } from 'lodash';
 
 const intial_region = {
     latitude: 17.5184667,
@@ -17,22 +18,29 @@ const intial_region = {
     latitudeDelta: 0.001,
     longitudeDelta: 0.001
 }
-
 const SelectOnPage = () => {
+    const mapRef = useRef(null);
     const navigation = useNavigation();
     const route = useRoute();
     const [region, setRegionChnage] = useState(intial_region);
     const [address, setAdress] = useState(null)
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation();
-
+    const { location, focusKey } = route?.params;
 
     useEffect(() => {
-        const { latitude, longitude } = currentLocation;
-        if (latitude) {
-            setRegionChnage({ ...intial_region, latitude, longitude });
-            getAddress(currentLocation);
+        if (!isEmpty(location[focusKey]?.geometry)) {
+            const { lat, lng } = location[focusKey]?.geometry?.location;
+            setRegionChnage({ ...intial_region, latitude: lat, longitude: lng });
+            setAdress(location[focusKey]);
+            mapRef.current?.animateToRegion(region);
+        } else {
+            const { latitude, longitude } = currentLocation;
+            if (latitude) {
+                setRegionChnage({ ...intial_region, latitude, longitude });
+                getAddress(currentLocation);
+            }
         }
-    }, [currentLocation])
+    }, [location, currentLocation])
 
     useEffect(() => {
         getCurrentLocation();
@@ -63,10 +71,10 @@ const SelectOnPage = () => {
         <SafeAreaView style={[FindRideStyles.container]}>
             <ContainerWrapper>
                 <MapView
+                    ref={mapRef}
                     provider={PROVIDER_GOOGLE}
                     style={{ height: 500 }}
-                    initialRegion={intial_region}
-                    showsUserLocation
+                    initialRegion={region}
                     onRegionChangeComplete={onRegionChnage}>
                     <Marker
                         coordinate={region}
@@ -77,12 +85,22 @@ const SelectOnPage = () => {
                     <HeaderBackButton />
                 </View>
                 <View style={[CommonStyles.p15]}>
-                    <Text>Select your location</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text>Select your location</Text>
+                        <CustomButton
+                            onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
+                            label={`Change ${focusKey} location`}
+                            styles={{ borderWidth: 1, backgroundColor: COLORS.bg_gray_secondary, height: 40 }}
+                            textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+                            isLowerCase
+                        />
+                    </View>
                     <CustomButton
-                        onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey: route?.params?.focusKey })}
+                        isLoading={isEmpty(address)}
                         styles={{ backgroundColor: COLORS.white, borderWidth: 1, paddingHorizontal: 10, marginVertical: 10 }}
                         textStyles={{ fontSize: 12, fontWeight: 400, lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
                         label={address?.formatted_address} />
+
                 </View>
             </ContainerWrapper>
         </SafeAreaView>

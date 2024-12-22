@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Pressable, ImageBackground, Alert, Share } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
@@ -27,7 +27,7 @@ const SearchRidePage = () => {
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
-  let focusKey = 'from'
+  const [focusKey, setFocuskey] = useState('from');
   useEffect(() => {
     if (error) {
       console.log({ error });
@@ -75,15 +75,11 @@ const SearchRidePage = () => {
   }
 
   const navigateToSelectOnMapPage = () => {
-    console.log('focusKey', focusKey)
-    navigate(ROUTES_NAMES.selectonMap, { focusKey })
+    navigate(ROUTES_NAMES.selectonMap, { focusKey, location })
   }
-
-
   const inputFocusHandler = (key) => {
-    focusKey = key
+    setFocuskey(key);
   }
-
 
   return (
     // <ImageBackground
