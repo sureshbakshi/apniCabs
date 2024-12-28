@@ -5,7 +5,7 @@ import { calculateDistance, showErrorMessage } from '../util';
 export const AppContext = createContext(null);
 
 const initialState = {
-  location: { from: {}, to: null },
+  location: { from: null, to: null },
   route: {distance: null, duration: null}
 }
 
@@ -15,6 +15,7 @@ export const AppProvider = (props) => {
   const [noOfSeats, setNoOfSeats] = useState(null)
 
   const updateLocation = (key, details) => {
+    console.log('details',details)
     const updatedLocation = { ...location, [key]: details }
     setLocation(updatedLocation)
   }

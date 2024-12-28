@@ -8,6 +8,7 @@ import { clearDriverState } from "../../slices/driverSlice";
 import { clearUserState } from "../../slices/userSlice";
 import { delay } from 'lodash';
 import { isDriver } from "../../util";
+import StarRating from "./StarRating";
 
 export default () => {
     const isDriverLogged = isDriver();
@@ -38,10 +39,18 @@ export default () => {
             dispatch(isDriverLogged ? clearDriverState() : clearUserState())
         }, 1000)
     }
+    const canShowRating = (statusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
+    const onSubmit = (rating) => {
+        //invoke rating submit
+        console.log('rating', rating)
+    }
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>
                 <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
+                    {canShowRating && <View>
+                        <StarRating onSubmit={onSubmit} isLoading={false} />
+                    </View>}
                     <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
                     {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: {rideStatusModalInfo.reason}</Text> : null}
                     {rideStatusModalInfo?.subText ? <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.subText}</Text> : null}

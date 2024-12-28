@@ -5,7 +5,7 @@ navigator.geolocation = require('react-native-geolocation-service');
 import Config from "../util/config";
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
-
+import { isEmpty } from "lodash";
 
 const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
@@ -24,14 +24,14 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, t
         return formattedAddress.replace(plusCodeRegex, "").trim();
     }
     useEffect(() => {
-        if(mapParams){
+        if (mapParams) {
             const { address, focusKey } = mapParams;
             if (address && focusKey === locationKey) {
                 ref.current?.setAddressText(cleanFormattedAddress(address?.formatted_address));
                 onSelection(focusKey, address);
             }
         }
-     
+
     }, [mapParams]);
 
     return (
@@ -60,6 +60,12 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, t
                     InputComp: TextInput,
                     // selection: {start: 0},
                     onFocus: () => onInputFocus(locationKey),
+                    onChange: (event) => {
+                        const {value} = event.nativeEvent;
+                        if (isEmpty(value)) {
+                           return onSelection(locationKey, null)
+                        }
+                    },
                     selectTextOnFocus: true
                 }}
                 listViewDisplayed={false}
