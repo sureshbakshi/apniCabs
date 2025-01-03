@@ -5,6 +5,7 @@ navigator.geolocation = require('react-native-geolocation-service');
 import Config from "../util/config";
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
+import config from '../util/config';
 
 
 const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locationKey, onSelection, currentLocation }) => {
@@ -30,7 +31,7 @@ const GooglePlaces = ({ placeholder, containerStyles, textContainerStyles, locat
                 }
                 }
                 enableHighAccuracyLocation={true}
-                query={{ key: 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4', components: 'country:in' }}
+                query={{ key: config.GOOGLE_PLACES_KEY, components: 'country:in' }}
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}

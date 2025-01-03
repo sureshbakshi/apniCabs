@@ -64,3 +64,4 @@ yarn-error.log
 ios/Podfile.lock
 yarn.lock
 .env
+.env.*

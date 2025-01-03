@@ -8,7 +8,7 @@ import {
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import { Text } from '../components/common';
-import { COLORS } from '../constants';
+import { COLORS, USER_ROLES } from '../constants';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useForm, FormProvider, Controller } from "react-hook-form";
@@ -16,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import CustomButton from '../components/common/CustomButton';
 import OTPAutoFill from '../components/OTPAutoFill';
 import { extractKeys, showErrorMessage } from '../util';
+import config from '../util/config';
 
 export default ({heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
@@ -82,7 +83,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
     return (
 
         <View>
-            <Text style={LoginStyles.logoHeardertext}>{heading} </Text>
+            <Text style={LoginStyles.logoHeardertext}>{heading} as {config.ROLE === USER_ROLES.DRIVER ? "Driver": 'User'} </Text>
 
             <FormProvider {...methods}>
                 {formFields.map((field, index) => {

@@ -10,6 +10,7 @@ import { Notifications } from 'react-native-notifications';
 import { navigate } from './navigationService';
 import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
+import config from '../util/config';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -62,7 +63,7 @@ export const showSuccessMessage = (msg) => {
 }
 
 export const calculateDistance = async (orgLat, orgLon, destLat, destLong) => {
-  const apiKey = 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4';
+  const apiKey = config.GOOGLE_PLACES_KEY;
   try {
     const mode = 'driving'; // Set mode to 'bicycling' for bike transport
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orgLat},${orgLon}&destinations=${destLat},${destLong}&mode=${mode}&key=${apiKey}`;
