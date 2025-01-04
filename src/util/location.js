@@ -55,7 +55,7 @@ export const checkAndroidPermissions = async () => {
 
 export const getLocation = async (coords, cb) => {
     try {
-        const apiKey = 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4';
+        const apiKey = config.GOOGLE_PLACES_KEY;
         const { latitude, longitude } = coords;
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 

@@ -1,0 +1,7 @@
+// This script loads the appropriate .env file based on the active flavor and build type
+project.ext.envConfigFiles = [
+    driverDevDebug: ".env.dev.driver",
+    userDevDebug: ".env.dev.user",
+    driverProdRelease: ".env.prod.driver",
+    userProdRelease: ".env.prod.user"
+]

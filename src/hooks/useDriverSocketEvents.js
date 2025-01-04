@@ -6,8 +6,6 @@ import { _isLoggedIn, isValidEvent } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
 import { store } from "../store"
-import SoundPlayer from 'react-native-sound-player'
-import audio from "../assets/audio"
 import useNotificationSound from "./useNotificationSound"
 
 const SOCKET_EVENTS = {

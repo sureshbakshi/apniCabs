@@ -8,7 +8,7 @@ import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus, default_btn_st
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
 import { _isDriverOnline, isDriverAcceptedOrOnline } from '../util';
-import { updateRideRequest, setDriverStatus } from '../slices/driverSlice';
+import { updateRideRequest } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateRequestMutation } from '../slices/apiSlice';

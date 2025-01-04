@@ -11,6 +11,7 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/constants';
 import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
+import './i18n';
 
 if (!__DEV__) {
   console.log = () => { };

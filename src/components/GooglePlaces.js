@@ -6,6 +6,8 @@ import Config from "../util/config";
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 import { isEmpty } from "lodash";
+import config from '../util/config';
+
 
 const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
@@ -47,7 +49,7 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, t
                 }
                 }
                 enableHighAccuracyLocation={true}
-                query={{ key: 'AIzaSyBJ2ObLgEbv2HLGLuqG4vZRftGl7DsA6v4', components: 'country:in' }}
+                query={{ key: config.GOOGLE_PLACES_KEY, components: 'country:in' }}
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}
