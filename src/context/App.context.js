@@ -15,7 +15,6 @@ export const AppProvider = (props) => {
   const [noOfSeats, setNoOfSeats] = useState(null)
 
   const updateLocation = (key, details) => {
-    console.log('details',details)
     const updatedLocation = { ...location, [key]: details }
     setLocation(updatedLocation)
   }

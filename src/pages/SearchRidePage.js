@@ -81,7 +81,6 @@ const SearchRidePage = () => {
     setFocuskey(key);
   }
 
-  console.log('loaction',location)
 
   return (
     // <ImageBackground
