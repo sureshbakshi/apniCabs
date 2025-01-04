@@ -14,6 +14,7 @@ import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import CommonStyles from '../styles/commonStyles';
+import SelectOnPage from '../pages/selectonMap';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -39,7 +40,6 @@ export default function UserStackNavigator({ navigation, route }) {
           backgroundColor: COLORS.primary,
         },
         headerTintColor: '#fff',
-        
         headerTitleStyle: {
           ...CommonStyles.headerFont
         },
@@ -74,10 +74,14 @@ export default function UserStackNavigator({ navigation, route }) {
             component={FindCaptain}
           /> : <Stack.Screen
             name={ROUTES_NAMES.searchRide}
-            options={{ title: '' , headerShown: false}}
+            options={{ title: '', headerShown: false }}
             component={SearchRidePageContainer}
           />
       }
+      <Stack.Screen
+        name={ROUTES_NAMES.selectonMap}
+        component={SelectOnPage}
+      />
 
     </Stack.Navigator>
   );

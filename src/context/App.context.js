@@ -5,7 +5,7 @@ import { calculateDistance, showErrorMessage } from '../util';
 export const AppContext = createContext(null);
 
 const initialState = {
-  location: { from: {}, to: null },
+  location: { from: null, to: null },
   route: {distance: null, duration: null}
 }
 

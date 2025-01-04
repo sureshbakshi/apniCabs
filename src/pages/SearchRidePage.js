@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { View, Pressable, ImageBackground } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Pressable, ImageBackground, Alert, Share } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
 import { Text } from '../components/common';
@@ -18,14 +18,16 @@ import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRoute } from '@react-navigation/native';
 
 const SearchRidePage = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
   const { isSocketConnected } = useSelector((state) => state.auth);
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
-
+  const [focusKey, setFocuskey] = useState('from');
   useEffect(() => {
     if (error) {
       console.log({ error });
@@ -71,7 +73,15 @@ const SearchRidePage = () => {
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)
   }
-console.log({location})
+
+  const navigateToSelectOnMapPage = () => {
+    navigate(ROUTES_NAMES.selectonMap, { focusKey, location })
+  }
+  const inputFocusHandler = (key) => {
+    setFocuskey(key);
+  }
+
+
   return (
     // <ImageBackground
     //   source={images.backgroundImage}
@@ -79,21 +89,33 @@ console.log({location})
     //   style={SearchRideStyles.image}>
     <SafeAreaView style={SearchRideStyles.container}>
       <ContainerWrapper>
-      {isSocketConnected ? <View style={SearchRideStyles.section}>
-        <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
-          <Timeline data={['', '']} height={25} />
-        </View>
-        <GooglePlaces
-          placeholder={'Pickup Location'}
-          containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
-          textContainerStyles={{ borderBottomWidth: 0.5 }}
-          locationKey='from'
-          onSelection={updateLocation}
-          currentLocation={true}
-        />
-        <GooglePlaces placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} />
-        <View style={{ marginTop: 5 }}>
-          {/* <Pressable
+        {isSocketConnected ? <View style={SearchRideStyles.section}>
+          <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
+            <Timeline data={['', '']} height={25} />
+          </View>
+          <GooglePlaces
+            placeholder={'Pickup Location'}
+            containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+            textContainerStyles={{ borderBottomWidth: 0.5 }}
+            locationKey='from'
+            onSelection={updateLocation}
+            currentLocation={true}
+            onInputFocus={inputFocusHandler}
+            mapParams={route?.params}
+          />
+          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} mapParams={route?.params} />
+          <View style={{ marginVertical: 10, width: 140 }}>
+            <CustomButton
+              label={'Select on Map'}
+              isLowerCase
+              styles={{ backgroundColor: COLORS.white, borderWidth: 1 }}
+              textStyles={{ fontSize: 15, textAlign: 'center', color: COLORS.black }}
+              onClick={navigateToSelectOnMapPage}
+            />
+          </View>
+
+          <View style={{ marginTop: 5 }}>
+            {/* <Pressable
               style={isSearchDisabled() ? [SearchRideStyles.button, { backgroundColor: COLORS.gray }] : [SearchRideStyles.button]}
               android_ripple={{ color: '#fff' }}
               disabled={isSearchDisabled()}
@@ -102,16 +124,16 @@ console.log({location})
               <Text style={SearchRideStyles.text}>{'Find Captain'}</Text>
             </Pressable> */}
 
-          <CustomButton
-            styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
-            disabled={isSearchDisabled()}
-            label={'Find Captain'}
-            isLowerCase
-            onClick={searchHandler}
-          />
-        </View>
-        <SearchLoader msg=' ' />
-      </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
+            <CustomButton
+              styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
+              disabled={isSearchDisabled()}
+              label={'Find Captain'}
+              isLowerCase
+              onClick={searchHandler}
+            />
+          </View>
+          <SearchLoader msg=' ' />
+        </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
       </ContainerWrapper>
     </SafeAreaView>
 
