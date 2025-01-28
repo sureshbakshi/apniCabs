@@ -49,8 +49,8 @@ export const DEFAULT_VEHICLE_TYPES = [
 
 export const COLORS = {
   primary: "#ED3D01",
-  primary_dark:'#F6675A',
-  primary_green:'#59E081',
+  primary_dark: '#F6675A',
+  primary_green: '#59E081',
   primary_soft: "#ff8f9d",
   brand_yellow: '#ffe403',
   brand_blue: '#2399ff',
@@ -120,7 +120,7 @@ export const COLORS = {
 };
 
 export const default_btn_styles = {
-  styles: { height: 40, minWidth: 120},
+  styles: { height: 40, minWidth: 120 },
   textStyles: { color: COLORS.white, fontSize: 14, fontWeight: 400, lineHeight: 18 },
   isLowerCase: true,
 }
@@ -150,7 +150,7 @@ export const ROUTES_NAMES = {
   otp: 'OTP',
   forgotPassword: 'ForgotPassword',
   gettingStartedPage: 'GettingStartedPage',
-  selectonMap:'SelectonMap'
+  selectonMap: 'SelectonMap'
 }
 
 export const RideStatus = {
@@ -513,3 +513,8 @@ export const SIGN_UP_FORM = [
     },
   },
 ];
+
+export const MAPS_LABELS = {
+  from: 'Pickup',
+  to: 'Drop'
+}

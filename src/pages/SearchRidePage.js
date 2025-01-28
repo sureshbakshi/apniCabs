@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Pressable, ImageBackground, Alert, Share } from 'react-native';
+import React, {  useEffect, useState } from 'react';
+import { View } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
-import { Text } from '../components/common';
 import GooglePlaces from '../components/GooglePlaces';
 import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
@@ -10,21 +9,23 @@ import { isEmpty } from 'lodash';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import SocketStatus from '../components/common/SocketStatus';
-import images from '../util/images';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter } from 'lodash';
-import { requestInfo, setRideRequest } from '../slices/userSlice';
+import { requestInfo, setRideRequest, setRecentSearchHistory } from '../slices/userSlice';
 import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
+import RecentSearchHistory from '../components/RecentSearchHistory';
 
 const SearchRidePage = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const { isSocketConnected } = useSelector((state) => state.auth);
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
+  const searchHistory = useSelector(state => state.user.recentSearchHistory);
+
   const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
   const [focusKey, setFocuskey] = useState('from');
@@ -66,8 +67,25 @@ const SearchRidePage = () => {
         Distance: Number((distance.value / 1000).toFixed(1)),
         Duration: duration.text,
       };
-      dispatch(requestInfo(payload))
+      dispatch(requestInfo(payload));
       getRideRequest(payload);
+      const history = {
+        from: {
+          address_components:from.address_components,
+          geometry: from.geometry,
+          place_id: from.place_id,
+          formatted_address: from.formatted_address,
+          city: fromCity[0]?.long_name
+        },
+        to: {
+          address_components:to.address_components,
+          geometry: to.geometry,
+          place_id: to.place_id,
+          formatted_address: to.formatted_address,
+          city: toCity[0]?.long_name
+        }
+      }
+      dispatch(setRecentSearchHistory(history))
     }
   }
   const isSearchDisabled = () => {
@@ -101,18 +119,26 @@ const SearchRidePage = () => {
             onSelection={updateLocation}
             currentLocation={true}
             onInputFocus={inputFocusHandler}
-            mapParams={route?.params}
+            locationDetails={location.from}
           />
-          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} mapParams={route?.params} />
-          <View style={{ marginVertical: 10, width: 140 }}>
+          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} locationDetails={location.to} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 }}>
             <CustomButton
-              label={'Select on Map'}
+              iconLeft={{ name: 'map-marker-radius-outline', size: 'medium', color: COLORS.black }}
+              label={'Select on map'}
               isLowerCase
-              styles={{ backgroundColor: COLORS.white, borderWidth: 1 }}
-              textStyles={{ fontSize: 15, textAlign: 'center', color: COLORS.black }}
+              styles={{ backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.bg_secondary, borderRadius: 20, width: 170, height: 40 }}
+              textStyles={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold', color: COLORS.black, lineHeight: 17 }}
               onClick={navigateToSelectOnMapPage}
             />
+            <CustomButton
+              label={`For me`}
+              styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
+              textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
+              isLowerCase
+            />
           </View>
+
 
           <View style={{ marginTop: 5 }}>
             {/* <Pressable
@@ -132,7 +158,9 @@ const SearchRidePage = () => {
               onClick={searchHandler}
             />
           </View>
-          <SearchLoader msg=' ' />
+          {!isEmpty(searchHistory[focusKey]) ? <View>
+            <RecentSearchHistory searchHistory={searchHistory} focusKey={focusKey} updateLocation={updateLocation} />
+          </View> : <SearchLoader msg=' ' />}
         </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
       </ContainerWrapper>
     </SafeAreaView>

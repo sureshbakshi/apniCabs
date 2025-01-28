@@ -11,6 +11,24 @@ const updateStatusByDriverId = (updatedData, driver_id, status) => {
   });
   return updatedData;
 };
+
+function updateAddress(existingAddress, newAddress) {
+  // Check if place_id exists in the existing 'from' array
+  const fromPlaceIds = existingAddress?.from?.map(item => item.place_id);
+  const toPlaceIds = existingAddress?.to?.map(item => item.place_id);
+
+  // Check if the place_id from new 'from' and 'to' exists
+  if (!fromPlaceIds.includes(newAddress.from.place_id)) {
+    existingAddress.from.push(newAddress.from);  // Push to 'from' if not found
+  }
+
+  if (!toPlaceIds.includes(newAddress.to.place_id)) {
+    existingAddress.to.push(newAddress.to);  // Push to 'to' if not found
+  }
+
+  return existingAddress;
+}
+
 const intialState = {
   activeRideId: null,
   rideRequests: null,
@@ -18,7 +36,7 @@ const intialState = {
   driverLocation: null,
   statusUpdate: null,
   requestInfo: null,
-
+  recentSearchHistory: { from: [], to: [] }
 }
 const userSlice = createSlice({
   name: 'user',
@@ -49,7 +67,10 @@ const userSlice = createSlice({
     clearUserState: (state, action) => {
       return Object.assign(state, { ...intialState })
     },
-
+    setRecentSearchHistory: (state, action) => {
+      const updatedAddress = updateAddress(state.recentSearchHistory, action?.payload)
+      state.recentSearchHistory = updatedAddress
+    },
     updateDriversRequest: (state, action) => {
       const { driver_id, status, id } = action.payload;
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
@@ -83,7 +104,8 @@ export const {
   clearUserState,
   updateDriverLocation,
   requestInfo,
-  cancelRideRequest
+  cancelRideRequest,
+  setRecentSearchHistory
 } = userSlice.actions;
 
 export default userSlice.reducer;

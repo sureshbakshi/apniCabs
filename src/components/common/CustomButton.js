@@ -24,7 +24,7 @@ export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCas
                 ]}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', ...contentContainerStyles }}>
                         {isLoading && <ActivityIndicator />}
-                        {iconLeft &&
+                        {(iconLeft && !isLoading) &&
                             <View style={{ paddingRight: 8, ...iconStyles }}>
                                 <Icon name={iconLeft?.name} size={iconLeft?.size || 'large'} color={iconLeft?.color || COLORS.white} />
                             </View>}
@@ -32,7 +32,7 @@ export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCas
                         {formattedLabel && <Text style={[LoginStyles.text, { ...(textStyles || {}) }]}>
                             {formattedLabel}
                         </Text>}
-                        {iconRight && <View style={{ paddingLeft: 8, ...iconStyles }}>
+                        {(iconRight && !isLoading) && <View style={{ paddingLeft: 8, ...iconStyles }}>
                             <Icon name={iconRight?.name} size={iconRight?.size || 'large'} color={iconRight?.color || COLORS.white} />
                         </View>}
                     </View>

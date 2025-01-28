@@ -119,8 +119,7 @@ export const setBugsnagUserInfo = (provider) => {
 export const bugLogger = (info) => {
   if (__DEV__) {
     console.log(info)
-  } else 
-  {
+  } else {
     const loggingInfo = typeof info === 'object' ? JSON.stringify(info) : info
     Bugsnag.notify(loggingInfo)
   }
@@ -267,4 +266,12 @@ export const extractKeys = (fullDetails, keysToExtract) => {
     }
     return newObj;
   }, {});
+}
+
+export const cleanFormattedAddress = (formattedAddress) => {
+  // Regular expression to match Plus Codes (e.g., 7Q3J+3M or X123+456 Area, City)
+  const plusCodeRegex = /^[A-Z0-9]{4,}\+?[A-Z0-9]*,\s*/;
+
+  // Remove the Plus Code from the address
+  return formattedAddress.replace(plusCodeRegex, "").trim();
 }

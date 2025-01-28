@@ -7,9 +7,10 @@ import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 import { isEmpty } from "lodash";
 import config from '../util/config';
+import { cleanFormattedAddress } from '../util';
 
 
-const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, textContainerStyles, locationKey, onSelection, currentLocation }) => {
+const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDetails, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
 
     const getLocation = () => {
@@ -18,23 +19,10 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, t
             ref.current.focus()
         }
     }
-    const cleanFormattedAddress = (formattedAddress) => {
-        // Regular expression to match Plus Codes (e.g., 7Q3J+3M or X123+456 Area, City)
-        const plusCodeRegex = /^[A-Z0-9]{4,}\+?[A-Z0-9]*,\s*/;
 
-        // Remove the Plus Code from the address
-        return formattedAddress.replace(plusCodeRegex, "").trim();
-    }
     useEffect(() => {
-        if (mapParams) {
-            const { address, focusKey } = mapParams;
-            if (address && focusKey === locationKey) {
-                ref.current?.setAddressText(cleanFormattedAddress(address?.formatted_address));
-                onSelection(focusKey, address);
-            }
-        }
-
-    }, [mapParams]);
+        ref.current?.setAddressText(cleanFormattedAddress(locationDetails?.formatted_address || ''));
+    }, [locationDetails]);
 
     return (
         <>
@@ -63,9 +51,9 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, mapParams, t
                     // selection: {start: 0},
                     onFocus: () => onInputFocus(locationKey),
                     onChange: (event) => {
-                        const {value} = event.nativeEvent;
+                        const { value } = event.nativeEvent;
                         if (isEmpty(value)) {
-                           return onSelection(locationKey, null)
+                            return onSelection(locationKey, null)
                         }
                     },
                     selectTextOnFocus: true
