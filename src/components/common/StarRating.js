@@ -22,7 +22,7 @@ const StarRating = ({ onSubmit, isLoading = false }) => {
                 <TouchableOpacity key={i} onPress={() => handlePress(i)}>
                     <Icon
                         name={i <= rating ? 'star' : 'star-outline'} // 'star' for filled, 'star-o' for empty
-                        size='large'
+                        size='doubleLarge'
                         color={COLORS.primary}// Gold color for stars
                     />
                 </TouchableOpacity>
@@ -33,7 +33,7 @@ const StarRating = ({ onSubmit, isLoading = false }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.ratingText}>Rate this item:</Text>
+            <Text style={styles.ratingText}>Rate this driver:</Text>
             <View style={styles.starContainer}>
                 {renderStars()}
             </View>

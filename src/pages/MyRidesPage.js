@@ -12,6 +12,7 @@ import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import CommonStyles from '../styles/commonStyles';
 import FindRidePageStyles from '../styles/FindRidePageStyles';
+import generateInvoice from '../util/generateInvoice';
 
 export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -40,8 +41,15 @@ const Card = ({ item, keys }) => {
       {time && <View>
         {<Text style={styles.time}>{formattedDate(time)}</Text>}
       </View>}
-      <View style={{ alignItems: 'flex-end' }}>
+      <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
         <Icon name='dots-vertical' size='large' color={COLORS.gray} />
+        <Pressable onPress={(e) => {
+          e.stopPropagation();
+          generateInvoice(item);
+        }}>
+          <Icon name='download' size='large' color={COLORS.gray} />
+        </Pressable>
+
       </View>
     </View>
     {/* <View style={[styles.left, { paddingRight: 0, paddingLeft: 20 }]}>
@@ -53,7 +61,7 @@ const Card = ({ item, keys }) => {
       {/* <Text style={styles.review}></Text> */}
       <Timeline data={[getValue(item, keys.from), getValue(item, keys.to)]} numberOfLines={1} />
     </View>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 , alignItems: 'center'}}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, alignItems: 'center' }}>
       <Text style={[CommonStyles.font14, styles.bold]}>{fare ? `\u20B9${fare}` : ''}</Text>
       <Text style={[{ color: color }]}>{label}</Text>
       {/* <Text style={styles.address}>3 Seats left</Text> */}
@@ -70,16 +78,16 @@ const MyRidePage = ({ data, keys }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={[FindRidePageStyles.pageContainer]}>
-      <ContainerWrapper>
-        {data?.length ? <View style={styles.section}>
-          <FlatList
-            data={data}
-            renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
-            keyExtractor={item => item.id}
-          />
-        </View> :
-          <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
-      </ContainerWrapper>
+        <ContainerWrapper>
+          {data?.length ? <View style={styles.section}>
+            <FlatList
+              data={data}
+              renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
+              keyExtractor={item => item.id}
+            />
+          </View> :
+            <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
+        </ContainerWrapper>
       </View>
     </SafeAreaView>
   );

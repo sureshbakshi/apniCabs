@@ -1,7 +1,8 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
+import { formattedDate } from '.';
 
-const getInvoiceHtml = (test = 'Hi') => {
+const getInvoiceHtml = (info) => {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,13 +54,25 @@ const getInvoiceHtml = (test = 'Hi') => {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
+            padding:10px
         }
 
         .invoice-details .row span {
             font-size: 14px;
             color: #333;
         }
+         .invoice-details .row  .text-overflow
+            {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 50%;
+            white-space: nowrap;
+        }
 
+        .invoice-details .row .text-overflow > span
+            {
+            font-weight: normal;
+        }    
         .total {
             text-align: center;
             margin-top: 20px;
@@ -85,41 +98,41 @@ const getInvoiceHtml = (test = 'Hi') => {
 
         <div class="invoice-details">
             <div class="row">
-                <span>Invoice #: 12345</span>
-                <span>Date: 2024-12-20</span>
+                <span>Invoice #: ${info.id}</span>
+                <span>Date: ${formattedDate(info.updated_at)}</span>
             </div>
-            <div class="row">
-                <span>Passenger Name:</span>
-                <span>Suresh Kumar</span>
-            </div>
+           
             <div class="row">
                 <span>Pickup Location:</span>
-                <span>Main Street, City</span>
+                <div class="text-overflow">
+                  <span>${info.from_location}</span>
+                </div>
             </div>
             <div class="row">
                 <span>Dropoff Location:</span>
-                <span>Park Avenue, City</span>
+                <span>${info.to_location}</span>
             </div>
             <div class="row">
                 <span>Distance:</span>
-                <span>12 km</span>
+                <span>${info.distance} km</span>
             </div>
             <div class="row">
                 <span>Duration:</span>
-                <span>25 minutes</span>
+                <span>${info.duration}</span>
             </div>
             <div class="row">
                 <span>Fare:</span>
-                <span>${test}</span>
+                <span>\u20B9${info?.ride?.fare || 'NA'}</span>
             </div>
         </div>
 
         <div class="total">
-            Total Amount: $15.00
+            Total Amount: \u20B9${info?.ride?.fare || 'NA'}
         </div>
 
         <div class="footer">
-            If you have any questions, contact us at support@taxibooking.com.
+            If you have any questions, contact us at 
+            <a href="mailto:contact@apnicabi.com">contact@apnicabi.com</a>
         </div>
     </div>
 </body>
@@ -128,7 +141,7 @@ const getInvoiceHtml = (test = 'Hi') => {
 }
 export default generateInvoice = async (info) => {
     try {
-        const htmlContent = getInvoiceHtml()
+        const htmlContent = getInvoiceHtml(info)
         const pdfOptions = {
             html: htmlContent,
             fileName: 'taxi_invoice',

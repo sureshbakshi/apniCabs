@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { RideStatus } from "../../constants"
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import CustomDialog from "./CustomDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDriverState } from "../../slices/driverSlice";
