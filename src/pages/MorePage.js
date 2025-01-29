@@ -105,6 +105,16 @@ const MorePage = () => {
                   <SupportLinks />
 
                 </> : null}
+                <Pressable
+                  style={MoreStyles.list}
+                  android_ripple={{ color: '#ccc' }}
+                  onPress={() => navigate(ROUTES_NAMES.language)}>
+                  <View style={MoreStyles.listIcon}>
+                    <Icon name="account" size="large" color={COLORS.primary} />
+                  </View>
+                  <Text style={MoreStyles.menu_name}>Language</Text>
+                </Pressable>
+                
 
               </View>
               <Pressable

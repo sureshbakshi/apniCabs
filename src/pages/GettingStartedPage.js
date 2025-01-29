@@ -34,7 +34,7 @@ export default () => {
       <ScrollView>
         <View style={GettingStartedStyles.subContainer}>
           <View style={GettingStartedStyles.textContainer}>
-            <Text style={GettingStartedStyles.heardertext}>Start your journey with Apni Cabi as  {config.ROLE === USER_ROLES.DRIVER ? 'Driver': 'User'} </Text>
+            <Text style={GettingStartedStyles.heardertext}>Start your journey with Apni Cabi as {config.ROLE === USER_ROLES.DRIVER ? 'Driver': 'User'} </Text>
             <Text style={GettingStartedStyles.subtext}>We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.</Text>
           </View>
           <CustomButton label={t('get_started')} isLowerCase onClick={() => navigate(ROUTES_NAMES.signIn)} styles={{ backgroundColor: COLORS.primary, padding: 10 }} textStyles={{ fontWeight: '400' }} />

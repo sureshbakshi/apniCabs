@@ -15,7 +15,6 @@ const LanguageSelection = () => {
     const { i18n } = useTranslation();
     const { selectedLanguage } = useSelector(state => state.auth);
     const dispatch = useDispatch()
-    console.log({ selectedLanguage })
     const handleLanguageSelect = (languageCode) => {
         dispatch(setSelectedLanguage(languageCode));
         i18n.changeLanguage(languageCode);
@@ -52,7 +51,7 @@ const LanguageSelection = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f9f9f9',
+        // backgroundColor: '#f9f9f9',
         padding: 16,
     },
     header: {

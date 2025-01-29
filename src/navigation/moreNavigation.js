@@ -10,6 +10,7 @@ import Contacts from '../pages/Contacts';
 import Refer from '../pages/Refer';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import CommonStyles from '../styles/commonStyles'
+import LanguagePage from '../pages/LanguagePage';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
@@ -61,6 +62,11 @@ export default function MoreNavigator({ navigation, route }) {
         name="Contacts"
         options={{ title: 'Contacts' }}
         component={Contacts}
+      />
+       <Stack.Screen
+        name={ROUTES_NAMES.language}
+        options={{ title: 'Language' }}
+        component={LanguagePage}
       />
     </Stack.Navigator>
   );

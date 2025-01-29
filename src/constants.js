@@ -150,7 +150,8 @@ export const ROUTES_NAMES = {
   otp: 'OTP',
   forgotPassword: 'ForgotPassword',
   gettingStartedPage: 'GettingStartedPage',
-  selectonMap: 'SelectonMap'
+  selectonMap: 'SelectonMap',
+  language:'Language'
 }
 
 export const RideStatus = {
