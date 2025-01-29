@@ -59,6 +59,7 @@
     "react-native-keychain": "^8.1.2",
     "react-native-maps": "1.8.4",
     "react-native-material-ripple": "^0.9.1",
+    "react-native-modal": "^13.0.1",
     "react-native-notifications": "^5.1.0",
     "react-native-open-maps": "^0.4.3",
     "react-native-otp-auto-fill": "^0.1.17",

@@ -29,6 +29,20 @@ function updateAddress(existingAddress, newAddress) {
   return existingAddress;
 }
 
+const updatedOtherContact = (existingContactList, newContact) => {
+  const exists = existingContactList.some(existingContact => existingContact.number === newContact.number);
+
+  if (!exists) {
+    existingContactList.push(newContact);
+  }
+  return existingContactList;
+};
+
+const mySelf = {
+  name: 'Myself',
+  number: 0
+}
+
 const intialState = {
   activeRideId: null,
   rideRequests: null,
@@ -36,7 +50,9 @@ const intialState = {
   driverLocation: null,
   statusUpdate: null,
   requestInfo: null,
-  recentSearchHistory: { from: [], to: [] }
+  recentSearchHistory: { from: [], to: [] },
+  otherContactList: [mySelf],
+  selectedOtherContact: mySelf
 }
 const userSlice = createSlice({
   name: 'user',
@@ -52,6 +68,7 @@ const userSlice = createSlice({
       state.requestInfo = null;
       state.rideRequests = null;
       state.activeRequest = null;
+      state.selectedOtherContact = null;
     },
     setActiveRequest: (state, action) => {
       if (_.isEmpty(action.payload)) {
@@ -75,11 +92,13 @@ const userSlice = createSlice({
       const { driver_id, status, id } = action.payload;
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         state.activeRequest = action.payload
-        state.rideRequests = []
+        state.rideRequests = [];
+        state.selectedOtherContact = null;
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
 
       } else if (ClearRideStatus.includes(status)) {
         state.statusUpdate = action.payload;
+        state.selectedOtherContact = null;
       } else {
         const vehicles = state.rideRequests?.vehicles;
         if (vehicles?.length) {
@@ -94,6 +113,13 @@ const userSlice = createSlice({
     updateDriverLocation: (state, action) => {
       state.driverLocation = action.payload;
     },
+    setOtherContactList: (state, action) => {
+      const updatedContactList = updatedOtherContact(state.otherContactList, action.payload)
+      state.otherContactList = updatedContactList;
+    },
+    setSelectedOtherContact: (state, action) => {
+      state.selectedOtherContact = action.payload;
+    },
   },
 });
 
@@ -105,7 +131,9 @@ export const {
   updateDriverLocation,
   requestInfo,
   cancelRideRequest,
-  setRecentSearchHistory
+  setRecentSearchHistory,
+  setOtherContactList,
+  setSelectedOtherContact
 } = userSlice.actions;
 
 export default userSlice.reducer;

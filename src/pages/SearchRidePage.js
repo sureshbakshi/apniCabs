@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
@@ -18,16 +18,21 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import RecentSearchHistory from '../components/RecentSearchHistory';
+import { setIsBottomDialogStatus } from '../slices/authSlice';
+import BottomModal from '../components/common/BottomModal';
+import useModal from '../hooks/useModal';
 
 const SearchRidePage = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const { isSocketConnected } = useSelector((state) => state.auth);
+  const { selectedOtherContact } = useSelector((state) => state.user);
+  const { isVisible, openModal, closeModal } = useModal();
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const searchHistory = useSelector(state => state.user.recentSearchHistory);
-
   const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
+
   const [focusKey, setFocuskey] = useState('from');
   useEffect(() => {
     if (error) {
@@ -71,14 +76,14 @@ const SearchRidePage = () => {
       getRideRequest(payload);
       const history = {
         from: {
-          address_components:from.address_components,
+          address_components: from.address_components,
           geometry: from.geometry,
           place_id: from.place_id,
           formatted_address: from.formatted_address,
           city: fromCity[0]?.long_name
         },
         to: {
-          address_components:to.address_components,
+          address_components: to.address_components,
           geometry: to.geometry,
           place_id: to.place_id,
           formatted_address: to.formatted_address,
@@ -98,7 +103,6 @@ const SearchRidePage = () => {
   const inputFocusHandler = (key) => {
     setFocuskey(key);
   }
-
 
   return (
     // <ImageBackground
@@ -132,10 +136,11 @@ const SearchRidePage = () => {
               onClick={navigateToSelectOnMapPage}
             />
             <CustomButton
-              label={`For me`}
+              label={selectedOtherContact?.name || "My self"}
               styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
               textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
               isLowerCase
+              onClick={openModal}
             />
           </View>
 
@@ -163,6 +168,10 @@ const SearchRidePage = () => {
           </View> : <SearchLoader msg=' ' />}
         </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
       </ContainerWrapper>
+      <BottomModal
+          visible={isVisible}
+          onCloseModal={closeModal}
+        />
     </SafeAreaView>
 
     // </ImageBackground>

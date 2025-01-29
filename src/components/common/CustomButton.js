@@ -8,8 +8,8 @@ import ActivityIndicator from "./ActivityIndicator";
 export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles, containerStyles = {}, ...rest }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
-    const clickHandler = () => {
-        onClick?.()
+    const clickHandler = (e) => {
+        onClick?.(e)
     }
     return (
         <View style={{ borderRadius: styles?.borderRadius || 8, overflow: "hidden" }}>

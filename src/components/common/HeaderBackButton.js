@@ -4,7 +4,7 @@ import { COLORS } from '../../constants'
 import CommonStyles from '../../styles/commonStyles'
 import { goBack } from '../../util/navigationService'
 
-export default function HeaderBackButton() {
+export default function HeaderBackButton({ onClick }) {
     return (
         <CustomButton
             label={''}
@@ -12,7 +12,7 @@ export default function HeaderBackButton() {
             isLowerCase
             iconLeft={{ name: 'arrow-left', size: 'large', color: COLORS.black }}
             iconStyles={{ paddingRight: 0 }}
-            onClick={goBack}
+            onClick={onClick ?? goBack}
         />
     )
 }
