@@ -14,7 +14,8 @@ export const authInitialState = {
   device_token: null,
   vehicleTypes: null,
   androidDeviceCode: null,
-  selectedLanguage: 'en'
+  selectedLanguage: 'en',
+  rideChats:null
 };
 
 export const USER_ROLES = {
@@ -151,7 +152,8 @@ export const ROUTES_NAMES = {
   forgotPassword: 'ForgotPassword',
   gettingStartedPage: 'GettingStartedPage',
   selectonMap: 'SelectonMap',
-  language:'Language'
+  language:'Language',
+  chat:'Chat'
 }
 
 export const RideStatus = {

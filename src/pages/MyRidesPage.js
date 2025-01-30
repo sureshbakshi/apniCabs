@@ -49,6 +49,12 @@ const Card = ({ item, keys }) => {
         }}>
           <Icon name='download' size='large' color={COLORS.gray} />
         </Pressable>
+        <Pressable onPress={(e) => {
+          e.stopPropagation();
+          navigate(ROUTES_NAMES.chat)
+        }}>
+          <Icon name='chat' size='large' color={COLORS.gray} />
+        </Pressable>
 
       </View>
     </View>

@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import { authInitialState} from '../constants';
+import { createSlice } from '@reduxjs/toolkit';
+import { authInitialState } from '../constants';
 
 
 const authSlice = createSlice({
@@ -27,17 +27,26 @@ const authSlice = createSlice({
     updatedSocketConnectionStatus: (state, action) => {
       state.isSocketConnected = action.payload;
     },
-    setDialogStatus:(state, action)=>{
+    setDialogStatus: (state, action) => {
       state.isDialogOpen = action.payload;
     },
-    setVehicleTypes:(state, action)=>{
+    setVehicleTypes: (state, action) => {
       state.vehicleTypes = action.payload;
     },
-    setAndroidDeviceCode: (state, action)=>{
+    setAndroidDeviceCode: (state, action) => {
       state.androidDeviceCode = action.payload;
     },
-    setSelectedLanguage: (state, action)=>{
+    setSelectedLanguage: (state, action) => {
       state.selectedLanguage = action.payload;
+    },
+    setRideChats: (state, action) => {
+      const { message, ride_id } = action.payload;
+      const copyMessage = { ...message };
+      if (state.rideChats?.ride_id === ride_id) {
+        state.rideChats.messages = [...state.rideChats.messages, copyMessage]
+      } else {
+        state.rideChats = { messages: [copyMessage], ride_id };
+      }
     },
   },
 });
@@ -51,6 +60,7 @@ export const {
   setDeviceToken,
   setVehicleTypes,
   setAndroidDeviceCode,
-  setSelectedLanguage
+  setSelectedLanguage,
+  setRideChats
 } = authSlice.actions;
 export default authSlice.reducer;
