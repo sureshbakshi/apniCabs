@@ -1,64 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import ContainerWrapper from './ContainerWrapper';
 import CustomButton from './CustomButton';
-import socket from './socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRideChats } from '../../slices/authSlice';
 import config from '../../util/config';
-import { useNavigation } from "@react-navigation/native";
+import { COLORS, SOCKET_EVENTS } from '../../constants';
+import socket from '../../sockets/socketConfig';
+import { isDriver } from '../../util';
 
 const ChatUI = () => {
-  const dispatch = useDispatch();
-  const [messages, setMessages] = useState([]); // Stores the list of messages
   const [inputText, setInputText] = useState(''); // Stores the current input text
   const { rideChats } = useSelector((state) => state.auth);
-  console.log('rideChats', rideChats)
+  const { activeRideId } = useSelector((state) => isDriver() ? state.driver : state.user);
+  const flatListRef = useRef();
 
 
-  const navigation = useNavigation();
+
 
   useEffect(() => {
-    navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+    if (socket && activeRideId) {
+      socket?.emit(SOCKET_EVENTS.joinRoom, activeRideId);  // Replace with the actual rideId
+    }
+  }, [activeRideId, socket])
 
-    return () => {
-      navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
-    };
-  }, [navigation]);
-  
-
-  useEffect(() => {
-    // Listen for incoming messages
-    //Always flex-start
-    socket.on("receiveMessage", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-      dispatch(setRideChats({
-        ride_id: '',
-        messages: [{ message: msg, user: config.ROLE, align: 'flex-start' }]
-      }))
-    });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, []);
 
   const sendMessage = () => {
     if (inputText.trim()) {
       const newMessage = { id: Date.now(), text: inputText };
-      socket.emit("sendMessage", newMessage);
-      //Always flex-end
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      dispatch(setRideChats(
-        {
-          ride_id: 1,
-          message: { message: inputText, user: config.ROLE, align: 'flex-start' }
-        }
-      ))
+      if (newMessage) {
+        socket.emit(SOCKET_EVENTS.sendMessage, newMessage);
+      }
       setInputText("");
     }
   };
 
+  // Scroll to the end whenever messages change
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  }, [rideChats]);
 
   return (
     <ContainerWrapper>
@@ -69,13 +51,14 @@ const ChatUI = () => {
         >
           {/* Message List */}
           <FlatList
+            ref={flatListRef}
             data={rideChats?.messages || []}
-            keyExtractor={(item,key) => key.toString()}
+            keyExtractor={(item, key) => key.toString()}
             renderItem={({ item }) => (
               <View style={[styles.messageBubble, {
-                alignSelf: item.align,
+                ...item.bg_style
               }]}>
-                <Text style={styles.messageText}>{item.message}</Text>
+                <Text style={[styles.messageText, { ...item.text_style }]}>{item.message}</Text>
               </View>
             )}
             contentContainerStyle={styles.messageList}
@@ -100,7 +83,7 @@ const ChatUI = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.white,
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -119,6 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inputContainer: {
+    marginTop: 10,
     flexDirection: 'row',
     padding: 10,
     borderTopWidth: 1,

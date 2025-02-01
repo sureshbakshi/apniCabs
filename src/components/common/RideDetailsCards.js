@@ -5,20 +5,21 @@ import { ImageView, Text } from '../common';
 import styles from '../../styles/MyRidePageStyles';
 import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
-import { COLORS, RideStatus } from '../../constants';
+import { COLORS, RideStatus, SOCKET_EVENTS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useCompleteRideRequestMutation, useRideRequestMutation } from '../../slices/apiSlice';
 import { updateRideStatus, setActiveRide, clearDriverState } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
-import { setDialogStatus } from '../../slices/authSlice';
+import { clearRideChats, setDialogStatus } from '../../slices/authSlice';
 import CustomButton from './CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
 import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
+import socket from './socket';
 
 
 const cancelRide = (activeRequest, isDriverLogged) => {
@@ -172,18 +173,18 @@ export default ({ activeRequest, isDriverLogged }) => {
         if (isEmpty(otp)) {
             showErrorMessage('Please enter valid code')
             // otpRef?.current?.focus()
-        }else{
+        } else {
             getCurrentLocation(otpSubmitHandler)
         }
 
     }
 
-    useEffect(() =>{
-        if(otp.length === 4) {
+    useEffect(() => {
+        if (otp.length === 4) {
             handleSubmitOtp();
             Keyboard.dismiss()
         }
-    },[otp])
+    }, [otp])
 
     const completeRideHandler = (location) => {
         let payload = {
@@ -191,7 +192,9 @@ export default ({ activeRequest, isDriverLogged }) => {
             to: getFromLocation(location)
         }
         completeRideRequest(payload).unwrap().then((res) => {
-            dispatch(updateRideStatus(res))
+            dispatch(updateRideStatus(res));
+            dispatch(clearRideChats());
+            socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
             console.log(err)
             if (err?.status == 400) {

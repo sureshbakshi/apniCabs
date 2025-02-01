@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isLoggedIn, isValidEvent } from "../util"
 import { updatedSocketConnectionStatus } from "../slices/authSlice"
-import { ClearRideStatus, DriverAvailableStatus, RideStatus } from "../constants"
+import { ClearRideStatus, DriverAvailableStatus, RideStatus, SOCKET_EVENTS } from "../constants"
 import { store } from "../store"
 import useNotificationSound from "./useNotificationSound"
+import useChatMessage from "./useChatMessage"
 
-const SOCKET_EVENTS = {
+const DRIVER_SOCKET_EVENTS = {
     get_ride_requests: 'request',
 }
 
@@ -25,6 +26,7 @@ export const useDriverEvents = () => {
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
                 dispatch(updateRideStatus(request?.data))
+                driverSocket.emit(SOCKET_EVENTS.rideCompleted);
             } else {
                 dispatch(updateRideRequest(request?.data))
             }
@@ -36,7 +38,7 @@ export const useDriverEvents = () => {
 
 
 const onGetRideRequests = (cb) => {
-    driverSocket.on(SOCKET_EVENTS.get_ride_requests, (request) => {
+    driverSocket.on(DRIVER_SOCKET_EVENTS.get_ride_requests, (request) => {
         console.log('on new request')
         cb(request)
     });
@@ -47,13 +49,14 @@ export const disconnectDriverSocket = () => {
     driverSocket.disconnect()
 }
 const ignoreEvents = [];
-// ['connect', 'disconnect', SOCKET_EVENTS.get_ride_requests];
+// ['connect', 'disconnect', DRIVER_SOCKET_EVENTS.get_ride_requests];
 
 export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const { updateRideRequests } = useDriverEvents();
-    const { isOnline } = useSelector((state) => state.driver)
+    const { isOnline, activeRideId } = useSelector((state) => state.driver);
+    const onChat = useChatMessage()
 
     const isDriverOnline = isOnline !== DriverAvailableStatus.OFFLINE;
     const isLoggedIn = _isLoggedIn();
@@ -71,10 +74,11 @@ export default (() => {
         const id = store.getState().auth.userInfo?.id
         if (id) {
             console.log(`============= Driver add device emit ==========: ${id}`)
-            driverSocket.emit('addDevice', id, (cbRes) => {
-                // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
-                dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
-            })
+            dispatch(updatedSocketConnectionStatus(id))
+            // driverSocket.emit('addDevice', id, (cbRes) => {
+            //     // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
+            //     dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
+            // })
         }
     }, [driverSocket])
 
@@ -109,6 +113,12 @@ export default (() => {
             console.log('disconnected', err)
             dispatch(updatedSocketConnectionStatus(null))
         })
-    }, [driverSocket])
+    }, [driverSocket]);
+
+    useEffect(() => {
+        if (activeRideId && isSocketConnected) {
+            onChat(driverSocket);
+        }
+    }, [activeRideId])
 })
 

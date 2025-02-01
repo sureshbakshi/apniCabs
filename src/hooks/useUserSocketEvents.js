@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { updatedSocketConnectionStatus } from "../slices/authSlice";
+import { clearRideChats, setRideChats, updatedSocketConnectionStatus } from "../slices/authSlice";
 
 import { _isLoggedIn, isValidEvent } from "../util";
 import userSocket from '../sockets/socketConfig';
@@ -8,9 +8,10 @@ import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice"
 import { store } from "../store";
 import useNotificationSound from "./useNotificationSound";
 import audio from "../assets/audio";
-import { RideStatus } from "../constants";
+import { ClearRideStatus, RideStatus, SOCKET_EVENTS } from "../constants";
+import useChatMessage from "./useChatMessage";
 
-const SOCKET_EVENTS = {
+const USER_SOCKET_EVENTS = {
     request_status: 'useRequestUpdate',
     driver_location: 'driverLocation'
 }
@@ -20,10 +21,14 @@ export const disconnectUserSocket = () => {
     userSocket.disconnect()
 }
 const ignoreEvents = []
-// ['connect', 'disconnect', SOCKET_EVENTS.request_status, SOCKET_EVENTS.driver_location]
+// ['connect', 'disconnect', USER_SOCKET_EVENTS.request_status, USER_SOCKET_EVENTS.driver_location]
+
+
 export default (() => {
-    const { isSocketConnected } = useSelector((state) => state.auth)
-    const { playSound } = useNotificationSound()
+    const { isSocketConnected, userInfo } = useSelector((state) => state.auth);
+    const { activeRideId } = useSelector((state) => state.user);
+    const onChat = useChatMessage();
+    const { playSound } = useNotificationSound();
 
     const dispatch = useDispatch();
     const isLoggedIn = _isLoggedIn();
@@ -42,15 +47,16 @@ export default (() => {
         console.log({ addDeviceId: id })
         if (id) {
             // console.log(`============= User add device emit ==========`)
-            userSocket.emit('addDevice', id, (cbRes) => {
-                // console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
-                dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
-            })
+            dispatch(updatedSocketConnectionStatus(id))
+
+            // userSocket.emit('addDevice', id, (cbRes) => {
+            //     // console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
+            // })
         }
     }
     // listeners
     const onRequestUpdate = () => {
-        userSocket.on(SOCKET_EVENTS.request_status, (updatedRequest) => {
+        userSocket.on(USER_SOCKET_EVENTS.request_status, (updatedRequest) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
             if (updatedRequest?.data) {
@@ -58,6 +64,10 @@ export default (() => {
                 if (status) {
                     if (status === RideStatus.ACCEPTED) {
                         playSound(audio.booking)
+                    }
+                    if (ClearRideStatus.includes(status)) {
+                        userSocket.emit(SOCKET_EVENTS.rideCompleted);
+                        dispatch(clearRideChats());
                     }
                 }
                 dispatch(updateDriversRequest(updatedRequest?.data))
@@ -67,7 +77,7 @@ export default (() => {
 
     const onDriverLocationUpdate = () => {
         // console.log('socket._callbacks', userSocket._callbacks)
-        userSocket.on(SOCKET_EVENTS.driver_location, (updatedLocation) => {
+        userSocket.on(USER_SOCKET_EVENTS.driver_location, (updatedLocation) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
             if (updatedLocation?.data) {
@@ -94,7 +104,13 @@ export default (() => {
         } else if (!isLoggedIn) {
             disconnectUserSocket();
         }
-    }, [isLoggedIn, isSocketConnected])
+    }, [isLoggedIn, isSocketConnected]);
+
+    useEffect(() => {
+        if (activeRideId && isSocketConnected) {
+            onChat(userSocket);
+        }
+    }, [activeRideId])
 
     useEffect(() => {
         userSocket.on('connect', () => {

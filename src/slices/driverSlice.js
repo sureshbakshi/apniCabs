@@ -57,11 +57,10 @@ const driverSlice = createSlice({
     setRideRequest: (state, action) => {
       const newRequest = action.payload;
       let updatedRequest = state.rideRequests;
-      console.log({updatedRequest})
       if (Array.isArray(newRequest)) {
-        if(newRequest.length) {
-            updatedRequest = newRequest
-        }else{
+        if (newRequest.length) {
+          updatedRequest = newRequest
+        } else {
           updatedRequest = []
           state.activeRequest = null;
           state.activeRideId = null;
@@ -72,13 +71,13 @@ const driverSlice = createSlice({
       }
       state.rideRequests = updatedRequest;
     },
-    
+
     setDriverWallet: (state, action) => {
-        state.walletInfo = action.payload;
+      state.walletInfo = action.payload;
     },
   },
 });
 
-export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState , setDriverWallet} = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState, setDriverWallet } = driverSlice.actions;
 
 export default driverSlice.reducer;

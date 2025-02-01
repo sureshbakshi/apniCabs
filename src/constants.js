@@ -15,7 +15,7 @@ export const authInitialState = {
   vehicleTypes: null,
   androidDeviceCode: null,
   selectedLanguage: 'en',
-  rideChats:null
+  rideChats: null
 };
 
 export const USER_ROLES = {
@@ -152,8 +152,8 @@ export const ROUTES_NAMES = {
   forgotPassword: 'ForgotPassword',
   gettingStartedPage: 'GettingStartedPage',
   selectonMap: 'SelectonMap',
-  language:'Language',
-  chat:'Chat'
+  language: 'Language',
+  chat: 'Chat'
 }
 
 export const RideStatus = {
@@ -520,4 +520,10 @@ export const SIGN_UP_FORM = [
 export const MAPS_LABELS = {
   from: 'Pickup',
   to: 'Drop'
+}
+
+export const SOCKET_EVENTS = {
+  rideCompleted: 'ride-completed',
+  sendMessage: 'send-message',
+  joinRoom:'join-room'
 }

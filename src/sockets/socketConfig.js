@@ -1,12 +1,20 @@
 // Driver Socket Configuration
 import io from 'socket.io-client';
+import { store } from "../store";
 
 // baseUrl: 'http://192.168.0.101:3000/', //rajesh IP
 // const socketUri = 'http://ec2-65-0-142-176.ap-south-1.compute.amazonaws.com:8080/'
-const socketUri =  "https://apnicabi.com"
+// const socketUri = "https://apnicabi.com"
 // const socketUri = 'http://192.168.150.226:8080/'
+const socketUri = "http://notification-service-350461574.ap-south-1.elb.amazonaws.com/"
+const state = store?.getState();
 const socket = io(socketUri, {
   // Additional configuration options can be set here
+  auth: {
+    username: 'socket_user_dev', // Replace with actual username
+    password: 'L10H70KIQR97KXKNQ4VQI40IUG549114',  // Replace with actual password
+    userId: state.auth?.userInfo?.id // Replace with actual userId
+  },
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss
   reconnectionAttempts: Infinity, // Number of reconnection attempts
@@ -15,8 +23,8 @@ const socket = io(socketUri, {
   extraHeaders: {
 
   },
-  transports: [ 'websocket' ],
-  path: '/ws/'
+  // transports: ['websocket'],
+  // path: '/ws/'
 });
 
 socket.on('connect_error', err => console.log({ 'connect_error': err }))
