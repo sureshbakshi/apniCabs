@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, SafeAreaView, Keyboard, View } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
-import { COLORS } from '../constants';
+import { COLORS, USER_ROLES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
 import LoginStyles from '../styles/LoginPageStyles';
+import config from '../util/config';
 
 export default ({ route, data, callbackFunctions }) => {
     const otpInfo = route?.params?.data || data
@@ -18,7 +19,7 @@ export default ({ route, data, callbackFunctions }) => {
         nativeEvent: { code },
     }) => {
         Keyboard?.dismiss()
-        submitOTPHandler({ ...otpInfo, otp: code }).unwrap()
+        submitOTPHandler({ ...otpInfo, otp: code, }).unwrap()
             .then(data => {
                 if (data) {
                     callbackFunctions?.successHandler?.(data)

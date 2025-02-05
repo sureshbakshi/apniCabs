@@ -3,18 +3,21 @@ import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { formatTransactions, getUserId, showErrorMessage } from '../util';
+
 import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://apnicabi.com/api/',
+  // baseUrl: 'http://43.204.100.95:3001/',
+  baseUrl: 'https://apnicabi.com/api/v1/',
   // baseUrl: 'http://192.168.0.104:8080/api/', //rajesh IP
   // baseUrl: 'http://192.168.29.235:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {
     headers.set('Access-Control-Allow-Origin', `*`);
     headers.set('Access-Control-Allow-Headers', `*`);
     headers.set('Content-Type', `application/json`);
+    headers.set('Accept', `application/json`);
     if (getState().auth.access_token) {
-      headers.set('Authorization', `${getState().auth.access_token}`);
+      headers.set('Authorization', `Bearer ${getState().auth.access_token}`);
     }
     if (getState().auth.device_token) {
       headers.set('device_token', `${getState().auth.device_token}`);
@@ -28,8 +31,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   let result = await baseQuery(args, api, extraOptions);
   console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
-  const err =  result?.error?.data?.error || result?.error
-  if (err ) {
+  const err = result?.error?.data?.error || result?.error
+  if (err) {
     showErrorMessage(err)
   }
   if (result.error && result.error.status === 401) {
@@ -37,7 +40,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     api.dispatch(clearAuthData());
     setTimeout(() => {
       navigate(ROUTES_NAMES.signIn);
-    },100)
+    }, 100)
     // try to get a new token
     // const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
     // if (refreshResult.data) {
@@ -53,22 +56,23 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 };
 
 const api_path = {
-  public: path => `openApi/${path}`,
-  users: path => `users/${path}`,
-  drivers: path => `drivers/${path}`,
-  vehicle: path => `vehicle/${path}`,
-  request: path => `request/${path}`,
+  public: path => `auth/auth/${path}`,
+  users: path => `user/user/${path}`,
+  drivers: path => `driver-vehicle/driver/${path}`,
+  vehicle: path => `driver-vehicle/vehicle/${path}`,
+  request: path => `request/request/${path}`,
   transactions: path => `transactions/${path}`,
   subscription: path => `subscription/${path}`,
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
   links: path => `links/${path}`,
+  location: path => `location/location/${path}`
 };
 const api_urls = {
   login: 'login',
-  loginOTP: 'loginOtp',
-  signUp: 'user',
-  signupOTP: 'registerUserOTP',
+  loginOTP: 'loginOTP',
+  signUp: 'register',
+  signupOTP: 'registerOTP',
   forgot: 'forgot',
   verifyOTP: 'verifyOTP',
   userCheck: 'checkUser',
@@ -82,14 +86,15 @@ const api_urls = {
   completeRide: 'complete-ride',
   cancelAcceptedRequest: 'cancel-accpeted-request',
   location: 'location',
-  userActiveRide: 'active-rides/user',
+  userActiveRide: 'active/user',
   list: 'list',
   cancelRequest: 'cancel-request',
   sosAdd: 'add',
   device: 'device',
-  order:'order',
-  payment:'payment',
-  wallet: 'wallet'
+  order: 'order',
+  payment: 'payment',
+  wallet: 'wallet',
+  create:'create'
 };
 
 export const apiSlice = createApi({
@@ -117,9 +122,9 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
     signup: builder.mutation({
-      query: body => ({
+      query: ({ user_type, ...body }) => ({
         method: 'POST',
-        url: api_path.public(api_urls.signUp),
+        url: api_path.public(`${api_urls.signUp}/${user_type}`),
         body,
       }),
       transformResponse: response => response,
@@ -168,7 +173,7 @@ export const apiSlice = createApi({
     getRideRequest: builder.mutation({
       query: body => ({
         method: 'POST',
-        url: `request/create`,
+        url: api_path.request(api_urls.create),
         body,
       }),
       transformResponse: response => response,
@@ -321,7 +326,7 @@ export const apiSlice = createApi({
     getVehicleTypes: builder.query({
       query: () => ({
         method: 'GET',
-        url: api_path.vehicle('vehicle-types'),
+        url: api_path.vehicle('types'),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,

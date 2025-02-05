@@ -15,10 +15,10 @@ import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomButton from '../components/common/CustomButton';
 import OTPAutoFill from '../components/OTPAutoFill';
-import { extractKeys, showErrorMessage } from '../util';
+import { extractKeys, isDriver, showErrorMessage } from '../util';
 import config from '../util/config';
 
-export default ({heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
+export default ({ heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         formMutation();
     const { androidDeviceCode } = useSelector(state => state.auth)
@@ -52,9 +52,10 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
 
     const onSubmit = (formData) => {
         // const { confirm_password, ...otpPayload } = formData
-        const OTPPayload = extractKeys(formData, getOTPPayloadKeys)
+        const OTPPayload = extractKeys(formData, getOTPPayloadKeys);
+        console.log('OTPPayload', OTPPayload)
         if (androidDeviceCode || Platform.OS === 'ios') {
-            submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) }); //add device code
+            submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload)}); //add device code
         }
         const formPayload = extractKeys(formData, formPayloadKeys)
         setPayload(formPayload);
@@ -64,7 +65,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
     const getOTP = (deviceCode) => {
         const OTPPayload = extractKeys(payload, getOTPPayloadKeys)
 
-        submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) });//add device code
+        submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload)});//add device code
     }
 
     const errorHandler = ({ data }) => {
@@ -83,7 +84,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
     return (
 
         <View>
-            <Text style={LoginStyles.logoHeardertext}>{heading} as {config.ROLE === USER_ROLES.DRIVER ? "Driver": 'User'} </Text>
+            <Text style={LoginStyles.logoHeardertext}>{heading} as {config.ROLE === USER_ROLES.DRIVER ? "Driver" : 'User'} </Text>
 
             <FormProvider {...methods}>
                 {formFields.map((field, index) => {
@@ -94,7 +95,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
                                 render={({ field: { onChange, onBlur, value } }) => {
                                     return (
                                         <>
-                                            <Text style={{ marginBottom: 8, fontSize: 16, fontFamily:'Poppins' }}>{field.props?.placeholder || field.label}</Text>
+                                            <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.props?.placeholder || field.label}</Text>
                                             <TextInput
                                                 name={field.name}
                                                 onBlur={onBlur}
@@ -127,7 +128,7 @@ export default ({heading, successHandler, formFields, formSchema, formMutation, 
                     onClick={handleSubmit(onSubmit)}
                     label={submitBtnLabel || 'Submit'}
                     disabled={Boolean(isError || otpInfo)}
-                    iconRight={{name: 'arrow-right', size: 'large'}}
+                    iconRight={{ name: 'arrow-right', size: 'large' }}
                     isLowerCase
                 />}
             </FormProvider>

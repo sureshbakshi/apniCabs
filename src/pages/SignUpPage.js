@@ -20,7 +20,7 @@ import { signupSchema } from '../schema';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
 import CustomButton from '../components/common/CustomButton';
-import { openOwnerPortal } from '../util/config';
+import config, { openOwnerPortal } from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
@@ -31,7 +31,7 @@ const SignUpPage = () => {
     name: googleInfo?.name || '',
     email: googleInfo?.email || '',
     phone: '',
-    referred_by: ''
+    referredBy: ''
   }
 
   const successHandler = (signUpdata) => {
@@ -42,8 +42,9 @@ const SignUpPage = () => {
   }
   const additionalVerifyOTPPayload = {
     avatar: googleInfo?.photo || '',
-    provider: Platform.OS || 'mobile',
-    user_type: USER_ROLES.OWNER
+    // provider: Platform.OS || 'mobile',
+    // isDriver: config.ROLE === USER_ROLES.DRIVER,
+    user_type: config.ROLE === USER_ROLES.DRIVER ? 'driver' : 'user'
   }
   return (
     <View style={LoginStyles.container}>
@@ -74,10 +75,10 @@ const SignUpPage = () => {
                     formMutation={useGetSignupOTPMutation}
                     initialState={initialState}
                     getOTPPayloadKeys={['phone']}
-                    // additionalOTPPayload={{ accessToken }}
+                    additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER}}
                     verifyOTPMutation={useSignupMutation}
                     additionalVerifyOTPPayload={additionalVerifyOTPPayload}
-                    formPayloadKeys={['name', 'email', 'phone', 'referred_by']}
+                    formPayloadKeys={['name', 'email', 'phone', 'referredBy']}
                     submitBtnLabel={'Get OTP'}
                     heading={'Sign Up'}
                   />

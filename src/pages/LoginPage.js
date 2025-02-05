@@ -15,7 +15,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { Icon, ImageView, Text } from '../components/common';
-import { COLORS, LOGIN_FORM, ROUTES_NAMES } from '../constants';
+import { COLORS, LOGIN_FORM, ROUTES_NAMES, USER_ROLES } from '../constants';
 import { useDispatch } from 'react-redux';
 import {
   updateGoogleUserInfo,
@@ -29,7 +29,7 @@ import Config from 'react-native-config';
 import { navigate } from '../util/navigationService';
 import { disconnectSocket } from '../sockets/socketConfig';
 import images from '../util/images';
-import { openOwnerPortal } from '../util/config';
+import config, { openOwnerPortal } from '../util/config';
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
@@ -136,6 +136,10 @@ const LoginPage = () => {
     }
   }
 
+  const additionalOTPPayload = {
+    isDriver: config.ROLE === USER_ROLES.DRIVER
+  }
+
   return (
     <View style={LoginStyles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -194,9 +198,10 @@ const LoginPage = () => {
             formSchema={signInSchema}
             formMutation={useGetLoginOTPMutation}
             initialState={initialState}
-            getOTPPayloadKeys={['mobile']}
+            additionalOTPPayload={additionalOTPPayload}
+            getOTPPayloadKeys={['phone']}
             verifyOTPMutation={useVerifyOTPMutation}
-            formPayloadKeys={['mobile']}
+            formPayloadKeys={['phone']}
             submitBtnLabel={'Get OTP'}
             heading={'Sign In'}
           />

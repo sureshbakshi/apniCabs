@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FindCaptainPage = () => {
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
-  const list = useSelector(state => state.user?.rideRequests?.vehicles);
+  const list = useSelector(state => state.user?.rideRequests?.drivers);
   const { requestInfo } = useSelector(state => state.user);
 
   const extraProps = {

@@ -425,7 +425,7 @@ export const CONTACTS_FORM = [
 
 export const LOGIN_FORM = [
   {
-    name: 'mobile',
+    name: 'phone',
     label: "Phone number",
     props: {
       placeholder: "Enter phone number",
@@ -508,7 +508,7 @@ export const SIGN_UP_FORM = [
   //   },
   // },
   {
-    name: 'referred_by',
+    name: 'referredBy',
     label: "Referral Code",
     props: {
       placeholder: "Referral Code",

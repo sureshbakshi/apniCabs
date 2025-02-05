@@ -13,7 +13,8 @@ const socket = io(socketUri, {
   auth: {
     username: 'socket_user_dev', // Replace with actual username
     password: 'L10H70KIQR97KXKNQ4VQI40IUG549114',  // Replace with actual password
-    userId: state.auth?.userInfo?.id // Replace with actual userId
+    userId: state.auth?.userInfo?.id, // Replace with actual userId
+    token: state.auth?.access_token
   },
   autoConnect: true, // Automatically establish a connection on creation
   reconnection: true, // Automatically reconnect on connection loss

@@ -6,7 +6,7 @@ import GooglePlaces from '../components/GooglePlaces';
 import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
 import { isEmpty } from 'lodash';
-import { COLORS, ROUTES_NAMES } from '../constants';
+import { COLORS, DEFAULT_VEHICLE_TYPES, ROUTES_NAMES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import SocketStatus from '../components/common/SocketStatus';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
@@ -25,7 +25,7 @@ import useModal from '../hooks/useModal';
 const SearchRidePage = () => {
   const route = useRoute();
   const dispatch = useDispatch();
-  const { isSocketConnected } = useSelector((state) => state.auth);
+  const { isSocketConnected, vehicleTypes } = useSelector((state) => state.auth);
   const { selectedOtherContact } = useSelector((state) => state.user);
   const { isVisible, openModal, closeModal } = useModal();
   const list = useSelector(state => state.user?.rideRequests?.vehicles);
@@ -44,7 +44,27 @@ const SearchRidePage = () => {
 
   useEffect(() => {
     resetState()
-  }, [])
+  }, []);
+
+  const othersContactInfo = () => {
+    const isValid = (selectedOtherContact.number !== 0)
+    let contactInfo = { is_for_others: Number(isValid) }
+    if (isValid) {
+      contactInfo = {
+        ...contactInfo,
+        "recipient_name": selectedOtherContact.name,
+        "recipient_phone": selectedOtherContact.number
+      }
+    }
+    return contactInfo;
+  }
+
+  const getDefaultVehicleType = () => {
+    if (vehicleTypes.length) {
+      return vehicleTypes[0].code
+    }
+    return DEFAULT_VEHICLE_TYPES[0].code
+  }
 
   const searchHandler = async () => {
     const { distance, duration } = await getDistance();
@@ -69,8 +89,10 @@ const SearchRidePage = () => {
           Lat: to.geometry.location.lat + '',
           Long: to.geometry.location.lng + '',
         },
-        Distance: Number((distance.value / 1000).toFixed(1)),
-        Duration: duration.text,
+        distance: Number((distance.value / 1000).toFixed(1)),
+        duration: duration.text,
+        category: getDefaultVehicleType(),
+        ...othersContactInfo()
       };
       dispatch(requestInfo(payload));
       getRideRequest(payload);
@@ -169,9 +191,9 @@ const SearchRidePage = () => {
         </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
       </ContainerWrapper>
       <BottomModal
-          visible={isVisible}
-          onCloseModal={closeModal}
-        />
+        visible={isVisible}
+        onCloseModal={closeModal}
+      />
     </SafeAreaView>
 
     // </ImageBackground>

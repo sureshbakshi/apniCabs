@@ -13,11 +13,11 @@ const validatePhone = (number) => {
 };
 
 export const signInSchema = yup.object().shape({
-    "mobile": yup
+    "phone": yup
         .string()
-        .required("mobile number is required")
+        .required("Phone number is required")
         .matches(phone, {
-            message: "Please enter valid mobile number",
+            message: "Please enter valid phone number",
         }),
     // "email": yup.string()
     //     .required('Email / Phone is required')
@@ -114,7 +114,7 @@ export const signupSchema = yup.object().shape({
     //     .string()
     //     .required("Please enter password")
     //     .min(6, 'Minimum 6 Characters required'),
-    "referred_by": yup
+    "referredBy": yup
         .string()
         .test('valid-referral-code', 'Please enter a valid referral code', (value, context) => {
             if (value && value.length > 0) {
