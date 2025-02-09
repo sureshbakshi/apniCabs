@@ -1,31 +1,46 @@
-import { useCallback, useEffect } from "react";
-import { useLazyDriverRideHistoryQuery } from "../../slices/apiSlice";
+import { useCallback, useEffect, useState } from "react";
+import { useDriverRideHistoryQuery } from "../../slices/apiSlice";
 import MyRidePage from "../MyRidesPage"
-import ActivityIndicator from "../../components/common/ActivityIndicator";
 import { useFocusEffect } from '@react-navigation/native';
 
+const PageSize = 4;
+
 export default () => {
-    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading, isFetching, isUninitialized }] = useLazyDriverRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    const [page, setPage] = useState(1);
+    const [rides, setRides] = useState([]);
+    const { data: rideHistory, error: rideHistoryError, isFetching } = useDriverRideHistoryQuery({ page, pageSize: PageSize });
+
     useFocusEffect(
         useCallback(() => {
-            refetch?.()
+            setPage(1);
+            setRides([]);
         }, [])
     );
+
+    useEffect(() => {
+        if (rideHistory?.rows?.length) {
+            setRides((prevRideHistory) => ([...prevRideHistory, ...rideHistory?.rows]));
+        }
+    }, [rideHistory]);
+
+
+    const loadMore = useCallback(() => {
+        if (!isFetching && rideHistory?.count >= (page * PageSize)) {
+            setPage((prevPage) => prevPage + 1);
+        }
+    }, [isFetching, rideHistory]);
+
     const rideHistoryKeys = {
         name: '',
         status: 'status',
         from: 'from_location',
         to: 'to_location',
         model: '',
-        rideTime: 'ride.start_time',
+        rideTime: 'RequestRides.start_time',
         avatar: '',
-        fare: 'ride.fare'
+        fare: 'RequestRides.fare'
     }
-    if (isLoading || isUninitialized) {
-        return <ActivityIndicator />
-    }
-
     return (
-        <MyRidePage data={rideHistory} keys={rideHistoryKeys} />
+        <MyRidePage data={rides || []} keys={rideHistoryKeys} loadMore={loadMore} isFetching={isFetching} />
     )
 }

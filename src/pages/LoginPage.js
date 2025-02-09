@@ -199,6 +199,7 @@ const LoginPage = () => {
             formMutation={useGetLoginOTPMutation}
             initialState={initialState}
             additionalOTPPayload={additionalOTPPayload}
+            additionalVerifyOTPPayload={additionalOTPPayload}
             getOTPPayloadKeys={['phone']}
             verifyOTPMutation={useVerifyOTPMutation}
             formPayloadKeys={['phone']}

@@ -13,6 +13,7 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 import CommonStyles from '../styles/commonStyles';
 import FindRidePageStyles from '../styles/FindRidePageStyles';
 import generateInvoice from '../util/generateInvoice';
+import ActivityIndicator from '../components/common/ActivityIndicator';
 
 export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -41,7 +42,7 @@ const Card = ({ item, keys }) => {
       {time && <View>
         {<Text style={styles.time}>{formattedDate(time)}</Text>}
       </View>}
-      <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
+      {/* <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
         <Icon name='dots-vertical' size='large' color={COLORS.gray} />
         <Pressable onPress={(e) => {
           e.stopPropagation();
@@ -56,7 +57,7 @@ const Card = ({ item, keys }) => {
           <Icon name='chat' size='large' color={COLORS.gray} />
         </Pressable>
 
-      </View>
+      </View> */}
     </View>
     {/* <View style={[styles.left, { paddingRight: 0, paddingLeft: 20 }]}>
         <ImageView source={image || images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
@@ -80,19 +81,21 @@ const Card = ({ item, keys }) => {
     </View> */}
   </Pressable>
 }
-const MyRidePage = ({ data, keys }) => {
+const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={[FindRidePageStyles.pageContainer]}>
         <ContainerWrapper>
-          {data?.length ? <View style={styles.section}>
+          {!!data?.length && <View style={styles.section}>
             <FlatList
               data={data}
               renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
               keyExtractor={item => item.id}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.2}
+              ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
             />
-          </View> :
-            <SearchLoader msg="No Records found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
+          </View>}
         </ContainerWrapper>
       </View>
     </SafeAreaView>

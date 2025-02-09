@@ -79,7 +79,7 @@ const api_urls = {
   driverAvailabilty: 'driver-availabilty',
   driverActiveRide: 'active-rides/driver',
   driverRideHistory: 'history/driver',
-  userRideHistory: 'history/users',
+  userRideHistory: 'history/user',
   updateRequest: 'driver-update',
   send: 'send',
   ride: 'ride',
@@ -191,9 +191,9 @@ export const apiSlice = createApi({
 
     // users start
     userRideHistory: builder.query({
-      query: () => ({
+      query: ({ page, pageSize }) => ({
         method: 'GET',
-        url: api_path.request(`${api_urls.userRideHistory}/${getUserId()}`),
+        url: api_path.request(`${api_urls.userRideHistory}?pageNumber=${page}&pageSize=${pageSize}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -232,9 +232,9 @@ export const apiSlice = createApi({
       providesTags: ['RideStatus'],
     }),
     driverRideHistory: builder.query({
-      query: () => ({
+      query: ({ page, pageSize }) => ({
         method: 'GET',
-        url: api_path.request(`${api_urls.driverRideHistory}/${getUserId()}`),
+        url: api_path.request(`${api_urls.driverRideHistory}?pageNumber=${page}&pageSize=${pageSize}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -466,7 +466,10 @@ export const {
   useCancelAcceptedRequestMutation,
   useLazyUserActiveRideQuery,
   useLazyDriverRideHistoryQuery,
+  useDriverRideHistoryQuery,
+  useUserRideHistoryQuery,
   useLazyUserRideHistoryQuery,
+  useGetDriverTransactionsQuery,
   useLazyGetDriverTransactionsQuery,
   useEditFareMutation,
   useCancelRequestMutation,

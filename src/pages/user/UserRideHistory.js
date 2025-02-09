@@ -1,19 +1,34 @@
-import { useCallback, useEffect } from "react";
-import { useLazyUserRideHistoryQuery } from "../../slices/apiSlice";
+import { useCallback, useEffect, useState } from "react";
+import {  useUserRideHistoryQuery } from "../../slices/apiSlice";
 import MyRidePage from "../MyRidesPage"
-import ActivityIndicator from "../../components/common/ActivityIndicator";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect } from '@react-navigation/native';
+
+const PageSize = 4;
 
 export default () => {
-    const [refetch, { data: rideHistory, error: rideHistoryError, isLoading , isUninitialized}] = useLazyUserRideHistoryQuery({}, { refetchOnMountOrArgChange: true });
+    const [page, setPage] = useState(1);
+    const [rides, setRides] = useState([]);
+    const { data: rideHistory, error: rideHistoryError, isFetching } = useUserRideHistoryQuery({ page, pageSize: PageSize });
+
     useFocusEffect(
         useCallback(() => {
-            refetch?.()
+            setPage(1);
+            setRides([]);
         }, [])
     );
-    if (isLoading || isUninitialized) {
-        return  <ActivityIndicator/>
-    }
+
+    useEffect(() => {
+        if (rideHistory?.rows?.length) {
+            setRides((prevRideHistory) => ([...prevRideHistory, ...rideHistory?.rows]));
+        }
+    }, [rideHistory]);
+
+
+    const loadMore = useCallback(() => {
+        if (!isFetching && rideHistory?.count >= (page * PageSize)) {
+            setPage((prevPage) => prevPage + 1);
+        }
+    }, [isFetching, rideHistory]);
 
     const rideHistoryKeys = {
         name: '',
@@ -21,11 +36,11 @@ export default () => {
         from: 'from_location',
         to: 'to_location',
         model: '',
-        rideTime: 'updated_at',
+        rideTime: 'RequestRides.start_time',
         avatar: '',
-        fare: 'ride.fare'
-      }
+        fare: 'RequestRides.fare'
+    }
     return (
-       <MyRidePage data={rideHistory} keys={rideHistoryKeys}/>
+        <MyRidePage data={rides || []} keys={rideHistoryKeys} loadMore={loadMore} isFetching={isFetching} />
     )
 }
