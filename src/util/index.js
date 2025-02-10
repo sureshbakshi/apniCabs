@@ -275,3 +275,11 @@ export const cleanFormattedAddress = (formattedAddress) => {
   // Remove the Plus Code from the address
   return formattedAddress.replace(plusCodeRegex, "").trim();
 }
+
+export const mergeObjectsWithoutDuplicates = (array1, array2, key) => {
+  const mergedArray = [
+    ...array1,
+    ...array2
+  ].reduce((map, obj) => map.set(obj[key], obj), new Map());
+  return [...mergedArray.values()];
+}

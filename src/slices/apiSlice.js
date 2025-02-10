@@ -66,7 +66,8 @@ const api_path = {
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
   links: path => `links/${path}`,
-  location: path => `location/location/${path}`
+  location: path => `location/location/${path}`,
+  wallet: path => `payment/wallet/${path}`
 };
 const api_urls = {
   login: 'login',
@@ -94,7 +95,7 @@ const api_urls = {
   order: 'order',
   payment: 'payment',
   wallet: 'wallet',
-  create:'create'
+  create: 'create'
 };
 
 export const apiSlice = createApi({
@@ -333,18 +334,19 @@ export const apiSlice = createApi({
     }),
     // transaction starts
     getDriverTransactions: builder.query({
-      query: id => ({
+      query: ({ id, page, pageSize, lastKey }) => ({
         method: 'GET',
-        url: api_path.transactions(`${api_urls.list}`),
+        url: api_path.wallet(`${id}/transactions?pageNumber=${page}&pageSize=${pageSize}`),
       }),
-      transformResponse: (response) => {
-        const history = response
-        if (history?.transactions) {
-          const unholdTransactions = history.transactions.filter((item) => item.type !== 'HOLD')
-          history.transactions = formatTransactions(unholdTransactions)
-        }
-        return history
-      },
+      transformResponse: response => response,
+      // transformResponse: (response) => {
+      //   const history = response
+      //   if (history?.transactions) {
+      //     const unholdTransactions = history.transactions.filter((item) => item.type !== 'HOLD')
+      //     history.transactions = formatTransactions(unholdTransactions)
+      //   }
+      //   return history
+      // },
       transformErrorResponse: response => response,
       providesTags: ["RideStatus", "RideComplete"]
     }),
