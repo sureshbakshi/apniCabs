@@ -62,10 +62,10 @@ const api_path = {
   vehicle: path => `driver-vehicle/vehicle/${path}`,
   request: path => `request/request/${path}`,
   transactions: path => `transactions/${path}`,
-  subscription: path => `subscription/${path}`,
+  subscription: path => `user/subscription`,
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
-  links: path => `links/${path}`,
+  links: path => `user/links?${path}`,
   location: path => `location/location/${path}`,
   wallet: path => `payment/wallet/${path}`
 };
@@ -95,7 +95,8 @@ const api_urls = {
   order: 'order',
   payment: 'payment',
   wallet: 'wallet',
-  create: 'create'
+  create: 'create',
+  cities: 'cities',
 };
 
 export const apiSlice = createApi({
@@ -351,9 +352,9 @@ export const apiSlice = createApi({
       providesTags: ["RideStatus", "RideComplete"]
     }),
     getDriverWallet: builder.query({
-      query: id => ({
+      query: ({ id }) => ({
         method: 'GET',
-        url: api_path.transactions(`${api_urls.wallet}`),
+        url: api_path.wallet(`${id}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -403,7 +404,7 @@ export const apiSlice = createApi({
     subscriptionList: builder.query({
       query: () => ({
         method: 'GET',
-        url: api_path.subscription(`${api_urls.list}`),
+        url: api_path.subscription(),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -431,16 +432,25 @@ export const apiSlice = createApi({
     //payment end
     //appLinks
     getAppLinks: builder.query({
-      query: (body) => ({
+      query: ({ isActive }) => ({
         method: 'GET',
-        url: api_path.links(api_urls.list),
-        params: body
+        url: api_path.links(`isActive=${isActive}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
       providesTags: ['AppLinks']
     }),
     //appLinks end
+
+    //
+    getCities: builder.query({
+      query: (id) => ({
+        method: "GET",
+        url: api_path.users(api_urls.cities),
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
+    }),
 
   }),
 
@@ -485,4 +495,5 @@ export const {
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,
+  useGetCitiesQuery
 } = apiSlice;

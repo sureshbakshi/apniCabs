@@ -15,7 +15,7 @@ import { Text } from '../components/common';
 import { useDispatch } from 'react-redux';
 import { useGetSignupOTPMutation, useSignupMutation } from '../slices/apiSlice';
 import { updateUserCheck } from '../slices/authSlice';
-import { COLORS, ROUTES_NAMES, SIGN_UP_FORM, USER_ROLES } from '../constants';
+import { COLORS, ELEMENTS, ROUTES_NAMES, SELECT_OPTIONS_KEYS, SIGN_UP_FORM, USER_ROLES } from '../constants';
 import { signupSchema } from '../schema';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
@@ -23,7 +23,19 @@ import CustomButton from '../components/common/CustomButton';
 import config, { openOwnerPortal } from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-
+const city = [{
+  name: "city",
+  label: "City",
+  element: ELEMENTS.select,
+  fieldKey: SELECT_OPTIONS_KEYS.city,
+  props: {
+    placeholder: "Select City",
+  }
+}]
+const SIGN_UP_FORM_FIELDS = [
+  ...SIGN_UP_FORM,
+  ...(config.ROLE === 'DRIVER' && city)
+]
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const googleInfo = undefined
@@ -70,15 +82,15 @@ const SignUpPage = () => {
                 </RadioButton.Group> */}
                   <OTPForm
                     successHandler={successHandler}
-                    formFields={SIGN_UP_FORM}
+                    formFields={SIGN_UP_FORM_FIELDS}
                     formSchema={signupSchema}
                     formMutation={useGetSignupOTPMutation}
                     initialState={initialState}
                     getOTPPayloadKeys={['phone']}
-                    additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER}}
+                    additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER }}
                     verifyOTPMutation={useSignupMutation}
                     additionalVerifyOTPPayload={additionalVerifyOTPPayload}
-                    formPayloadKeys={['name', 'email', 'phone', 'referredBy']}
+                    formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city']}
                     submitBtnLabel={'Get OTP'}
                     heading={'Sign Up'}
                   />

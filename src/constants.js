@@ -3,7 +3,12 @@ import images from './util/images';
 import { formatStatusText, formattedDate } from './util';
 import { styles } from './navigation/TabBar';
 
-
+export const ELEMENTS = {
+  select: "select"
+};
+export const SELECT_OPTIONS_KEYS = {
+  city: "city"
+};
 export const authInitialState = {
   googleInfo: null,
   userInfo: null,
@@ -26,7 +31,8 @@ export const USER_ROLES = {
 
 export const ROLE_IDS = {
   [USER_ROLES.USER]: '8d9b7a03-dc12-4d5d-a8ee-6575bc5342e0',
-  [USER_ROLES.DRIVER]: '7f4f1d06-8387-4bc3-8855-c8e0956b1c50'
+  [USER_ROLES.DRIVER]: '7f4f1d06-8387-4bc3-8855-c8e0956b1c50',
+  [USER_ROLES.OWNER] : '3cb09115-b4ef-4ed3-8658-f08a3a672451'
 }
 
 export const DEFAULT_VEHICLE_TYPES = [
@@ -498,15 +504,6 @@ export const SIGN_UP_FORM = [
 
     },
   },
-  // {
-  //   name: 'password',
-  //   label: "Password*",
-  //   props: {
-  //     placeholder: "Enter password*",
-  //     required: true,
-  //     secureTextEntry: true,
-  //   },
-  // },
   {
     name: 'referredBy',
     label: "Referral Code",
@@ -525,5 +522,5 @@ export const MAPS_LABELS = {
 export const SOCKET_EVENTS = {
   rideCompleted: 'ride-completed',
   sendMessage: 'send-message',
-  joinRoom:'join-room'
+  joinRoom: 'join-room'
 }

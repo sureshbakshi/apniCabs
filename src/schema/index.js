@@ -114,6 +114,9 @@ export const signupSchema = yup.object().shape({
     //     .string()
     //     .required("Please enter password")
     //     .min(6, 'Minimum 6 Characters required'),
+    "city": yup
+        .string()
+        .required("City is required"),
     "referredBy": yup
         .string()
         .test('valid-referral-code', 'Please enter a valid referral code', (value, context) => {

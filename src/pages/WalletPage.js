@@ -58,6 +58,7 @@ const PageSize = 20;
 
 const WalletPage = ({ navigation }) => {
   const { driverInfo } = useSelector(state => state.auth);
+  const { walletInfo } = useSelector(state => state.driver);
   const [page, setPage] = useState(1);
   const [lastKey, setLastKey] = useState({});
   const [transactions, setTransactions] = useState([]);
@@ -169,7 +170,7 @@ const WalletPage = ({ navigation }) => {
               </View>
               <View>
                 <Text style={WalletStyles.graytxt}>{'Total Credits'}</Text>
-                {/* {balance ? <Text style={WalletStyles.balTxt}>{balance}</Text> : null} */}
+                {walletInfo?.id ? <Text style={WalletStyles.balTxt}>{walletInfo?.amount}</Text> : null}
                 <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans) }}>
                   <Text style={WalletStyles.buttonTxt}>{'Add Credits'}</Text>
                   <Icon name='chevron-right' size='large' color={COLORS.primary} />

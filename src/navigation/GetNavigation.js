@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import { isDriver, isUser, showErrorMessage } from '../util';
+import { isDriver, isOwner, isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
 // import UserTabNavigator from './userTabNavigation';
 // import DriverTabNavigator from './driverTabNavigation';
@@ -16,8 +16,9 @@ const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
 export const GetAuthRoutes = () => {
     const isDriverLogged = isDriver()
     const isUserLogged = isUser()
+    const isOwnerLogged= isOwner()
     const { logOut } = useLogout()
-    if (isDriverLogged) {
+    if (isDriverLogged || isOwnerLogged) {
         route = <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
             <DriverTabNavigator />
         </Suspense>

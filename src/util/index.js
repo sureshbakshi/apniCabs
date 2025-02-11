@@ -11,6 +11,7 @@ import { navigate } from './navigationService';
 import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
 import config from '../util/config';
+import { isEmpty } from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -261,7 +262,7 @@ export const formatStatusText = (status) => {
 
 export const extractKeys = (fullDetails, keysToExtract) => {
   return keysToExtract.reduce((newObj, key) => {
-    if (fullDetails.hasOwnProperty(key)) {
+    if (fullDetails.hasOwnProperty(key) && !isEmpty(fullDetails[key])) {
       newObj[key] = fullDetails[key];
     }
     return newObj;
