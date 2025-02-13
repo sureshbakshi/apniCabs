@@ -22,7 +22,7 @@ const tabHiddenRoutes = [ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
 
-  const { activeRequest } = useSelector((state) => state.user);
+  const { activeRequest, activeRequestId } = useSelector((state) => state.user);
   const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
   useGetUserActiveRequests()
@@ -55,7 +55,7 @@ export default function UserStackNavigator({ navigation, route }) {
         options={{ title: 'Active Ride' }}
         component={ActiveRidePage}
       /> :
-        rideRequests?.vehicles ?
+        activeRequestId ?
           <Stack.Screen
             name={ROUTES_NAMES.findCaptain}
             options={{

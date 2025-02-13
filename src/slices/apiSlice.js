@@ -77,19 +77,19 @@ const api_urls = {
   forgot: 'forgot',
   verifyOTP: 'verifyOTP',
   userCheck: 'checkUser',
-  driverAvailabilty: 'driver-availabilty',
-  driverActiveRide: 'active-rides/driver',
+  driverAvailabilty: 'availability',
+  driverActiveRide: 'active/driver',
   driverRideHistory: 'history/driver',
   userRideHistory: 'history/user',
-  updateRequest: 'driver-update',
+  updateRequest: 'update',
   send: 'send',
   ride: 'ride',
-  completeRide: 'complete-ride',
-  cancelAcceptedRequest: 'cancel-accpeted-request',
+  completeRide: 'complete',
+  cancelAcceptedRequest: 'cancel-accept',
   location: 'location',
   userActiveRide: 'active/user',
   list: 'list',
-  cancelRequest: 'cancel-request',
+  cancelRequest: 'cancel',
   sosAdd: 'add',
   device: 'device',
   order: 'order',
@@ -97,6 +97,7 @@ const api_urls = {
   wallet: 'wallet',
   create: 'create',
   cities: 'cities',
+  confirm: 'confirm'
 };
 
 export const apiSlice = createApi({
@@ -183,7 +184,7 @@ export const apiSlice = createApi({
     }),
     updateDriverStatus: builder.mutation({
       query: body => ({
-        method: 'POST',
+        method: 'PATCH',
         url: api_path.drivers(api_urls.driverAvailabilty),
         body,
       }),
@@ -222,6 +223,16 @@ export const apiSlice = createApi({
       },
       transformErrorResponse: response => response,
     }),
+    getRequestsByCategory:  builder.query({
+      query: ({request_id, category}) => ({
+        method: 'GET',
+        url: api_path.request(`${request_id}/${category}/drivers`),
+      }),
+      transformResponse: response => {
+        return response;
+      },
+      transformErrorResponse: response => response,
+    }),
 
     // users end
     driverActiveRide: builder.query({
@@ -240,7 +251,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["RideStatus", "RideComplete"]
+      providesTags: []
     }),
     userActiveRide: builder.query({
       query: () => ({
@@ -252,8 +263,8 @@ export const apiSlice = createApi({
     }),
     rideRequest: builder.mutation({
       query: body => ({
-        method: 'POST',
-        url: api_path.request(api_urls.ride),
+        method: 'PATCH',
+        url: api_path.request(api_urls.confirm),
         body,
       }),
       transformResponse: response => response,
@@ -281,8 +292,8 @@ export const apiSlice = createApi({
     }),
     cancelRequest: builder.mutation({
       query: ({ request_id, driver_id }) => ({
-        method: 'PUT',
-        url: api_path.request(`${api_urls.cancelRequest}/${request_id}/${driver_id}`),
+        method: 'PATCH',
+        url: api_path.request(`${request_id}/${api_urls.cancelRequest}/${driver_id}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -470,6 +481,7 @@ export const {
   useSendDeviceTokenMutation,
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
+  useLazyGetRequestsByCategoryQuery,
   useGetDriverDetailsQuery,
   useUpdateDriverLocationMutation,
   useLazyDriverActiveRideQuery,

@@ -40,7 +40,7 @@ export const CancelReasonDialog = () => {
   const [message, setMessage] = useState(intialState);
   const [selectedMessage, setSelectedMessage] = useState({});
   const [errorMsg, setErrorMessage] = useState(null);
-  const { isDialogOpen } = useSelector(state => state.auth);
+  const { isDialogOpen, driverInfo } = useSelector(state => state.auth);
   const { activeRequest, rideRequests } = useSelector((state) => isDriverLogged ? state.driver : state.user);
 
   const [cancelAcceptedRequest, { data: cancelAcceptedRequestData, error: cancelAcceptedRequestError, cancelAcceptedRequestDataLoading }] =
@@ -79,10 +79,11 @@ export const CancelReasonDialog = () => {
   }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
   const handleSubmit = () => {
     if (selectedMessage.id && activeRequest?.id) {
+      console.log('activeRequest', activeRequest)
       let payload = {
         "request_id": activeRequest.id,
-        "driver_id": activeRequest.driver?.id || activeRequest?.driver_requests.driver_id,
-        "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
+        "driver_id":  isDriverLogged ? driverInfo?.id : activeRequest.driver?.id || activeRequest?.driver_requests.driver_id,
+        // "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
       }
       cancelAcceptedRequest(payload)

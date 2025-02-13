@@ -17,7 +17,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FindCaptainPage = () => {
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
-  const list = useSelector(state => state.user?.rideRequests?.drivers);
   const { requestInfo } = useSelector(state => state.user);
 
   const extraProps = {
@@ -25,17 +24,18 @@ const FindCaptainPage = () => {
     to: requestInfo?.to.location || '',
   };
 
-  if (isEmpty(list)) {
-    // navigate(ROUTES_NAMES.searchRide)
-    return <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>Drivers not found at the moment. Please try later!</Text>
-  }
+  // if (isEmpty(driverListByCategory)) {
+  //   // navigate(ROUTES_NAMES.searchRide)
+  //   return <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>Drivers not found at the moment. Please try later!</Text>
+  // }
   return (
     <SafeAreaView style={[FindRideStyles.container, FindRideStyles.pageContainer]}>
       <ContainerWrapper>
         {/* <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingVertical: 5, borderRadius: 12, marginBottom: 10 }}>
           <Timeline data={[extraProps.from, extraProps.to]} />
         </View> */}
-        {
+        <CustomTabs extraProps={extraProps} /> 
+        {/* {
           list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
             <>
               <View style={{ backgroundColor: COLORS.bg_gray_primary, marginBottom: 2 }}>
@@ -52,7 +52,7 @@ const FindCaptainPage = () => {
                 />
               </CustomScrollbar>
             </>
-        }
+        } */}
         <CustomButton
           onClick={requestAlertHandler}
           textStyles={{ color: COLORS.primary, fontSize: 18 }}

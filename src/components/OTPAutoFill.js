@@ -10,6 +10,8 @@ import config from '../util/config';
 
 export default ({ route, data, callbackFunctions }) => {
     const otpInfo = route?.params?.data || data
+
+    console.log({otpInfo, params: route?.params?.data })
     const dispatch = useDispatch()
     const [submitOTPHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         callbackFunctions.verifyOTPMutation();

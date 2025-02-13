@@ -2,15 +2,28 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { ClearRideStatus, RideStatus } from '../constants';
 
-const updateStatusByDriverId = (updatedData, driver_id, status) => {
-  _.forEach(updatedData, item => {
-    const driverToUpdate = _.find(item.drivers, { 'driver_id': driver_id });
-    if (driverToUpdate) {
-      _.set(driverToUpdate, 'status', status);
-    }
-  });
-  return updatedData;
-};
+// const updateStatusByDriverId = (drivers, driver_id, status) => {
+//   _.forEach(drivers, item => {
+//     const driverToUpdate = _.find(item.drivers, { 'driver_id': driver_id });
+//     if (driverToUpdate) {
+//       _.set(driverToUpdate, 'status', status);
+//     }
+//   });
+//   return updatedData;
+// };
+
+function updateStatusByDriverId(drivers, driver_id, status) {
+  // Find the object in the array using the provided 'id'
+  let driverToUpdate = drivers.find(obj => obj.id === driver_id);
+
+  // If the object is found, update its properties
+  if (driverToUpdate) {
+      _.set(driverToUpdate, 'status', status); // Update the object with new values
+  }
+
+  // Return the updated array (the array is mutated)
+  return drivers;
+}
 
 function updateAddress(existingAddress, newAddress) {
   // Check if place_id exists in the existing 'from' array
@@ -45,11 +58,14 @@ const mySelf = {
 
 const intialState = {
   activeRideId: null,
+  activeRequestDrivers: null,
   rideRequests: null,
   activeRequest: null,
+  activeRequestInfo: null,
   driverLocation: null,
   statusUpdate: null,
   requestInfo: null,
+  activeRequestId: null,
   recentSearchHistory: { from: [], to: [] },
   otherContactList: [mySelf],
   selectedOtherContact: mySelf
@@ -58,8 +74,20 @@ const userSlice = createSlice({
   name: 'user',
   initialState: intialState,
   reducers: {
-    setRideRequest: (state, action) => {
-      state.rideRequests = action.payload;
+    setActiveRequestDrivers: (state, action) => {
+      const { id, category, code, drivers } = action.payload;
+      if (id) {
+        const key = category || code;
+        state.activeRequestId = id
+        state.activeRequestDrivers = { ...state.activeRequestDrivers, [key]: drivers };
+      }
+    },
+    setActiveRequest: (state, action) => {
+      const { id, ...rest } = action.payload;
+      if (id) {
+        state.activeRequestId = id;
+        state.activeRequestInfo = rest;
+      }
     },
     requestInfo: (state, action) => {
       state.requestInfo = action.payload
@@ -69,8 +97,10 @@ const userSlice = createSlice({
       state.rideRequests = null;
       state.activeRequest = null;
       state.selectedOtherContact = null;
+      state.activeRequestId = null;
+      state.activeRequestDrivers = null;
     },
-    setActiveRequest: (state, action) => {
+    setActiveRideRequest: (state, action) => {
       if (_.isEmpty(action.payload)) {
         state.activeRequest = null;
         state.activeRideId = null
@@ -87,6 +117,17 @@ const userSlice = createSlice({
     setRecentSearchHistory: (state, action) => {
       const updatedAddress = updateAddress(state.recentSearchHistory, action?.payload)
       state.recentSearchHistory = updatedAddress
+    },
+    updateActiveRequestDrivers: (state, action) => {
+      const { id: driver_id, status, category } = action.payload;
+        const drivers = state.activeRequestDrivers?.[category];
+        if (drivers?.length) {
+          const existingDrivers = _.cloneDeep(drivers); // Ensure you're working with a copy
+          const updateDrivers = updateStatusByDriverId(existingDrivers, driver_id, status);
+          if (updateDrivers?.length) {
+            state.activeRequestDrivers[category] = updateDrivers;
+          }
+      }
     },
     updateDriversRequest: (state, action) => {
       const { driver_id, status, id } = action.payload;
@@ -124,9 +165,11 @@ const userSlice = createSlice({
 });
 
 export const {
-  setRideRequest,
+  setActiveRequestDrivers,
   updateDriversRequest,
+  updateActiveRequestDrivers,
   setActiveRequest,
+  setActiveRideRequest,
   clearUserState,
   updateDriverLocation,
   requestInfo,

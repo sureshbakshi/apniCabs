@@ -27,10 +27,10 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) =>
       <View style={{ justifyContent: 'flex-end', marginBottom: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>Distance</Text>
-          <Text>{item.duration} - {item.distance || item?.driver_distance} km</Text>
+          <Text>{item?.Request?.duration} - {item?.Request?.distance || item?.driver_distance} km</Text>
         </View>
         <Text style={[FindRideStyles.name, { alignSelf: 'flex-end', fontSize: 18, lineHeight: 24 }]}>
-          {'\u20B9'}{item.fare || item?.driver_requests?.fare}
+          {'\u20B9'}{item.fare || item?.DriverRequest?.fare}
         </Text>
       </View>
       <View style={[FindRideStyles.cardtop]}>
@@ -38,8 +38,8 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) =>
           {/* <Text style={FindRideStyles.name}>{item.user_name}</Text> */}
           <Timeline
             data={[
-              item.from_location,
-              item.to_location,
+              item?.Request?.from_location,
+              item?.Request?.to_location,
             ]}
             numberOfLines={2}
           />
@@ -92,7 +92,7 @@ const DriverCard = ({ list }) => {
   const requestHandler = (status, request) => {
     const payload = {
       "status": status,
-      "request_id": request?.id
+      "request_id": request?.request_id
     }
     updateRequest(payload)
   }
@@ -121,7 +121,7 @@ export const PickARide = () => {
   const { rideRequests, isOnline: driverStatus, walletInfo } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
   const status = isDriverAcceptedOrOnline()
-  const [isOnline, setToggleSwitch] = useState(status)
+  const [isOnline, toggleDriveStatus] = useState(status)
   const { getCurrentLocation } = useGetCurrentLocation();
 
 
@@ -130,15 +130,15 @@ export const PickARide = () => {
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
 
   const toggleSwitch = () => {
-    setToggleSwitch(!isOnline)
+    toggleDriveStatus(!isOnline)
   }
 
   useEffect(() => {
-    if (!isEqual(status, isOnline)) {
-      if (driverStatus !== DriverAvailableStatus.ACCEPTED || driverStatus !== DriverAvailableStatus.ONRIDE) {
-        updateDriverStatus(isOnline, setToggleSwitch)
-      }
-    }
+    // if (!isEqual(status, isOnline)) {
+      // if (driverStatus !== DriverAvailableStatus.BUSY) {
+        updateDriverStatus(true, toggleDriveStatus)
+      // }
+    // }
   }, [isOnline]);
 
   useEffect(() => {
@@ -146,7 +146,7 @@ export const PickARide = () => {
   }, [status])
 
   useEffect(() => {
-    setToggleSwitch(status)
+    toggleDriveStatus(status)
   }, [status])
 
 const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)

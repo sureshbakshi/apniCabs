@@ -12,9 +12,9 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
     // const { rideRequests, activeRequest } = useSelector(state => state.user)
 
     const requestAlertHandler = (cb) => {
-        const { rideRequests, activeRequest } = store.getState().user
+        const { activeRequestId, activeRequest } = store.getState().user
         // console.log({rideRequests, activeRequest})
-        if (rideRequests?.request_id || activeRequest?.id) {
+        if (activeRequestId || activeRequest?.id) {
             Alert.alert(title, message, [
                 {
                     text: 'Close',
@@ -24,7 +24,7 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
                 {
                     text: 'YES, Cancel',
                     onPress: () => {
-                        if (rideRequests?.request_id) {
+                        if (activeRequestId) {
                             cancelAllActiveRequest(cb);
                         } else if (activeRequest?.id) {
                             dispatch(setDialogStatus(true))

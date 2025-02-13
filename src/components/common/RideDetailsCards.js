@@ -74,8 +74,8 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
     const driver_details = driverDetails || activeRequest?.driver
     const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
     const fare = activeRequest.fare || activeRequest?.ride?.fare
-    const dp = (isDriverLogged) ? activeRequest?.user?.avatar : driver_avatar
-    const name = isDriverLogged ? activeRequest?.user?.name : driver_details?.name
+    const dp = (isDriverLogged) ? activeRequest?.user_details?.avatar : driver_avatar
+    const name = isDriverLogged ? activeRequest?.user_details?.name : driver_details?.name
     const vehicle = activeRequest?.driver?.vehicle || driverDetails?.vehicle
     const { color, label } = getColorNBg(activeRequest?.status)
     return (
@@ -134,28 +134,21 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
     )
 }
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 60
-
-export default ({ activeRequest, isDriverLogged }) => {
-    const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
-    const dispatch = useDispatch()
-    const otpRef = useRef(null)
+const getFromLocation = (location = currentLocation) => {
+    return {
+        Long: location.longitude + '' || 'NA',
+        Lat: location.latitude + '' || 'NA',
+        City: location.city || 'NA',
+        location: location.address || 'NA'
+    }
+}
+export const RenderOTP = ({ activeRequest }) => {
+    const { getCurrentLocation } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
-    const { activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user)
-
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
         useRideRequestMutation();
+    const dispatch = useDispatch()
 
-    const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
-        useCompleteRideRequestMutation();
-
-    const getFromLocation = (location = currentLocation) => {
-        return {
-            Long: location.longitude + '' || 'NA',
-            Lat: location.latitude + '' || 'NA',
-            City: location.city || 'NA',
-            location: location.address || 'NA'
-        }
-    }
     const otpSubmitHandler = (location) => {
         let payload = {
             request_id: activeRequest.id,
@@ -172,7 +165,6 @@ export default ({ activeRequest, isDriverLogged }) => {
     const handleSubmitOtp = () => {
         if (isEmpty(otp)) {
             showErrorMessage('Please enter valid code')
-            // otpRef?.current?.focus()
         } else {
             getCurrentLocation(otpSubmitHandler)
         }
@@ -186,15 +178,56 @@ export default ({ activeRequest, isDriverLogged }) => {
         }
     }, [otp])
 
+    return (
+        <View style={{ flexDirection: 'row' }}>
+            <TextInput
+                keyboardType='numeric'
+                placeholder="Enter OTP here"
+                // autoComplete={'sms-otp'}
+                onChangeText={newText => setOtp(newText)}
+                value={otp}
+                // autoFocus
+                minLength={4}
+                maxLength={4}
+                style={[FindRideStyles.textInputPickup, { flex: 1, backgroundColor: COLORS.white }]}
+            />
+            <Pressable
+                onPress={() => handleSubmitOtp()}
+                disabled={isSubmitOtpLoading}
+                style={[
+                    FindRideStyles.button,
+                    { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.4 : 1 , borderColor: COLORS.brand_yellow, borderWidth: 0.5},
+                ]}>
+                <Text
+                    style={[
+                        FindRideStyles.text,
+                        { fontWeight: 'bold', color: COLORS.black },
+                    ]}>
+                    {'Submit OTP'}
+                </Text>
+            </Pressable>
+        </View>
+    )
+}
+
+export default ({ activeRequest, isDriverLogged }) => {
+    const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
+    const dispatch = useDispatch()
+    const { activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user)
+    const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
+        useCompleteRideRequestMutation();
+
+
     const completeRideHandler = (location) => {
         let payload = {
             request_id: activeRideId || activeRequest?.id,
             to: getFromLocation(location)
         }
         completeRideRequest(payload).unwrap().then((res) => {
+            console.log(res)
             dispatch(updateRideStatus(res));
-            dispatch(clearRideChats());
-            socket.emit(SOCKET_EVENTS.rideCompleted)
+            // dispatch(clearRideChats());
+            // socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
             console.log(err)
             if (err?.status == 400) {
@@ -202,46 +235,18 @@ export default ({ activeRequest, isDriverLogged }) => {
             }
         })
     }
-
-    const isActiveRide = (activeRideId || activeRequest.status === RideStatus.ONRIDE)
+    const isActiveRide = (activeRequest.status === RideStatus.ONRIDE && isDriverLogged)
+    const isAccepted = (activeRequest.status === RideStatus.ACCEPTED) && isDriverLogged
     return (
         <>
             <View style={[FindRideStyles.card]}>
                 <ScreenContainer>
                     <RideDetailsView {...{ activeRequest, isDriverLogged }} />
-                    {(!isActiveRide && isDriverLogged) && <View style={{ flexDirection: 'row' }}>
-                        <TextInput
-                            keyboardType='numeric'
-                            placeholder="Enter OTP here"
-                            // autoComplete={'sms-otp'}
-                            onChangeText={newText => setOtp(newText)}
-                            value={otp}
-                            // autoFocus
-                            ref={otpRef}
-                            minLength={4}
-                            maxLength={4}
-                            style={[FindRideStyles.textInputPickup, { flex: 1, backgroundColor: COLORS.white }]}
-                        />
-                        <Pressable
-                            onPress={() => handleSubmitOtp()}
-                            disabled={isSubmitOtpLoading}
-                            style={[
-                                FindRideStyles.button,
-                                { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.4 : 1 },
-                            ]}>
-                            <Text
-                                style={[
-                                    FindRideStyles.text,
-                                    { fontWeight: 'bold', color: COLORS.black },
-                                ]}>
-                                {'Submit OTP'}
-                            </Text>
-                        </Pressable>
-                    </View>}
+                    {(isAccepted) && <RenderOTP {...{ activeRequest }} />}
                 </ScreenContainer>
             </View>
-            {((isActiveRide && isDriverLogged)) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
-                {(activeRequest?.from_location) && <OpenMapButton route={{ start: activeRequest.from_location, end: activeRequest.to_location, navigate: true }} />}
+            {(isActiveRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
+                <OpenMapButton route={{ start: activeRequest.from, end: activeRequest.to, navigate: true }} />
                 <CustomButton
                     onClick={() => getCurrentLocation(completeRideHandler)}
                     disabled={isCompleteRideLoading}
@@ -254,7 +259,7 @@ export default ({ activeRequest, isDriverLogged }) => {
                 />
             </View>
             }
-            <View>{!activeRideId ? cancelRide(activeRequest, isDriverLogged) : null}</View>
+            <View>{isAccepted ? cancelRide(activeRequest, isDriverLogged) : null}</View>
         </>
     );
 };

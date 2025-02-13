@@ -8,6 +8,7 @@ import { store } from "../store";
 // const socketUri = 'http://192.168.150.226:8080/'
 const socketUri = "http://notification-service-350461574.ap-south-1.elb.amazonaws.com/"
 const state = store?.getState();
+console.log({ state })
 const socket = io(socketUri, {
   // Additional configuration options can be set here
   auth: {

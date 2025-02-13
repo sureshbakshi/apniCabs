@@ -3,16 +3,34 @@ import { View, ScrollView } from 'react-native';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import { Tabs, TabScreen, TabsProvider, useTabIndex } from 'react-native-paper-tabs';
 import _ from 'lodash';
-import { COLORS, VEHICLE_TYPES } from '../../../constants';
+import { COLORS, DEFAULT_VEHICLE_TYPES, VEHICLE_TYPES } from '../../../constants';
 import { Capitalize } from '../../../util';
 import CaptainsCard from './CaptainsCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveRequestDrivers } from '../../../slices/userSlice';
+import {  useLazyGetRequestsByCategoryQuery } from '../../../slices/apiSlice';
 
 const CustomTabs = ({ extraProps, data }) => {
-  const list = useSelector(state => state.user?.rideRequests?.vehicles);
+  const {vehicleTypes} = useSelector(state => state.auth);
+  const vehicleList = vehicleTypes || DEFAULT_VEHICLE_TYPES;
+
+  const dispatch = useDispatch();
+    const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
+    const defaultCode =  vehicleList[0]?.code;
+    const [ refetch, {data: categoryResponse, error: rideHistoryError, isFetching }] = useLazyGetRequestsByCategoryQuery({ request_id, category: defaultCode }, {refetchOnMountOrArgChange: true, skip: !request_id || !defaultCode});
+  
+    useEffect(() => {
+      if (categoryResponse) {
+        dispatch(setActiveRequestDrivers(categoryResponse))
+      }
+    }, [categoryResponse])
+
+    const handleChangeIndex = (index) => {
+      refetch({ category: vehicleList[index].code, request_id });
+    }
   return (
     <View style={FindRideStyles.container}>
-      <TabsProvider defaultIndex={0}>
+      <TabsProvider defaultIndex={0}         onChangeIndex={handleChangeIndex}      >
         <Tabs
           mode="scrollable"
           style={[FindRideStyles.tabs]}
@@ -22,21 +40,26 @@ const CustomTabs = ({ extraProps, data }) => {
           }}
           showLeadingSpace={false}
         >
-          {list && list.map((item, i) => {
+          {vehicleList && vehicleList.map((vehicle, i) => {
             return (
               <TabScreen
-                label={Capitalize(item.name)}
-                icon={VEHICLE_TYPES[item.name]}
-                key={`${i}`}>
+                label={Capitalize(vehicle.name)}
+                icon={VEHICLE_TYPES[vehicle.code]}
+                key={`${i}`}
+                onPressIn={() => {
+                  console.log('vehicle.code', vehicle.code)
+                    refetch({ category: vehicle.code, request_id });
+                  }}>
                 <View style={FindRideStyles.section}>
                   <ScrollView
                     showsVerticalScrollIndicator={true}
                   >
                     {
                       <CaptainsCard
-                        list={item.drivers}
                         keyProp={i}
-                        extraProps={extraProps}
+                        extraProps={{...extraProps, request_id, category: vehicle.code}}
+                        driversList={ driverListByCategory?.[vehicle.code] || []}
+                        isFetching={isFetching}
                       />
                     }
                   </ScrollView>

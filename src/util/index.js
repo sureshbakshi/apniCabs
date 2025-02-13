@@ -195,7 +195,7 @@ export const formatRideRequest = (newRequest, oldRequests) => {
 }
 
 export const isDriverVerified = (driverInfo) => {
-  return driverInfo?.driver_detail?.verification_status === VerificationStatus.VERIFIED;
+  return driverInfo?.DriverDetail?.verification_status === VerificationStatus.VERIFIED;
 }
 
 

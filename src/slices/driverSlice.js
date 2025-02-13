@@ -18,12 +18,13 @@ const driverSlice = createSlice({
   reducers: {
     updateRideRequest: (state, action) => {
       const requestObj = action.payload
+
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
         state.activeRequest = requestObj;
         state.rideRequests = []
         state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : null
       } else {
-        state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.id)
+        state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.request_id)
       }
     },
     setActiveRide: (state, action) => {
@@ -34,7 +35,7 @@ const driverSlice = createSlice({
         state.statusUpdate = null;
       } else {
         const { id } = requestObj || {}
-        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? id : null;
+        state.activeRideId = (requestObj.status === RideStatus.ONRIDE || requestObj.status === RideStatus.ACCEPTED)? id : null;
         state.activeRequest = requestObj
       }
     },

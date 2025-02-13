@@ -39,7 +39,7 @@ export default function DriverStackNavigator({ navigation, route }) {
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePageContainer}
-      /> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) ? <Stack.Screen
+      /> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle))) ? <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
         options={{ title: 'Notification' }}
         component={MessageInfo}

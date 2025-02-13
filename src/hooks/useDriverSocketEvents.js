@@ -86,6 +86,7 @@ export default (() => {
         if (driverSocket.connected) {
             addDevice();
         } else {
+            console.log(`============= Driver Client connecting ==========`)
             driverSocket.connect();
         }
     }, [addDevice, driverSocket]);
@@ -93,8 +94,9 @@ export default (() => {
 
 
     useEffect(() => {
-        // console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline })
+        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline , isLoggedIn})
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
+            console.log('================= on connect ======================')
             connectSocket()
             onGetRideRequests(updateRideRequests);
         } else if ((!isLoggedIn || !isDriverOnline)) {

@@ -36,7 +36,7 @@ const ActiveRidePage = () => {
           <View style={{ height: (screenHeight - 345) }}>
             <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingTop: 10, paddingBottom: 0, borderRadius: 12, margin: 15, zIndex: 10000 }}>
               <Timeline
-                data={[activeRequest.from_location, activeRequest.to_location]}
+                data={[activeRequest.from, activeRequest.to]}
                 numberOfLines={1}
                 textStyles={{ fontSize: 12 }}
               />

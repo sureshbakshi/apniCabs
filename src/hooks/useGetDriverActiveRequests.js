@@ -32,8 +32,11 @@ export default () => {
         } else if (activeDriverRideDetails || activeDriverRideDetails === null) {
             if (Array.isArray(activeDriverRideDetails)) {
                 dispatch(setRideRequest(activeDriverRideDetails));
+                dispatch(setActiveRide({}))
             } else {
                 dispatch(setActiveRide(activeDriverRideDetails))
+                dispatch(setRideRequest({}));
+
             }
         }
 

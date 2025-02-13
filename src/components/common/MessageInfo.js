@@ -30,7 +30,7 @@ const MessageInfo = () => {
         updateDriverStatus(false)
     }, [])
 
-    const isNotVehicleAssigned = isEmpty(driverInfo?.vehicle)
+    const isNotVehicleAssigned = isEmpty(driverInfo?.Vehicle)
     const message = isNotVehicleAssigned ? 'Vehicle assigned to you' : 'your profile is verified'
 
     return (
@@ -45,7 +45,7 @@ const MessageInfo = () => {
                             <View style={NotificationsPageStyles.blackQuote}>
                                 <Text style={[NotificationsPageStyles.heading]}>Reason: </Text>
                             </View>
-                            {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.driver_detail?.reject_reason}.</Text>}
+                            {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.DriverDetail?.reject_reason}.</Text>}
                             {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>Vehicle not yet assigned.</Text>}
                         </View>
                         {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>

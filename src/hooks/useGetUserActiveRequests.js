@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useLazyUserActiveRideQuery } from "../slices/apiSlice";
 import { useCallback, useEffect, useRef } from "react";
-import { clearUserState, setActiveRequest } from "../slices/userSlice";
+import { clearUserState, setActiveRequest, setActiveRideRequest } from "../slices/userSlice";
 import { useFocusEffect } from "@react-navigation/native";
 import useGetCurrentLocation from "./useGetCurrentLocation";
 
@@ -23,8 +23,10 @@ export default () => {
     useEffect(() => {
         if (isUserError) {
             dispatch(clearUserState())
-        } else if (activeUserRideDetails) {
+        } else if(activeUserRideDetails?.id && activeUserRideDetails?.driver_details === null){
             dispatch(setActiveRequest(activeUserRideDetails))
+        } else if (activeUserRideDetails) {
+            dispatch(setActiveRideRequest(activeUserRideDetails))
         }
     }, [activeUserRideDetails, isUserError])
 

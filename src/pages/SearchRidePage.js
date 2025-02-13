@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SocketStatus from '../components/common/SocketStatus';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter } from 'lodash';
-import { requestInfo, setRideRequest, setRecentSearchHistory } from '../slices/userSlice';
+import { requestInfo, setActiveRequestDrivers, setRecentSearchHistory } from '../slices/userSlice';
 import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
 import ContainerWrapper from '../components/common/ContainerWrapper';
@@ -38,7 +38,7 @@ const SearchRidePage = () => {
     if (error) {
       console.log({ error });
     } else if (rideList) {
-      dispatch(setRideRequest(rideList));
+      dispatch(setActiveRequestDrivers(rideList));
     }
   }, [error, rideList]);
 
@@ -66,6 +66,49 @@ const SearchRidePage = () => {
     return DEFAULT_VEHICLE_TYPES[0].code
   }
 
+  const updateSearchHistory = ({from, to, fromCity, toCity}) => {
+    const history = {
+      from: {
+        address_components: from.address_components,
+        geometry: from.geometry,
+        place_id: from.place_id,
+        formatted_address: from.formatted_address,
+        city: fromCity[0]?.long_name
+      },
+      to: {
+        address_components: to.address_components,
+        geometry: to.geometry,
+        place_id: to.place_id,
+        formatted_address: to.formatted_address,
+        city: toCity[0]?.long_name
+      }
+    }
+    dispatch(setRecentSearchHistory(history))
+  }
+
+  const findDrivers = ({from, to, fromCity, toCity, distance, duration}) => {
+    let payload = {
+      from: {
+        location: from.formatted_address,
+        City: fromCity[0]?.long_name,
+        Lat: from.geometry.location.lat + '',
+        Long: from.geometry.location.lng + '',
+      },
+      to: {
+        location: to.formatted_address,
+        City: toCity[0]?.long_name,
+        Lat: to.geometry.location.lat + '',
+        Long: to.geometry.location.lng + '',
+      },
+      distance: Number((distance.value / 1000).toFixed(1)),
+      duration: duration.text,
+      category: getDefaultVehicleType(),
+      ...othersContactInfo()
+    };
+    dispatch(requestInfo(payload));
+    getRideRequest(payload);
+  }
+
   const searchHandler = async () => {
     const { distance, duration } = await getDistance();
     const { from, to } = location;
@@ -76,43 +119,8 @@ const SearchRidePage = () => {
       let toCity = filter(to.address_components, {
         types: ['locality'],
       });
-      let payload = {
-        from: {
-          location: from.formatted_address,
-          City: fromCity[0]?.long_name,
-          Lat: from.geometry.location.lat + '',
-          Long: from.geometry.location.lng + '',
-        },
-        to: {
-          location: to.formatted_address,
-          City: toCity[0]?.long_name,
-          Lat: to.geometry.location.lat + '',
-          Long: to.geometry.location.lng + '',
-        },
-        distance: Number((distance.value / 1000).toFixed(1)),
-        duration: duration.text,
-        category: getDefaultVehicleType(),
-        ...othersContactInfo()
-      };
-      dispatch(requestInfo(payload));
-      getRideRequest(payload);
-      const history = {
-        from: {
-          address_components: from.address_components,
-          geometry: from.geometry,
-          place_id: from.place_id,
-          formatted_address: from.formatted_address,
-          city: fromCity[0]?.long_name
-        },
-        to: {
-          address_components: to.address_components,
-          geometry: to.geometry,
-          place_id: to.place_id,
-          formatted_address: to.formatted_address,
-          city: toCity[0]?.long_name
-        }
-      }
-      dispatch(setRecentSearchHistory(history))
+      findDrivers({from, to, fromCity, toCity, distance, duration});
+      updateSearchHistory({from, to, fromCity, toCity})
     }
   }
   const isSearchDisabled = () => {

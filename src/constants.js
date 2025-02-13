@@ -202,7 +202,8 @@ export const DriverAvailableStatus = {
   OFFLINE: 'OFFLINE',
   ONLINE: 'ONLINE',
   ONRIDE: 'ONRIDE',
-  ACCEPTED: 'REQUEST_ACCEPTED'
+  ACCEPTED: 'REQUEST_ACCEPTED',
+  BUSY: 'BUSY'
 }
 
 export const RequestStatus = {
@@ -305,9 +306,9 @@ export const VEHICLE_IMAGES = {
 }
 
 export const VEHICLE_TYPES = {
-  'Car': 'car-side',
-  'Auto': 'golf-cart',//rv-truck,truck
-  'Bike': 'bike'
+  'CAR': 'car-side',
+  'AUTO': 'golf-cart',//rv-truck,truck
+  'BIKE': 'bike'
 }
 
 export const VEHICLE_INFORMATION = [{

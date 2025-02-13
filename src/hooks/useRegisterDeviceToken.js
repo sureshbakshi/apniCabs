@@ -8,7 +8,7 @@ export default () => {
     const [sendDeviceToken] = useSendDeviceTokenMutation();
 
     const submitDeviceToken = useCallback(() => {
-        sendDeviceToken({ device_token, device_type: Platform.OS })
+        // sendDeviceToken({ device_token, device_type: Platform.OS })
     }, [access_token, device_token])
 
    

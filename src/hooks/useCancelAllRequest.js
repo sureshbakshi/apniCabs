@@ -5,12 +5,12 @@ import { cancelRideRequest } from "../slices/userSlice";
 
 export default () => {
     const dispatch = useDispatch();
-    const { rideRequests } = useSelector(state => state.user);
+    const { activeRequestId } = useSelector(state => state.user);
     const [cancelAllRequest] = useCancelAllRequestMutation();
 
     const cancelAllActiveRequest = (cb) => {
-        if (rideRequests?.request_id) {
-            cancelAllRequest(rideRequests?.request_id).unwrap().then((res) => {
+        if (activeRequestId) {
+            cancelAllRequest(activeRequestId).unwrap().then((res) => {
                 dispatch(cancelRideRequest());
                 cb?.()
             }).catch((err) => {

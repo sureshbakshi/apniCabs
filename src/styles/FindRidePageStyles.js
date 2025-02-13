@@ -154,7 +154,8 @@ const FindRideStyles = StyleSheet.create({
     backgroundColor: '#f2f4f6',
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
-    borderBottomColor: '#ccc',
+    borderBottomColor: COLORS.bg_gray_secondary,
+    // borderTopWidth: 0.2,
     borderBottomWidth: 0.5,
     padding: 10,
     paddingHorizontal: 15
