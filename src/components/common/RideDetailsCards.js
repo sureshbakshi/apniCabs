@@ -73,10 +73,10 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
 export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
     const driver_details = driverDetails || activeRequest?.driver
     const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
-    const fare = activeRequest.fare || activeRequest?.ride?.fare
+    const fare = activeRequest?.RequestRides?.fare || activeRequest?.ride?.fare
     const dp = (isDriverLogged) ? activeRequest?.user_details?.avatar : driver_avatar
     const name = isDriverLogged ? activeRequest?.user_details?.name : driver_details?.name
-    const vehicle = activeRequest?.driver?.vehicle || driverDetails?.vehicle
+    const vehicle = activeRequest?.driver?.vehicle || driverDetails
     const { color, label } = getColorNBg(activeRequest?.status)
     return (
         <View style={{ padding: 10, ...containerStyles }}>

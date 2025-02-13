@@ -17,7 +17,7 @@ const getButtonStyles = (status) => {
     case 'DECLINED': {
       return {
         label: status,
-        bg: COLORS.primary,
+        bg: COLORS.gray,
         color: COLORS.white
       }
     }
@@ -66,20 +66,23 @@ const getButtonStyles = (status) => {
     }
   }
 }
-const Card = ({request_id,...item}) => {
+const Card = ({ request_id, ...item }) => {
   // const { request_id } = useSelector(state => state.user?.rideRequests);
   const dispatch = useDispatch();
 
   const [sendRequest, { data: requestData, error: requestError, isLoading }] =
     useSendRequestMutation();
 
-  const [cancelRequest, { data: cancelRequestData, error: cancelRequestError, isLoading: isCancelRequestLoading }] =
-    useCancelRequestMutation();
+  const [cancelRequest, { isLoading: isCancelRequestLoading }] = useCancelRequestMutation();
 
   const handleSendRequest = item => {
     let payload = { request_id, driver_id: item?.id, fare: item?.fare, category: item?.category };
     if (item.status === RideStatus.REQUESTED) {
-      cancelRequest(payload);
+      cancelRequest(payload).unwrap().then((res) => {
+        updateDriverStatus(RideStatus?.USER_CANCELLED);
+      }).catch((err) => {
+        console.log('cancel request err', err)
+      });
     } else if (!item.status) {
       sendRequest(payload);
     } else {
@@ -90,14 +93,6 @@ const Card = ({request_id,...item}) => {
   const updateDriverStatus = (status) => {
     dispatch(updateActiveRequestDrivers({ ...item, status, request_id, category: item?.category }));
   }
-
-  useEffect(() => {
-    if (cancelRequestError) {
-      console.log('cancelRequestError', cancelRequestError);
-    } else if (cancelRequestData) {
-      updateDriverStatus(RideStatus?.USER_CANCELLED);
-    }
-  }, [cancelRequestData, cancelRequestError]);
 
   useEffect(() => {
     if (requestError) {
@@ -169,19 +164,19 @@ const Card = ({request_id,...item}) => {
   );
 };
 const CaptainsCard = ({ driversList, keyProp, extraProps, isfetching }) => {
-// const dispatch = useDispatch();
-//   const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
-//   const { data: categoryResponse, error: rideHistoryError, isFetching } = useGetRequestsByCategoryQuery({ request_id, category: code }, {refetchOnMountOrArgChange: true, skip: !request_id || !code,});
-//   const driversList= driverListByCategory?.[code] || []
+  // const dispatch = useDispatch();
+  //   const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
+  //   const { data: categoryResponse, error: rideHistoryError, isFetching } = useGetRequestsByCategoryQuery({ request_id, category: code }, {refetchOnMountOrArgChange: true, skip: !request_id || !code,});
+  //   const driversList= driverListByCategory?.[code] || []
 
-//   useEffect(() => {
-//     if (categoryResponse) {
-//       dispatch(setActiveRequestDrivers(categoryResponse))
-//     }
-//   }, [categoryResponse])
-if(isfetching){
-  return <Text>Loading...</Text>
-}
+  //   useEffect(() => {
+  //     if (categoryResponse) {
+  //       dispatch(setActiveRequestDrivers(categoryResponse))
+  //     }
+  //   }, [categoryResponse])
+  if (isfetching) {
+    return <Text>Loading...</Text>
+  }
   return (
     driversList?.length ? driversList?.map(item => {
       return (

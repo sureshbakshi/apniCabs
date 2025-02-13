@@ -96,7 +96,7 @@ const userSlice = createSlice({
       state.requestInfo = null;
       state.rideRequests = null;
       state.activeRequest = null;
-      state.selectedOtherContact = null;
+      state.selectedOtherContact = mySelf;
       state.activeRequestId = null;
       state.activeRequestDrivers = null;
     },
@@ -105,6 +105,8 @@ const userSlice = createSlice({
         state.activeRequest = null;
         state.activeRideId = null
         state.statusUpdate = null;
+        state.activeRequestId = null;
+        state.activeRequestInfo = null;
       } else {
         const { status, id } = action.payload
         state.activeRequest = action.payload;
@@ -134,12 +136,12 @@ const userSlice = createSlice({
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         state.activeRequest = action.payload
         state.rideRequests = [];
-        state.selectedOtherContact = null;
+        state.selectedOtherContact = mySelf;
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
 
       } else if (ClearRideStatus.includes(status)) {
         state.statusUpdate = action.payload;
-        state.selectedOtherContact = null;
+        state.selectedOtherContact = mySelf;
       } else {
         const vehicles = state.rideRequests?.vehicles;
         if (vehicles?.length) {

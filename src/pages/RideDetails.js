@@ -18,33 +18,33 @@ import CommonStyles from '../styles/commonStyles';
 
 
 export default ({ route }) => {
-    let type = null
+    // let type = null
     const id = route.params?.id
-    const { data: rideDetails, isLoading } = useGetRideDetailsQuery(id)
+    const { data: rideDetails, isLoading } = useGetRideDetailsQuery(id);
 
-    useEffect(() => {
-        if (id) {
-            type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
-        }
-    }, [rideDetails])
+    // useEffect(() => {
+    //     if (id) {
+    //         type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
+    //     }
+    // }, [rideDetails])
 
     if (isLoading) {
         return <ActivityIndicator />
     }
     console.log(rideDetails?.request)
-    const { avatar, name } = rideDetails?.userDetails
+    // const { avatar, name } = rideDetails?.userDetails
     return (
         <SafeAreaView style={styles.container}>
             <View style={[FindRideStyles.pageContainer]}>
             <View style={[FindRideStyles.container]}>
                 <ContainerWrapper>
-                    <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
+                    {/* <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>User Details</Text>
                         <AvatarInfo dp={avatar} name={name} avatarContainerStyles={{alignItems: 'center'}}/>
-                    </View>
+                    </View> */}
                     <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
-                        <RideDetailsView activeRequest={rideDetails.request} driverDetails={rideDetails?.request.ride?.driver} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
+                        <RideDetailsView activeRequest={rideDetails} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
                     </View>
                 </ContainerWrapper>
             </View>

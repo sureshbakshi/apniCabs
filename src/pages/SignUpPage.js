@@ -34,7 +34,7 @@ const city = [{
 }]
 const SIGN_UP_FORM_FIELDS = [
   ...SIGN_UP_FORM,
-  ...(config.ROLE === 'DRIVER' && city)
+  ...(config.ROLE === 'DRIVER' ? city : [])
 ]
 const SignUpPage = () => {
   const dispatch = useDispatch();

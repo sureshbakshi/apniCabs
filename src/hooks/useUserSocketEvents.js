@@ -12,7 +12,7 @@ import { ClearRideStatus, RideStatus, SOCKET_EVENTS } from "../constants";
 import useChatMessage from "./useChatMessage";
 
 const USER_SOCKET_EVENTS = {
-    request_status: 'useRequestUpdate',
+    request_status: 'UserRequestSocket',
     driver_location: 'driverLocation'
 }
 

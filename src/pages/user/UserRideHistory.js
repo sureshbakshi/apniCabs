@@ -4,28 +4,30 @@ import MyRidePage from "../MyRidesPage"
 import { useFocusEffect } from '@react-navigation/native';
 import { mergeObjectsWithoutDuplicates } from "../../util";
 
-const PageSize = 20;
+const PageSize = 6;
 
 export default () => {
     const [page, setPage] = useState(1);
     const [rides, setRides] = useState([]);
     const [refetch, { data: rideHistory, error: rideHistoryError, isFetching }] = useLazyUserRideHistoryQuery({ page, pageSize: PageSize });
 
+
+    const refetchHistory = async (page) => {
+        await refetch({
+            page,
+            pageSize: PageSize
+        });
+    };
     useFocusEffect(
         useCallback(() => {
-            const fetchInitialData = async () => {
-                await refetch({
-                    page: 1,
-                    pageSize: PageSize
-                });
-            };
-            fetchInitialData();
+            refetchHistory(1);
             return () => {
                 setPage(1);
                 setRides([]);
             };
         }, [refetch])
     );
+
 
 
     useEffect(() => {
@@ -36,7 +38,11 @@ export default () => {
 
     const loadMore = useCallback(() => {
         if (!isFetching && rideHistory?.count >= (page * PageSize)) {
-            setPage((prevPage) => prevPage + 1);
+            setPage((prevPage) => {
+                const updatedPage = prevPage + 1
+                refetchHistory(updatedPage)
+                return updatedPage
+             });
         }
     }, [isFetching, rideHistory]);
 

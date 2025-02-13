@@ -12,7 +12,9 @@ export default () => {
         if (activeRequestId) {
             cancelAllRequest(activeRequestId).unwrap().then((res) => {
                 dispatch(cancelRideRequest());
-                cb?.()
+                if (typeof cb === 'function') {
+                    cb()
+                }
             }).catch((err) => {
                 console.log(err)
             })

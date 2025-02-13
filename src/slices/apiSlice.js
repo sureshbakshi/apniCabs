@@ -90,6 +90,7 @@ const api_urls = {
   userActiveRide: 'active/user',
   list: 'list',
   cancelRequest: 'cancel',
+  cancelAllRequest: 'cancel-all',
   sosAdd: 'add',
   device: 'device',
   order: 'order',
@@ -310,7 +311,7 @@ export const apiSlice = createApi({
     cancelAllRequest: builder.mutation({
       query: (id) => ({
         method: 'DELETE',
-        url: api_path.request(`${api_urls.cancelRequest}/${id}`),
+        url: api_path.request(`/${id}/${api_urls.cancelAllRequest}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,

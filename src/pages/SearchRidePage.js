@@ -110,18 +110,23 @@ const SearchRidePage = () => {
   }
 
   const searchHandler = async () => {
-    const { distance, duration } = await getDistance();
-    const { from, to } = location;
-    if (from && to && distance && duration) {
-      let fromCity = filter(from.address_components, {
-        types: ['locality'],
-      });
-      let toCity = filter(to.address_components, {
-        types: ['locality'],
-      });
-      findDrivers({from, to, fromCity, toCity, distance, duration});
-      updateSearchHistory({from, to, fromCity, toCity})
+    try {
+      const { distance, duration } = await getDistance();
+      const { from, to } = location;
+      if (from && to && distance && duration) {
+        let fromCity = filter(from.address_components, {
+          types: ['locality'],
+        });
+        let toCity = filter(to.address_components, {
+          types: ['locality'],
+        });
+        findDrivers({from, to, fromCity, toCity, distance, duration});
+        updateSearchHistory({from, to, fromCity, toCity})
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
+   
   }
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)

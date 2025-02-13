@@ -92,7 +92,7 @@ const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
               renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
               keyExtractor={item => item.id}
               onEndReached={loadMore}
-              onEndReachedThreshold={0.2}
+              onEndReachedThreshold={0.5}
               ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
             />
           </View>}
