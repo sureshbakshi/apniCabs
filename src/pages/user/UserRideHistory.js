@@ -52,7 +52,7 @@ export default () => {
         from: 'from_location',
         to: 'to_location',
         model: '',
-        rideTime: 'RequestRides.start_time',
+        rideTime: 'created_at',
         avatar: '',
         fare: 'RequestRides.fare'
     }

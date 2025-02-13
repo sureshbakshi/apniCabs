@@ -5,6 +5,7 @@ import { clearUserState, setActiveRequest, setActiveRideRequest } from "../slice
 import { useFocusEffect } from "@react-navigation/native";
 import useGetCurrentLocation from "./useGetCurrentLocation";
 import { isEmpty } from 'lodash';
+import { RideStatus } from "../constants";
 
 // pickaride, search ride - always
 //active page = active ride & drive, active page + user
@@ -24,13 +25,11 @@ export default () => {
     useEffect(() => {
         if (isUserError) {
             dispatch(clearUserState())
-        } else if (activeUserRideDetails?.id && activeUserRideDetails?.driver_details === null) {
+        } else if (activeUserRideDetails?.id && activeUserRideDetails?.status === RideStatus.INITIATED || activeUserRideDetails?.status === RideStatus.REQUESTED) {
             dispatch(setActiveRequest(activeUserRideDetails))
-        } else if (!isEmpty(activeUserRideDetails)) {
+        } else if (!isEmpty(activeUserRideDetails) && activeUserRideDetails?.status === RideStatus.ACCEPTED || activeUserRideDetails?.status === RideStatus.ONRIDE) {
             dispatch(setActiveRideRequest(activeUserRideDetails))
-        } else {
-            dispatch(setActiveRideRequest({}))
-        }
+        } 
     }, [activeUserRideDetails, isUserError])
 
     return activeUserRideDetails

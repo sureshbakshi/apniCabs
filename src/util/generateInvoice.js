@@ -99,7 +99,7 @@ const getInvoiceHtml = (info) => {
         <div class="invoice-details">
             <div class="row">
                 <span>Invoice #: ${info.id}</span>
-                <span>Date: ${formattedDate(info.updated_at)}</span>
+                <span>Date: ${formattedDate(info.created_at)}</span>
             </div>
            
             <div class="row">
@@ -110,7 +110,9 @@ const getInvoiceHtml = (info) => {
             </div>
             <div class="row">
                 <span>Dropoff Location:</span>
-                <span>${info.to_location}</span>
+                 <div class="text-overflow">
+                  <span>${info.to_location}</span>
+                </div>
             </div>
             <div class="row">
                 <span>Distance:</span>
@@ -122,12 +124,12 @@ const getInvoiceHtml = (info) => {
             </div>
             <div class="row">
                 <span>Fare:</span>
-                <span>\u20B9${info?.ride?.fare || 'NA'}</span>
+                <span>\u20B9${info?.RequestRides?.fare || 'NA'}</span>
             </div>
         </div>
 
         <div class="total">
-            Total Amount: \u20B9${info?.ride?.fare || 'NA'}
+            Total Amount: \u20B9${info?.RequestRides?.fare || 'NA'}
         </div>
 
         <div class="footer">

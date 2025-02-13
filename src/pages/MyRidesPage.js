@@ -39,25 +39,25 @@ const Card = ({ item, keys }) => {
       <Text style={[styles.text, styles.whiteColor, { color: color }]}>{label}</Text>
     </View> */}
     <View style={[styles.cardtop, { justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }]}>
-      {time && <View>
-        {<Text style={styles.time}>{formattedDate(time)}</Text>}
-      </View>}
-      {/* <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
-        <Icon name='dots-vertical' size='large' color={COLORS.gray} />
+      <View>
+        {<Text style={styles.time}>{time && formattedDate(time)}</Text>}
+      </View>
+      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+        {/* <Icon name='dots-vertical' size='large' color={COLORS.gray} /> */}
         <Pressable onPress={(e) => {
           e.stopPropagation();
           generateInvoice(item);
         }}>
           <Icon name='download' size='large' color={COLORS.gray} />
         </Pressable>
-        <Pressable onPress={(e) => {
+        {/* <Pressable onPress={(e) => {
           e.stopPropagation();
           navigate(ROUTES_NAMES.chat)
         }}>
           <Icon name='chat' size='large' color={COLORS.gray} />
-        </Pressable>
+        </Pressable> */}
 
-      </View> */}
+      </View>
     </View>
     {/* <View style={[styles.left, { paddingRight: 0, paddingLeft: 20 }]}>
         <ImageView source={image || images[`captain${getRandomNumber()}`]} style={[styles.avatar]} />
