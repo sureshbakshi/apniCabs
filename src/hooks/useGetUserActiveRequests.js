@@ -25,11 +25,9 @@ export default () => {
     useEffect(() => {
         if (isUserError) {
             dispatch(clearUserState())
-        } else if (activeUserRideDetails?.id && activeUserRideDetails?.status === RideStatus.INITIATED || activeUserRideDetails?.status === RideStatus.REQUESTED) {
+        } else if (activeUserRideDetails) {
             dispatch(setActiveRequest(activeUserRideDetails))
-        } else if (!isEmpty(activeUserRideDetails) && activeUserRideDetails?.status === RideStatus.ACCEPTED || activeUserRideDetails?.status === RideStatus.ONRIDE) {
-            dispatch(setActiveRideRequest(activeUserRideDetails))
-        } 
+        }
     }, [activeUserRideDetails, isUserError])
 
     return activeUserRideDetails

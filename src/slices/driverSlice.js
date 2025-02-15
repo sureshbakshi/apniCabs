@@ -5,9 +5,9 @@ import { formatRideRequest } from '../util';
 
 const initialState = {
   rideRequests: [],
-  activeRequest: null,
+  activeRequestInfo: null,
   activeRideId: null,
-  isOnline: false,
+  isOnline: true,
   statusUpdate: null,
   walletInfo: null,
 }
@@ -20,23 +20,24 @@ const driverSlice = createSlice({
       const requestObj = action.payload
 
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
-        state.activeRequest = requestObj;
+        state.activeRequestInfo = requestObj;
         state.rideRequests = []
         state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : null
       } else {
-        state.rideRequests = state.rideRequests.filter((request) => requestObj.id !== request.request_id)
+        state.rideRequests = state.rideRequests.filter((request) => (requestObj.request_id || requestObj.id)!== (request.request_id || request.id))
       }
     },
     setActiveRide: (state, action) => {
       const requestObj = action.payload
       if (isEmpty(requestObj)) {
-        state.activeRequest = null;
+        state.activeRequestInfo = null;
         state.activeRideId = null;
         state.statusUpdate = null;
       } else {
         const { id } = requestObj || {}
         state.activeRideId = (requestObj.status === RideStatus.ONRIDE || requestObj.status === RideStatus.ACCEPTED)? id : null;
-        state.activeRequest = requestObj
+        state.activeRequestId = id;
+        state.activeRequestInfo = requestObj
       }
     },
     updateRideStatus: (state, action) => {
@@ -63,7 +64,7 @@ const driverSlice = createSlice({
           updatedRequest = newRequest
         } else {
           updatedRequest = []
-          state.activeRequest = null;
+          state.activeRequestInfo = null;
           state.activeRideId = null;
           state.statusUpdate = null;
         }

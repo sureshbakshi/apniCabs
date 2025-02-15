@@ -10,7 +10,7 @@ import useNotificationSound from "./useNotificationSound"
 import useChatMessage from "./useChatMessage"
 
 const DRIVER_SOCKET_EVENTS = {
-    get_ride_requests: 'request',
+    get_ride_requests: 'DriverRequestSocket',
 }
 
 export const useDriverEvents = () => {
@@ -18,17 +18,17 @@ export const useDriverEvents = () => {
     const { playSound } = useNotificationSound()
 
     const updateRideRequests = (request) => {
-        const { status } = request?.data || {}
-
+        const { status } = request || {}
+        console.log('updateRideRequests', request)
         if (status) {
             if (status === RideStatus.REQUESTED) {
-                dispatch(setRideRequest(request?.data))
+                dispatch(setRideRequest(request))
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
-                dispatch(updateRideStatus(request?.data))
+                dispatch(updateRideRequest(request))
                 driverSocket.emit(SOCKET_EVENTS.rideCompleted);
             } else {
-                dispatch(updateRideRequest(request?.data))
+                dispatch(updateRideRequest(request))
             }
         }
     }
@@ -39,10 +39,15 @@ export const useDriverEvents = () => {
 
 const onGetRideRequests = (cb) => {
     driverSocket.on(DRIVER_SOCKET_EVENTS.get_ride_requests, (request) => {
-        console.log('on new request')
-        cb(request)
+        console.log('on new request', request)
+        const newUpdatedRequest = {
+            Request: request,
+            ...request
+        }
+        cb(newUpdatedRequest)
     });
 };
+
 
 export const disconnectDriverSocket = () => {
     console.log(`============= Driver Client disconnection - request ==========`, driverSocket)
@@ -83,13 +88,8 @@ export default (() => {
     }, [driverSocket])
 
     const connectSocket = useCallback(() => {
-        if (driverSocket.connected) {
-            addDevice();
-        } else {
-            console.log(`============= Driver Client connecting ==========`)
             driverSocket.connect();
-        }
-    }, [addDevice, driverSocket]);
+    }, [driverSocket]);
 
 
 
@@ -105,8 +105,8 @@ export default (() => {
     }, [isDriverOnline, isLoggedIn, isSocketConnected, driverSocket?.connected])
 
     useEffect(() => {
-        driverSocket.on('connect', () => {
-            console.log('================= on connect ======================')
+        driverSocket.on('connect', (res) => {
+            console.log('================= on connect ======================', res)
             addDevice()
             onGetRideRequests(updateRideRequests);
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Pressable, FlatList, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
-import { COLORS, ROUTES_NAMES, colorsNBg } from '../constants';
+import { COLORS, ROUTES_NAMES, RideStatus, colorsNBg } from '../constants';
 import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
@@ -44,12 +44,12 @@ const Card = ({ item, keys }) => {
       </View>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
         {/* <Icon name='dots-vertical' size='large' color={COLORS.gray} /> */}
-        <Pressable onPress={(e) => {
+        {item?.status === RideStatus.COMPLETED && <Pressable onPress={(e) => {
           e.stopPropagation();
           generateInvoice(item);
         }}>
           <Icon name='download' size='large' color={COLORS.gray} />
-        </Pressable>
+        </Pressable>}
         {/* <Pressable onPress={(e) => {
           e.stopPropagation();
           navigate(ROUTES_NAMES.chat)

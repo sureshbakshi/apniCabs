@@ -4,7 +4,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
 import ActiveRidePage from '../pages/ActiveRidePage';
-import { COLORS, ROUTES_NAMES } from '../constants';
+import { COLORS, RideStatus, ROUTES_NAMES } from '../constants';
 import { useEffect } from 'react';
 import AppContainer from '../components/AppContainer';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ const tabHiddenRoutes = [ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
 
-  const { activeRequest, activeRequestId } = useSelector((state) => state.user);
+  const { activeRequestInfo, activeRequestId } = useSelector((state) => state.user);
   const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
   useGetUserActiveRequests()
@@ -33,6 +33,10 @@ export default function UserStackNavigator({ navigation, route }) {
   //     navigation.setOptions({ tabBarStyle: { display: 'flex' } });
   //   }
   // }, [navigation, route]);
+  const status = activeRequestInfo?.status;
+  const isActiveRide = [RideStatus.ONRIDE, RideStatus.ACCEPTED].includes(status);
+  const isActiveRequest = [RideStatus.INITIATED, RideStatus.REQUESTED].includes(status);
+// console.log('isActiveRide', activeRequestInfo)
   return (
     <Stack.Navigator
       screenOptions={{
@@ -50,12 +54,12 @@ export default function UserStackNavigator({ navigation, route }) {
         options={{ title: 'Maps' }}
         component={ActiveMapPage}
       /> */}
-      {activeRequest?.id ? <Stack.Screen
+      {isActiveRide ? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePage}
       /> :
-        activeRequestId ?
+        isActiveRequest ?
           <Stack.Screen
             name={ROUTES_NAMES.findCaptain}
             options={{

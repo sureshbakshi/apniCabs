@@ -104,7 +104,7 @@ const SPACE = 0.00;
 
 const markerIDs = ['Marker1', 'Marker2'];
 
-const ActiveMapPage = ({ activeRequest, activeRideId }) => {
+const ActiveMapPage = ({ activeRequestInfo }) => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation, currentLocation } = useGetCurrentLocation();
   const { watchPosition, location: watchedLocation } = useLocationWatcher();
@@ -119,8 +119,8 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
   }
 
   const to_location = {
-    latitude: activeRideId ? Number(activeRequest?.to_latitude) : activeLocation?.latitude,
-    longitude: activeRideId ? Number(activeRequest?.to_longitude) : activeLocation?.longitude
+    latitude: activeRequestInfo?.status === RideStatus.ONRIDE ? Number(activeRequestInfo?.to_latitude) : activeLocation?.latitude,
+    longitude: activeRequestInfo?.status === RideStatus.ONRIDE ? Number(activeRequestInfo?.to_longitude) : activeLocation?.longitude
   }
 
   useEffect(() => {
@@ -152,11 +152,11 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
     focusMap(markerIDs);
   }, 5 * 1000);
 
-  const vehicleImage = get(activeRequest, 'driver.vehicle.type_vehicle_type.code', null);
-  const isOnRide = activeRequest.status === RideStatus.ONRIDE
+  const vehicleImage = get(activeRequestInfo, 'driver.vehicle.type_vehicle_type.code', null);
+  const isOnRide = activeRequestInfo.status === RideStatus.ONRIDE
   const regionLatnLng = {
-    latitude: isOnRide ? activeLocation?.latitude : Number(activeRequest?.from_latitude),
-    longitude: isOnRide ? activeLocation?.longitude : Number(activeRequest?.from_longitude),
+    latitude: isOnRide ? activeLocation?.latitude : Number(activeRequestInfo?.from_latitude),
+    longitude: isOnRide ? activeLocation?.longitude : Number(activeRequestInfo?.from_longitude),
   }
   
   useEffect(() => {
@@ -167,20 +167,20 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
 
   const isNotNaN = !isNaN(regionLatnLng?.latitude);
 
-  // console.log({activeRequest, activeLocation})
+  // console.log({activeRequestInfo, activeLocation})
   return (
     <View style={styles.container}>
       {/* <View style={{ backgroundColor: 'yellow', padding: 10, position: 'absolute', zIndex: 1000, top: 0 }}>
         <Text>current location: {JSON.stringify(watchedLocation)}</Text>
         <Text>Socket ID: {isSocketConnected}</Text>
       </View> */}
-      {(activeRequest?.from_latitude && isNotNaN) ? (
+      {(activeRequestInfo?.from_latitude && isNotNaN) ? (
         <MapView
           style={styles.map}
           ref={mapRef}
           initialRegion={{
-            latitude: isNotNaN ? regionLatnLng?.latitude : activeRequest?.from_latitude,
-            longitude: isNotNaN ? regionLatnLng?.longitude : activeRequest?.from_longitude,
+            latitude: isNotNaN ? regionLatnLng?.latitude : activeRequestInfo?.from_latitude,
+            longitude: isNotNaN ? regionLatnLng?.longitude : activeRequestInfo?.from_longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
@@ -203,7 +203,7 @@ const ActiveMapPage = ({ activeRequest, activeRideId }) => {
           {to_location?.latitude ? <Marker
             identifier="Marker2"
             title={isDriverLogged ? "Your are here" : "Your Driver"}
-            description={isDriverLogged ? `User Waiting at ${activeRequest?.from_location}` : `On the way to ${activeRequest?.from_location}`}
+            description={isDriverLogged ? `User Waiting at ${activeRequestInfo?.from_location}` : `On the way to ${activeRequestInfo?.from_location}`}
             coordinate={{
               latitude: Number(to_location?.latitude) - SPACE,
               longitude: Number(to_location?.longitude) - SPACE,

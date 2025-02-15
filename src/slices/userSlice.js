@@ -60,7 +60,7 @@ const intialState = {
   activeRideId: null,
   activeRequestDrivers: null,
   rideRequests: null,
-  activeRequest: null,
+  activeRequestInfo: null,
   activeRequestInfo: null,
   driverLocation: null,
   statusUpdate: null,
@@ -75,16 +75,20 @@ const userSlice = createSlice({
   initialState: intialState,
   reducers: {
     setActiveRequestDrivers: (state, action) => {
-      const { id, category, code, drivers } = action.payload;
+      const { id, category, code, drivers, status} = action.payload;
       if (id) {
         const key = category || code;
         state.activeRequestId = id
-        state.activeRequestDrivers = { ...state.activeRequestDrivers, [key]: drivers };
+        state.activeRequestInfo = {...state.activeRequestInfo, status: status || state.activeRequestInfo?.status || RideStatus.INITIATED};
+        state.activeRequestDrivers = { ...(state.activeRequestDrivers || {}), [key]: drivers };
       }
     },
     setActiveRequest: (state, action) => {
       const { id, ...rest } = action.payload;
-      if (id) {
+      if (_.isEmpty(action.payload)) {
+        state.activeRequestId = null;
+        state.activeRequestInfo = null;
+      } else if (id) {
         state.activeRequestId = id;
         state.activeRequestInfo = rest;
       }
@@ -95,21 +99,22 @@ const userSlice = createSlice({
     cancelRideRequest: (state, action) => {
       state.requestInfo = null;
       state.rideRequests = null;
-      state.activeRequest = null;
+      state.activeRequestInfo = null;
       state.selectedOtherContact = mySelf;
       state.activeRequestId = null;
       state.activeRequestDrivers = null;
+      state.activeRequestInfo = null;
     },
     setActiveRideRequest: (state, action) => {
       if (_.isEmpty(action.payload)) {
-        state.activeRequest = null;
+        state.activeRequestInfo = null;
         state.activeRideId = null
         state.statusUpdate = null;
         state.activeRequestId = null;
         state.activeRequestInfo = null;
       } else {
         const { status, id } = action.payload
-        state.activeRequest = action.payload;
+        state.activeRequestInfo = action.payload;
         state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
       }
     },
@@ -132,24 +137,27 @@ const userSlice = createSlice({
       }
     },
     updateDriversRequest: (state, action) => {
-      const { driver_id, status, id } = action.payload;
+      const { status, id , category, driver_id} = action.payload;
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
-        state.activeRequest = action.payload
-        state.rideRequests = [];
-        state.selectedOtherContact = mySelf;
-        state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
+        // state.activeRequestInfo = action.payload
+        // state.rideRequests = [];
+        // state.selectedOtherContact = mySelf;
+        // state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
+
+        state.activeRequestId = id;
+        state.activeRequestInfo = action.payload;
 
       } else if (ClearRideStatus.includes(status)) {
         state.statusUpdate = action.payload;
         state.selectedOtherContact = mySelf;
       } else {
-        const vehicles = state.rideRequests?.vehicles;
-        if (vehicles?.length) {
-          const updatedData = _.cloneDeep(vehicles); // Ensure you're working with a copy
-          const updateDrivers = updateStatusByDriverId(updatedData, driver_id, status);
-          if (updateDrivers?.length) {
-            state.rideRequests.vehicles = updateDrivers;
+        const activeRequestDrivers = state.activeRequestDrivers;
+        if (activeRequestDrivers) {
+          const clonedDrivers = _.cloneDeep(activeRequestDrivers); // Ensure you're working with a copy
+          if(clonedDrivers[category]) {
+            clonedDrivers[category] = updateStatusByDriverId(clonedDrivers[category], driver_id, status);
           }
+          state.activeRequestDrivers = clonedDrivers;
         }
       }
     },

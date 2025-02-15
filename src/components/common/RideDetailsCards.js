@@ -22,9 +22,9 @@ import ScreenContainer from '../ScreenContainer';
 import socket from './socket';
 
 
-const cancelRide = (activeRequest, isDriverLogged) => {
+const cancelRide = (activeRequestInfo, isDriverLogged) => {
     const dispatch = useDispatch();
-    const phoneNumber = isDriverLogged ? activeRequest?.user?.phone : activeRequest?.driver?.phone
+    const phoneNumber = activeRequestInfo?.details?.phone
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
             onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`) : null}
@@ -70,25 +70,23 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
     )
 }
 
-export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
-    const driver_details = driverDetails || activeRequest?.driver
-    const driver_avatar = driverDetails?.avatar || driver_details?.driver_detail?.photo || driver_details?.vehicle?.vehicle_image
-    const fare = activeRequest?.RequestRides?.fare || activeRequest?.ride?.fare
-    const dp = (isDriverLogged) ? activeRequest?.user_details?.avatar : driver_avatar
-    const name = isDriverLogged ? activeRequest?.user_details?.name : driver_details?.name
-    const vehicle = activeRequest?.driver?.vehicle || driverDetails
-    const { color, label } = getColorNBg(activeRequest?.status)
+export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
+    const {details,fare} = activeRequestInfo
+    const driver_avatar = details?.photo || details?.vehicle?.photo
+    const name = details?.name 
+    const vehicle = details?.vehicle
+    const { color, label } = getColorNBg(activeRequestInfo?.status)
     return (
         <View style={{ padding: 10, ...containerStyles }}>
             <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>
-                <AvatarInfo {...{ dp, vehicle, name, avatarStyles, canShowVehicleInfo: !isDriverLogged }} avatarContainerStyles={{ alignItems: 'center', ...avatarContainerStyles }} />
+                <AvatarInfo {...{ dp: driver_avatar, vehicle, name, avatarStyles, canShowVehicleInfo: !isDriverLogged }} avatarContainerStyles={{ alignItems: 'center', ...avatarContainerStyles }} />
                 {fare && isOnRide && <View style={[{ alignItems: 'flex-end' }]}>
                     <Text style={[FindRideStyles.name]}>
                         {'\u20B9'}{fare}
                     </Text>
                     {!isDriverLogged && <>
                         <Text style={[FindRideStyles.otpText, { marginTop: 10 }]}>
-                            {activeRequest.code}
+                            {activeRequestInfo.otp}
                         </Text>
                         <Text style={[FindRideStyles.Paragraph]}>
                             OTP
@@ -98,33 +96,33 @@ export const RideDetailsView = ({ activeRequest, driverDetails = null, isDriverL
             </View>
             {!isOnRide && <View style={{ marginTop: 10 }}><Timeline
                 data={[
-                    activeRequest.from_location,
-                    activeRequest.to_location,
+                    activeRequestInfo.from_location,
+                    activeRequestInfo.to_location,
                 ]}
                 numberOfLines={1}
                 textStyles={{ fontSize: 12 }}
             /></View>}
             {/* <View style={FindRideStyles.cardBottom}>
                 <View style={FindRideStyles.left}>
-                    {activeRequest.duration && (
+                    {activeRequestInfo.duration && (
                         <Text style={[styles.text, styles.bold]}>
-                            Duration: {activeRequest.duration}
+                            Duration: {activeRequestInfo.duration}
                         </Text>
                     )}
                 </View>
                 <View style={FindRideStyles.right}>
                     <Text style={[styles.text, styles.bold]}>
-                        Distance: {activeRequest.distance} km
+                        Distance: {activeRequestInfo.distance} km
                     </Text>
                 </View>
             </View> */}
             {
-                activeRequest?.distance && !isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
-                    <Text style={[styles.text2]}>Duration: {activeRequest?.duration}</Text>
-                    <Text style={[styles.text2]}>Distance: {activeRequest?.distance} Km</Text>
+                activeRequestInfo?.distance && !isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                    <Text style={[styles.text2]}>Duration: {activeRequestInfo?.duration}</Text>
+                    <Text style={[styles.text2]}>Distance: {activeRequestInfo?.distance} Km</Text>
                 </View>
             }
-            {activeRequest?.ride?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequest?.ride?.id}</Text>}
+            {activeRequestInfo?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequestInfo?.id}</Text>}
             {!isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, alignItems: 'center' }}>
                 <Text style={[FindRideStyles.name]}>{fare ? `\u20B9${fare}` : ''}</Text>
                 <Text style={[{ color: color }]}>{label}</Text>
@@ -142,7 +140,7 @@ const getFromLocation = (location = currentLocation) => {
         location: location.address || 'NA'
     }
 }
-export const RenderOTP = ({ activeRequest }) => {
+export const RenderOTP = ({ activeRequestInfo }) => {
     const { getCurrentLocation } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
@@ -151,7 +149,7 @@ export const RenderOTP = ({ activeRequest }) => {
 
     const otpSubmitHandler = (location) => {
         let payload = {
-            request_id: activeRequest.id,
+            request_id: activeRequestInfo.id,
             code: otp,
             from: getFromLocation(location)
         }
@@ -210,17 +208,16 @@ export const RenderOTP = ({ activeRequest }) => {
     )
 }
 
-export default ({ activeRequest, isDriverLogged }) => {
+export default ({ activeRequestInfo, isDriverLogged }) => {
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
     const dispatch = useDispatch()
-    const { activeRideId } = useSelector((state) => isDriverLogged ? state.driver : state.user)
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
         useCompleteRideRequestMutation();
 
 
     const completeRideHandler = (location) => {
         let payload = {
-            request_id: activeRideId || activeRequest?.id,
+            request_id: activeRequestInfo?.id,
             to: getFromLocation(location)
         }
         completeRideRequest(payload).unwrap().then((res) => {
@@ -235,18 +232,18 @@ export default ({ activeRequest, isDriverLogged }) => {
             }
         })
     }
-    const isActiveRide = (activeRequest.status === RideStatus.ONRIDE && isDriverLogged)
-    const isAccepted = (activeRequest.status === RideStatus.ACCEPTED) && isDriverLogged
+    const isActiveRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
+    const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED) && isDriverLogged
     return (
         <>
             <View style={[FindRideStyles.card]}>
                 <ScreenContainer>
-                    <RideDetailsView {...{ activeRequest, isDriverLogged }} />
-                    {(isAccepted) && <RenderOTP {...{ activeRequest }} />}
+                    <RideDetailsView {...{ activeRequestInfo, isDriverLogged }} />
+                    {(isAccepted) && <RenderOTP {...{ activeRequestInfo }} />}
                 </ScreenContainer>
             </View>
             {(isActiveRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
-                <OpenMapButton route={{ start: activeRequest.from, end: activeRequest.to, navigate: true }} />
+                <OpenMapButton route={{ start: activeRequestInfo.from, end: activeRequestInfo.to, navigate: true }} />
                 <CustomButton
                     onClick={() => getCurrentLocation(completeRideHandler)}
                     disabled={isCompleteRideLoading}
@@ -259,7 +256,7 @@ export default ({ activeRequest, isDriverLogged }) => {
                 />
             </View>
             }
-            <View>{isAccepted ? cancelRide(activeRequest, isDriverLogged) : null}</View>
+            <View>{isAccepted ? cancelRide(activeRequestInfo, isDriverLogged) : null}</View>
         </>
     );
 };

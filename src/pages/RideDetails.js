@@ -21,7 +21,6 @@ export default ({ route }) => {
     // let type = null
     const id = route.params?.id
     const { data: rideDetails, isLoading } = useGetRideDetailsQuery(id);
-
     // useEffect(() => {
     //     if (id) {
     //         type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
@@ -31,8 +30,6 @@ export default ({ route }) => {
     if (isLoading) {
         return <ActivityIndicator />
     }
-    console.log(rideDetails?.request)
-    // const { avatar, name } = rideDetails?.userDetails
     return (
         <SafeAreaView style={styles.container}>
             <View style={[FindRideStyles.pageContainer]}>
@@ -44,22 +41,22 @@ export default ({ route }) => {
                     </View> */}
                     <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
-                        <RideDetailsView activeRequest={rideDetails} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
+                        <RideDetailsView activeRequestInfo={rideDetails} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
                     </View>
                 </ContainerWrapper>
             </View>
             {/* <View style={{ margin: 10 }}>
                 <CardWrapper title={'USER DETAILS'}>
-                    <VehicleCard activeRequest={rideDetails} details={USER_DETAILS} isonRide={false} avatar={'userDetails.avatar'} />
+                    <VehicleCard activeRequestInfo={rideDetails} details={USER_DETAILS} isonRide={false} avatar={'userDetails.avatar'} />
                 </CardWrapper>
                 {rideDetails?.request.ride ? <CardWrapper title={'VEHICLE DETAILS'}>
-                    <VehicleCard activeRequest={rideDetails} details={RIDE_HISTOY_DETAILS} isonRide={false} vehicleImageUri={type} />
+                    <VehicleCard activeRequestInfo={rideDetails} details={RIDE_HISTOY_DETAILS} isonRide={false} vehicleImageUri={type} />
                 </CardWrapper> : <CardWrapper title={'REASON'}>
-                    <VehicleCard activeRequest={rideDetails} details={RIDE_CANCEL_INFO} isonRide={false} vehicleImageUri={type} />
+                    <VehicleCard activeRequestInfo={rideDetails} details={RIDE_CANCEL_INFO} isonRide={false} vehicleImageUri={type} />
                 </CardWrapper>}
                 {rideDetails?.request && <CardWrapper title={'RIDE DETAILS'}>
                     <View style={FindRideStyles.card}>
-                        <RideDetailsView activeRequest={rideDetails.request} driverDetails={rideDetails?.request.ride?.driver} />
+                        <RideDetailsView activeRequestInfo={rideDetails.request} driverDetails={rideDetails?.request.ride?.driver} />
                         <CustomButton label={'Need help? Call Us!'} isLowerCase={true} onClick={() => RNImmediatePhoneCall?.immediatePhoneCall(SUPPORT.mobile.value)} />
                     </View>
                 </CardWrapper>}

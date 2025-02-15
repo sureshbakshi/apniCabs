@@ -10,7 +10,7 @@ import useNotificationSound from "./useNotificationSound";
 import audio from "../assets/audio";
 import { ClearRideStatus, RideStatus, SOCKET_EVENTS } from "../constants";
 import useChatMessage from "./useChatMessage";
-
+import { isEmpty } from "lodash";
 const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
     driver_location: 'driverLocation'
@@ -58,9 +58,13 @@ export default (() => {
     const onRequestUpdate = () => {
         userSocket.on(USER_SOCKET_EVENTS.request_status, (updatedRequest) => {
             // Handle the driver list update in the UI
+            console.log(USER_SOCKET_EVENTS.request_status,updatedRequest )
             // cb(updatedRequest)
-            if (updatedRequest?.data) {
-                const { status } = updatedRequest?.data || {}
+            const formatRequest = {
+                updatedRequest
+            }
+            if (!isEmpty(updatedRequest)) {
+                const { status } = updatedRequest || {}
                 if (status) {
                     if (status === RideStatus.ACCEPTED) {
                         playSound(audio.booking)
@@ -70,7 +74,7 @@ export default (() => {
                         dispatch(clearRideChats());
                     }
                 }
-                dispatch(updateDriversRequest(updatedRequest?.data))
+                dispatch(updateDriversRequest(updatedRequest))
             }
         });
     };

@@ -4,14 +4,14 @@ import { useLazyDriverActiveRideQuery, useLazyGetDriverWalletQuery } from "../sl
 import { useCallback, useEffect, useRef } from "react";
 import { clearDriverState, setActiveRide, setDriverWallet, setRideRequest } from "../slices/driverSlice";
 import { useFocusEffect } from "@react-navigation/native";
-import useGetCurrentLocation from "./useGetCurrentLocation";
+import { delay } from "lodash";
 export default () => {
     const dispatch = useDispatch();
     const { driverInfo } = useSelector(state => state.auth);
     const { isOnline } = useSelector(state => state.driver);
     const isOffline = isOnline === DriverAvailableStatus.OFFLINE;
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useLazyDriverActiveRideQuery({}, { skip: isOffline, refetchOnMountOrArgChange: true });
-    const [refetchWallet, { data: wallet }] = useLazyGetDriverWalletQuery({ id: driverInfo?.id }, { skip: isOffline, refetchOnMountOrArgChange: true });
+    const [refetchWallet, { data: wallet }] = useLazyGetDriverWalletQuery({ id: driverInfo?.id }, { skip: isOffline || driverInfo?.id, refetchOnMountOrArgChange: true });
 
     // const { getCurrentLocation } = useGetCurrentLocation();
  
@@ -19,13 +19,14 @@ export default () => {
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {
-                refetch?.('1')
-                refetchWallet({id: driverInfo?.id,})
+                delay(() => {
+                    refetch?.()
+                    refetchWallet({id: driverInfo?.id,})
+                }, 250)
                 // getCurrentLocation()
             }
         }, [])
     );
-
     useEffect(() => {
         if (isDriverError) {
             dispatch(clearDriverState())

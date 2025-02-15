@@ -17,7 +17,7 @@ const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 const Stack = createNativeStackNavigator();
 
 export default function DriverStackNavigator({ navigation, route }) {
-  const { activeRequest } = useSelector(state => state.driver)
+  const { activeRequestInfo } = useSelector(state => state.driver)
   const { driverInfo } = useSelector(state => state.auth);
 
   // console.log({ driverInfo, 'driverstack': !isEmpty(driverInfo), verif: (!isDriverVerified(driverInfo)), empVeh: isEmpty(driverInfo?.vehicle), isValid: ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) })
@@ -35,7 +35,7 @@ export default function DriverStackNavigator({ navigation, route }) {
         headerLeft: () => <HeaderBackButton />,
         headerShadowVisible: false
       }}>
-      {activeRequest?.id ? <Stack.Screen
+      {activeRequestInfo?.id ? <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePageContainer}

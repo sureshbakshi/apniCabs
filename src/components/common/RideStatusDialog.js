@@ -12,12 +12,12 @@ import StarRating from "./StarRating";
 
 export default () => {
     const isDriverLogged = isDriver();
-    const { statusUpdate, activeRequest } = useSelector((state) => isDriverLogged ? state.driver : state.user);
+    const { statusUpdate, activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const dispatch = useDispatch()
     const statusMessages = {
         [RideStatus.USER_CANCELLED]: {
             title: "Booking Cancelled",
-            description: `We're sorry, but your ride has been canceled by the ${activeRequest?.user?.name || 'passenger'}.`,
+            description: `We're sorry, but your ride has been canceled by the ${activeRequestInfo?.user?.name || 'passenger'}.`,
             reason: statusUpdate?.reason,
             subText: `We understand that unexpected situations may arise, and we appreciate your understanding. Your availability is now back to active, and you are ready to receive new ride requests.`
         },

@@ -22,15 +22,16 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
+  const request = item?.Request || item
   return (
     <View style={FindRideStyles.pickCard} key={item.id}>
       <View style={{ justifyContent: 'flex-end', marginBottom: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>Distance</Text>
-          <Text>{item?.Request?.duration} - {item?.Request?.distance || item?.driver_distance} km</Text>
+          <Text>{request?.duration} - {request?.distance} km</Text>
         </View>
         <Text style={[FindRideStyles.name, { alignSelf: 'flex-end', fontSize: 18, lineHeight: 24 }]}>
-          {'\u20B9'}{item.fare || item?.DriverRequest?.fare}
+          {'\u20B9'}{item?.fare}
         </Text>
       </View>
       <View style={[FindRideStyles.cardtop]}>
@@ -38,8 +39,8 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) =>
           {/* <Text style={FindRideStyles.name}>{item.user_name}</Text> */}
           <Timeline
             data={[
-              item?.Request?.from_location,
-              item?.Request?.to_location,
+              request?.from_location,
+              request?.to_location,
             ]}
             numberOfLines={2}
           />
@@ -124,7 +125,6 @@ export const PickARide = () => {
   const [isOnline, toggleDriveStatus] = useState(status)
   const { getCurrentLocation } = useGetCurrentLocation();
 
-
   const updateDriverStatus = useUpdateDriverStatus();
 
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
@@ -164,15 +164,15 @@ const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
               flexDirection: 'row',
             }]}>
 
-              {/* {walletInfo && <Pressable
+              {walletInfo && <Pressable
                 style={[CommonStyles.shadow, { height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 10, marginTop: 10, backgroundColor: COLORS.white, paddingHorizontal: 15 }]}
                 onPress={() => navigate(ROUTES_NAMES.wallet,)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
                   <Icon name="wallet-outline" size="large" color={COLORS.gray} />
                   <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{walletInfo?.balance}</Text> Credits</Text>
+                    <Text style={{ fontWeight: 'bold' }}>{walletInfo?.amount}</Text> Credits</Text>
                 </View>
-              </Pressable>} */}
+              </Pressable>}
               <Pressable
                 style={[CommonStyles.shadow, { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white }]}
                 onPress={() => navigate(ROUTES_NAMES.notifications)}>

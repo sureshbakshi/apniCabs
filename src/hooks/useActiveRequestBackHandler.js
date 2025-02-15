@@ -4,17 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import useCancelAllRequest from './useCancelAllRequest';
 import { setDialogStatus } from '../slices/authSlice';
 import { store } from '../store';
+import debounce from 'lodash/debounce';
+
 let backButtonListener = undefined;
 
 export function useRequestAlertHandler(title = 'Alert!', message = `You currently have a pending request. Would you like to cancel it? If you click 'Yes', your request will be cancelled.`) {
     const { cancelAllActiveRequest } = useCancelAllRequest();
     const dispatch = useDispatch();
-    // const { rideRequests, activeRequest } = useSelector(state => state.user)
+    // const { rideRequests, activeRequestInfo } = useSelector(state => state.user)
 
-    const requestAlertHandler = (cb) => {
-        const { activeRequestId, activeRequest } = store.getState().user
-        // console.log({rideRequests, activeRequest})
-        if (activeRequestId || activeRequest?.id) {
+    const requestAlert = (cb) => {
+        const { activeRequestId, activeRequestInfo } = store.getState().user
+        // console.log({rideRequests, activeRequestInfo})
+        if (activeRequestId || activeRequestInfo?.id) {
             Alert.alert(title, message, [
                 {
                     text: 'Close',
@@ -26,7 +28,7 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
                     onPress: () => {
                         if (activeRequestId) {
                             cancelAllActiveRequest(cb);
-                        } else if (activeRequest?.id) {
+                        } else if (activeRequestInfo?.id) {
                             dispatch(setDialogStatus(true))
                         }
                     }
@@ -39,11 +41,12 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
        
         return true;
     }
+    const requestAlertHandler = debounce(requestAlert, 250)
     return { requestAlertHandler }
 }
 
 export function useActiveRequestBackHandler() {
-    const { rideRequests, activeRequest } = useSelector(state => state.user);
+    const { rideRequests, activeRequestInfo } = useSelector(state => state.user);
     const { requestAlertHandler } = useRequestAlertHandler();
 
     useEffect(() => {
@@ -53,9 +56,9 @@ export function useActiveRequestBackHandler() {
         }
     }, [])
     useEffect(() => {
-        if ((rideRequests?.request_id || activeRequest?.id) && !backButtonListener) {
+        if ((rideRequests?.request_id || activeRequestInfo?.id) && !backButtonListener) {
             // console.log('hardwareBackPress listenner')
             backButtonListener = BackHandler.addEventListener("hardwareBackPress", requestAlertHandler);
         }
-    }, [rideRequests, activeRequest, backButtonListener]);
+    }, [rideRequests, activeRequestInfo, backButtonListener]);
 }
