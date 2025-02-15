@@ -24,7 +24,7 @@ import socket from './socket';
 
 const cancelRide = (activeRequestInfo, isDriverLogged) => {
     const dispatch = useDispatch();
-    const phoneNumber = activeRequestInfo?.details?.phone
+    const phoneNumber = activeRequestInfo?.details?.phone;
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
             onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`) : null}
@@ -233,13 +233,13 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
         })
     }
     const isActiveRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
-    const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED) && isDriverLogged
+    const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
     return (
         <>
             <View style={[FindRideStyles.card]}>
                 <ScreenContainer>
                     <RideDetailsView {...{ activeRequestInfo, isDriverLogged }} />
-                    {(isAccepted) && <RenderOTP {...{ activeRequestInfo }} />}
+                    {(isAccepted && isDriverLogged) && <RenderOTP {...{ activeRequestInfo }} />}
                 </ScreenContainer>
             </View>
             {(isActiveRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>

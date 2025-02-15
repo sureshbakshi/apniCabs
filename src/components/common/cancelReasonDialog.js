@@ -79,10 +79,9 @@ export const CancelReasonDialog = () => {
   }, [cancelAcceptedRequestData, cancelAcceptedRequestError])
   const handleSubmit = () => {
     if (selectedMessage.id && activeRequestInfo?.id) {
-      console.log('activeRequestInfo', activeRequestInfo)
       let payload = {
         "request_id": activeRequestInfo.id,
-        "driver_id":  isDriverLogged ? driverInfo?.id : activeRequestInfo.driver?.id || activeRequestInfo?.driver_requests.driver_id,
+        "driver_id":  isDriverLogged ? driverInfo?.id : activeRequestInfo?.driver_details?.id || activeRequestInfo?.driver_requests.driver_id,
         // "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
       }

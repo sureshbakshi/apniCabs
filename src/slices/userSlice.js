@@ -61,7 +61,6 @@ const intialState = {
   activeRequestDrivers: null,
   rideRequests: null,
   activeRequestInfo: null,
-  activeRequestInfo: null,
   driverLocation: null,
   statusUpdate: null,
   requestInfo: null,
@@ -90,7 +89,7 @@ const userSlice = createSlice({
         state.activeRequestInfo = null;
       } else if (id) {
         state.activeRequestId = id;
-        state.activeRequestInfo = rest;
+        state.activeRequestInfo = action.payload;
       }
     },
     requestInfo: (state, action) => {
@@ -119,7 +118,11 @@ const userSlice = createSlice({
       }
     },
     clearUserState: (state, action) => {
-      return Object.assign(state, { ...intialState })
+      state.activeRequestInfo = null;
+      state.activeRideId = null
+      state.statusUpdate = null;
+      state.activeRequestId = null;
+      state.activeRequestInfo = null;
     },
     setRecentSearchHistory: (state, action) => {
       const updatedAddress = updateAddress(state.recentSearchHistory, action?.payload)
