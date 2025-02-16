@@ -8,7 +8,7 @@ import { delay } from "lodash";
 export default () => {
     const dispatch = useDispatch();
     const { driverInfo } = useSelector(state => state.auth);
-    const { isOnline } = useSelector(state => state.driver);
+    const { isOnline, activeRequestInfo } = useSelector(state => state.driver);
     const isOffline = isOnline === DriverAvailableStatus.OFFLINE;
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useLazyDriverActiveRideQuery({}, { skip: isOffline, refetchOnMountOrArgChange: true });
     const [refetchWallet, { data: wallet }] = useLazyGetDriverWalletQuery({ id: driverInfo?.id }, { skip: isOffline || driverInfo?.id, refetchOnMountOrArgChange: true });
@@ -19,10 +19,11 @@ export default () => {
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {
-                delay(() => {
+                // delay(() => {
+                    // if(activeRequestInfo)
                     refetch?.()
                     refetchWallet({id: driverInfo?.id,})
-                }, 250)
+                // }, 250)
                 // getCurrentLocation()
             }
         }, [])

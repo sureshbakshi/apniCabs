@@ -311,7 +311,7 @@ export const apiSlice = createApi({
     cancelAllRequest: builder.mutation({
       query: (id) => ({
         method: 'DELETE',
-        url: api_path.request(`/${id}/${api_urls.cancelAllRequest}`),
+        url: api_path.request(`${id}/${api_urls.cancelAllRequest}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,

@@ -31,7 +31,7 @@ const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) =>
           <Text>{request?.duration} - {request?.distance} km</Text>
         </View>
         <Text style={[FindRideStyles.name, { alignSelf: 'flex-end', fontSize: 18, lineHeight: 24 }]}>
-          {'\u20B9'}{item?.fare}
+          {'\u20B9'}{item?.fare || item?.amount}
         </Text>
       </View>
       <View style={[FindRideStyles.cardtop]}>
