@@ -11,26 +11,26 @@ import { isDriver } from "../../util";
 import StarRating from "./StarRating";
 
 export default () => {
+    const { t } = useTranslation();
     const isDriverLogged = isDriver();
     const { statusUpdate, activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const dispatch = useDispatch()
     const statusMessages = {
         [RideStatus.USER_CANCELLED]: {
-            title: "Booking Cancelled",
-            description: `We're sorry, but your ride has been canceled by the ${activeRequestInfo?.user?.name || 'passenger'}.`,
+            title: t('ride_status.user_cancelled.title'),
+            description: `${t('ride_status.user_cancelled.description')} ${activeRequestInfo?.user?.name || 'passenger'}.`,
             reason: statusUpdate?.reason,
-            subText: `We understand that unexpected situations may arise, and we appreciate your understanding. Your availability is now back to active, and you are ready to receive new ride requests.`
+            subText: t('ride_status.user_cancelled.subText')
         },
         [RideStatus.DRIVER_CANCELLED]: {
-            title: "Booking Cancelled",
-            description: `We're sorry, but your ride has been canceled by the driver. `,
+            title: t('ride_status.driver_cancelled.title'),
+            description:t('ride_status.driver_cancelled.description'),
             reason: statusUpdate?.reason,
-            subText: `We apologize for any inconvenience caused. Thank you for using Apnicabi. We appreciate your understanding.`
+            subText: t('ride_status.driver_cancelled.subText')
         },
         [RideStatus.COMPLETED]: {
-            title: "Trip Completed",
-            description: isDriverLogged ? `Thank you for completing the ride with Apnicabi. We appreciate your dedication to providing a safe and reliable transportation experience for our passengers.
-    `: 'Thank you for riding with Apnicabi! Your trip has been successfully completed  and look forward to serving you again soon.'
+            title: t('ride_status.completed.title'),
+            description: isDriverLogged ? t('ride_status.completed.driver_description'): t('ride_status.completed.user_description')
         }
     }
     const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
@@ -52,7 +52,7 @@ export default () => {
                         <StarRating onSubmit={onSubmit} isLoading={false} />
                     </View>}
                     <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
-                    {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> Reason for Cancellation: {rideStatusModalInfo.reason}</Text> : null}
+                    {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> {t('reason_for_cancel')}: {rideStatusModalInfo.reason}</Text> : null}
                     {rideStatusModalInfo?.subText ? <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.subText}</Text> : null}
                 </CustomDialog>
             </> : null

@@ -19,6 +19,7 @@ import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 const ActiveRidePage = () => {
+  const { t } = useTranslation();
   const isDriverLogged = isDriver();
   const { getCurrentLocation } = useGetCurrentLocation();
   const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
@@ -76,7 +77,7 @@ const ActiveRidePage = () => {
               <VehicleCard activeRequestInfo={activeRequestInfo} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true} />
             </CardWrapper>} */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-              <Text>Distance</Text>
+              <Text>{t('distance')}</Text>
               <Text>{requestInfo?.duration} {requestInfo?.distance ?`- ${requestInfo.distance} km`: ''}</Text>
             </View>
             {!isEmpty(activeRequestInfo) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequestInfo={requestInfo} />}

@@ -19,11 +19,13 @@ import { extractKeys, isDriver, showErrorMessage } from '../util';
 import config from '../util/config';
 import Dropdown from './common/Dropdown';
 import { useGetCitiesQuery } from '../slices/apiSlice';
+import { useTranslation } from 'react-i18next';
 
 
 const cities = [{ "id": "c3ca6e35-8eac-4806-a59b-8d0c9d832946", "code": "HYD", "name": "Hyderabad", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }, { "id": "f79b2eb5-ed50-4b20-87ab-c7b5612aff68", "code": "BZA", "name": "Vijayawada", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }]
 
 export default ({ heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
+    const { t } = useTranslation();
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         formMutation();
     // const { data: cities } = useGetCitiesQuery({}, { refetchOnMountOrArgChange: true });
@@ -147,7 +149,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                 }
                 {<CustomButton
                     onClick={handleSubmit(onSubmit)}
-                    label={submitBtnLabel || 'Submit'}
+                    label={submitBtnLabel || t('submit_btn')}
                     disabled={Boolean(isError || otpInfo)}
                     iconRight={{ name: 'arrow-right', size: 'large' }}
                     isLowerCase

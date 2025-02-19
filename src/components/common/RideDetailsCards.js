@@ -23,6 +23,7 @@ import socket from './socket';
 
 
 const cancelRide = (activeRequestInfo, isDriverLogged) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const phoneNumber = activeRequestInfo?.details?.phone;
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
@@ -42,7 +43,7 @@ const cancelRide = (activeRequestInfo, isDriverLogged) => {
                 { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40 }
             }
             textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
-            label={'Cancel'}
+            label={t('cancel_btn')}
             isLowerCase
         />
     </View>
@@ -71,6 +72,7 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
 }
 
 export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
+    const { t } = useTranslation();
     const {details,fare} = activeRequestInfo
     const driver_avatar = details?.photo || details?.vehicle?.photo
     const name = details?.name 
@@ -119,7 +121,7 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
             {
                 activeRequestInfo?.distance && !isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
                     <Text style={[styles.text2]}>Duration: {activeRequestInfo?.duration}</Text>
-                    <Text style={[styles.text2]}>Distance: {activeRequestInfo?.distance} Km</Text>
+                    <Text style={[styles.text2]}>{t('distance')}: {activeRequestInfo?.distance} Km</Text>
                 </View>
             }
             {activeRequestInfo?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequestInfo?.id}</Text>}
@@ -141,6 +143,7 @@ const getFromLocation = (location = currentLocation) => {
     }
 }
 export const RenderOTP = ({ activeRequestInfo }) => {
+    const { t } = useTranslation();
     const { getCurrentLocation } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
@@ -162,7 +165,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 
     const handleSubmitOtp = () => {
         if (isEmpty(otp)) {
-            showErrorMessage('Please enter valid code')
+            showErrorMessage(t('error_otp'))
         } else {
             getCurrentLocation(otpSubmitHandler)
         }
@@ -180,7 +183,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
         <View style={{ flexDirection: 'row' }}>
             <TextInput
                 keyboardType='numeric'
-                placeholder="Enter OTP here"
+                placeholder={t('otp_Placeholder')}
                 // autoComplete={'sms-otp'}
                 onChangeText={newText => setOtp(newText)}
                 value={otp}
@@ -201,7 +204,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
                         FindRideStyles.text,
                         { fontWeight: 'bold', color: COLORS.black },
                     ]}>
-                    {'Submit OTP'}
+                    {t('submit_otp_btn')}
                 </Text>
             </Pressable>
         </View>
@@ -209,6 +212,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 }
 
 export default ({ activeRequestInfo, isDriverLogged }) => {
+    const { t } = useTranslation();
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
     const dispatch = useDispatch()
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
@@ -251,7 +255,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                         { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }
                     }
                     textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
-                    label={'Complete Ride'}
+                    label={t('complete_ride_btn')}
                     isLowerCase
                 />
             </View>

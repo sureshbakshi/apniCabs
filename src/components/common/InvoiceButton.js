@@ -8,12 +8,13 @@ import generateInvoice from '../../util/generateInvoice';
 import { Icon } from './Icon';
 
 export default function InvoiceButton() {
+    const { t } = useTranslation();
     return (
         <Pressable style={({ pressed }) => [
             CommonStyles.capsuleButton,
             pressed && CommonStyles.capsuleButtonPressed
         ]} onPress={generateInvoice}>
-            <Text style={CommonStyles.capsuleButtonText}> <Icon name='download' size='medium' /> Invoice </Text>
+            <Text style={CommonStyles.capsuleButtonText}> <Icon name='download' size='medium' /> {t('invoice_btn')} </Text>
         </Pressable>
     )
 }

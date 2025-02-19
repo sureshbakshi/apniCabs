@@ -14,9 +14,11 @@ import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const FindCaptainPage = () => {
-  const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
+  const { t } = useTranslation();
+  const { requestAlertHandler } = useRequestAlertHandler(t('cancel_request'));
   const { requestInfo } = useSelector(state => state.user);
 
   const extraProps = {
@@ -56,7 +58,7 @@ const FindCaptainPage = () => {
         <CustomButton
           onClick={requestAlertHandler}
           textStyles={{ color: COLORS.primary, fontSize: 18 }}
-          label={`Cancel All`}
+          label={t('cancel_all_btn')}
           isLowerCase={true}
           styles={{ backgroundColor: COLORS.white, paddingRight: 0, width: 'auto', ...CommonStyles.shadow }}
         />

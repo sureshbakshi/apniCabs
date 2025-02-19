@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setActiveRequestDrivers, updateActiveRequestDrivers, updateDriversRequest } from '../../../slices/userSlice';
 import { showErrorMessage } from '../../../util';
 import CustomButton from '../CustomButton';
+import { useTranslation } from 'react-i18next';
 
 const getButtonStyles = (status) => {
   switch (status) {
@@ -164,6 +165,7 @@ const Card = ({ request_id, ...item }) => {
   );
 };
 const CaptainsCard = ({ driversList, keyProp, extraProps, isfetching }) => {
+  const { t } = useTranslation();
   // const dispatch = useDispatch();
   //   const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
   //   const { data: categoryResponse, error: rideHistoryError, isFetching } = useGetRequestsByCategoryQuery({ request_id, category: code }, {refetchOnMountOrArgChange: true, skip: !request_id || !code,});
@@ -188,7 +190,7 @@ const CaptainsCard = ({ driversList, keyProp, extraProps, isfetching }) => {
           key={`${keyProp}_${item.id}`}
         />
       );
-    }) : <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>Drivers not found at the moment. Please try later!</Text>
+    }) : <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>{t('driver_not_found')}</Text>
   )
 }
 

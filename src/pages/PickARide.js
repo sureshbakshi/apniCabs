@@ -22,12 +22,13 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
+  const { t } = useTranslation();
   const request = item?.Request || item
   return (
     <View style={FindRideStyles.pickCard} key={item.id}>
       <View style={{ justifyContent: 'flex-end', marginBottom: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>Distance</Text>
+          <Text>{t('distance')}</Text>
           <Text>{request?.duration} - {request?.distance} km</Text>
         </View>
         <Text style={[FindRideStyles.name, { alignSelf: 'flex-end', fontSize: 18, lineHeight: 24 }]}>

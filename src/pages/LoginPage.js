@@ -36,6 +36,7 @@ import { signInSchema } from '../schema';
 import CustomButton from '../components/common/CustomButton';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
+import { useTranslation } from 'react-i18next';
 
 // const initialState = {
 //   email: 'sureshbakshi88@gmail.com',
@@ -54,6 +55,7 @@ GoogleSignin.configure({
 });
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [login, { data: logindata, error: loginError, isLoginLoading }] =
     useLoginMutation();
   const [userCheck, { data: userCheckData, error: userCheckError }] =
@@ -218,7 +220,7 @@ const LoginPage = () => {
               /> */}
 
               <View style={[LoginStyles.signUpSection,{ marginTop: 20}]}>
-                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>Don’t have an account?</Text>
+                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>{t('no_account')}</Text>
                 <Pressable
                   android_ripple={{ color: '#fff' }}
                   onPress={GoogleSignIn}>

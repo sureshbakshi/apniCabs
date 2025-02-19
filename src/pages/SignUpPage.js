@@ -22,6 +22,7 @@ import HeaderImage from '../components/common/HeaderImage';
 import CustomButton from '../components/common/CustomButton';
 import config, { openOwnerPortal } from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTranslation } from 'react-i18next';
 
 const city = [{
   name: "city",
@@ -37,6 +38,7 @@ const SIGN_UP_FORM_FIELDS = [
   ...(config.ROLE === 'DRIVER' ? city : [])
 ]
 const SignUpPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const googleInfo = undefined
   const initialState = {
@@ -103,7 +105,7 @@ const SignUpPage = () => {
                   />
                 </View>
                 <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
-                  <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>Already have an account?</Text>
+                  <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>{t('account')}</Text>
                   <Pressable
                     android_ripple={{ color: '#fff' }}
                     onPress={() => navigate('SignIn')}>

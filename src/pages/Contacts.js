@@ -14,6 +14,7 @@ import FindRideStyles from "../styles/FindRidePageStyles";
 import { useSosAddMutation, useSosListQuery } from "../slices/apiSlice";
 
 export default function Contacts() {
+    const { t } = useTranslation();
     const { userInfo: profile } = useSelector(state => state.auth);
 
     const { data: contactList, error: sosError } = useSosListQuery(profile?.id);
@@ -109,7 +110,7 @@ export default function Contacts() {
                             disabled={isDisabled}
                         >
                             <Text style={[FindRideStyles.text, { color: isDisabled ? COLORS.white : COLORS.black, fontWeight: 'bold', textTransform: 'capitalize', height: 'auto' }]}>
-                                Update
+                                {t('update_btn')}
                             </Text>
                         </Pressable>
                     </View>

@@ -10,6 +10,7 @@ import socket from '../../sockets/socketConfig';
 import { isDriver } from '../../util';
 
 const ChatUI = () => {
+  const { t } = useTranslation();
   const [inputText, setInputText] = useState(''); // Stores the current input text
   const { rideChats } = useSelector((state) => state.auth);
   const { activeRideId } = useSelector((state) => isDriver() ? state.driver : state.user);
@@ -70,9 +71,9 @@ const ChatUI = () => {
               style={styles.input}
               value={inputText}
               onChangeText={setInputText}
-              placeholder="Type a message..."
+              placeholder={t('chat_placeholder')}
             />
-            <CustomButton label={'Send'} onPress={sendMessage} isLowerCase />
+            <CustomButton label={t('send_btn')} onPress={sendMessage} isLowerCase />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

@@ -19,12 +19,14 @@ import FindRideStyles from "../styles/FindRidePageStyles";
 import { showSuccessMessage } from "../util";
 import { goBack } from "../util/navigationService";
 import MoreStyles from "../styles/MorePageStyles";
+import { useTranslation } from "react-i18next";
 
 const defaultProps = {
     margin: "2",
     fullWidth: true,
 };
 export default function FareSettings() {
+    const { t } = useTranslation();
     const { userInfo, driverInfo } = useSelector((state) => state.auth);
     useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
     const [editVehicleFair] = useEditFareMutation();
@@ -128,7 +130,7 @@ export default function FareSettings() {
                             disabled={isDisabled}
                         >
                             <Text style={[MoreStyles.greenTxt]}>
-                                Update
+                                {t('update_btn')}
                             </Text>
                         </Pressable>
                     </View>

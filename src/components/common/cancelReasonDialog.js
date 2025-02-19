@@ -13,6 +13,7 @@ import { delay } from 'lodash';
 import { setDialogStatus } from "../../slices/authSlice";
 import { getScreen, isDriver } from "../../util";
 import CustomButton from "./CustomButton";
+import { useTranslation } from "react-i18next";
 
 const driverReasons = [
   { message: 'Vehicle breakdown or mechanical issue', id: 1 },
@@ -34,6 +35,7 @@ const passengerResons = [
 
 ]
 export const CancelReasonDialog = () => {
+  const { t } = useTranslation();
   const isDriverLogged = isDriver();
   const dispatch = useDispatch();
   const intialState = isDriverLogged ? driverReasons : passengerResons
@@ -97,13 +99,13 @@ export const CancelReasonDialog = () => {
       styles={{ height: 40, minWidth: 120 }}
       textStyles={{ color: COLORS.white, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
       onClick={handleSubmit}
-      label={'Submit'}
+      label={t('submit_btn')}
       isLowerCase />
     <CustomButton
       styles={{ backgroundColor: COLORS.card_bg, height: 40, minWidth: 120 }}
       textStyles={{ color: COLORS.black, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
       onClick={closeModal}
-      label={'Close'}
+      label={t('close_btn')}
       isLowerCase />
 
   </View>
@@ -112,7 +114,7 @@ export const CancelReasonDialog = () => {
     <CustomDialog
       openDialog={isDialogOpen}
       actions={Actions}
-      title={'Reason to Cancel'}
+      title={t('reason_to_cancel')}
       containerStyles={{
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
@@ -143,7 +145,7 @@ export const CancelReasonDialog = () => {
       })}
       {errorMsg && (
         <Text style={{ color: COLORS.primary }}>
-          Please select a reason
+          {t('please_select_a_reason')}
         </Text>
       )}
 

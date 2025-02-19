@@ -15,16 +15,17 @@ import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import CommonStyles from '../styles/commonStyles';
 import SelectOnPage from '../pages/selectonMap';
+import { useTranslation } from 'react-i18next';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.activeRide];
 
 export default function UserStackNavigator({ navigation, route }) {
-
+  const { t } = useTranslation();
   const { activeRequestInfo, activeRequestId } = useSelector((state) => state.user);
   const { rideRequests } = useSelector(state => state.user);
-  const { requestAlertHandler } = useRequestAlertHandler('Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`);
+  const { requestAlertHandler } = useRequestAlertHandler(t('cancel_request'));
   useGetUserActiveRequests()
   // useEffect(() => {
   //   if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
@@ -70,7 +71,7 @@ export default function UserStackNavigator({ navigation, route }) {
                   onClick={requestAlertHandler}
                   styles={{ paddingRight: 0, width: 'auto' }}
                   textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
-                  label={`Cancel All`}
+                  label={t('cancel_all_btn')}
                   isLowerCase={true}
                 />
               }

@@ -1,8 +1,10 @@
       
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Image, Pressable, StyleSheet, Alert } from 'react-native';
 
 const SomethingWentWrong = () => {
+  const { t } = useTranslation();
   // const handleClose = () => {
   //   Alert.alert('Close', 'You clicked Close!');
   //   // Add navigation or closing logic here
@@ -11,7 +13,7 @@ const SomethingWentWrong = () => {
   return (
     <View style={styles.container}>
       {/* Error Title */}
-      <Text style={styles.title}>Something Went Wrong</Text>
+      <Text style={styles.title}>{t('error_message_title')}</Text>
 
       {/* Error Description */}
       <Text style={styles.description}>

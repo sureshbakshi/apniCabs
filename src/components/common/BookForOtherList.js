@@ -8,9 +8,11 @@ import CustomButton from './CustomButton';
 import { getPhoneNumber } from '../../util/contactPicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOtherContactList, setSelectedOtherContact } from '../../slices/userSlice';
+import { useTranslation } from 'react-i18next';
 
 
 const UserList = ({ onCloseModal }) => {
+    const { t } = useTranslation();
     const { otherContactList, selectedOtherContact } = useSelector((state) => state.user);
     const [selectedUser, setSelectedUser] = useState(selectedOtherContact);
     const dispatch = useDispatch();
@@ -51,7 +53,7 @@ const UserList = ({ onCloseModal }) => {
 
     return (
         <View style={{ padding: 10 }}>
-            <Text style={styles.heading}>Booking ride for</Text>
+            <Text style={styles.heading}>{t('booking_others_heading')}</Text>
             <FlatList
                 data={otherContactList}
                 renderItem={renderItem}
@@ -64,7 +66,7 @@ const UserList = ({ onCloseModal }) => {
                     onPress={getContact}
                 >
                     <Icon name={'account-circle'} size={'large'} color={COLORS.button_blue_bg} />
-                    <Text style={[styles.userName, styles.newRider]}>Add new rider</Text>
+                    <Text style={[styles.userName, styles.newRider]}>{t('booking_others_btn')}</Text>
                 </Pressable>
             </View>
             <View>
@@ -72,7 +74,7 @@ const UserList = ({ onCloseModal }) => {
                     styles={{ backgroundColor: COLORS.primary, height: 50, borderRadius: 20, marginTop: 30 }}
                     textStyles={{ color: COLORS.white, fontSize: 14, fontWeight: 'bold', lineHeight: 18 }}
                     onClick={handleOtherContact}
-                    label={'Done'}
+                    label={t('done_btn')}
                     isLowerCase
                 />
             </View>

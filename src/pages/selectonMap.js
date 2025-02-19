@@ -21,6 +21,7 @@ const initial_region = {
     longitudeDelta: 0.001
 }
 const SelectOnPage = () => {
+    const { t } = useTranslation();
     const mapRef = useRef(null);
     const navigation = useNavigation();
     const route = useRoute();
@@ -101,7 +102,7 @@ const SelectOnPage = () => {
                             <Text style={{ color: COLORS.text_dark, fontSize: 17, fontWeight: 600 }}>{`Select ${MAPS_LABELS[focusKey]} location`}</Text>
                             <CustomButton
                                 onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
-                                label={`Change`}
+                                label={t('change_btn')}
                                 styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
                                 textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
                                 isLowerCase
@@ -118,7 +119,7 @@ const SelectOnPage = () => {
                             onClick={onConfirmSelection}
                             styles={{ backgroundColor: COLORS.brand_yellow, borderRadius: 20, height: 50 }}
                             textStyles={{ fontSize: 16, fontWeight: 'bold', lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
-                            label={'Select Pickup'}
+                            label={t('select_pickup_btn')}
                         />
                     </View>
                 </View>

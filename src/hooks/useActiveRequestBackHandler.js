@@ -35,7 +35,9 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
                 },
             ]);
         } else {
-            cb?.()
+            if(typeof cb === 'function'){
+                cb?.()
+            }
             // BackHandler.exitApp()
         }
        

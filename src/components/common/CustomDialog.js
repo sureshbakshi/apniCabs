@@ -5,8 +5,10 @@ import { Text } from "react-native-paper";
 import { COLORS, default_btn_styles } from "../../constants";
 import FindRideStyles from "../../styles/FindRidePageStyles";
 import CustomButton from "./CustomButton";
+import { useTranslation } from "react-i18next";
 
 export default ({ openDialog, actions, title, closeCb, children, containerStyles={}, modalContainerStyles={} }) => {
+    const { t } = useTranslation();
     const [modalVisible, setModalVisible] = useState(openDialog)
 
     useEffect(() => {
@@ -41,7 +43,7 @@ export default ({ openDialog, actions, title, closeCb, children, containerStyles
                             <CustomButton
                                 // style={[FindRideStyles.button, { backgroundColor: COLORS.primary }]}
                                 onClick={closeDialog}
-                                label={'Okay'}
+                                label={t('okay_btn')}
                                 {...default_btn_styles}
                                 />
                             </>}

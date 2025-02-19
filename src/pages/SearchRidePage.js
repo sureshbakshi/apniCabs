@@ -21,8 +21,10 @@ import RecentSearchHistory from '../components/RecentSearchHistory';
 import { setIsBottomDialogStatus } from '../slices/authSlice';
 import BottomModal from '../components/common/BottomModal';
 import useModal from '../hooks/useModal';
+import { useTranslation } from 'react-i18next';
 
 const SearchRidePage = () => {
+  const { t } = useTranslation();
   const route = useRoute();
   const dispatch = useDispatch();
   const { isSocketConnected, vehicleTypes } = useSelector((state) => state.auth);
@@ -151,7 +153,7 @@ const SearchRidePage = () => {
             <Timeline data={['', '']} height={25} />
           </View>
           <GooglePlaces
-            placeholder={'Pickup Location'}
+            placeholder={t('pickup_placeholder')}
             containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
             textContainerStyles={{ borderBottomWidth: 0.5 }}
             locationKey='from'
@@ -160,18 +162,18 @@ const SearchRidePage = () => {
             onInputFocus={inputFocusHandler}
             locationDetails={location.from}
           />
-          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={'Drop Location'} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} locationDetails={location.to} />
+          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={t('drop_placeholder')} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} locationDetails={location.to} />
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 }}>
             <CustomButton
               iconLeft={{ name: 'map-marker-radius-outline', size: 'medium', color: COLORS.black }}
-              label={'Select on map'}
+              label={t('select_on_map_btn')}
               isLowerCase
               styles={{ backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.bg_secondary, borderRadius: 20, width: 170, height: 40 }}
               textStyles={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold', color: COLORS.black, lineHeight: 17 }}
               onClick={navigateToSelectOnMapPage}
             />
             <CustomButton
-              label={selectedOtherContact?.name || "My self"}
+              label={selectedOtherContact?.name || t('my_self')}
               styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
               textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
               isLowerCase
