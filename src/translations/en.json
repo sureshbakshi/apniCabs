@@ -61,13 +61,14 @@
     "driver_vehicle_update_msg":"Vehicle not yet assigned.",
     "driver_expiry_fields_msg":"Below are the documents that will expire within a week:",
     "expire_on":"will expire on",
-    "user_update_msg":"your profile is verified",
+    "profile_verified_txt":"your profile is verified",
     "reason_title":"Reason",
-    "notice_title":"Notice:",
+    "notice_title":"Notice",
     "no_notifications_found":"No Notifications found.",
+    "connecting": "Connecting...",
     "socket_connection_msg":"If still not connected please press online/offline button",
-    "rate_driver":"Rate this driver:",
-    "profile":"My Profile",
+    "rate_driver":"Rate this driver",
+    "my_profile":"My Profile",
     "become_driver":"Become Driver",
     "edit_fare":"Edit Fare",
     "refer_now":"Refer Now",
@@ -78,6 +79,6 @@
     "search_ride_msg":"Looking for ride requests! Please be in online status.",
     "refer_title":"Refer now & and Earn up to Rs.500",
     "refer_des":" Send a referral code to your friends via",
-    "refer_code":"Share Your Invite Code",
-    "refer_successful":"Upon successful registration and verification, you will receive an excellent joining bonus. Please use the referral code:"
+    "refer_code_txt":"Share Your Invite Code",
+    "refer_successful_msg":"Upon successful registration and verification, you will receive an excellent joining bonus. Please use the referral code: {{referral_code}}"
 }

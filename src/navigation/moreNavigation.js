@@ -11,10 +11,12 @@ import Refer from '../pages/Refer';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import CommonStyles from '../styles/commonStyles'
 import LanguagePage from '../pages/LanguagePage';
+import { useTranslation } from 'react-i18next';
 const Stack = createNativeStackNavigator();
 const tabHiddenRoutes = [ROUTES_NAMES.profile, ROUTES_NAMES.terms, ROUTES_NAMES.activeRide];
 
 export default function MoreNavigator({ navigation, route }) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -37,7 +39,7 @@ export default function MoreNavigator({ navigation, route }) {
       <Stack.Screen name="More Details" component={MorePage} options={{ headerShown: false }} />
       <Stack.Screen
         name="MyProfile"
-        options={{ title: 'My Profile' }}
+        options={{ title: t('my_profile') }}
         component={MyProfilePage}
       />
       <Stack.Screen
@@ -53,7 +55,7 @@ export default function MoreNavigator({ navigation, route }) {
       <Stack.Screen
         name={ROUTES_NAMES.refer}
         options={{
-          title: 'Refer Now',
+          title: t('refer_now'),
           headerTransparent: true,
         }}
         component={Refer}

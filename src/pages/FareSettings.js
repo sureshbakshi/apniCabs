@@ -29,8 +29,8 @@ export default function FareSettings() {
     const { t } = useTranslation();
     const { userInfo, driverInfo } = useSelector((state) => state.auth);
     useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
-    const [editVehicleFair] = useEditFareMutation();
-
+    const [editVehicleFare] = useEditFareMutation();
+const fare = driverInfo?.Vehicle?.VehicleFare
     const {
         watch,
         control,
@@ -40,11 +40,11 @@ export default function FareSettings() {
     } = useForm({
         mode: "onSubmit",
         defaultValues: {
-            base_fare: driverInfo?.vehicle?.vehicle_fare.base_fare || '',
-            fare_0_10_km: driverInfo?.vehicle?.vehicle_fare.fare_0_10_km || '',
-            fare_10_20_km: driverInfo?.vehicle?.vehicle_fare.fare_10_20_km || '',
-            fare_20_50_km: driverInfo?.vehicle?.vehicle_fare.fare_20_50_km || '',
-            fare_above_50_km: driverInfo?.vehicle?.vehicle_fare.fare_above_50_km || '',
+            base_fare: fare?.base_fare || '',
+            fare_0_10_km: fare?.fare_0_10_km || '',
+            fare_10_20_km: fare?.fare_10_20_km || '',
+            fare_20_50_km: fare?.fare_20_50_km || '',
+            fare_above_50_km: fare?.fare_above_50_km || '',
         },
         resolver: yupResolver(fareSchema),
     });
@@ -56,16 +56,18 @@ export default function FareSettings() {
             fare_10_20_km,
             fare_20_50_km,
             fare_above_50_km,
-        } = data;
+        }  = Object.fromEntries(
+            Object.entries(data).map(([key, value]) => [key, Number(value)])
+          );
         if (isDirty) {
-            if (driverInfo?.vehicle?.id) {
-                editVehicleFair({
+            if (driverInfo?.Vehicle?.id) {
+                editVehicleFare({
                     base_fare,
                     fare_0_10_km,
                     fare_10_20_km,
                     fare_20_50_km,
                     fare_above_50_km,
-                    id: driverInfo.vehicle.id,
+                    id: driverInfo.Vehicle.id,
                 }).unwrap()
                 .then(data => {
                   showSuccessMessage('Updated successfully')
@@ -76,7 +78,7 @@ export default function FareSettings() {
         }
     };
 
-    if (isEmpty(driverInfo?.vehicle)) {
+    if (isEmpty(driverInfo?.Vehicle)) {
         return (
             <SearchLoader msg='No Vehicles assigned' isLoader={false} />
         );

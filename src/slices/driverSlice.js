@@ -18,7 +18,6 @@ const driverSlice = createSlice({
   reducers: {
     updateRideRequest: (state, action) => {
       const requestObj = action.payload
-
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
         state.activeRequestInfo = requestObj;
         state.rideRequests = []

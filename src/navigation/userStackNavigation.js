@@ -37,6 +37,8 @@ export default function UserStackNavigator({ navigation, route }) {
   const status = activeRequestInfo?.status;
   const isActiveRide = [RideStatus.ONRIDE, RideStatus.ACCEPTED].includes(status);
   const isActiveRequest = [RideStatus.INITIATED, RideStatus.REQUESTED].includes(status);
+
+  console.log('isActiveRequest', isActiveRequest, isActiveRide)
 // console.log('isActiveRide', activeRequestInfo)
   return (
     <Stack.Navigator

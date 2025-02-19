@@ -20,6 +20,7 @@ import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
 import socket from './socket';
+import { useTranslation } from 'react-i18next';
 
 
 const cancelRide = (activeRequestInfo, isDriverLogged) => {
@@ -143,8 +144,8 @@ const getFromLocation = (location = currentLocation) => {
     }
 }
 export const RenderOTP = ({ activeRequestInfo }) => {
-    const { t } = useTranslation();
     const { getCurrentLocation } = useGetCurrentLocation()
+    const {t} = useTranslation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
         useRideRequestMutation();

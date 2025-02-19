@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { View } from "react-native"
 import { Text } from "react-native-paper"
 import { useSelector } from "react-redux"
 
-const messages = ['Connecting...', 'If still not connected please press online/offline button']
 let watchCounter = undefined
 export default ({multipleMsg= true, containerStyles={}, textStyles={}}) => {
+    const {t} = useTranslation()
+    const messages = [t('connecting'), t('socket_connection_msg')]
     const { isSocketConnected } = useSelector((state) => state.auth)
     const [counter, setCounter] = useState(0)
     useEffect(() => {

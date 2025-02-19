@@ -11,9 +11,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { showSuccessMessage } from '../util';
 import CommonStyles from '../styles/commonStyles';
 import HeaderImage from '../components/common/HeaderImage';
+import { useTranslation } from 'react-i18next';
 const Refer = () => {
     const { userInfo: profile } = useSelector(state => state.auth);
-    const message = `Upon successful registration and verification, you will receive an excellent joining bonus. Please use the referral code: ${profile?.referral_code}`
+    const {t} = useTranslation();
+    const message = t('refer_successful_msg', {referral_code: profile?.referral_code})
     const writeToClipboard = () => {
         // Clipboard.setString(message)
         // showSuccessMessage('Copied')
@@ -47,11 +49,11 @@ const Refer = () => {
                 <View style={[TermsAndConditionsStyles.list, { flexDirection: 'column', justifyContent: 'space-between' }]}>
                     <View style={[TermsAndConditionsStyles.listSection]}>
                         <View style={TermsAndConditionsStyles.list}>
-                            <Text style={[CommonStyles.font24, CommonStyles.bold, { textAlign: 'center' }]}>Refer now & and Earn upto Rs.500</Text>
+                            <Text style={[CommonStyles.font24, CommonStyles.bold, { textAlign: 'center' }]}>{t('refer_title')}</Text>
                         </View>
                         <View style={[TermsAndConditionsStyles.list, { marginBottom: 70 }]}>
                             <Text style={[CommonStyles.font14, { textAlign: 'center' }]}>
-                                Send a refferal code to your friends via
+                                {t('refer_des')}
                             </Text>
                             <Text style={[CommonStyles.font14, { textAlign: 'center' }]}>
                                 SMS/WhatsApp/Email
@@ -65,6 +67,7 @@ const Refer = () => {
                         <View style={[TermsAndConditionsStyles.list, { marginVertical: 5 }]}>
                             <Text style={[CommonStyles.font16, { color: COLORS.text_dark1 }]}>
                                 Share Your Invite Code
+                                {t('refer_code_txt')}
                             </Text>
                             <Pressable
                                 android_ripple={{ color: '#fff' }}

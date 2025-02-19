@@ -15,14 +15,15 @@ export default () => {
 
     // const { getCurrentLocation } = useGetCurrentLocation();
  
-
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {
                 // delay(() => {
                     // if(activeRequestInfo)
                     refetch?.()
-                    refetchWallet({id: driverInfo?.id,})
+                if(driverInfo?.id){
+                    refetchWallet({id: driverInfo?.id})
+                }
                 // }, 250)
                 // getCurrentLocation()
             }

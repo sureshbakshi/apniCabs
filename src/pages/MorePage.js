@@ -14,11 +14,13 @@ import useGetDriverDetails from '../hooks/useGetDriverDetails';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
+import { useTranslation } from 'react-i18next';
 
 
 const MorePage = () => {
   const { logOut } = useLogout();
   const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
+  const {t} = useTranslation();
   useGetDriverDetails(profile?.id, { skip: !driverInfo?.id || !profile?.id, refetchOnMountOrArgChange: true })
 
   return (
@@ -100,7 +102,7 @@ const MorePage = () => {
                     <View style={MoreStyles.listIcon}>
                       <Icon name="web" size="large" color={COLORS.primary} />
                     </View>
-                    <Text style={MoreStyles.name}>More settings</Text>
+                    <Text style={MoreStyles.name}>{t('settings')}</Text>
                   </Pressable>
                   <SupportLinks />
 

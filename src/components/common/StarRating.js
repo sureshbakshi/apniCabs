@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Icon } from './Icon';
 import { COLORS } from '../../constants';
+import { useTranslation } from 'react-i18next';
 
 const StarRating = ({ onSubmit, isLoading = false }) => {
     const [rating, setRating] = useState(0); // Rating state (0 to 5)
-
+    const {t} = useTranslation();
     // Function to handle star press
     const handlePress = (ratingValue) => {
         if (!isLoading) {
@@ -33,7 +34,7 @@ const StarRating = ({ onSubmit, isLoading = false }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.ratingText}>Rate this driver:</Text>
+            <Text style={styles.ratingText}>{t('rate_driver')}:</Text>
             <View style={styles.starContainer}>
                 {renderStars()}
             </View>

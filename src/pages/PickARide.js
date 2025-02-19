@@ -19,6 +19,7 @@ import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
 import CardWrapper from '../components/CardWrapper';
 import ContainerWrapper from '../components/common/ContainerWrapper';
+import { useTranslation } from 'react-i18next';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
@@ -125,7 +126,7 @@ export const PickARide = () => {
   const status = isDriverAcceptedOrOnline()
   const [isOnline, toggleDriveStatus] = useState(status)
   const { getCurrentLocation } = useGetCurrentLocation();
-
+  const { t } = useTranslation();
   const updateDriverStatus = useUpdateDriverStatus();
 
   useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
@@ -136,9 +137,9 @@ export const PickARide = () => {
 
   useEffect(() => {
     // if (!isEqual(status, isOnline)) {
-      // if (driverStatus !== DriverAvailableStatus.BUSY) {
-        updateDriverStatus(true, toggleDriveStatus)
-      // }
+    // if (driverStatus !== DriverAvailableStatus.BUSY) {
+    updateDriverStatus(true, toggleDriveStatus)
+    // }
     // }
   }, [isOnline]);
 
@@ -150,7 +151,7 @@ export const PickARide = () => {
     toggleDriveStatus(status)
   }, [status])
 
-const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
+  const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
       <View style={[FindRideStyles.pageContainer]}>
@@ -204,7 +205,7 @@ const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
           {isOnline || rideRequests.length > 0 ? (
             <>
               {!isSocketConnected ? <SocketStatus /> :
-                rideRequests?.length <= 0 ? <SearchLoader msg='Looking for ride requests! Please be in online status.' source={images.homeBanner} /> :
+                rideRequests?.length <= 0 ? <SearchLoader msg={t('search_ride_msg')} source={images.homeBanner} /> :
                   <View style={FindRideStyles.section}>
                     {rideRequests?.length ? (
                       <ScrollView>
@@ -218,7 +219,7 @@ const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
             <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
               You are currently offline. Turn on your availability to receive ride requests.</Text>
           </View>}
-          {walletInfo?.balance < 100  && <View style={{width: showStatusButton ? '80%': '100%'}}>
+          {walletInfo?.balance < 100 && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
             <Pressable
               style={[CommonStyles.shadow, { padding: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 25, backgroundColor: COLORS.primary, paddingHorizontal: 14 }]}
               onPress={() => navigate(ROUTES_NAMES.wallet,)}>

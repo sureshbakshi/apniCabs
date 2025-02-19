@@ -9,19 +9,21 @@ import CustomButton from './CustomButton';
 import { formattedDate } from '../../util';
 import { openOwnerPortal } from '../../util/config';
 import useGetDriverDetails from '../../hooks/useGetDriverDetails';
+import { useTranslation } from 'react-i18next';
 
 const Notifications = () => {
     const { driverInfo, userInfo } = useSelector(state => state.auth);
     useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
+    const { t } = useTranslation();
     return (
         !isEmpty(driverInfo?.expiredFields) ?  <View style={[FindRideStyles.container, { padding: 10, }]}>
             <View style={[FindRideStyles.card, { width: '100%', padding: 10}]} >
                 {<View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                    <Text style={[FindRideStyles.name, { fontSize: 14, fontWeight: 'bold' }]}>Below are the documents that will expire within a week:</Text>
+                    <Text style={[FindRideStyles.name, { fontSize: 14, fontWeight: 'bold' }]}>{t('driver_expiry_fields_msg')}:</Text>
                     {driverInfo?.expiredFields.map((item, i) => {
                         return <View key={i} style={[FindRideStyles.center,{justifyContent:'flex-start',alignItems:'flex-start'}]}>
                             <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{i + 1}. </Text>
-                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{ExpiryStatus[item]} will expire on {formattedDate(driverInfo?.vehicle[item], true)}</Text>
+                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{ExpiryStatus[item]} {t('expire_on')} {formattedDate(driverInfo?.vehicle[item], true)}</Text>
                         </View>
                     })}
                 </View>}
@@ -33,7 +35,7 @@ const Notifications = () => {
                 </View>
 
             </View>
-        </View>: <Text style={{fontWeight: 'bold', alignSelf: 'center', margin: 30}}>No Notifications found.</Text>
+        </View>: <Text style={{fontWeight: 'bold', alignSelf: 'center', margin: 30}}>{t('no_notifications_found')}</Text>
     );
 };
 export default Notifications;

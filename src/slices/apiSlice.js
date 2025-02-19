@@ -327,8 +327,8 @@ export const apiSlice = createApi({
     }),
     editFare: builder.mutation({
       query: ({ id, ...rest }) => ({
-        method: "PUT",
-        url: api_path.vehicle(`fair/${id}`),
+        method: "PATCH",
+        url: api_path.vehicle(`fare/${id}`),
         body: rest,
       }),
       transformResponse: (response) => {

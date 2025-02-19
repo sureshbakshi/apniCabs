@@ -78,8 +78,8 @@ export default (() => {
     const addDevice = useCallback(() => {
         const id = store.getState().auth.userInfo?.id
         if (id) {
-            console.log(`============= Driver add device emit ==========: ${id}`)
-            dispatch(updatedSocketConnectionStatus(id))
+            console.log(`============= Driver add device emit ==========: ${driverSocket?.id}`)
+            dispatch(updatedSocketConnectionStatus(driverSocket?.id))
             // driverSocket.emit('addDevice', id, (cbRes) => {
             //     // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
             //     dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
@@ -106,7 +106,7 @@ export default (() => {
 
     useEffect(() => {
         driverSocket.on('connect', (res) => {
-            console.log('================= on connect ======================', res)
+            console.log('================= on connect ======================', res, driverSocket?.id)
             addDevice()
             onGetRideRequests(updateRideRequests);
 

@@ -5,12 +5,15 @@ import { COLORS } from '../constants';
 import { useCreateOrderMutation, useSubscriptionListQuery } from '../slices/apiSlice';
 import { useSelector } from 'react-redux';
 import { openUrl, webLinks } from '../util/config';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const SubscriptionPlans = () => {
     const { data: subscriptions, isLoading } = useSubscriptionListQuery(null, { refetchOnMountOrArgChange: true })
     const userInfo = useSelector((state) => state.auth.userInfo)
     const access_token = useSelector((state) => state.auth.access_token)
     const [createOrder, { data: orderDetails }] = useCreateOrderMutation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (orderDetails) {
@@ -48,7 +51,7 @@ const SubscriptionPlans = () => {
     );
     const renderEmptyList = () => (
         <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No subscription plans available.</Text>
+            <Text style={styles.emptyText}>{t('no_subscription')}</Text>
         </View>
     );
 

@@ -46,7 +46,7 @@ export default (() => {
         const id = store.getState().auth.userInfo?.id
         console.log({ addDeviceId: id })
         if (id) {
-            // console.log(`============= User add device emit ==========`)
+            console.log(`============= User add device emit ==========`)
             dispatch(updatedSocketConnectionStatus(id))
 
             // userSocket.emit('addDevice', id, (cbRes) => {
