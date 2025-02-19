@@ -8,9 +8,7 @@ const LanguagePage = () => {
     return (
         <View style={MyProfileStyles.container}>
             <View style={MyProfileStyles.section}>
-                <ScrollView>
                     <LanguageSelection />
-                </ScrollView>
             </View>
         </View>
     );
