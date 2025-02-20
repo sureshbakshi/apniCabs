@@ -28,7 +28,7 @@
     "pickup_placeholder":"Pickup Location",
     "drop_placeholder":"Drop Location",
     "otp_Placeholder":"Enter OTP here",
-    "chat_placeholder":"Type a message...",
+    "chat_placeholder":"Type a message here...",
     "ride_status":{
          "user_cancelled":{
             "title": "Booking Cancelled",

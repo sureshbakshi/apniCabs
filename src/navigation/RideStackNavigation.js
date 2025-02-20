@@ -4,14 +4,8 @@ import UserRideHistory from '../pages/user/UserRideHistory';
 import RideDetails from '../pages/RideDetails';
 import { isDriver } from '../util';
 import DriverRideHistory from '../pages/driver/DriverRideHistory';
-import { Icon } from '../components/common';
-import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
-import { goBack } from '../util/navigationService';
 import HeaderBackButton from '../components/common/HeaderBackButton';
-import ChatUI from '../components/common/chat';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { useEffect } from 'react';
 const Stack = createNativeStackNavigator();
 
 export default function RideStackNavigation({ navigation, route }) {
@@ -35,15 +29,6 @@ export default function RideStackNavigation({ navigation, route }) {
                     headerShadowVisible: false
                 }}
                 component={RideDetails}
-            />
-            <Stack.Screen
-                name={ROUTES_NAMES.chat}
-                options={{
-                    title: 'Chat',
-                    headerLeft: () => <HeaderBackButton />,
-                    headerShown: true
-                }}
-                component={ChatUI}
             />
         </Stack.Navigator>
     );

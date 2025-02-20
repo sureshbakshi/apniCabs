@@ -18,7 +18,7 @@ function updateStatusByDriverId(drivers, driver_id, status) {
 
   // If the object is found, update its properties
   if (driverToUpdate) {
-      _.set(driverToUpdate, 'status', status); // Update the object with new values
+    _.set(driverToUpdate, 'status', status); // Update the object with new values
   }
 
   // Return the updated array (the array is mutated)
@@ -74,11 +74,11 @@ const userSlice = createSlice({
   initialState: intialState,
   reducers: {
     setActiveRequestDrivers: (state, action) => {
-      const { id, category, code, drivers, status} = action.payload;
+      const { id, category, code, drivers, status } = action.payload;
       if (id) {
         const key = category || code;
         state.activeRequestId = id
-        state.activeRequestInfo = {...state.activeRequestInfo, status: status || state.activeRequestInfo?.status || RideStatus.INITIATED};
+        state.activeRequestInfo = { ...state.activeRequestInfo, status: status || state.activeRequestInfo?.status || RideStatus.INITIATED };
         state.activeRequestDrivers = { ...(state.activeRequestDrivers || {}), [key]: drivers };
       }
     },
@@ -90,6 +90,7 @@ const userSlice = createSlice({
       } else if (id) {
         state.activeRequestId = id;
         state.activeRequestInfo = action.payload;
+        state.statusUpdate = null
       }
     },
     requestInfo: (state, action) => {
@@ -130,17 +131,17 @@ const userSlice = createSlice({
     },
     updateActiveRequestDrivers: (state, action) => {
       const { id: driver_id, status, category } = action.payload;
-        const drivers = state.activeRequestDrivers?.[category];
-        if (drivers?.length) {
-          const existingDrivers = _.cloneDeep(drivers); // Ensure you're working with a copy
-          const updateDrivers = updateStatusByDriverId(existingDrivers, driver_id, status);
-          if (updateDrivers?.length) {
-            state.activeRequestDrivers[category] = updateDrivers;
-          }
+      const drivers = state.activeRequestDrivers?.[category];
+      if (drivers?.length) {
+        const existingDrivers = _.cloneDeep(drivers); // Ensure you're working with a copy
+        const updateDrivers = updateStatusByDriverId(existingDrivers, driver_id, status);
+        if (updateDrivers?.length) {
+          state.activeRequestDrivers[category] = updateDrivers;
+        }
       }
     },
     updateDriversRequest: (state, action) => {
-      const { status, id , category, driver_id} = action.payload;
+      const { status, id, category, driver_id } = action.payload;
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         // state.activeRequestInfo = action.payload
         // state.rideRequests = [];
@@ -148,8 +149,8 @@ const userSlice = createSlice({
         // state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
 
         state.activeRequestId = id;
-        state.activeRequestInfo = {...state.activeRequestInfo, status: status};
-
+        state.activeRequestInfo = { ...state.activeRequestInfo, status: status };
+        state.statusUpdate = null;
       } else if (ClearRideStatus.includes(status)) {
         state.statusUpdate = action.payload;
         state.selectedOtherContact = mySelf;
@@ -157,7 +158,7 @@ const userSlice = createSlice({
         const activeRequestDrivers = state.activeRequestDrivers;
         if (activeRequestDrivers) {
           const clonedDrivers = _.cloneDeep(activeRequestDrivers); // Ensure you're working with a copy
-          if(clonedDrivers[category]) {
+          if (clonedDrivers[category]) {
             clonedDrivers[category] = updateStatusByDriverId(clonedDrivers[category], driver_id, status);
           }
           state.activeRequestDrivers = clonedDrivers;

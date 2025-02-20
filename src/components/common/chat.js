@@ -14,17 +14,15 @@ const ChatUI = () => {
   const { t } = useTranslation();
   const [inputText, setInputText] = useState(''); // Stores the current input text
   const { rideChats } = useSelector((state) => state.auth);
-  const { activeRideId } = useSelector((state) => isDriver() ? state.driver : state.user);
+  const { activeRequestId } = useSelector((state) => isDriver() ? state.driver : state.user);
   const flatListRef = useRef();
-
-
-
-
   useEffect(() => {
-    if (socket && activeRideId) {
-      socket?.emit(SOCKET_EVENTS.joinRoom, activeRideId);  // Replace with the actual rideId
+    console.log('activeRequestId',activeRequestId)
+    if (socket && activeRequestId) {
+      console.log('activeRequestId',activeRequestId)
+      socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestId);  // Replace with the actual rideId
     }
-  }, [activeRideId, socket])
+  }, [activeRequestId, socket])
 
 
   const sendMessage = () => {
@@ -39,10 +37,12 @@ const ChatUI = () => {
 
   // Scroll to the end whenever messages change
   useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
+    if (flatListRef?.current && rideChats?.messages?.length > 0) {
+      setTimeout(() => {
+        flatListRef.current.scrollToEnd({ animated: true });
+      }, 100); 
     }
-  }, [rideChats]);
+  }, [rideChats?.messages]);
 
   return (
     <ContainerWrapper>
@@ -55,12 +55,12 @@ const ChatUI = () => {
           <FlatList
             ref={flatListRef}
             data={rideChats?.messages || []}
-            keyExtractor={(item, key) => key.toString()}
+            keyExtractor={(item, index) => String(index)}
             renderItem={({ item }) => (
               <View style={[styles.messageBubble, {
                 ...item.bg_style
               }]}>
-                <Text style={[styles.messageText, { ...item.text_style }]}>{item.message}</Text>
+                <Text style={[styles.messageText, { ...item.text_style }]}>{item?.message}</Text>
               </View>
             )}
             contentContainerStyle={styles.messageList}

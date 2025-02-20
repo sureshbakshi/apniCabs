@@ -59,7 +59,7 @@ const driverSlice = createSlice({
       const newRequest = action.payload;
       let updatedRequest = state.rideRequests;
       if (Array.isArray(newRequest)) {
-        if (newRequest.length) {
+        if (newRequest?.length) {
           updatedRequest = newRequest
         } else {
           updatedRequest = []

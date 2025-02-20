@@ -16,6 +16,9 @@ import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import CommonStyles from '../styles/commonStyles';
 import SelectOnPage from '../pages/selectonMap';
 import { useTranslation } from 'react-i18next';
+import HeaderBackButton from '../components/common/HeaderBackButton';
+import ChatUI from '../components/common/chat';
+import { isDriver } from '../util';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -38,8 +41,8 @@ export default function UserStackNavigator({ navigation, route }) {
   const isActiveRide = [RideStatus.ONRIDE, RideStatus.ACCEPTED].includes(status);
   const isActiveRequest = [RideStatus.INITIATED, RideStatus.REQUESTED].includes(status);
 
-  console.log('isActiveRequest', {activeRequestInfo}, isActiveRide)
-// console.log('isActiveRide', activeRequestInfo)
+  console.log('isActiveRequest', { activeRequestInfo }, isActiveRide)
+  // console.log('isActiveRide', activeRequestInfo)
   return (
     <Stack.Navigator
       screenOptions={{
@@ -57,11 +60,22 @@ export default function UserStackNavigator({ navigation, route }) {
         options={{ title: 'Maps' }}
         component={ActiveMapPage}
       /> */}
-      {isActiveRide ? <Stack.Screen
+      {isActiveRide ? <>
+        <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: 'Active Ride' }}
         component={ActiveRidePage}
-      /> :
+      /> 
+      <Stack.Screen
+        name={ROUTES_NAMES.chat}
+        options={{
+          title: isDriver()?'Chat with user':'Chat with driver',
+          // headerLeft: () => <HeaderBackButton />,
+          headerShown: true
+        }}
+        component={ChatUI}
+      />
+      </>:
         isActiveRequest ?
           <Stack.Screen
             name={ROUTES_NAMES.findCaptain}
@@ -89,6 +103,7 @@ export default function UserStackNavigator({ navigation, route }) {
         name={ROUTES_NAMES.selectonMap}
         component={SelectOnPage}
       />
+      
 
     </Stack.Navigator>
   );

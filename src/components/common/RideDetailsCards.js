@@ -5,7 +5,7 @@ import { ImageView, Text } from '../common';
 import styles from '../../styles/MyRidePageStyles';
 import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
-import { COLORS, RideStatus, SOCKET_EVENTS } from '../../constants';
+import { COLORS, RideStatus, ROUTES_NAMES, SOCKET_EVENTS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useCompleteRideRequestMutation, useRideRequestMutation } from '../../slices/apiSlice';
@@ -20,6 +20,7 @@ import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
 import { useTranslation } from 'react-i18next';
+import { navigate } from '../../util/navigationService';
 
 
 const cancelRide = (activeRequestInfo, t) => {
@@ -27,22 +28,36 @@ const cancelRide = (activeRequestInfo, t) => {
     const phoneNumber = activeRequestInfo?.details?.phone;
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
+            onClick={(e) => {
+                navigate(ROUTES_NAMES.chat)
+            }}
+            styles={
+                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40 }
+            }
+            textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+            label={t('chat_placeholder')}
+            isLowerCase
+        />
+        <CustomButton
             onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`) : null}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.primary, minWidth: 160, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.primary, height: 40 }
             }
             textStyles={{ color: COLORS.white, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
-            label={'Call up'}
+            // label={'Call up'}
             iconLeft={{ name: 'phone', size: 'medium' }}
+            iconStyles={{ paddingRight: 0 }}
             isLowerCase
         />
         <CustomButton
             onClick={() => dispatch(setDialogStatus(true))}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, height: 40 }
             }
             textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
-            label={t('cancel_btn')}
+            iconLeft={{ name: 'close', size: 'medium', color: COLORS.black }}
+            iconStyles={{ paddingRight: 0 }}
+            // label={t('cancel_btn')}
             isLowerCase
         />
     </View>
@@ -72,9 +87,9 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
 
 export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
     const { t } = useTranslation();
-    const {details,fare} = activeRequestInfo
+    const { details, fare } = activeRequestInfo
     const driver_avatar = details?.photo || details?.vehicle?.photo
-    const name = details?.name 
+    const name = details?.name
     const vehicle = details?.vehicle
     const { color, label } = getColorNBg(activeRequestInfo?.status)
     return (
@@ -141,7 +156,7 @@ const getFromLocation = (location = currentLocation) => {
     }
 }
 export const RenderOTP = ({ activeRequestInfo }) => {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const { getCurrentLocation } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
@@ -195,7 +210,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
                 disabled={isSubmitOtpLoading}
                 style={[
                     FindRideStyles.button,
-                    { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.4 : 1 , borderColor: COLORS.brand_yellow, borderWidth: 0.5},
+                    { backgroundColor: COLORS.brand_yellow, opacity: isSubmitOtpLoading ? 0.4 : 1, borderColor: COLORS.brand_yellow, borderWidth: 0.5 },
                 ]}>
                 <Text
                     style={[
@@ -224,7 +239,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
         }
         completeRideRequest(payload).unwrap().then((res) => {
             console.log(res)
-            dispatch(updateRideStatus({status:RideStatus.COMPLETED}));
+            dispatch(updateRideStatus({ status: RideStatus.COMPLETED }));
             // dispatch(clearRideChats());
             // socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
