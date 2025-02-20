@@ -6,6 +6,7 @@ import {
 import CommonStyles from '../../styles/commonStyles';
 import generateInvoice from '../../util/generateInvoice';
 import { Icon } from './Icon';
+import { useTranslation } from 'react-i18next';
 
 export default function InvoiceButton() {
     const { t } = useTranslation();

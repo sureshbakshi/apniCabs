@@ -17,6 +17,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import { useTranslation } from 'react-i18next';
 
 const ActiveRidePage = () => {
   const { t } = useTranslation();

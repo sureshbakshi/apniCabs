@@ -8,6 +8,7 @@ import config from '../../util/config';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
 import socket from '../../sockets/socketConfig';
 import { isDriver } from '../../util';
+import { useTranslation } from 'react-i18next';
 
 const ChatUI = () => {
   const { t } = useTranslation();

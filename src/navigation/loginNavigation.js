@@ -6,7 +6,6 @@ import OTPAutoFill from '../components/OTPAutoFill';
 import ForgotPassword from '../pages/ForgotPassword';
 import GettingStartedPage from '../pages/GettingStartedPage';
 import CommonStyles from '../styles/commonStyles'
-import { useTranslation } from 'react-i18next';
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({navigation, route}) {

@@ -48,7 +48,7 @@ const MorePage = () => {
                   <View style={MoreStyles.listIcon}>
                     <Icon name="account" size="large" color={COLORS.primary} />
                   </View>
-                  <Text style={MoreStyles.menu_name}>My Profile</Text>
+                  <Text style={MoreStyles.menu_name}>{t('my_profile')}</Text>
                 </Pressable>
                 {!isDriver() ? <>
                   <Pressable
@@ -61,7 +61,7 @@ const MorePage = () => {
                     <View style={MoreStyles.listIcon}>
                       <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
                     </View>
-                    <Text style={MoreStyles.name}>Become Driver</Text>
+                    <Text style={MoreStyles.name}>{t('become_driver')}</Text>
                   </Pressable>
                   {/* <Pressable
                 style={MoreStyles.list}
@@ -84,7 +84,7 @@ const MorePage = () => {
                   <View style={MoreStyles.listIcon}>
                     <Icon name="pencil" size="large" color={COLORS.primary} />
                   </View>
-                  <Text style={MoreStyles.name}>Edit Fare</Text>
+                  <Text style={MoreStyles.name}>{t('edit_fare')}</Text>
                 </Pressable>
                   <Pressable
                     style={MoreStyles.list}
@@ -93,7 +93,7 @@ const MorePage = () => {
                     <View style={MoreStyles.listIcon}>
                       <Icon name="cash" size="large" color={COLORS.primary} />
                     </View>
-                    <Text style={MoreStyles.name}>Refer Now</Text>
+                    <Text style={MoreStyles.name}>{t('refer_now')}</Text>
                   </Pressable>
                   <Pressable
                     style={MoreStyles.list}

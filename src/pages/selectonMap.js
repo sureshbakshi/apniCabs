@@ -13,6 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { isEmpty } from 'lodash';
 import config from '../util/config';
 import { useAppContext } from '../context/App.context';
+import { useTranslation } from 'react-i18next';
 
 const initial_region = {
     latitude: 17.5184667,

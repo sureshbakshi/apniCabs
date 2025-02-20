@@ -12,6 +12,7 @@ import { contactsSchema } from "../schema";
 import ScreenContainer from "../components/ScreenContainer";
 import FindRideStyles from "../styles/FindRidePageStyles";
 import { useSosAddMutation, useSosListQuery } from "../slices/apiSlice";
+import { useTranslation } from "react-i18next";
 
 export default function Contacts() {
     const { t } = useTranslation();

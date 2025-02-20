@@ -9,6 +9,7 @@ import { clearUserState } from "../../slices/userSlice";
 import { delay } from 'lodash';
 import { isDriver } from "../../util";
 import StarRating from "./StarRating";
+import { useTranslation } from "react-i18next";
 
 export default () => {
     const { t } = useTranslation();
