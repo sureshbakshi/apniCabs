@@ -19,12 +19,10 @@ import OpenMapButton from './OpenMapButton';
 import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
-import socket from './socket';
 import { useTranslation } from 'react-i18next';
 
 
-const cancelRide = (activeRequestInfo, isDriverLogged) => {
-    const { t } = useTranslation();
+const cancelRide = (activeRequestInfo, t) => {
     const dispatch = useDispatch();
     const phoneNumber = activeRequestInfo?.details?.phone;
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
@@ -134,7 +132,6 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
         </View>
     )
 }
-const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 60
 const getFromLocation = (location = currentLocation) => {
     return {
         Long: location.longitude + '' || 'NA',
@@ -144,8 +141,8 @@ const getFromLocation = (location = currentLocation) => {
     }
 }
 export const RenderOTP = ({ activeRequestInfo }) => {
-    const { getCurrentLocation } = useGetCurrentLocation()
     const {t} = useTranslation()
+    const { getCurrentLocation } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
         useRideRequestMutation();
@@ -227,7 +224,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
         }
         completeRideRequest(payload).unwrap().then((res) => {
             console.log(res)
-            dispatch(updateRideStatus(res));
+            dispatch(updateRideStatus({status:RideStatus.COMPLETED}));
             // dispatch(clearRideChats());
             // socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
@@ -261,7 +258,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                 />
             </View>
             }
-            <View>{isAccepted ? cancelRide(activeRequestInfo, isDriverLogged) : null}</View>
+            <View>{isAccepted ? cancelRide(activeRequestInfo, t) : null}</View>
         </>
     );
 };

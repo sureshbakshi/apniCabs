@@ -148,7 +148,7 @@ const userSlice = createSlice({
         // state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
 
         state.activeRequestId = id;
-        state.activeRequestInfo = action.payload;
+        state.activeRequestInfo = {...state.activeRequestInfo, status: status};
 
       } else if (ClearRideStatus.includes(status)) {
         state.statusUpdate = action.payload;

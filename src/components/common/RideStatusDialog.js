@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { RideStatus } from "../../constants"
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
 import { Text, View } from "react-native";
@@ -11,14 +11,18 @@ import { isDriver } from "../../util";
 import StarRating from "./StarRating";
 import { useUpdateRatingMutation } from "../../slices/apiSlice";
 import { useTranslation } from "react-i18next";
+import DialogButtons from "./DialogButtons";
 
 export default () => {
     const { t } = useTranslation();
-    const [updateRating] = useUpdateRatingMutation();
+    const [updateRating, { data: ratingResponse, error: requestError, isLoading }] =
+      useUpdateRatingMutation();
     const isDriverLogged = isDriver();
     const { activeRequestId } = useSelector((state) => state.user);
     const { statusUpdate, activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const dispatch = useDispatch()
+    const ratingRef = useRef(null);
+
     const statusMessages = {
         [RideStatus.USER_CANCELLED]: {
             title: t('ride_status.user_cancelled.title'),
@@ -44,16 +48,23 @@ export default () => {
         }, 1000)
     }
     const canShowRating = (statusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
-    const onSubmit = (rating) => {
-        let payload = { request_id: activeRequestId, rating: rating };
-        updateRating(payload)
+    const onSubmit = async() => {
+        if (ratingRef?.current) {
+            const rating = ratingRef?.current.getRating();
+            if(rating > 0) {
+                let payload = { request_id: activeRequestId, rating: rating };
+                await updateRating(payload)
+            }
+            clearRideState()
+          }
     }
+    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState}/>
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>
-                <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true}>
+                <CustomDialog title={rideStatusModalInfo.title} closeCb={clearRideState} openDialog={true} actions={actions}>
                     {canShowRating && <View>
-                        <StarRating onSubmit={onSubmit} isLoading={false} />
+                        <StarRating ref={ratingRef} isLoading={false} />
                     </View>}
                     <Text style={[ActiveRidePageStyles.content]}>{rideStatusModalInfo.description}</Text>
                     {rideStatusModalInfo?.reason ? <Text style={[ActiveRidePageStyles.content]}> {t('reason_for_cancel')}: {rideStatusModalInfo.reason}</Text> : null}

@@ -23,7 +23,7 @@ const Notifications = () => {
                     {driverInfo?.expiredFields.map((item, i) => {
                         return <View key={i} style={[FindRideStyles.center,{justifyContent:'flex-start',alignItems:'flex-start'}]}>
                             <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{i + 1}. </Text>
-                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{ExpiryStatus[item]} {t('expire_on')} {formattedDate(driverInfo?.vehicle[item], true)}</Text>
+                            <Text style={[FindRideStyles.name, { fontSize: 14 }]}>{ExpiryStatus[item]} {t('expire_on')} {formattedDate(driverInfo?.Vehicle[item], true)}</Text>
                         </View>
                     })}
                 </View>}

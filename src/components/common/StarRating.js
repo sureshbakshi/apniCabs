@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Icon } from './Icon';
 import { COLORS } from '../../constants';
 import { useTranslation } from 'react-i18next';
 
-const StarRating = ({ onSubmit, isLoading = false }) => {
+const StarRating = forwardRef(({ isLoading = false }, ref) => {
     const [rating, setRating] = useState(0); // Rating state (0 to 5)
     const {t} = useTranslation();
     // Function to handle star press
     const handlePress = (ratingValue) => {
         if (!isLoading) {
             setRating(ratingValue);
-            onSubmit(ratingValue)
         }
     };
+    useImperativeHandle(ref, () => ({
+        getRating: () => rating,
+    }));
 
     // Function to render stars
     const renderStars = () => {
@@ -40,7 +42,7 @@ const StarRating = ({ onSubmit, isLoading = false }) => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

@@ -14,6 +14,7 @@ import { setDialogStatus } from "../../slices/authSlice";
 import { getScreen, isDriver } from "../../util";
 import CustomButton from "./CustomButton";
 import { useTranslation } from "react-i18next";
+import DialogButtons from "./DialogButtons";
 
 const driverReasons = [
   { message: 'Vehicle breakdown or mechanical issue', id: 1 },
@@ -94,26 +95,10 @@ export const CancelReasonDialog = () => {
     }
   };
 
-  const Actions = <View style={{ flexDirection: 'row', gap: 15, margin: 15, width: getScreen().screenWidth - 30, justifyContent: 'center' }}>
-    <CustomButton
-      styles={{ height: 40, minWidth: 120 }}
-      textStyles={{ color: COLORS.white, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
-      onClick={handleSubmit}
-      label={t('submit_btn')}
-      isLowerCase />
-    <CustomButton
-      styles={{ backgroundColor: COLORS.card_bg, height: 40, minWidth: 120 }}
-      textStyles={{ color: COLORS.black, fontSize: 14, fontWeight: 400, lineHeight: 18 }}
-      onClick={closeModal}
-      label={t('close_btn')}
-      isLowerCase />
-
-  </View>
-
   return (
     <CustomDialog
       openDialog={isDialogOpen}
-      actions={Actions}
+      actions={<DialogButtons handleSubmit={handleSubmit} closeModal={closeModal} />}
       title={t('reason_to_cancel')}
       containerStyles={{
         alignItems: 'flex-end',
