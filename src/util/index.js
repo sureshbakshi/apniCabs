@@ -12,7 +12,6 @@ import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
 import config from '../util/config';
 import { isEmpty } from 'lodash';
-import { useTranslation } from 'react-i18next';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -38,11 +37,10 @@ export const getConfig = () => {
 }
 
 export const showErrorMessage = (obj) => {
-  const { t } = useTranslation();
   const msg = typeof obj === 'string' ? obj : obj?.data?.message
   const error = {
     type: 'error',
-    text1: msg || t('error_retry'),
+    text1: msg || 'Something went wrong. Please retry again.',
   }
   bugLogger(error)
 
