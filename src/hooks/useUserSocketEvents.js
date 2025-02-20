@@ -26,7 +26,7 @@ const ignoreEvents = []
 
 export default (() => {
     const { isSocketConnected, userInfo } = useSelector((state) => state.auth);
-    const { activeRideId } = useSelector((state) => state.user);
+    const { activeRequestId, activeRequestInfo} = useSelector((state) => state.user);
     const onChat = useChatMessage();
     const { playSound } = useNotificationSound();
 
@@ -111,10 +111,10 @@ export default (() => {
     }, [isLoggedIn, isSocketConnected]);
 
     useEffect(() => {
-        if (activeRideId && isSocketConnected) {
+        if (activeRequestId && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
             onChat(userSocket);
         }
-    }, [activeRideId])
+    }, [activeRequestId])
 
     useEffect(() => {
         userSocket.on('connect', () => {

@@ -9,11 +9,14 @@ import { clearUserState } from "../../slices/userSlice";
 import { delay } from 'lodash';
 import { isDriver } from "../../util";
 import StarRating from "./StarRating";
+import { useUpdateRatingMutation } from "../../slices/apiSlice";
 import { useTranslation } from "react-i18next";
 
 export default () => {
     const { t } = useTranslation();
+    const [updateRating] = useUpdateRatingMutation();
     const isDriverLogged = isDriver();
+    const { activeRequestId } = useSelector((state) => state.user);
     const { statusUpdate, activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const dispatch = useDispatch()
     const statusMessages = {
@@ -25,13 +28,13 @@ export default () => {
         },
         [RideStatus.DRIVER_CANCELLED]: {
             title: t('ride_status.driver_cancelled.title'),
-            description:t('ride_status.driver_cancelled.description'),
+            description: t('ride_status.driver_cancelled.description'),
             reason: statusUpdate?.reason,
             subText: t('ride_status.driver_cancelled.subText')
         },
         [RideStatus.COMPLETED]: {
             title: t('ride_status.completed.title'),
-            description: isDriverLogged ? t('ride_status.completed.driver_description'): t('ride_status.completed.user_description')
+            description: isDriverLogged ? t('ride_status.completed.driver_description') : t('ride_status.completed.user_description')
         }
     }
     const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
@@ -42,8 +45,8 @@ export default () => {
     }
     const canShowRating = (statusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
     const onSubmit = (rating) => {
-        //invoke rating submit
-        console.log('rating', rating)
+        let payload = { request_id: activeRequestId, rating: rating };
+        updateRating(payload)
     }
     const DialogComponent = useMemo(() => {
         return (

@@ -98,7 +98,8 @@ const api_urls = {
   wallet: 'wallet',
   create: 'create',
   cities: 'cities',
-  confirm: 'confirm'
+  confirm: 'confirm',
+  rating:'rating'
 };
 
 export const apiSlice = createApi({
@@ -224,8 +225,8 @@ export const apiSlice = createApi({
       },
       transformErrorResponse: response => response,
     }),
-    getRequestsByCategory:  builder.query({
-      query: ({request_id, category}) => ({
+    getRequestsByCategory: builder.query({
+      query: ({ request_id, category }) => ({
         method: 'GET',
         url: api_path.request(`${request_id}/${category}/drivers`),
       }),
@@ -394,6 +395,15 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    updateRating: builder.mutation({
+      query: ({ request_id,...body }) => ({
+        method: 'PATCH',
+        url: api_path.request(`${request_id}/${api_urls.rating}`),
+        body
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     //SOS
     sosAdd: builder.mutation({
       query: ({ id, numbersList }) => ({
@@ -508,5 +518,6 @@ export const {
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,
-  useGetCitiesQuery
+  useGetCitiesQuery,
+  useUpdateRatingMutation
 } = apiSlice;
