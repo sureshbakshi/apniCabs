@@ -30,6 +30,8 @@ const socket = io(socketUri, {
 });
 
 socket.on('connect_error', err => console.log({ 'connect_error': err }))
+socket.on('error', err => console.log({ 'error': err }))
+socket.on('welcome', err => console.log({ 'welcome': err }))
 socket.on('connect_failed', err => console.log({ 'connect_failed': err }))
 socket.on('disconnect', err => console.log({ 'disconnect': err }))
 socket.on('*', function (packet) {

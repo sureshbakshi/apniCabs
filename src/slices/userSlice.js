@@ -56,7 +56,7 @@ const mySelf = {
   number: 0
 }
 
-const intialState = {
+const initialState = {
   activeRideId: null,
   activeRequestDrivers: null,
   rideRequests: null,
@@ -71,10 +71,12 @@ const intialState = {
 }
 const userSlice = createSlice({
   name: 'user',
-  initialState: intialState,
+  initialState: initialState,
   reducers: {
     setActiveRequestDrivers: (state, action) => {
-      const { id, category, code, drivers, status } = action.payload;
+      // on initial request - searchride page
+      // on request category change - bike, car etc
+      const { id, category, code, drivers, status} = action.payload;
       if (id) {
         const key = category || code;
         state.activeRequestId = id
@@ -83,53 +85,40 @@ const userSlice = createSlice({
       }
     },
     setActiveRequest: (state, action) => {
-      const { id, ...rest } = action.payload;
+      // on active request api response
       if (_.isEmpty(action.payload)) {
         state.activeRequestId = null;
         state.activeRequestInfo = null;
-      } else if (id) {
-        state.activeRequestId = id;
+        state.statusUpdate = null
+      } else if (action.payload?.id) {
+        state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
         state.statusUpdate = null
       }
+      state.activeRequestDrivers = null;
     },
     requestInfo: (state, action) => {
+      // to store reques from and to location - search ride
       state.requestInfo = action.payload
     },
     cancelRideRequest: (state, action) => {
+      // cance all requests
       state.requestInfo = null;
       state.rideRequests = null;
       state.activeRequestInfo = null;
       state.selectedOtherContact = mySelf;
       state.activeRequestId = null;
       state.activeRequestDrivers = null;
-      state.activeRequestInfo = null;
-    },
-    setActiveRideRequest: (state, action) => {
-      if (_.isEmpty(action.payload)) {
-        state.activeRequestInfo = null;
-        state.activeRideId = null
-        state.statusUpdate = null;
-        state.activeRequestId = null;
-        state.activeRequestInfo = null;
-      } else {
-        const { status, id } = action.payload
-        state.activeRequestInfo = action.payload;
-        state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
-      }
     },
     clearUserState: (state, action) => {
-      state.activeRequestInfo = null;
-      state.activeRideId = null
-      state.statusUpdate = null;
-      state.activeRequestId = null;
-      state.activeRequestInfo = null;
+      return Object.assign(state, { ...initialState})
     },
     setRecentSearchHistory: (state, action) => {
       const updatedAddress = updateAddress(state.recentSearchHistory, action?.payload)
       state.recentSearchHistory = updatedAddress
     },
     updateActiveRequestDrivers: (state, action) => {
+      // update activeRequest drivers - captain card
       const { id: driver_id, status, category } = action.payload;
       const drivers = state.activeRequestDrivers?.[category];
       if (drivers?.length) {
@@ -143,18 +132,15 @@ const userSlice = createSlice({
     updateDriversRequest: (state, action) => {
       const { status, id, category, driver_id } = action.payload;
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
-        // state.activeRequestInfo = action.payload
-        // state.rideRequests = [];
-        // state.selectedOtherContact = mySelf;
-        // state.activeRideId = status === RideStatus.ONRIDE ? id : state.activeRideId
-
         state.activeRequestId = id;
         state.activeRequestInfo = { ...state.activeRequestInfo, status: status };
         state.statusUpdate = null;
       } else if (ClearRideStatus.includes(status)) {
-        state.statusUpdate = action.payload;
+         // for cancel  request drivers - captain card
+        state.statusUpdate = {...state.activeRequestInfo, status: status, reason: action.payload?.reason};
         state.selectedOtherContact = mySelf;
       } else {
+        // for active request drivers - captain card
         const activeRequestDrivers = state.activeRequestDrivers;
         if (activeRequestDrivers) {
           const clonedDrivers = _.cloneDeep(activeRequestDrivers); // Ensure you're working with a copy
@@ -183,7 +169,6 @@ export const {
   updateDriversRequest,
   updateActiveRequestDrivers,
   setActiveRequest,
-  setActiveRideRequest,
   clearUserState,
   updateDriverLocation,
   requestInfo,

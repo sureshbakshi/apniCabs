@@ -3,8 +3,6 @@ import { View, Text, TextInput, Button, FlatList, StyleSheet, SafeAreaView, Keyb
 import ContainerWrapper from './ContainerWrapper';
 import CustomButton from './CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRideChats } from '../../slices/authSlice';
-import config from '../../util/config';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
 import socket from '../../sockets/socketConfig';
 import { isDriver } from '../../util';
@@ -14,8 +12,11 @@ const ChatUI = () => {
   const { t } = useTranslation();
   const [inputText, setInputText] = useState(''); // Stores the current input text
   const { rideChats } = useSelector((state) => state.auth);
-  const { activeRequestId } = useSelector((state) => isDriver() ? state.driver : state.user);
+  const isDriverLogged = isDriver();
+  const { activeRequestId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   const flatListRef = useRef();
+  console.log('rideChats',rideChats)
+
   useEffect(() => {
     console.log('activeRequestId',activeRequestId)
     if (socket && activeRequestId) {

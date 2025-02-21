@@ -11,6 +11,7 @@ import Notifications from '../components/common/Notifications';
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import CommonStyles from '../styles/commonStyles'
+import ChatUI from '../components/common/chat';
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -35,11 +36,21 @@ export default function DriverStackNavigator({ navigation, route }) {
         headerLeft: () => <HeaderBackButton />,
         headerShadowVisible: false
       }}>
-      {activeRequestInfo?.id ? <Stack.Screen
-        name={ROUTES_NAMES.activeRide}
-        options={{ title: 'Active Ride' }}
-        component={ActiveRidePageContainer}
-      /> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle))) ? <Stack.Screen
+      {activeRequestInfo?.id ? <>
+        <Stack.Screen
+          name={ROUTES_NAMES.activeRide}
+          options={{ title: 'Active Ride' }}
+          component={ActiveRidePageContainer}
+        /> 
+        <Stack.Screen
+          name={ROUTES_NAMES.chat}
+          options={{
+            title: 'Chat with user',
+            headerShown: true
+          }}
+          component={ChatUI}
+        />
+      </> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle))) ? <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
         options={{ title: 'Notification' }}
         component={MessageInfo}
@@ -50,7 +61,7 @@ export default function DriverStackNavigator({ navigation, route }) {
       />}
       <Stack.Screen
         name={ROUTES_NAMES.notifications}
-        options={{ title: 'Notifications', headerShown: true ,  headerShadowVisible: false}}
+        options={{ title: 'Notifications', headerShown: true, headerShadowVisible: false }}
         component={Notifications}
       />
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCancelAcceptedRequestMutation } from "../../slices/apiSlice";
 import { clearDriverState } from "../../slices/driverSlice";
-import { clearUserState } from "../../slices/userSlice";
+import { setActiveRequest } from "../../slices/userSlice";
 import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
 import CustomDialog from "./CustomDialog";
@@ -11,8 +11,7 @@ import { COLORS, RideStatus } from "../../constants";
 import { Icon } from "./Icon";
 import { delay } from 'lodash';
 import { setDialogStatus } from "../../slices/authSlice";
-import { getScreen, isDriver } from "../../util";
-import CustomButton from "./CustomButton";
+import { isDriver } from "../../util";
 import { useTranslation } from "react-i18next";
 import DialogButtons from "./DialogButtons";
 
@@ -60,7 +59,7 @@ export const CancelReasonDialog = () => {
   const closeAndClearRequest = () => {
     closeModal();
     delay(() => {
-      dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : clearUserState(cancelAcceptedRequestData))
+      dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : setActiveRequest())
     }, 10)
   }
 
