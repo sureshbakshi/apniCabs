@@ -11,6 +11,7 @@ import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
 import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
+import { useTranslation } from 'react-i18next';
 setBugsnagUserInfo()
 
 const Tab = createBottomTabNavigator();
@@ -20,6 +21,7 @@ export default function UserTabNavigator() {
 
   const { validateRequestExpiry } = useValidateRequestExpiry();
   useAppStateListner(validateRequestExpiry)
+  const {t} = useTranslation()
   return (
     <AppProvider>
       <Tab.Navigator
@@ -38,12 +40,12 @@ export default function UserTabNavigator() {
       >
         <Tab.Screen
           name={ROUTES_NAMES.findRide}
-          options={{ title: 'Home' }}
+          options={{ title: t('home') }}
           component={UserStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: 'Rides' }} component={RideStackNavigation} />
+        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: t('rides') }} component={RideStackNavigation} />
         {/* <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletPage} /> */}
-        <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More' }} component={MoreNavigator} />
+        <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: t('more') }} component={MoreNavigator} />
       </Tab.Navigator>
     </AppProvider>
   );

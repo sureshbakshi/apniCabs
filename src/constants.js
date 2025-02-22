@@ -159,7 +159,8 @@ export const ROUTES_NAMES = {
   gettingStartedPage: 'GettingStartedPage',
   selectonMap: 'SelectonMap',
   language: 'Language',
-  chat: 'Chat'
+  chat: 'Chat',
+  contacts: 'Contacts',
 }
 
 export const RideStatus = {

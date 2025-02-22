@@ -57,7 +57,7 @@ export default function UserStackNavigator({ navigation, route }) {
       {isActiveRide ? <>
         <Stack.Screen
         name={ROUTES_NAMES.activeRide}
-        options={{ title: 'Active Ride' }}
+        options={{ title: t('active_ride') }}
         component={ActiveRidePage}
       /> 
       <Stack.Screen

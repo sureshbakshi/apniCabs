@@ -27,7 +27,7 @@ const defaultProps = {
 };
 export default function FareSettings() {
     const { t } = useTranslation();
-    const { userInfo, driverInfo } = useSelector((state) => state.auth);
+    const {  driverInfo } = useSelector((state) => state.auth);
     useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
     const [editVehicleFare] = useEditFareMutation();
 const fare = driverInfo?.Vehicle?.VehicleFare

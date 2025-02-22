@@ -12,6 +12,7 @@ import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import CommonStyles from '../styles/commonStyles'
 import ChatUI from '../components/common/chat';
+import { useTranslation } from 'react-i18next';
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -20,6 +21,7 @@ const Stack = createNativeStackNavigator();
 export default function DriverStackNavigator({ navigation, route }) {
   const { activeRequestInfo } = useSelector(state => state.driver)
   const { driverInfo } = useSelector(state => state.auth);
+  const { t } = useTranslation();
 
   // console.log({ driverInfo, 'driverstack': !isEmpty(driverInfo), verif: (!isDriverVerified(driverInfo)), empVeh: isEmpty(driverInfo?.vehicle), isValid: ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.vehicle))) })
   useGetDriverActiveRequests()
@@ -39,7 +41,7 @@ export default function DriverStackNavigator({ navigation, route }) {
       {activeRequestInfo?.id ? <>
         <Stack.Screen
           name={ROUTES_NAMES.activeRide}
-          options={{ title: 'Active Ride' }}
+          options={{ title: t('active_ride') }}
           component={ActiveRidePageContainer}
         /> 
         <Stack.Screen
@@ -52,7 +54,7 @@ export default function DriverStackNavigator({ navigation, route }) {
         />
       </> : ((!isEmpty(driverInfo)) && (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle))) ? <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
-        options={{ title: 'Notification' }}
+        options={{ title: t('notification') }}
         component={MessageInfo}
       /> : <Stack.Screen
         name={ROUTES_NAMES.searchRide}
@@ -61,7 +63,7 @@ export default function DriverStackNavigator({ navigation, route }) {
       />}
       <Stack.Screen
         name={ROUTES_NAMES.notifications}
-        options={{ title: 'Notifications', headerShown: true, headerShadowVisible: false }}
+        options={{ title: t('notifications'), headerShown: true, headerShadowVisible: false }}
         component={Notifications}
       />
 

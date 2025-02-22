@@ -10,6 +10,7 @@ import RideStackNavigation from './RideStackNavigation';
 import WalletStackNavigator from './walletNavigationStack';
 import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,7 @@ setBugsnagUserInfo()
 export default function DriverTabNavigator() {
   useDriverSocketEvents()
   useAppStateListner()
+  const {t} = useTranslation()
   return (
     <AppProvider>
       <Tab.Navigator
@@ -35,11 +37,11 @@ export default function DriverTabNavigator() {
         tabBar={(props) => <MyTabBar {...props} />}
 
       >
-        <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: 'Home' }} component={DriverStackNavigator}
+        <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: t('home') }} component={DriverStackNavigator}
         />
-        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: 'Rides' }} component={RideStackNavigation} />
-        <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: 'Wallet' }} component={WalletStackNavigator} />
-        <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: 'More' }} component={MoreNavigator} />
+        <Tab.Screen name={ROUTES_NAMES.rideHistoryStack} options={{ title: t('rides') }} component={RideStackNavigation} />
+        <Tab.Screen name={ROUTES_NAMES.wallet} options={{ title: t('wallet') }} component={WalletStackNavigator} />
+        <Tab.Screen name={ROUTES_NAMES.moreDetails} options={{ title: t('more') }} component={MoreNavigator} />
       </Tab.Navigator>
     </AppProvider>
   );

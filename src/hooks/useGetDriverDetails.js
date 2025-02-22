@@ -4,6 +4,7 @@ import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
 import { isEmpty } from 'lodash'
 import { setDriverStatus } from "../slices/driverSlice"
+import { DriverAvailableStatus } from "../constants"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -28,7 +29,7 @@ export const useUpdateDriverStatus = () => {
 
     const updateDriverStatus = (isOnline, cb) => {
         _updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
-            dispatch(setDriverStatus(res))
+            dispatch(setDriverStatus({ is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE }))
         }).catch(() => cb?.(!isOnline))
     }
     return updateDriverStatus

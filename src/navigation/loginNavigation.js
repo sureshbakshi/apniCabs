@@ -3,12 +3,13 @@ import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import OTPAutoFill from '../components/OTPAutoFill';
-import ForgotPassword from '../pages/ForgotPassword';
 import GettingStartedPage from '../pages/GettingStartedPage';
 import CommonStyles from '../styles/commonStyles'
+import { useTranslation } from 'react-i18next';
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({navigation, route}) {
+  const {t} = useTranslation();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -35,12 +36,12 @@ export default function LoginNavigator({navigation, route}) {
         />
       <Stack.Screen
         name={ROUTES_NAMES.signUp}
-        options={{title: 'Sign Up'}}
+        options={{title: t('sign_up')}}
         component={SignUpPage}
       />
       <Stack.Screen
         name={ROUTES_NAMES.otp}
-        options={{title: 'Submit OTP', headerTintColor: COLORS.primary}}
+        options={{title: t('submit_otp'), headerTintColor: COLORS.primary}}
         component={OTPAutoFill}
       />
     </Stack.Navigator>

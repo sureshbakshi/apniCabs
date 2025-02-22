@@ -44,12 +44,12 @@ export default function MoreNavigator({ navigation, route }) {
       />
       <Stack.Screen
         name="TermsAndConditions"
-        options={{ title: 'Terms And Conditions' }}
+        options={{ title: t('terms_and_conditions') }}
         component={TermsAndConditionsPage}
       />
       <Stack.Screen
         name="FareSettings"
-        options={{ title: 'Fare Settings' }}
+        options={{ title: t('fare_settings') }}
         component={FareSettings}
       />
       <Stack.Screen
@@ -61,13 +61,13 @@ export default function MoreNavigator({ navigation, route }) {
         component={Refer}
       />
       <Stack.Screen
-        name="Contacts"
-        options={{ title: 'Contacts' }}
+        name={ROUTES_NAMES.contacts}
+        options={{ title: t('contacts') }}
         component={Contacts}
       />
        <Stack.Screen
         name={ROUTES_NAMES.language}
-        options={{ title: 'Language' }}
+        options={{ title: t('language') }}
         component={LanguagePage}
       />
     </Stack.Navigator>

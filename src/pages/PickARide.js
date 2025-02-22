@@ -126,8 +126,8 @@ export const PickARide = () => {
   const { getCurrentLocation } = useGetCurrentLocation();
   const { t } = useTranslation();
   const updateDriverStatus = useUpdateDriverStatus();
-
-  useGetDriverDetails(userInfo?.id, { skip: driverInfo?.id })
+  useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
+  
 
   const toggleSwitch = () => {
     toggleDriveStatus(!isOnline)

@@ -30,6 +30,11 @@ export default ({ route }) => {
     if (isLoading) {
         return <ActivityIndicator />
     }
+
+    const activeRequestInfo = {
+        ...rideDetails, 
+        details: rideDetails?.RequestRides?.driver_details
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={[FindRideStyles.pageContainer]}>
@@ -41,7 +46,7 @@ export default ({ route }) => {
                     </View> */}
                     <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: "700", lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
-                        <RideDetailsView activeRequestInfo={rideDetails} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
+                        <RideDetailsView activeRequestInfo={activeRequestInfo} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
                     </View>
                 </ContainerWrapper>
             </View>
