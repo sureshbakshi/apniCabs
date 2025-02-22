@@ -101,5 +101,7 @@
     "add_credits": "Add Credits",
     "ride_details": "Ride Details",
     "my_rides": "My Rides",
-    "login_permission_error": "You don't have enough permission to login."
+    "login_permission_error": "You don't have enough permission to login.",
+    "subscription_plans": "Subscription Plans"
+
 }

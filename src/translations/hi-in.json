@@ -101,5 +101,6 @@
   "add_credits": "क्रेडिट्स जोड़ें",
   "ride_details": "सवारी विवरण",
   "my_rides": "मेरी सवारी",
-  "login_permission_error": "लॉगिन करने के लिए आपके पास पर्याप्त अनुमति नहीं है।"
+  "login_permission_error": "लॉगिन करने के लिए आपके पास पर्याप्त अनुमति नहीं है।",
+  "subscription_plans": "सदस्यता योजनाएँ"
 }

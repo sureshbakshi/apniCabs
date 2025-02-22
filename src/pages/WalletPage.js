@@ -16,6 +16,7 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const walletCopy = {
   'DEBIT': {
@@ -63,7 +64,7 @@ const WalletPage = ({ navigation }) => {
   const [lastKey, setLastKey] = useState({});
   const [transactions, setTransactions] = useState([]);
   const [refetch, { data: transactionHistory, error: transactionHistoryError,isLoading, isFetching }] = useLazyGetDriverTransactionsQuery({ page, id: driverInfo?.id, pageSize: PageSize });
-
+  const {t} = useTranslation()
   useEffect(() => {
     if (transactionHistory?.transactions?.length) {
       setTransactions((prevTransactionHistory) => ([...prevTransactionHistory, ...transactionHistory?.transactions]));
@@ -169,10 +170,10 @@ const WalletPage = ({ navigation }) => {
                 <Icon name='wallet-outline' size='large' color={COLORS.white} />
               </View>
               <View>
-                <Text style={WalletStyles.graytxt}>{'Total Credits'}</Text>
+                <Text style={WalletStyles.graytxt}>{t('total_credits')}</Text>
                 {walletInfo?.id ? <Text style={WalletStyles.balTxt}>{walletInfo?.amount}</Text> : null}
                 <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans) }}>
-                  <Text style={WalletStyles.buttonTxt}>{'Add Credits'}</Text>
+                  <Text style={WalletStyles.buttonTxt}>{t('add_credits')}</Text>
                   <Icon name='chevron-right' size='large' color={COLORS.primary} />
                 </Pressable>
               </View>
