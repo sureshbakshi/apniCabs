@@ -1,23 +1,40 @@
 import { useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
-import { debounce} from 'lodash';
-import { isDriver, isDriverAcceptedOrOnline } from '../util';
+import { debounce } from 'lodash';
+import { isDriver, isDriverAccepted, isDriverAvailable } from '../util';
+import { DriverAvailableStatus } from "../constants";
 
-export default () =>{
-    const profile = useSelector(state => state.auth?.userInfo);
+export default () => {
+    const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
     const [updateDriverLocation] = useUpdateDriverLocationMutation();
-    const isDriverLogged = isDriver()
+    const isDriverLogged = isDriver();
+    const isAccepted = isDriverAccepted();
+    const isOnline = isDriverAvailable();
+
+
     const debouncedLocationUpdate = debounce((location) => {
-        if(Boolean(location?.latitude) && isDriverLogged && isDriverAcceptedOrOnline()) {
-            let payload = { ...location };
-            payload.driver_id = profile.id;
-            payload.status = '';
-            console.log({payload})
+    console.log('location',location)
+
+        if (Boolean(location?.latitude) && isDriverLogged && isOnline) {
+            const { company, model, colour, type } = driverInfo?.Vehicle;
+
+            let payload = {
+                "driverId": profile.id,
+                "location": location,
+                "category": driverInfo?.Vehicle?.VehicleType?.code,
+                "status": isAccepted ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
+                "driver": {
+                    "name": profile.name,
+                    "email": profile.email
+                },
+                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code }
+            }
+            console.log({ payload })
             updateDriverLocation(payload);
         }
-    },250)
+    }, 250)
 
-    const updateDriverLocationToServer = (location) =>{
+    const updateDriverLocationToServer = (location) => {
         debouncedLocationUpdate(location)
     }
     return updateDriverLocationToServer

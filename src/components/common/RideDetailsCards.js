@@ -8,7 +8,7 @@ import Timeline from '../common/timeline/Timeline';
 import { COLORS, RideStatus, ROUTES_NAMES, SOCKET_EVENTS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import { useCompleteRideRequestMutation, useRideRequestMutation } from '../../slices/apiSlice';
+import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideRequestMutation } from '../../slices/apiSlice';
 import { updateRideStatus, setActiveRide, clearDriverState } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
@@ -21,11 +21,27 @@ import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
 import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
-
+import Share from 'react-native-share';
 
 const cancelRide = (activeRequestInfo, t) => {
     const dispatch = useDispatch();
+    const { access_token } = useSelector((state) => state.auth)
+
+    const [getShareLink, { data: shareToken, isLoading, error }] = useLazyGetShareLinkQuery();
     const phoneNumber = activeRequestInfo?.details?.phone;
+
+    console.log('shareToken', error?.data)
+
+    useEffect(() => {
+        if (error!==null && error?.data) {
+          const encodedData = encodeURIComponent(error?.data);
+          const link = `file:///Users/rajeshbabu/Downloads/liveLocation.html?data=${encodedData}&token=${access_token}`;
+          Share.open({ message: `${link}` })
+          .then(() => console.log('Shared successfully'))
+          .catch((err) => console.error('Sharing error:', err));
+        }
+      }, [error?.data]);
+
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
             onClick={(e) => {
@@ -36,6 +52,17 @@ const cancelRide = (activeRequestInfo, t) => {
             }
             textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
             label={t('chat_placeholder')}
+            isLowerCase
+        />
+        <CustomButton
+            onClick={() => getShareLink({ request_id: activeRequestInfo?.id })}
+            styles={
+                { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
+            }
+            textStyles={{ color: COLORS.white, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+            // label={'Call up'}
+            iconLeft={{ name: 'share', size: 'medium' }}
+            iconStyles={{ paddingRight: 0 }}
             isLowerCase
         />
         <CustomButton

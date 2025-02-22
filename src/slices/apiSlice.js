@@ -66,7 +66,7 @@ const api_path = {
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
   links: path => `user/links?${path}`,
-  location: path => `location/location/${path}`,
+  location: path => `location/location${path ? `/${path}` : ''}`,
   wallet: path => `payment/wallet/${path}`
 };
 const api_urls = {
@@ -99,7 +99,8 @@ const api_urls = {
   create: 'create',
   cities: 'cities',
   confirm: 'confirm',
-  rating:'rating'
+  rating: 'rating',
+  shareLink: 'sharelink'
 };
 
 export const apiSlice = createApi({
@@ -319,8 +320,8 @@ export const apiSlice = createApi({
     }),
     updateDriverLocation: builder.mutation({
       query: body => ({
-        method: 'PUT',
-        url: api_path.drivers(`${api_urls.location}/${body.driver_id}`),
+        method: 'POST',
+        url: api_path.location(),
         body,
       }),
       transformResponse: response => response,
@@ -396,7 +397,7 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
     updateRating: builder.mutation({
-      query: ({ request_id,...body }) => ({
+      query: ({ request_id, ...body }) => ({
         method: 'PATCH',
         url: api_path.request(`${request_id}/${api_urls.rating}`),
         body
@@ -474,6 +475,16 @@ export const apiSlice = createApi({
       transformErrorResponse: (response) => response,
     }),
 
+    //share
+
+    getShareLink: builder.query({
+      query: ({ request_id }) => ({
+        method: "GET",
+        url: api_path.request(`${request_id}/${api_urls.shareLink}`),
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
+    }),
   }),
 
   tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus', 'AppLinks'],
@@ -519,5 +530,6 @@ export const {
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,
   useGetCitiesQuery,
-  useUpdateRatingMutation
+  useUpdateRatingMutation,
+  useLazyGetShareLinkQuery
 } = apiSlice;

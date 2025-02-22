@@ -123,7 +123,7 @@ export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
   const { rideRequests, isOnline: driverStatus, walletInfo } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const status = isDriverAcceptedOrOnline()
+  const status = true;
   const [isOnline, toggleDriveStatus] = useState(status)
   const { getCurrentLocation } = useGetCurrentLocation();
   const { t } = useTranslation();
