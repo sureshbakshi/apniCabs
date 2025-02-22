@@ -13,23 +13,20 @@ export default () => {
 
 
     const debouncedLocationUpdate = debounce((location) => {
-    console.log('location',location)
-
         if (Boolean(location?.latitude) && isDriverLogged && isOnline) {
             const { company, model, colour, type } = driverInfo?.Vehicle;
-
+            const { latitude, longitude } = location
             let payload = {
                 "driverId": profile.id,
-                "location": location,
+                "location": { latitude, longitude },
                 "category": driverInfo?.Vehicle?.VehicleType?.code,
                 "status": isAccepted ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
                 "driver": {
-                    "name": profile.name,
-                    "email": profile.email
+                    "name": driverInfo?.name,
+                    "email": driverInfo?.email
                 },
-                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code }
+                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code , registerationNumber: driverInfo?.Vehicle?.registration_number}
             }
-            console.log({ payload })
             updateDriverLocation(payload);
         }
     }, 250)

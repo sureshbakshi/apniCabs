@@ -91,16 +91,16 @@ export const Capitalize = (str) => {
 }
 
 export const _isDriverOnline = () => {
-  const { isOnline } = store.getState().driver
+  const isOnline = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
   return Boolean(isOnline === DriverAvailableStatus.ONLINE)
 }
 
 export const isDriverAccepted = () => {
-  const { isOnline } = store.getState().driver;
+  const isOnline = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
   return Boolean(isOnline === DriverAvailableStatus.ACCEPTED) || Boolean(isOnline === DriverAvailableStatus.ONRIDE)
 }
 export const isDriverAvailable= (status) => {
-  const driverStatus = status || store.getState().driver?.isOnline;
+  const driverStatus = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
   return Boolean(driverStatus === DriverAvailableStatus.ONLINE) || Boolean(driverStatus === DriverAvailableStatus.BUSY);
 }
 

@@ -320,7 +320,7 @@ export const apiSlice = createApi({
     }),
     updateDriverLocation: builder.mutation({
       query: body => ({
-        method: 'POST',
+        method: 'PUT',
         url: api_path.location(),
         body,
       }),

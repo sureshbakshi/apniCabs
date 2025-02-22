@@ -1,6 +1,5 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { Linking, Alert, PermissionsAndroid } from 'react-native';
-import FileViewer from 'react-native-file-viewer';
 import { formattedDate } from '.';
 
 const getInvoiceHtml = (info) => {
@@ -164,7 +163,7 @@ const generateInvoice = async (info) => {
         };
 
         const file = await RNHTMLtoPDF.convert(options);
-        await FileViewer.open(file.filePath);
+        // await FileViewer.open(file.filePath);
     } catch (error) {
         Alert.alert('Error', 'Failed to generate or open PDF');
         console.error(error);
