@@ -1,6 +1,7 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { Linking, Alert, PermissionsAndroid } from 'react-native';
 import { formattedDate } from '.';
+import Share from 'react-native-share';
+
 
 const getInvoiceHtml = (info) => {
     return `<!DOCTYPE html>
@@ -127,45 +128,23 @@ const getInvoiceHtml = (info) => {
 `;
 };
 
+
 const generateInvoice = async (info) => {
     try {
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            {
-                title: 'Storage Permission Required',
-                message: 'This app needs access to your storage to download the file',
-            }
-        );
-
-        console.log('Permission granted:', granted);
-
-        if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-            Alert.alert(
-                'Permission Required',
-                'Storage permission is required to generate and view the PDF. Please enable it in the app settings.',
-                [
-                    { text: 'Cancel', style: 'cancel' },
-                    { text: 'Open Settings', onPress: () => Linking.openSettings() },
-                ]
-            );
-            return;
-        }
-
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-            Alert.alert('Permission Denied!', 'You need to give storage permission to download the file');
-            return;
-        }
-
         const options = {
             html: getInvoiceHtml(info),
             fileName: `invoice_${info.id}`,
             directory: 'Documents',
         };
-
-        const file = await RNHTMLtoPDF.convert(options);
-        // await FileViewer.open(file.filePath);
+        const {filePath} = await RNHTMLtoPDF.convert(options);
+        const formattedFilePath = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
+        const shareOptions = {
+            url: formattedFilePath,
+            type: 'application/pdf',
+            title: 'Share Invoice',
+        };
+        await Share.open(shareOptions);
     } catch (error) {
-        Alert.alert('Error', 'Failed to generate or open PDF');
         console.error(error);
     }
 };
