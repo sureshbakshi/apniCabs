@@ -89,7 +89,7 @@ const MoreStyles = StyleSheet.create({
   smallTxt: {
     color: '#000',
     fontSize: 13,
-    fontWeight: 500,
+    fontWeight: '500',
   },
   whitetxt: {
     fontSize: 12,

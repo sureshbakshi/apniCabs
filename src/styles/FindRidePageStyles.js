@@ -102,7 +102,7 @@ const FindRideStyles = StyleSheet.create({
   Paragraph: {
     color: COLORS.black,
     fontSize: 14,
-    fontWeight: 700,
+    fontWeight: "700",
     lineHeight: 21,
   },
   review: {
@@ -112,7 +112,7 @@ const FindRideStyles = StyleSheet.create({
   },
   otpText: {
     fontSize: 18,
-    fontWeight: 700,
+    fontWeight: "700",
     lineHeight: 27,
     color: COLORS.blue
   },

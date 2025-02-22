@@ -28,7 +28,7 @@
     "pickup_placeholder":"Pickup Location",
     "drop_placeholder":"Drop Location",
     "otp_Placeholder":"Enter OTP here",
-    "chat_placeholder":"Type a message here...",
+    "chat_placeholder":"message here...",
     "ride_status":{
          "user_cancelled":{
             "title": "Booking Cancelled",
@@ -74,6 +74,7 @@
     "refer_now":"Refer Now",
     "settings":"More settings",
     "language":"Language",
+    "logout": "Logout",
     "no_subscription":"No subscription plans available.",
     "no_records":"No Records found.",
     "search_ride_msg":"Looking for ride requests! Please be in online status.",

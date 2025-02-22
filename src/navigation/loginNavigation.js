@@ -39,11 +39,6 @@ export default function LoginNavigator({navigation, route}) {
         component={SignUpPage}
       />
       <Stack.Screen
-        name={ROUTES_NAMES.forgotPassword}
-        options={{title: 'Forgot Password', headerTintColor: COLORS.primary}}
-        component={ForgotPassword}
-      />
-      <Stack.Screen
         name={ROUTES_NAMES.otp}
         options={{title: 'Submit OTP', headerTintColor: COLORS.primary}}
         component={OTPAutoFill}

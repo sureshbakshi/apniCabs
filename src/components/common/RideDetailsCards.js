@@ -9,10 +9,10 @@ import { COLORS, RideStatus, ROUTES_NAMES, SOCKET_EVENTS } from '../../constants
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideRequestMutation } from '../../slices/apiSlice';
-import { updateRideStatus, setActiveRide, clearDriverState } from '../../slices/driverSlice';
+import { updateRideStatus, setActiveRide } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
-import { clearRideChats, setDialogStatus } from '../../slices/authSlice';
+import { setDialogStatus } from '../../slices/authSlice';
 import CustomButton from './CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
@@ -48,21 +48,10 @@ const cancelRide = (activeRequestInfo, t) => {
                 navigate(ROUTES_NAMES.chat)
             }}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, maxWidth:160, height: 40 }
             }
-            textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+            textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             label={t('chat_placeholder')}
-            isLowerCase
-        />
-        <CustomButton
-            onClick={() => getShareLink({ request_id: activeRequestInfo?.id })}
-            styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
-            }
-            textStyles={{ color: COLORS.white, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
-            // label={'Call up'}
-            iconLeft={{ name: 'share', size: 'medium' }}
-            iconStyles={{ paddingRight: 0 }}
             isLowerCase
         />
         <CustomButton
@@ -70,7 +59,7 @@ const cancelRide = (activeRequestInfo, t) => {
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.primary, height: 40 }
             }
-            textStyles={{ color: COLORS.white, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+            textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             // label={'Call up'}
             iconLeft={{ name: 'phone', size: 'medium' }}
             iconStyles={{ paddingRight: 0 }}
@@ -81,10 +70,21 @@ const cancelRide = (activeRequestInfo, t) => {
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, height: 40 }
             }
-            textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+            textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             iconLeft={{ name: 'close', size: 'medium', color: COLORS.black }}
             iconStyles={{ paddingRight: 0 }}
             // label={t('cancel_btn')}
+            isLowerCase
+        />
+        <CustomButton
+            onClick={() => getShareLink({ request_id: activeRequestInfo?.id })}
+            styles={
+                { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
+            }
+            textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
+            // label={'Call up'}
+            iconLeft={{ name: 'share', size: 'medium' }}
+            iconStyles={{ paddingRight: 0 }}
             isLowerCase
         />
     </View>
@@ -271,9 +271,6 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             // socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
             console.log(err)
-            if (err?.status == 400) {
-                dispatch(clearDriverState())
-            }
         })
     }
     const isActiveRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
@@ -294,7 +291,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                     styles={
                         { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }
                     }
-                    textStyles={{ color: COLORS.black, fontWeight: 400, fontSize: 14, lineHeight: 18 }}
+                    textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
                     label={t('complete_ride_btn')}
                     isLowerCase
                 />

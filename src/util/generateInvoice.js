@@ -1,6 +1,9 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { Alert } from 'react-native';
+import { Alert, PermissionsAndroid } from 'react-native';
 import { formattedDate } from '.';
+import FileViewer from 'react-native-file-viewer';
+// import RNFS from 'react-native-fs';
+
 
 const getInvoiceHtml = (info) => {
     return `<!DOCTYPE html>
@@ -141,18 +144,45 @@ const getInvoiceHtml = (info) => {
 </html>
 `
 }
+
+
+const openPDF = async (filePath) => {
+    try {
+      // Ensure the file path starts with 'file://'
+      const formattedFilePath = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
+  
+      // Check if the file exists
+    //   const fileExists = await RNFS.exists(formattedFilePath);
+    //   if (!fileExists) {
+    //     Alert.alert('Error', 'PDF file does not exist.');
+    //     return;
+    //   }
+  
+      // Open the PDF file
+      await FileViewer.open(formattedFilePath, { showOpenWithDialog: true });
+    } catch (error) {
+      Alert.alert('Error', 'Failed to open PDF.');
+      console.error('Error opening PDF:', error);
+    }
+  };
+
 export default generateInvoice = async (info) => {
     try {
+         // Request permission for Android
         const htmlContent = getInvoiceHtml(info)
+        console.log({info})
         const pdfOptions = {
             html: htmlContent,
-            fileName: 'taxi_invoice',
+            fileName: `invoice_${info.id}`,
             directory: 'Documents',
         };
 
         let file = await RNHTMLtoPDF.convert(pdfOptions)
-
-        Alert.alert('Invoice generated', `Invoice file saved to ${file.filePath}`);
+        console.log('file',file)
+        if(file?.filePath){
+            openPDF(file.filePath);
+        }
+        // Alert.alert('Invoice generated', `Invoice file saved to ${file.filePath}`);
     } catch (error) {
         Alert.alert('Error', `Failed to generate Invoice: ${error.message}`);
     }

@@ -28,7 +28,7 @@
   "pickup_placeholder": "पिकअप स्थान",
   "drop_placeholder": "ड्रॉप स्थान",
   "otp_Placeholder": "OTP यहां दर्ज करें",
-  "chat_placeholder": "एक संदेश टाइप करें...",
+  "chat_placeholder": "संदेश टाइप करें...",
   "ride_status": {
     "user_cancelled": {
       "title": "बुकिंग रद्द",
@@ -74,6 +74,7 @@
   "refer_now": "अभी रेफर करें",
   "settings": "अधिक सेटिंग्स",
   "language": "भाषा",
+  "logout": "लॉगआउट",
   "no_subscription": "कोई सदस्यता योजना उपलब्ध नहीं है।",
   "no_records": "कोई रिकॉर्ड नहीं मिला।",
   "search_ride_msg": "सवारी अनुरोध की तलाश है! कृपया ऑनलाइन स्थिति में रहें।",

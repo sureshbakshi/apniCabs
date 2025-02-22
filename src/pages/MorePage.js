@@ -48,7 +48,7 @@ const MorePage = () => {
                   <View style={MoreStyles.listIcon}>
                     <Icon name="account" size="large" color={COLORS.primary} />
                   </View>
-                  <Text style={MoreStyles.menu_name}>{t('my_profile')}</Text>
+                  <Text style={MoreStyles.name}>{t('my_profile')}</Text>
                 </Pressable>
                 {!isDriver() ? <>
                   <Pressable
@@ -114,7 +114,7 @@ const MorePage = () => {
                   <View style={MoreStyles.listIcon}>
                     <Icon name="account" size="large" color={COLORS.primary} />
                   </View>
-                  <Text style={MoreStyles.menu_name}>Language</Text>
+                  <Text style={MoreStyles.name}>{t('language')}</Text>
                 </Pressable>
                 
 
@@ -123,7 +123,7 @@ const MorePage = () => {
                 android_ripple={{ color: '#ccc' }}
                 style={MoreStyles.button}
                 onPress={logOut}>
-                <Text style={MoreStyles.greenTxt}>{'Logout'}</Text>
+                <Text style={MoreStyles.greenTxt}>{t('logout')}</Text>
               </Pressable>
               <Text style={{textAlign: 'center', padding: 10}}>v{DeviceInfo.getReadableVersion()}</Text>
             </ScrollView>

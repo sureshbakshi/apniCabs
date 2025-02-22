@@ -35,7 +35,7 @@ const ActiveRidePageStyles = StyleSheet.create({
   modalText:{
     textAlign:'center',
     fontSize: 20,
-    fontWeight: 700,
+    fontWeight: "700",
     color: COLORS.black,
     lineHeight: 30,
     marginBottom: 15

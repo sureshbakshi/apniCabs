@@ -40,7 +40,7 @@ export default ({ route }) => {
                         <AvatarInfo dp={avatar} name={name} avatarContainerStyles={{alignItems: 'center'}}/>
                     </View> */}
                     <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
-                        <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
+                        <Text style={{ fontSize: 14, fontWeight: "700", lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
                         <RideDetailsView activeRequestInfo={rideDetails} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
                     </View>
                 </ContainerWrapper>

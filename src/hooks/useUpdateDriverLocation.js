@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
 import { debounce } from 'lodash';
-import { isDriver, isDriverAccepted, isDriverAvailable } from '../util';
+import { isDriver, isDriverAccepted, _isDriverOnline } from '../util';
 import { DriverAvailableStatus } from "../constants";
 
 export default () => {
@@ -9,7 +9,7 @@ export default () => {
     const [updateDriverLocation] = useUpdateDriverLocationMutation();
     const isDriverLogged = isDriver();
     const isAccepted = isDriverAccepted();
-    const isOnline = isDriverAvailable();
+    const isOnline = _isDriverOnline();
 
 
     const debouncedLocationUpdate = debounce((location) => {

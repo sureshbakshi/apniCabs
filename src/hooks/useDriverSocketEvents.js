@@ -60,7 +60,7 @@ export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const { updateRideRequests } = useDriverEvents();
-    const { isOnline, activeRideId } = useSelector((state) => state.driver);
+    const { isOnline, activeRequestInfo } = useSelector((state) => state.driver);
     const onChat = useChatMessage()
 
     const isDriverOnline = isOnline !== DriverAvailableStatus.OFFLINE;
@@ -118,9 +118,9 @@ export default (() => {
     }, [driverSocket]);
 
     useEffect(() => {
-        if (activeRideId && isSocketConnected) {
+        if (activeRequestInfo?.id && isSocketConnected) {
             onChat(driverSocket);
         }
-    }, [activeRideId])
+    }, [activeRequestInfo?.id])
 })
 

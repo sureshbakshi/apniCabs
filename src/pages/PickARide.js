@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Pressable, ScrollView, Text, Switch, SafeAreaView } from 'react-native';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
-import { isEqual } from 'lodash';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus, default_btn_styles } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
-import { _isDriverOnline, isDriverAcceptedOrOnline } from '../util';
+import { _isDriverOnline, isDriverAcceptedOrOnline, isDriverAvailable } from '../util';
 import { updateRideRequest } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
@@ -17,7 +16,6 @@ import { navigate } from '../util/navigationService';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
-import CardWrapper from '../components/CardWrapper';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { useTranslation } from 'react-i18next';
 
@@ -123,7 +121,7 @@ export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
   const { rideRequests, isOnline: driverStatus, walletInfo } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const status = true;
+  const status = isDriverAvailable();
   const [isOnline, toggleDriveStatus] = useState(status)
   const { getCurrentLocation } = useGetCurrentLocation();
   const { t } = useTranslation();
@@ -138,7 +136,7 @@ export const PickARide = () => {
   useEffect(() => {
     // if (!isEqual(status, isOnline)) {
     // if (driverStatus !== DriverAvailableStatus.BUSY) {
-    updateDriverStatus(true, toggleDriveStatus)
+    updateDriverStatus(isOnline, toggleDriveStatus)
     // }
     // }
   }, [isOnline]);

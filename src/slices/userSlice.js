@@ -57,7 +57,6 @@ const mySelf = {
 }
 
 const initialState = {
-  activeRideId: null,
   activeRequestDrivers: null,
   rideRequests: null,
   activeRequestInfo: null,

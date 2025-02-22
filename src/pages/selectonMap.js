@@ -113,7 +113,7 @@ const SelectOnPage = () => {
                             iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
                             isLoading={isEmpty(address)}
                             styles={{ backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
-                            textStyles={{ fontSize: 12, fontWeight: 400, lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
+                            textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
                             label={address?.formatted_address}
                         />
                         <CustomButton

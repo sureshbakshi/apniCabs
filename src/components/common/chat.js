@@ -5,7 +5,7 @@ import CustomButton from './CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
 import socket from '../../sockets/socketConfig';
-import { isDriver } from '../../util';
+import { getScreen, isDriver } from '../../util';
 import { useTranslation } from 'react-i18next';
 
 const ChatUI = () => {
@@ -15,12 +15,11 @@ const ChatUI = () => {
   const isDriverLogged = isDriver();
   const { activeRequestId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   const flatListRef = useRef();
-  console.log('rideChats',rideChats)
 
   useEffect(() => {
-    console.log('activeRequestId',activeRequestId)
+    console.log('activeRequestId', activeRequestId)
     if (socket && activeRequestId) {
-      console.log('activeRequestId',activeRequestId)
+      console.log('activeRequestId', activeRequestId)
       socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestId);  // Replace with the actual rideId
     }
   }, [activeRequestId, socket])
@@ -41,17 +40,18 @@ const ChatUI = () => {
     if (flatListRef?.current && rideChats?.messages?.length > 0) {
       setTimeout(() => {
         flatListRef.current.scrollToEnd({ animated: true });
-      }, 100); 
+      }, 100);
     }
   }, [rideChats?.messages]);
 
   return (
-    <ContainerWrapper>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardAvoidingView}
-        >
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+       extraHeight={180} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+      >
+        <ContainerWrapper style={{ height: getScreen().screenHeight - 200 }}>
           {/* Message List */}
           <FlatList
             ref={flatListRef}
@@ -77,9 +77,9 @@ const ChatUI = () => {
             />
             <CustomButton label={t('send_btn')} onPress={sendMessage} isLowerCase />
           </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </ContainerWrapper>
+        </ContainerWrapper>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

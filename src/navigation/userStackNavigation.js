@@ -1,11 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
 import ActiveRidePage from '../pages/ActiveRidePage';
 import { COLORS, RideStatus, ROUTES_NAMES } from '../constants';
-import { useEffect } from 'react';
 import AppContainer from '../components/AppContainer';
 import { useSelector } from 'react-redux';
 
@@ -16,9 +13,7 @@ import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import CommonStyles from '../styles/commonStyles';
 import SelectOnPage from '../pages/selectonMap';
 import { useTranslation } from 'react-i18next';
-import HeaderBackButton from '../components/common/HeaderBackButton';
 import ChatUI from '../components/common/chat';
-import { isDriver } from '../util';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -27,7 +22,6 @@ const tabHiddenRoutes = [ROUTES_NAMES.activeRide];
 export default function UserStackNavigator({ navigation, route }) {
   const { t } = useTranslation();
   const { activeRequestInfo, activeRequestId } = useSelector((state) => state.user);
-  const { rideRequests } = useSelector(state => state.user);
   const { requestAlertHandler } = useRequestAlertHandler(t('cancel_request'));
   useGetUserActiveRequests()
   // useEffect(() => {
@@ -69,7 +63,7 @@ export default function UserStackNavigator({ navigation, route }) {
       <Stack.Screen
         name={ROUTES_NAMES.chat}
         options={{
-          title: isDriver()?'Chat with user':'Chat with driver',
+          title: 'Chat with driver',
           // headerLeft: () => <HeaderBackButton />,
           headerShown: true
         }}

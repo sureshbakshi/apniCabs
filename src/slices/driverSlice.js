@@ -6,7 +6,6 @@ import { formatRideRequest } from '../util';
 const initialState = {
   rideRequests: [],
   activeRequestInfo: null,
-  activeRideId: null,
   isOnline: true,
   statusUpdate: null,
   walletInfo: null,
@@ -17,24 +16,22 @@ const driverSlice = createSlice({
   initialState,
   reducers: {
     updateRideRequest: (state, action) => {
+      // on socket request, on accept and on decline
       const requestObj = action.payload
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
         state.activeRequestInfo = requestObj;
         state.rideRequests = []
-        state.activeRideId = requestObj.status === RideStatus.ONRIDE ? requestObj.id : null
       } else {
         state.rideRequests = state.rideRequests.filter((request) => (requestObj.request_id || requestObj.id)!== (request.request_id || request.id))
       }
     },
     setActiveRide: (state, action) => {
+      // on active request api response and otp submit
       const requestObj = action.payload
       if (isEmpty(requestObj)) {
         state.activeRequestInfo = null;
-        state.activeRideId = null;
-        state.statusUpdate = null;
       } else {
         const { id } = requestObj || {}
-        state.activeRideId = (requestObj.status === RideStatus.ONRIDE || requestObj.status === RideStatus.ACCEPTED)? id : null;
         state.activeRequestId = id;
         state.activeRequestInfo = requestObj
       }
@@ -42,11 +39,12 @@ const driverSlice = createSlice({
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}
       if (ClearRideStatus.includes(status)) {
-        state.statusUpdate = action.payload
+        state.statusUpdate = {...state.activeRequestInfo, ...action.payload}
+        state.activeRequestInfo = null;
       }
     },
     setDriverStatus: (state, action) => {
-      const status = action.payload?.is_available || action.payload?.driver_detail?.is_available
+      const status = action.payload?.is_available || action.payload?.DriverDetail?.is_available
       if (status) {
         state.isOnline = status;
       }
@@ -55,7 +53,11 @@ const driverSlice = createSlice({
     clearDriverState: (state, action) => {
       return Object.assign(state, { ...initialState, isOnline: state.isOnline })
     },
+    clearDriverRideStatus: (state, action) => {
+      state.statusUpdate = null;
+    },
     setRideRequest: (state, action) => {
+      // on active requests api response and on request socket
       const newRequest = action.payload;
       let updatedRequest = state.rideRequests;
       if (Array.isArray(newRequest)) {
@@ -64,8 +66,6 @@ const driverSlice = createSlice({
         } else {
           updatedRequest = []
           state.activeRequestInfo = null;
-          state.activeRideId = null;
-          state.statusUpdate = null;
         }
       } else {
         updatedRequest = formatRideRequest(newRequest, state.rideRequests)
@@ -79,6 +79,6 @@ const driverSlice = createSlice({
   },
 });
 
-export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState, setDriverWallet } = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState, clearDriverRideStatus, setDriverWallet } = driverSlice.actions;
 
 export default driverSlice.reducer;

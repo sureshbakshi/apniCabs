@@ -87,7 +87,7 @@ const MyRideStyles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: COLORS.black,
-    fontWeight: 700
+    fontWeight: "700"
   },
   primaryColor: {
     color: COLORS.primary,

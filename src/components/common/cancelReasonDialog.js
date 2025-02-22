@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCancelAcceptedRequestMutation } from "../../slices/apiSlice";
-import { clearDriverState } from "../../slices/driverSlice";
+import { updateRideStatus } from "../../slices/driverSlice";
 import { setActiveRequest } from "../../slices/userSlice";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import CustomDialog from "./CustomDialog";
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
-import { COLORS, RideStatus } from "../../constants";
+import { COLORS } from "../../constants";
 import { Icon } from "./Icon";
 import { delay } from 'lodash';
 import { setDialogStatus } from "../../slices/authSlice";
-import { isDriver } from "../../util";
+import { isDriver, showErrorMessage } from "../../util";
 import { useTranslation } from "react-i18next";
 import DialogButtons from "./DialogButtons";
 
@@ -59,12 +59,14 @@ export const CancelReasonDialog = () => {
   const closeAndClearRequest = () => {
     closeModal();
     delay(() => {
-      dispatch(isDriverLogged ? clearDriverState(cancelAcceptedRequestData) : setActiveRequest())
+      dispatch(isDriverLogged ? updateRideStatus(cancelAcceptedRequestData) : setActiveRequest())
     }, 10)
   }
 
   useEffect(() => {
-    if (cancelAcceptedRequestData || cancelAcceptedRequestData === null || cancelAcceptedRequestError) {
+    if(cancelAcceptedRequestError) {
+      showErrorMessage()
+    } else if (cancelAcceptedRequestData) {
       closeAndClearRequest()
     }
     // else if (cancelAcceptedRequestError) {
@@ -90,7 +92,7 @@ export const CancelReasonDialog = () => {
       cancelAcceptedRequest(payload)
     } else {
       setErrorMessage(true);
-      closeAndClearRequest()
+      // closeAndClearRequest()
     }
   };
 

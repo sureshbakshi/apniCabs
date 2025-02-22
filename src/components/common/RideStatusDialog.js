@@ -4,7 +4,7 @@ import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
 import { Text, View } from "react-native";
 import CustomDialog from "./CustomDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { clearDriverState } from "../../slices/driverSlice";
+import { clearDriverRideStatus } from "../../slices/driverSlice";
 import { setActiveRequest } from "../../slices/userSlice";
 import { delay } from 'lodash';
 import { isDriver } from "../../util";
@@ -43,7 +43,7 @@ export default () => {
     const rideStatusModalInfo = statusUpdate?.status ? statusMessages[statusUpdate?.status] : null
     const clearRideState = () => {
         delay(() => {
-            dispatch(isDriverLogged ? clearDriverState() : setActiveRequest())
+            dispatch(isDriverLogged ? clearDriverRideStatus() : setActiveRequest())
         }, 1000)
     }
     const canShowRating = (statusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
