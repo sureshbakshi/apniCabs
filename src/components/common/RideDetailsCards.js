@@ -30,17 +30,16 @@ const cancelRide = (activeRequestInfo, t) => {
     const [getShareLink, { data: shareToken, isLoading, error }] = useLazyGetShareLinkQuery();
     const phoneNumber = activeRequestInfo?.details?.phone;
 
-    console.log('shareToken', error?.data)
 
     useEffect(() => {
-        if (error!==null && error?.data) {
-          const encodedData = encodeURIComponent(error?.data);
+        if (error!==null && shareToken?.shareLink) {
+          const encodedData = encodeURIComponent(shareToken?.shareLink);
           const link = `file:///Users/rajeshbabu/Downloads/liveLocation.html?data=${encodedData}&token=${access_token}`;
           Share.open({ message: `${link}` })
           .then(() => console.log('Shared successfully'))
           .catch((err) => console.error('Sharing error:', err));
         }
-      }, [error?.data]);
+      }, [shareToken?.shareLink]);
 
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton

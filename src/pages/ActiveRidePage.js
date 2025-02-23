@@ -24,14 +24,12 @@ const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
   const { getCurrentLocation } = useGetCurrentLocation();
   const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
-  if (!activeRequestInfo?.driver) {
-    isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
-  }
+  isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
   const { screenHeight } = getScreen()
   useEffect(() => {
     getCurrentLocation()
-  },[])
-  
+  }, [])
+
 
   const detailsObj = {
     driver: {
@@ -47,7 +45,7 @@ const ActiveRidePage = () => {
       details: {
         name: activeRequestInfo?.driver_details?.name,
         phone: activeRequestInfo?.driver_details?.phone,
-        id:   activeRequestInfo?.driver_details?.id,
+        id: activeRequestInfo?.driver_details?.id,
         vehicle: {
           ...activeRequestInfo?.driver_details?.vehicle
         }
@@ -79,7 +77,7 @@ const ActiveRidePage = () => {
             </CardWrapper>} */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
               <Text>{t('distance')}</Text>
-              <Text>{requestInfo?.duration} {requestInfo?.distance ?`- ${requestInfo.distance} km`: ''}</Text>
+              <Text>{requestInfo?.duration} {requestInfo?.distance ? `- ${requestInfo.distance} km` : ''}</Text>
             </View>
             {!isEmpty(activeRequestInfo) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequestInfo={requestInfo} />}
 
