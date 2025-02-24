@@ -13,7 +13,7 @@ export default () => {
 
 
     const debouncedLocationUpdate = debounce((location) => {
-        if (Boolean(location?.latitude) && isDriverLogged && isOnline) {
+        if (Boolean(location?.latitude) && isDriverLogged && isOnline && driverInfo?.Vehicle) {
             const { company, model, colour, type } = driverInfo?.Vehicle;
             const { latitude, longitude } = location
             let payload = {

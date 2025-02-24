@@ -68,5 +68,5 @@ export default () => {
         };
     }, [driverStatus]);
 
-    return { location, watchPosition, watchId }
+    return { watchPosition, watchId }
 }
