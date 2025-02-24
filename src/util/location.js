@@ -11,7 +11,7 @@ export  const defaultOptions = {
     maximumAge: 3 * 1000,
     timeout: 30 * 1000,
     forceRequestLocation: true,
-    interval: 3 * 1000,
+    interval: 5 * 1000,
     useSignificantChanges: true,
     distanceFilter: 3,
     showLocationDialog: true,

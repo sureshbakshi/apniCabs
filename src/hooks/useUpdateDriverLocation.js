@@ -25,7 +25,7 @@ export default () => {
                     "name": driverInfo?.name,
                     "email": driverInfo?.email
                 },
-                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code , registerationNumber: driverInfo?.Vehicle?.registration_number}
+                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code , registrationNumber: driverInfo?.Vehicle?.registration_number}
             }
             updateDriverLocation(payload);
         }

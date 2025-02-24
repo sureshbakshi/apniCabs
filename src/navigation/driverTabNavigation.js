@@ -11,6 +11,7 @@ import WalletStackNavigator from './walletNavigationStack';
 import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
 import { useTranslation } from 'react-i18next';
+import useLocationWatcher from '../hooks/useLocationWatcher';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,7 @@ setBugsnagUserInfo()
 export default function DriverTabNavigator() {
   useDriverSocketEvents()
   useAppStateListner()
+  useLocationWatcher()
   const {t} = useTranslation()
   return (
     <AppProvider>

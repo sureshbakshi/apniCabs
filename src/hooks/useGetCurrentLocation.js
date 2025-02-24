@@ -23,6 +23,7 @@ export default () => {
                         const locationDetails = await getLocation(position?.coords, setLocation);
                         cb?.(locationDetails)
                         if(isDriver) {
+                            console.log('getCurrentLocation', locationDetails)
                             updateDriverLocationToServer(locationDetails)
                         }
                         return locationDetails

@@ -13,7 +13,7 @@ import useChatMessage from "./useChatMessage";
 import { isEmpty } from "lodash";
 const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
-    driver_location: 'driverLocation'
+    driver_location: 'DriverLocationSocket'
 }
 
 
@@ -45,9 +45,9 @@ export default (() => {
     const addDevice = () => {
         const id = store.getState().auth.userInfo?.id
         console.log({ addDeviceId: id })
-        if (id) {
+        if (userSocket?.id) {
             console.log(`============= User add device emit ==========`)
-            dispatch(updatedSocketConnectionStatus(id))
+            dispatch(updatedSocketConnectionStatus(userSocket?.id))
 
             // userSocket.emit('addDevice', id, (cbRes) => {
             //     // console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
@@ -84,8 +84,9 @@ export default (() => {
         userSocket.on(USER_SOCKET_EVENTS.driver_location, (updatedLocation) => {
             // Handle the driver list update in the UI
             // cb(updatedRequest)
-            if (updatedLocation?.data) {
-                dispatch(updateDriverLocation(updatedLocation.data))
+            console.log(USER_SOCKET_EVENTS.driver_location, updatedLocation)
+            if (updatedLocation?.latitude) {
+                dispatch(updateDriverLocation(updatedLocation))
             }
         });
     }

@@ -76,11 +76,15 @@ const Card = ({ request_id, ...item }) => {
 
   const [cancelRequest, { isLoading: isCancelRequestLoading }] = useCancelRequestMutation();
 
+  const updateDriverRequestStatus = (status) => {
+    dispatch(updateActiveRequestDrivers({ ...item, status, request_id, category: item?.category }));
+  }
+
   const handleSendRequest = item => {
     let payload = { request_id, driver_id: item?.id, fare: item?.fare, category: item?.category };
     if (item.status === RideStatus.REQUESTED) {
       cancelRequest(payload).unwrap().then((res) => {
-        updateDriverStatus(RideStatus?.USER_CANCELLED);
+        updateDriverRequestStatus(RideStatus?.USER_CANCELLED);
       }).catch((err) => {
         console.log('cancel request err', err)
       });
@@ -91,16 +95,12 @@ const Card = ({ request_id, ...item }) => {
     }
   };
 
-  const updateDriverStatus = (status) => {
-    dispatch(updateActiveRequestDrivers({ ...item, status, request_id, category: item?.category }));
-  }
-
   useEffect(() => {
     if (requestError) {
       console.log('requestError', requestError);
-      updateDriverStatus(RideStatus?.UNAVAILABLE);
+      updateDriverRequestStatus(RideStatus?.UNAVAILABLE);
     } else if (requestData) {
-      updateDriverStatus(RideStatus?.REQUESTED);
+      updateDriverRequestStatus(RideStatus?.REQUESTED);
     }
   }, [requestData, requestError]);
 

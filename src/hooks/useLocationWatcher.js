@@ -3,15 +3,16 @@ import { Platform } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
 import { showErrorMessage } from "../util";
 import { checkAndroidPermissions, defaultOptions, getLocation } from "../util/location";
+import { useDispatch, useSelector } from "react-redux";
+import { setDriverLocation } from "../slices/driverSlice";
+import useUpdateDriverLocation from "./useUpdateDriverLocation";
+import { DriverAvailableStatus } from "../constants";
 let watchId = undefined;
 
 export default () => {
-    const [location, setLocation] = useState({
-        latitude: '',
-        longitude: '',
-        city: '',
-        address: '',
-    })
+    const dispatch = useDispatch();
+    const driverStatus = useSelector((state) => state.driver.driverStatus)
+    const updateDriverLocationToServer = useUpdateDriverLocation()
 
     const watchPosition = async () => {
         let granted = false;
@@ -27,9 +28,15 @@ export default () => {
         if (granted) {
             if (watchId === undefined) {
                 watchId = Geolocation.watchPosition(
-                    async(position) => {
-                        // console.log('watchPosition', position)
-                       getLocation(position.coords, setLocation);
+                    async (position) => {
+                        console.log('watchPosition', position)
+                        //    getLocation(position.coords, setLocation);
+                        if (position?.coords) {
+                            const { latitude, longitude } = position.coords
+                            dispatch(setDriverLocation({ latitude, longitude }))
+                            updateDriverLocationToServer({ latitude, longitude })
+
+                        }
                     },
                     (error) => {
                         // See error code charts below.
@@ -43,15 +50,23 @@ export default () => {
         }
     };
 
+    const clearWatch = () => {
+        if (watchId) {
+            Geolocation.clearWatch(watchId)
+            watchId = undefined
+        }
+    }
+
     useEffect(() => {
-        //Get current location and set initial region to this
+        if (driverStatus === DriverAvailableStatus.OFFLINE) {
+            clearWatch()
+        } else if (!watchId) {
+            watchPosition()
+        }
         return () => {
-            if (watchId) {
-                watchId = undefined
-                Geolocation?.clearWatch(watchId)
-            }
+            clearWatch()
         };
-    }, []);
+    }, [driverStatus]);
 
     return { location, watchPosition, watchId }
 }

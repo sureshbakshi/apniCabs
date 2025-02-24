@@ -6,14 +6,13 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus, default_btn_styles } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
-import { _isDriverOnline, isDriverAcceptedOrOnline, isDriverAvailable } from '../util';
+import { _isDriverOnline } from '../util';
 import { updateRideRequest } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
 import { useUpdateRequestMutation } from '../slices/apiSlice';
 import { Icon } from '../components/common';
 import { navigate } from '../util/navigationService';
-import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
@@ -119,35 +118,25 @@ const DriverCard = ({ list }) => {
 
 export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
-  const { rideRequests, isOnline: driverStatus, walletInfo } = useSelector(state => state.driver);
+  const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
   const { driverInfo, userInfo } = useSelector(state => state.auth);
-  const status = isDriverAvailable();
-  const [isOnline, toggleDriveStatus] = useState(status)
-  const { getCurrentLocation } = useGetCurrentLocation();
+  const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
+  const [isOnline, toggleDriveStatus] = useState(is_available)
   const { t } = useTranslation();
   const updateDriverStatus = useUpdateDriverStatus();
   useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
-  
+
 
   const toggleSwitch = () => {
     toggleDriveStatus(!isOnline)
+    updateDriverStatus(!isOnline, toggleDriveStatus)
   }
 
-  useEffect(() => {
-    // if (!isEqual(status, isOnline)) {
-    // if (driverStatus !== DriverAvailableStatus.BUSY) {
-    updateDriverStatus(isOnline, toggleDriveStatus)
-    // }
-    // }
-  }, [isOnline]);
-
-  useEffect(() => {
-    if (status) getCurrentLocation(() => { }, true)
-  }, [status])
-
-  useEffect(() => {
-    toggleDriveStatus(status)
-  }, [status])
+  // useEffect(() => {
+  //   if (is_available !== isOnline) {
+  //     toggleDriveStatus(is_available)
+  //   }
+  // }, [is_available, isOnline]);
 
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
   return (

@@ -42,12 +42,12 @@ const mapStyle = [
   {
     featureType: 'road',
     elementType: 'geometry',
-    stylers: [{ color: '#38414e' }],
+    stylers: [{ color: '#6e6f71' }],
   },
   {
     featureType: 'road',
     elementType: 'geometry.stroke',
-    stylers: [{ color: '#212a37' }],
+    stylers: [{ color: '#686b6d' }],
   },
   {
     featureType: 'road',
@@ -57,12 +57,12 @@ const mapStyle = [
   {
     featureType: 'road.highway',
     elementType: 'geometry',
-    stylers: [{ color: '#746855' }],
+    stylers: [{ color: '#988870' }],
   },
   {
     featureType: 'road.highway',
     elementType: 'geometry.stroke',
-    stylers: [{ color: '#1f2835' }],
+    stylers: [{ color: '#455369' }],
   },
   {
     featureType: 'road.highway',
@@ -72,7 +72,7 @@ const mapStyle = [
   {
     featureType: 'transit',
     elementType: 'geometry',
-    stylers: [{ color: '#2f3948' }],
+    stylers: [{ color: '#5a626d' }],
   },
   {
     featureType: 'transit.station',
@@ -106,12 +106,12 @@ const markerIDs = ['Marker1', 'Marker2'];
 
 const ActiveMapPage = ({ activeRequestInfo }) => {
   const isDriverLogged = isDriver();
-  const { getCurrentLocation, currentLocation } = useGetCurrentLocation();
-  const { watchPosition, location: watchedLocation } = useLocationWatcher();
+  const { currentLocation } = useGetCurrentLocation();
+  const watchedLocation = useSelector(state => state.driver.driverLocation);
   const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
-  const updateDriverLocationToServer = useUpdateDriverLocation()
 
   const { driverLocation } = useSelector(state => state.user);
+  console.log({ driverLocation })
   const mapRef = useRef(null);
   const activeLocation = {
     latitude: isDriverLogged ? Number(location?.latitude) : Number(driverLocation?.latitude),
@@ -122,18 +122,6 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
     latitude: activeRequestInfo?.status === RideStatus.ONRIDE ? Number(activeRequestInfo?.to_latitude) : activeLocation?.latitude,
     longitude: activeRequestInfo?.status === RideStatus.ONRIDE ? Number(activeRequestInfo?.to_longitude) : activeLocation?.longitude
   }
-
-  useEffect(() => {
-    if (!watchedLocation.latitude || !currentLocation.latitude) {
-      isDriverLogged ? watchPosition() : getCurrentLocation();
-    }
-  }, [watchedLocation?.latitude, watchedLocation?.longitude, currentLocation?.latitude, currentLocation?.longitude]);
-
-  useEffect(() => {
-    if (isDriverLogged) {
-      updateDriverLocationToServer(location)
-    }
-  }, [location, isDriverLogged])
 
   const focusMap = (markers) => {
     mapRef.current?.fitToSuppliedMarkers(markers, {
@@ -150,7 +138,7 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
 
   const debouncedFocusMap = debounce(() => {
     focusMap(markerIDs);
-  }, 5 * 1000);
+  }, 2 * 1000);
 
   const vehicleImage = get(activeRequestInfo, 'driver.vehicle.type_vehicle_type.code', null);
   const isOnRide = activeRequestInfo.status === RideStatus.ONRIDE
@@ -203,7 +191,7 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
           {to_location?.latitude ? <Marker
             identifier="Marker2"
             title={isDriverLogged ? "Your are here" : "Your Driver"}
-            description={isDriverLogged ? `User Waiting at ${activeRequestInfo?.from_location}` : `On the way to ${activeRequestInfo?.from_location}`}
+            description={isDriverLogged ? `User Waiting at ${activeRequestInfo?.from}` : `On the way to ${activeRequestInfo?.from}`}
             coordinate={{
               latitude: Number(to_location?.latitude) - SPACE,
               longitude: Number(to_location?.longitude) - SPACE,

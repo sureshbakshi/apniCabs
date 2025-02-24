@@ -91,17 +91,18 @@ export const Capitalize = (str) => {
 }
 
 export const _isDriverOnline = () => {
-  const isOnline = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
-  return Boolean(isOnline === DriverAvailableStatus.ONLINE)
+  const onlineStatus = store.getState().driver.onlineStatus;
+  return Boolean(onlineStatus === DriverAvailableStatus.ONLINE)
+}
+
+export const _isDriverOffline = () => {
+  const onlineStatus = store.getState().driver.onlineStatus;
+  return Boolean(onlineStatus === DriverAvailableStatus.OFFLINE)
 }
 
 export const isDriverAccepted = () => {
   const isOnline = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
   return Boolean(isOnline === DriverAvailableStatus.ACCEPTED) || Boolean(isOnline === DriverAvailableStatus.ONRIDE)
-}
-export const isDriverAvailable= (status) => {
-  const driverStatus = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
-  return Boolean(driverStatus === DriverAvailableStatus.ONLINE) || Boolean(driverStatus === DriverAvailableStatus.BUSY);
 }
 
 export const _isLoggedIn = () => {
@@ -189,11 +190,12 @@ export const getVehicleImageById = (id) => {
 }
 
 export const formatRideRequest = (newRequest, oldRequests) => {
+  console.log({ newRequest, oldRequests })
   const index = oldRequests?.findIndex((item) => item.id === newRequest.id)
   if (index > -1) {
     oldRequests[index] = newRequest
   } else {
-    oldRequests = [newRequest, ...oldRequests];
+    oldRequests = [newRequest, ...(oldRequests || [])];
   }
   return oldRequests;
 }

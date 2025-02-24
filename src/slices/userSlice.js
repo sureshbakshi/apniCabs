@@ -61,7 +61,7 @@ const initialState = {
   rideRequests: null,
   activeRequestInfo: null,
   driverLocation: null,
-  statusUpdate: null,
+  rideStatusUpdate: null,
   requestInfo: null,
   activeRequestId: null,
   recentSearchHistory: { from: [], to: [] },
@@ -88,11 +88,11 @@ const userSlice = createSlice({
       if (_.isEmpty(action.payload)) {
         state.activeRequestId = null;
         state.activeRequestInfo = null;
-        state.statusUpdate = null
+        state.rideStatusUpdate = null
       } else if (action.payload?.id) {
         state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
-        state.statusUpdate = null
+        state.rideStatusUpdate = null
       }
       state.activeRequestDrivers = null;
     },
@@ -133,10 +133,10 @@ const userSlice = createSlice({
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         state.activeRequestId = id;
         state.activeRequestInfo = { ...state.activeRequestInfo, status: status };
-        state.statusUpdate = null;
+        state.rideStatusUpdate = null;
       } else if (ClearRideStatus.includes(status)) {
          // for cancel  request drivers - captain card
-        state.statusUpdate = {...state.activeRequestInfo, status: status, reason: action.payload?.reason};
+        state.rideStatusUpdate = {...state.activeRequestInfo, status: status, reason: action.payload?.reason};
         state.selectedOtherContact = mySelf;
       } else {
         // for active request drivers - captain card
