@@ -24,7 +24,7 @@ import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
 import socket from '../../sockets/socketConfig';
 
-const CancelRide = ({ activeRequestInfo }) => {
+const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { access_token } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
@@ -75,7 +75,7 @@ const CancelRide = ({ activeRequestInfo }) => {
             // label={t('cancel_btn')}
             isLowerCase
         />
-        <CustomButton
+        {!isDriverLogged && <CustomButton
             onClick={() => getShareLink({ request_id: activeRequestInfo?.id })}
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
@@ -85,7 +85,7 @@ const CancelRide = ({ activeRequestInfo }) => {
             iconLeft={{ name: 'share', size: 'medium' }}
             iconStyles={{ paddingRight: 0 }}
             isLowerCase
-        />
+        />}
     </View>
 }
 
@@ -296,7 +296,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                 />
             </View>
             }
-            {isAccepted && <CancelRide activeRequestInfo={activeRequestInfo} />}
+            {isAccepted && <CancelRide activeRequestInfo={activeRequestInfo} isDriverLogged={isDriverLogged} />}
             {/* <View>{isAccepted ? cancelRide(activeRequestInfo, t) : null}</View> */}
         </>
     );
