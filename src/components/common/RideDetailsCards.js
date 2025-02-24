@@ -47,7 +47,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
                 navigate(ROUTES_NAMES.chat)
             }}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, maxWidth: 160, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, height: 40 }
             }
             textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             label={t('chat_placeholder')}
@@ -196,7 +196,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
             from: getFromLocation(location)
         }
         rideRequest(payload).unwrap().then((res) => {
-            dispatch(setActiveRide(res))
+            dispatch(setActiveRide({...activeRequestInfo, status: RideStatus.ONRIDE}))
         }).then((err) => {
             console.log(err)
         })

@@ -3,19 +3,16 @@ import { View, Pressable, ScrollView, ImageBackground } from 'react-native';
 import TermsAndConditionsStyles from '../styles/TermsAndConditionsPageStyles';
 import { Icon, Text } from '../components/common';
 import images from '../util/images';
-import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS } from '../constants';
 import Share from 'react-native-share';
 import { useSelector } from 'react-redux';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { showSuccessMessage } from '../util';
 import CommonStyles from '../styles/commonStyles';
 import HeaderImage from '../components/common/HeaderImage';
 import { useTranslation } from 'react-i18next';
 const Refer = () => {
-    const { userInfo: profile } = useSelector(state => state.auth);
+    const { driverInfo } = useSelector(state => state.auth);
     const {t} = useTranslation();
-    const message = t('refer_successful_msg', {referral_code: profile?.referral_code})
+    const message = t('refer_successful_msg', {referral_code: driverInfo?.referral_code})
     const writeToClipboard = () => {
         // Clipboard.setString(message)
         // showSuccessMessage('Copied')
@@ -75,7 +72,7 @@ const Refer = () => {
                                 style={[{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: COLORS.text_dark1, borderBottomWidth: 1, backgroundColor: 'transparent', paddingVertical: 10, marginTop: 10 }]}
                             >
                                 <Text style={[CommonStyles.font20, CommonStyles.bold, { color: COLORS.primary }]}>
-                                    {profile?.referral_code}
+                                    {driverInfo?.referral_code}
                                 </Text>
                                 <Icon name='share-variant' size='large' color={COLORS.primary} />
                             </Pressable>

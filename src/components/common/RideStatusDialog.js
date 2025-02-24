@@ -61,7 +61,7 @@ export default () => {
         }
     }
 
-    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} />
+    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} canShowSubmit={canShowRating}/>
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>

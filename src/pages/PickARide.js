@@ -139,6 +139,7 @@ export const PickARide = () => {
   // }, [is_available, isOnline]);
 
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
+
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
       <View style={[FindRideStyles.pageContainer]}>

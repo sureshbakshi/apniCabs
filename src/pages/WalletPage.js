@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Button, Pressable, ScrollView, FlatList } from 'react-native';
 import WalletStyles from '../styles/WalletPageStyles';
-import styles from '../styles/MyRidePageStyles';
 import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
-import {  useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
+import { useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
@@ -63,61 +62,71 @@ const WalletPage = ({ navigation }) => {
   const [page, setPage] = useState(1);
   const [lastKey, setLastKey] = useState({});
   const [transactions, setTransactions] = useState([]);
-  const [refetch, { data: transactionHistory, error: transactionHistoryError,isLoading, isFetching }] = useLazyGetDriverTransactionsQuery({ page, id: driverInfo?.id, pageSize: PageSize });
-  const {t} = useTranslation()
+  const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading, isFetching }] = useLazyGetDriverTransactionsQuery({ page, id: driverInfo?.id, pageSize: PageSize });
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (transactionHistory?.transactions?.length) {
-      setTransactions((prevTransactionHistory) => ([...prevTransactionHistory, ...transactionHistory?.transactions]));
+      setTransactions((prevTransactionHistory) => {
+        // Remove duplicate transactions by using the request_id or created_at (or another unique identifier)
+        const uniqueTransactions = [
+          ...prevTransactionHistory,
+          ...transactionHistory.transactions.filter(
+            (transaction) =>
+              !prevTransactionHistory.some((prev) => prev.request_id === transaction.request_id)
+          ),
+        ];
+        return uniqueTransactions;
+      });
     }
     if (transactionHistory?.lastKey) {
       setLastKey((prevLastKey) => ({ ...prevLastKey, ...transactionHistory?.lastKey }));
     }
   }, [isFetching, transactionHistory]);
 
+  const resetState = () => {
+    setPage(1);
+    setLastKey({});
+    setTransactions([]);
+  };
+
   useFocusEffect(
     useCallback(() => {
       const fetchInitialData = async () => {
         await refetch({
-          page: 1,
+          page: page || 1,
           id: driverInfo?.id,
           pageSize: PageSize
         });
       };
-      fetchInitialData();
+      if (transactionHistory?.total > PageSize * page || isEmpty(transactionHistory)) {
+        fetchInitialData();
+      }
       return () => {
-        setPage(1);
-        setLastKey({});
-        setTransactions([]);
+        console.log('walletpage unmount');
+        resetState();
       };
-    }, [driverInfo?.id, refetch])
+    }, [driverInfo?.id, refetch, page])
   );
 
   const loadMore = useCallback(() => {
-    if (!isFetching && transactionHistory?.total >= (page * PageSize)) {
+    if (!isFetching && transactionHistory?.total >= page * PageSize) {
       setPage((prevPage) => prevPage + 1);
     }
   }, [isFetching, transactionHistory]);
-  // const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading }] = useGetDriverTransactionsQuery({}, { refetchOnMountOrArgChange: true });
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     refetch?.()
-  //   }, [])
-  // );
+
   if (isLoading) {
-    return <ActivityIndicator />
+    return <ActivityIndicator />;
   }
 
-  // const { transactions: formattedTransactions, balance, hold } = transactionHistory || {}
-
   const TransactionCard = ({ item }) => {
-    const copy = walletCopy[item.type]
+    const copy = walletCopy[item.type];
     return (
       <View style={[WalletStyles.cardtop]}>
         <View style={[WalletStyles.left, { paddingHorizontal: 0 }]}>
           <View style={[WalletStyles.box1, { backgroundColor: copy.bg_color }]}>
             <Icon name={copy?.icon} size='small' color={COLORS.white} />
           </View>
-          {/* <ImageView source={copy.image} style={styles.avatar} resizeMode='cover' /> */}
         </View>
         <View style={WalletStyles.middle}>
           <Text style={WalletStyles.review}>
@@ -129,25 +138,20 @@ const WalletPage = ({ navigation }) => {
         </View>
         <View style={WalletStyles.right}>
           <Text style={[WalletStyles.greenTxt, { color: copy.color }]}>
-            {/* {'\u20B9'}  */}
             {item.amount}
           </Text>
         </View>
       </View>
     );
-  }
+  };
 
   const RequestCard = ({ item }) => {
-    const { request_id } = item
+    const { request_id } = item;
     if (isEmpty(item)) {
       return null;
     }
     return (
       <View style={WalletStyles.card} key={request_id} >
-
-        {/* {request_id && <Text style={WalletStyles.name} numberOfLines={1}>
-            Request: {request_id} 
-            </Text>} */}
         {(!isEmpty(item?.request_id) && Array.isArray(item?.transactions)) ?
           item?.transactions?.map((transaction) => {
             return <TransactionCard item={transaction} key={transaction?.created_at} />
@@ -156,15 +160,13 @@ const WalletPage = ({ navigation }) => {
         }
       </View>
     );
-  }
-
+  };
 
   return (
     <SafeAreaView style={[WalletStyles.container]}>
       <View style={[FindRideStyles.pageContainer]}>
         <ContainerWrapper style={{ height: getScreen().screenHeight - 95 }}>
           <View style={[WalletStyles.header, { margin: 0, marginBottom: 5 }]}>
-            {/* <Text style={WalletStyles.headerText}>{'My Wallet'.toUpperCase()}</Text> */}
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={WalletStyles.box}>
                 <Icon name='wallet-outline' size='large' color={COLORS.white} />
@@ -177,27 +179,17 @@ const WalletPage = ({ navigation }) => {
                   <Icon name='chevron-right' size='large' color={COLORS.primary} />
                 </Pressable>
               </View>
-              {/* <View style={WalletStyles.right}> */}
-              <View>
-
-              </View>
             </View>
           </View>
-          {/* {hold ? <View style={{ justifyContent: 'space-between', right: 20, position: 'absolute', bottom: 10 }}>
-          <Text style={WalletStyles.whitetxt}>{'Hold Amount: '}
-            <Text style={[WalletStyles.whitetxt, { fontSize: 16, fontWeight: 'bold' }]}>{'\u20B9'}{hold}</Text>
-          </Text>
-        </View>: null} */}
-          {/* </View> */}
           <View style={WalletStyles.section}>
             <FlatList
               data={transactions}
               renderItem={({ item, i }) => <RequestCard item={item} key={i} />}
-              keyExtractor={(item, index) => index}
+              keyExtractor={(item, index) => index.toString()}
               onEndReached={loadMore}
               onEndReachedThreshold={0.5}
               ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
-              ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }}></SearchLoader>}
+              ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center' }} />}
             />
           </View>
         </ContainerWrapper>

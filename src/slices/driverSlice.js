@@ -44,7 +44,7 @@ const driverSlice = createSlice({
       if (ClearRideStatus.includes(status)) {
         state.rideStatusUpdate = {...state.activeRequestInfo, ...action.payload}
         state.activeRequestInfo = null;
-        state.rideRequests = null;
+        state.rideRequests = [];
         state.onlineStatus = 'ONLINE';
       }
     },
