@@ -75,7 +75,7 @@ const userSlice = createSlice({
     setActiveRequestDrivers: (state, action) => {
       // on initial request - searchride page
       // on request category change - bike, car etc
-      const { id, category, code, drivers, status} = action.payload;
+      const { id, category, code, drivers, status } = action.payload;
       if (id) {
         const key = category || code;
         state.activeRequestId = id
@@ -83,16 +83,17 @@ const userSlice = createSlice({
         state.activeRequestDrivers = { ...(state.activeRequestDrivers || {}), [key]: drivers };
       }
     },
+    clearUserRideState: (state, action) => {
+      state.rideStatusUpdate = null
+    },
     setActiveRequest: (state, action) => {
       // on active request api response
       if (_.isEmpty(action.payload)) {
         state.activeRequestId = null;
         state.activeRequestInfo = null;
-        state.rideStatusUpdate = null
       } else if (action.payload?.id) {
         state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
-        state.rideStatusUpdate = null
       }
       state.activeRequestDrivers = null;
     },
@@ -110,7 +111,7 @@ const userSlice = createSlice({
       state.activeRequestDrivers = null;
     },
     clearUserState: (state, action) => {
-      return Object.assign(state, { ...initialState})
+      return Object.assign(state, { ...initialState })
     },
     setRecentSearchHistory: (state, action) => {
       const updatedAddress = updateAddress(state.recentSearchHistory, action?.payload)
@@ -133,10 +134,11 @@ const userSlice = createSlice({
       if (status === RideStatus.ACCEPTED || status === RideStatus.ONRIDE) {
         state.activeRequestId = id;
         state.activeRequestInfo = { ...state.activeRequestInfo, status: status };
-        state.rideStatusUpdate = null;
       } else if (ClearRideStatus.includes(status)) {
-         // for cancel  request drivers - captain card
-        state.rideStatusUpdate = {...state.activeRequestInfo, status: status, reason: action.payload?.reason};
+        // for cancel  request drivers - captain card
+        state.activeRequestId = null;
+        state.activeRequestInfo = null;
+        state.rideStatusUpdate = { ...state.activeRequestInfo, status: status, reason: action.payload?.reason };
         state.selectedOtherContact = mySelf;
       } else {
         // for active request drivers - captain card
@@ -174,7 +176,8 @@ export const {
   cancelRideRequest,
   setRecentSearchHistory,
   setOtherContactList,
-  setSelectedOtherContact
+  setSelectedOtherContact,
+  clearUserRideState
 } = userSlice.actions;
 
 export default userSlice.reducer;

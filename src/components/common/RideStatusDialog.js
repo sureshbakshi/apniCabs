@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 import CustomDialog from "./CustomDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDriverRideStatus } from "../../slices/driverSlice";
-import { setActiveRequest } from "../../slices/userSlice";
+import { clearUserRideState, setActiveRequest } from "../../slices/userSlice";
 import { delay } from 'lodash';
 import { isDriver } from "../../util";
 import StarRating from "./StarRating";
@@ -42,7 +42,7 @@ export default () => {
     }
     const rideStatusModalInfo = rideStatusUpdate?.status ? statusMessages[rideStatusUpdate?.status] : null
     const clearRideState = () => {
-        dispatch(isDriverLogged ? clearDriverRideStatus() : setActiveRequest())
+        dispatch(isDriverLogged ? clearDriverRideStatus() : clearUserRideState())
     }
     const canShowRating = (rideStatusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
     const onSubmit = async () => {
@@ -60,7 +60,8 @@ export default () => {
             clearRideState()
         }
     }
-    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} canShowSubmit={canShowRating}/>
+
+    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} />
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>
