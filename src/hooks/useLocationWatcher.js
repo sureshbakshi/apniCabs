@@ -29,10 +29,11 @@ export default () => {
             if (watchId === undefined) {
                 watchId = Geolocation.watchPosition(
                     async (position) => {
-                        console.log('watchPosition', position)
                         //    getLocation(position.coords, setLocation);
                         if (position?.coords) {
                             const { latitude, longitude } = position.coords
+                            console.log('watchPosition', position)
+
                             dispatch(setDriverLocation({ latitude, longitude }))
                             updateDriverLocationToServer({ latitude, longitude })
 

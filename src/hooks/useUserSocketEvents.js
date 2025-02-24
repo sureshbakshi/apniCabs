@@ -42,18 +42,6 @@ export default (() => {
         return baseSocketOn.apply(this, arguments);
     };
 
-    const addDevice = () => {
-        const id = store.getState().auth.userInfo?.id
-        console.log({ addDeviceId: id })
-        if (userSocket?.id) {
-            console.log(`============= User add device emit ==========`)
-            dispatch(updatedSocketConnectionStatus(userSocket?.id))
-
-            // userSocket.emit('addDevice', id, (cbRes) => {
-            //     // console.log({cbRes: cbRes?.socketId, connectedId: userSocket?.id})
-            // })
-        }
-    }
     // listeners
     const onRequestUpdate = () => {
         userSocket.on(USER_SOCKET_EVENTS.request_status, (updatedRequest) => {
@@ -91,10 +79,17 @@ export default (() => {
         });
     }
 
+    const updateSockeId = () => {
+        console.log(`============= updateSockeId ==========`, userSocket?.id)
+        if(userSocket?.id){
+            dispatch(updatedSocketConnectionStatus(userSocket?.id))
+        }
+    }
+
     const connectSocket = () => {
         if (userSocket.connected) {
             console.log(`============= user Client connection - add device ==========`)
-            addDevice()
+            updateSockeId()
         } else {
             console.log(`============= user Client connection - request ==========`)
             userSocket.connect()
@@ -121,7 +116,7 @@ export default (() => {
         userSocket.on('connect', () => {
             onRequestUpdate()
             onDriverLocationUpdate()
-            addDevice()
+            updateSockeId()
         })
         userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))
 

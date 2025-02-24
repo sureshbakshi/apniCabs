@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux"
-import { useGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
+import { useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
 import { isEmpty } from 'lodash'
 import { setDriverStatus } from "../slices/driverSlice"
 import { DriverAvailableStatus } from "../constants"
+import { isDriver } from "../util"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -18,7 +19,14 @@ export const useDisptachDriverDetails = (details) => {
 
 
 export default useGetDriverDetails = (id, options) => {
-    const { data: driverDetails, refetch } = useGetDriverDetailsQuery(id, options)
+    const isDriverLogged = isDriver()
+    console.log(isDriverLogged)
+    const [refetch, { data: driverDetails }] = useLazyGetDriverDetailsQuery(id, {skip: !id || !isDriverLogged, ...options})
+    useEffect(()=>{
+        if(id && isDriverLogged){
+            refetch(id)
+        }
+    },[id])
     useDisptachDriverDetails(driverDetails)
     return { driverDetails, refetch }
 }

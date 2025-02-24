@@ -60,10 +60,10 @@ export default (() => {
     const { isSocketConnected } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const { updateRideRequests } = useDriverEvents();
-    const { isOnline, activeRequestInfo } = useSelector((state) => state.driver);
+    const { onlineStatus, activeRequestInfo } = useSelector((state) => state.driver);
     const onChat = useChatMessage()
 
-    const isDriverOnline = isOnline !== DriverAvailableStatus.OFFLINE;
+    const isDriverOnline = onlineStatus !== DriverAvailableStatus.OFFLINE;
     const isLoggedIn = _isLoggedIn();
     const baseSocketOn = driverSocket.on;
 
@@ -75,15 +75,10 @@ export default (() => {
     };
 
 
-    const addDevice = useCallback(() => {
-        const id = store.getState().auth.userInfo?.id
-        if (id) {
-            console.log(`============= Driver add device emit ==========: ${driverSocket?.id}`)
+    const updateDriverSocketId = useCallback(() => {
+        if (driverSocket?.id) {
+            console.log(`============= Update driver socket id ==========: ${driverSocket?.id}`)
             dispatch(updatedSocketConnectionStatus(driverSocket?.id))
-            // driverSocket.emit('addDevice', id, (cbRes) => {
-            //     // console.log({cbRes: cbRes?.socketId,  connectedId: driverSocket?.id})
-            //     dispatch(updatedSocketConnectionStatus(cbRes?.socketId))
-            // })
         }
     }, [driverSocket])
 
@@ -99,6 +94,7 @@ export default (() => {
             console.log('================= on connect ======================')
             connectSocket()
             onGetRideRequests(updateRideRequests);
+            updateDriverSocketId()
         } else if ((!isLoggedIn || !isDriverOnline)) {
             disconnectDriverSocket();
         }
@@ -107,7 +103,7 @@ export default (() => {
     useEffect(() => {
         driverSocket.on('connect', (res) => {
             console.log('================= on connect ======================', res, driverSocket?.id)
-            addDevice()
+            updateDriverSocketId()
             onGetRideRequests(updateRideRequests);
 
         })

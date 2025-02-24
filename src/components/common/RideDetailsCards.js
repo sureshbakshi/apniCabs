@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import { View, Pressable, TextInput, Keyboard, Platform } from 'react-native';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { ImageView, Text } from '../common';
@@ -12,7 +12,7 @@ import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideReques
 import { updateRideStatus, setActiveRide } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
-import { setDialogStatus } from '../../slices/authSlice';
+import { clearRideChats, setDialogStatus } from '../../slices/authSlice';
 import CustomButton from './CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
@@ -22,6 +22,7 @@ import ScreenContainer from '../ScreenContainer';
 import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
+import socket from '../../sockets/socketConfig';
 
 const cancelRide = (activeRequestInfo, t) => {
     const dispatch = useDispatch();
@@ -266,8 +267,8 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
         completeRideRequest(payload).unwrap().then((res) => {
             console.log(res)
             dispatch(updateRideStatus({ status: RideStatus.COMPLETED }));
-            // dispatch(clearRideChats());
-            // socket.emit(SOCKET_EVENTS.rideCompleted)
+            dispatch(clearRideChats());
+            socket.emit(SOCKET_EVENTS.rideCompleted)
         }).catch((err) => {
             console.log(err)
         })

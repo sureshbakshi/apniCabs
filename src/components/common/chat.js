@@ -43,7 +43,6 @@ const ChatUI = () => {
       }, 100);
     }
   }, [rideChats?.messages]);
-
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

@@ -505,6 +505,7 @@ export const {
   useGetRideRequestMutation,
   useLazyGetRequestsByCategoryQuery,
   useGetDriverDetailsQuery,
+  useLazyGetDriverDetailsQuery,
   useUpdateDriverLocationMutation,
   useLazyDriverActiveRideQuery,
   useRideRequestMutation,
