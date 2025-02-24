@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { getScreen, isDriver } from '../util';
 import ActiveMapPage from './ActiveMap';
-import RideStatusDialog from '../components/common/RideStatusDialog';
 import RideDetailsCards from '../components/common/RideDetailsCards';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { Text } from '../components/common';
@@ -81,7 +80,6 @@ const ActiveRidePage = () => {
             </View>
             {!isEmpty(activeRequestInfo) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequestInfo={requestInfo} />}
 
-            <RideStatusDialog activeRequestInfo={activeRequestInfo} isDriverLogged={isDriverLogged} />
           </View>
         </ContainerWrapper>
       </KeyboardAwareScrollView>

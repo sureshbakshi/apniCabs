@@ -20,7 +20,6 @@ export const useDisptachDriverDetails = (details) => {
 
 export default useGetDriverDetails = (id, options) => {
     const isDriverLogged = isDriver()
-    console.log(isDriverLogged)
     const [refetch, { data: driverDetails }] = useLazyGetDriverDetailsQuery(id, {skip: !id || !isDriverLogged, ...options})
     useEffect(()=>{
         if(id && isDriverLogged){
