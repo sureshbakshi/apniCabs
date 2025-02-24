@@ -42,9 +42,7 @@ export default () => {
     }
     const rideStatusModalInfo = rideStatusUpdate?.status ? statusMessages[rideStatusUpdate?.status] : null
     const clearRideState = () => {
-        delay(() => {
-            dispatch(isDriverLogged ? clearDriverRideStatus() : setActiveRequest())
-        }, 1000)
+        dispatch(isDriverLogged ? clearDriverRideStatus() : setActiveRequest())
     }
     const canShowRating = (rideStatusUpdate?.status === RideStatus.COMPLETED) && !isDriverLogged;
     const onSubmit = async () => {
@@ -62,7 +60,7 @@ export default () => {
             clearRideState()
         }
     }
-    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} />
+    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} canShowSubmit={canShowRating}/>
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>

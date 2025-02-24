@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { COLORS } from '../constants';
+import { COLORS, SOCKET_EVENTS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
@@ -17,6 +17,7 @@ import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useTranslation } from 'react-i18next';
+import socket from '../sockets/socketConfig';
 
 const ActiveRidePage = () => {
   const { t } = useTranslation();
@@ -51,6 +52,14 @@ const ActiveRidePage = () => {
       }
     }
   }
+
+  useEffect(() => {
+    console.log('activeRequestId', activeRequestInfo)
+    if (socket && activeRequestInfo?.id) {
+      console.log('activeRequestId', activeRequestInfo.id)
+      socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestInfo.id);  // Replace with the actual rideId
+    }
+  }, [activeRequestInfo?.id, socket])
 
   const requestInfo = isDriverLogged ? detailsObj.driver : detailsObj.user
   return (

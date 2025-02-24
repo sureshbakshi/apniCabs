@@ -125,7 +125,7 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
   const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
 
   const { driverLocation } = useSelector(state => state.user);
-  console.log({ watchedLocation, driverLocation })
+  // console.log({ watchedLocation, driverLocation })
   const mapRef = useRef(null);
   const activeLocation = {
     latitude: isDriverLogged ? Number(location?.latitude) : Number(driverLocation?.latitude),

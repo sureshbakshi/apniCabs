@@ -20,7 +20,7 @@ const baseQuery = fetchBaseQuery({
       headers.set('Authorization', `Bearer ${getState().auth.access_token}`);
     }
     if (getState().auth.device_token) {
-      headers.set('device_token', `${getState().auth.device_token}`);
+      headers.set('app-token', `${getState().auth.device_token}`);
     }
     headers.set('device_type', Platform.os);
     return headers;

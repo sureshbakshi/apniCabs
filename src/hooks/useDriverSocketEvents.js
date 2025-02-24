@@ -3,7 +3,7 @@ import driverSocket from "../sockets/socketConfig"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isLoggedIn, isValidEvent } from "../util"
-import { updatedSocketConnectionStatus } from "../slices/authSlice"
+import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus, SOCKET_EVENTS } from "../constants"
 import { store } from "../store"
 import useNotificationSound from "./useNotificationSound"
@@ -26,6 +26,7 @@ export const useDriverEvents = () => {
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
                 dispatch(updateRideRequest(request))
+                dispatch(clearRideChats(clearRideChats))
                 driverSocket.emit(SOCKET_EVENTS.rideCompleted);
             } else {
                 dispatch(updateRideRequest(request))
