@@ -47,7 +47,4 @@ export default () => {
             dispatch(setDriverWallet(wallet))
         }
     }, [activeDriverRideDetails, isDriverError, wallet])
-
-
-    return activeDriverRideDetails
 }

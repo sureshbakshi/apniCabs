@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable, TextInput, Keyboard, Platform } from 'react-native';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { ImageView, Text } from '../common';
@@ -24,23 +24,22 @@ import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
 import socket from '../../sockets/socketConfig';
 
-const cancelRide = (activeRequestInfo, t) => {
-    const dispatch = useDispatch();
+const CancelRide = ({ activeRequestInfo }) => {
+    const { t } = useTranslation();
     const { access_token } = useSelector((state) => state.auth)
-
+    const dispatch = useDispatch();
     const [getShareLink, { data: shareToken, isLoading, error }] = useLazyGetShareLinkQuery();
     const phoneNumber = activeRequestInfo?.details?.phone;
 
-
     useEffect(() => {
-        if (error!==null && shareToken?.shareLink) {
-          const encodedData = encodeURIComponent(shareToken?.shareLink);
-          const link = `file:///Users/rajeshbabu/Downloads/liveLocation.html?data=${encodedData}&token=${access_token}`;
-          Share.open({ message: `${link}` })
-          .then(() => console.log('Shared successfully'))
-          .catch((err) => console.error('Sharing error:', err));
+        if (error !== null && shareToken?.shareLink) {
+            const encodedData = encodeURIComponent(shareToken?.shareLink);
+            const link = `https://apnicabi.com/liveLocation.html?data=${encodedData}&token=${access_token}`;
+            Share.open({ message: `${link}` })
+                .then(() => console.log('Shared successfully'))
+                .catch((err) => console.error('Sharing error:', err));
         }
-      }, [shareToken?.shareLink]);
+    }, [shareToken?.shareLink]);
 
     return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
@@ -48,7 +47,7 @@ const cancelRide = (activeRequestInfo, t) => {
                 navigate(ROUTES_NAMES.chat)
             }}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, maxWidth:160, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, maxWidth: 160, height: 40 }
             }
             textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             label={t('chat_placeholder')}
@@ -297,7 +296,8 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                 />
             </View>
             }
-            <View>{isAccepted ? cancelRide(activeRequestInfo, t) : null}</View>
+            {isAccepted && <CancelRide activeRequestInfo={activeRequestInfo} />}
+            {/* <View>{isAccepted ? cancelRide(activeRequestInfo, t) : null}</View> */}
         </>
     );
 };

@@ -136,9 +136,9 @@ const userSlice = createSlice({
         state.activeRequestInfo = { ...state.activeRequestInfo, status: status };
       } else if (ClearRideStatus.includes(status)) {
         // for cancel  request drivers - captain card
+        state.rideStatusUpdate = { ...state.activeRequestInfo, status: status, reason: action.payload?.reason };
         state.activeRequestId = null;
         state.activeRequestInfo = null;
-        state.rideStatusUpdate = { ...state.activeRequestInfo, status: status, reason: action.payload?.reason };
         state.selectedOtherContact = mySelf;
       } else {
         // for active request drivers - captain card
