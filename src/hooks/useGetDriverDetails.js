@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
@@ -18,16 +18,26 @@ export const useDisptachDriverDetails = (details) => {
 }
 
 
-export default useGetDriverDetails = (id, options) => {
+export default useGetDriverDetails = (options, isCb=false) => {
     const isDriverLogged = isDriver()
-    const [refetch, { data: driverDetails }] = useLazyGetDriverDetailsQuery(id, {skip: !id || !isDriverLogged, ...options})
-    useEffect(()=>{
-        if(id && isDriverLogged){
-            refetch(id)
+    const { driverInfo, userInfo } = useSelector(state => state.auth);
+    const id = driverInfo?.id || userInfo?.id
+    if (id) {
+        const [refetch, { data: driverDetails }] = useLazyGetDriverDetailsQuery( {id}, { skip: !id || !isDriverLogged, ...options })
+        const fetchDetails = () =>{
+            if (id && isDriverLogged) {
+                refetch({id})
+            }
         }
-    },[id])
-    useDisptachDriverDetails(driverDetails)
-    return { driverDetails, refetch }
+        useEffect(() => {
+            fetchDetails()
+        }, [id, isDriverLogged])
+        useDisptachDriverDetails(driverDetails)
+        if(isCb){
+            return { fetchDetails }
+        }
+    }
+
 }
 
 export const useUpdateDriverStatus = () => {

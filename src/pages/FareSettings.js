@@ -27,10 +27,10 @@ const defaultProps = {
 };
 export default function FareSettings() {
     const { t } = useTranslation();
-    const { userInfo, driverInfo } = useSelector((state) => state.auth);
-    useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
+    const { driverInfo } = useSelector((state) => state.auth);
+    useGetDriverDetails({ refetchOnMountOrArgChange: true })
     const [editVehicleFare] = useEditFareMutation();
-const fare = driverInfo?.Vehicle?.VehicleFare
+    const fare = driverInfo?.Vehicle?.VehicleFare
     const {
         watch,
         control,
@@ -56,9 +56,9 @@ const fare = driverInfo?.Vehicle?.VehicleFare
             fare_10_20_km,
             fare_20_50_km,
             fare_above_50_km,
-        }  = Object.fromEntries(
+        } = Object.fromEntries(
             Object.entries(data).map(([key, value]) => [key, Number(value)])
-          );
+        );
         if (isDirty) {
             if (driverInfo?.Vehicle?.id) {
                 editVehicleFare({
@@ -69,11 +69,11 @@ const fare = driverInfo?.Vehicle?.VehicleFare
                     fare_above_50_km,
                     id: driverInfo.Vehicle.id,
                 }).unwrap()
-                .then(data => {
-                  showSuccessMessage('Updated successfully')
-                  goBack()
-                })
-                .catch(error => console.log(error));
+                    .then(data => {
+                        showSuccessMessage('Updated successfully')
+                        goBack()
+                    })
+                    .catch(error => console.log(error));
             }
         }
     };
@@ -86,57 +86,57 @@ const fare = driverInfo?.Vehicle?.VehicleFare
 
     const isDisabled = !isDirty || !isEmpty(errors)
     return (
-            <ScreenContainer>
-                <FormProvider {...methods}>
-                    <View style={{ margin: 10 }}>
-                        {BASE_FARE_FORM.map((field, index) => {
-                            return (
-                                <View key={field.name}>
-                                    <Controller
-                                        control={control}
-                                        render={({ field: { onChange, onBlur, value } }) => {
-                                            return (
-                                                <>
-                                                    <Text style={{color:'#111111',fontWeight:500,fontSize:14}}>{field.label}</Text>
-                                                    <TextInput
-                                                        name={field.name}
-                                                        mode="outlined"
-                                                        onBlur={onBlur}
-                                                        onChangeText={(value) => {
-                                                            onChange(value);
-                                                        }}
-                                                        value={value.toString()}
-                                                        placeholderTextColor={COLORS.gray}
-                                                        // type={"number"}
-                                                        keyboardType='number-pad'
-                                                        inputMode="numeric"
-                                                        style={[{ padding: 5, height: 36, backgroundColor: COLORS.white, marginVertical: 10,borderWidth:1,borderColor:'#BFBFBF',borderRadius:15 }]}
-                                                        {...field.props}
-                                                    />
-                                                </>
-                                            )
-                                        }}
-                                        name={field.name}
-                                        rules={{ required: `${field.label} is required` }}
-                                    />
-                                    {errors[field.name] && <Text style={{ color: COLORS.red, marginBottom: 5 }}>{errors[field.name].message}</Text>}
+        <ScreenContainer>
+            <FormProvider {...methods}>
+                <View style={{ margin: 10 }}>
+                    {BASE_FARE_FORM.map((field, index) => {
+                        return (
+                            <View key={field.name}>
+                                <Controller
+                                    control={control}
+                                    render={({ field: { onChange, onBlur, value } }) => {
+                                        return (
+                                            <>
+                                                <Text style={{ color: '#111111', fontWeight: 500, fontSize: 14 }}>{field.label}</Text>
+                                                <TextInput
+                                                    name={field.name}
+                                                    mode="outlined"
+                                                    onBlur={onBlur}
+                                                    onChangeText={(value) => {
+                                                        onChange(value);
+                                                    }}
+                                                    value={value.toString()}
+                                                    placeholderTextColor={COLORS.gray}
+                                                    // type={"number"}
+                                                    keyboardType='number-pad'
+                                                    inputMode="numeric"
+                                                    style={[{ padding: 5, height: 36, backgroundColor: COLORS.white, marginVertical: 10, borderWidth: 1, borderColor: '#BFBFBF', borderRadius: 15 }]}
+                                                    {...field.props}
+                                                />
+                                            </>
+                                        )
+                                    }}
+                                    name={field.name}
+                                    rules={{ required: `${field.label} is required` }}
+                                />
+                                {errors[field.name] && <Text style={{ color: COLORS.red, marginBottom: 5 }}>{errors[field.name].message}</Text>}
 
-                                </View>
-                            );
-                        })}
-                    </View>
-                    <View >
-                        <Pressable
-                            style={[MoreStyles.button, { backgroundColor: isDisabled ? COLORS.gray : COLORS.primary, minHeight: 40, margin: 10 }]}
-                            onPress={handleSubmit(onSubmit)}
-                            disabled={isDisabled}
-                        >
-                            <Text style={[MoreStyles.greenTxt]}>
-                                {t('update_btn')}
-                            </Text>
-                        </Pressable>
-                    </View>
-                </FormProvider>
-            </ScreenContainer>
+                            </View>
+                        );
+                    })}
+                </View>
+                <View >
+                    <Pressable
+                        style={[MoreStyles.button, { backgroundColor: isDisabled ? COLORS.gray : COLORS.primary, minHeight: 40, margin: 10 }]}
+                        onPress={handleSubmit(onSubmit)}
+                        disabled={isDisabled}
+                    >
+                        <Text style={[MoreStyles.greenTxt]}>
+                            {t('update_btn')}
+                        </Text>
+                    </Pressable>
+                </View>
+            </FormProvider>
+        </ScreenContainer>
     );
 }

@@ -119,12 +119,12 @@ const DriverCard = ({ list }) => {
 export const PickARide = () => {
   const { isSocketConnected } = useSelector((state) => state.auth)
   const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
-  const { driverInfo, userInfo } = useSelector(state => state.auth);
+
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
   const [isOnline, toggleDriveStatus] = useState(is_available)
   const { t } = useTranslation();
+  useGetDriverDetails({refetchOnMountOrArgChange: true })
   const updateDriverStatus = useUpdateDriverStatus();
-  useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
 
 
   const toggleSwitch = () => {

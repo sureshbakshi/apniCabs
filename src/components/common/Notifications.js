@@ -12,8 +12,8 @@ import useGetDriverDetails from '../../hooks/useGetDriverDetails';
 import { useTranslation } from 'react-i18next';
 
 const Notifications = () => {
-    const { driverInfo, userInfo } = useSelector(state => state.auth);
-    useGetDriverDetails(userInfo?.id, { skip: !driverInfo?.id || !userInfo?.id, refetchOnMountOrArgChange: true })
+    const { driverInfo } = useSelector(state => state.auth);
+    useGetDriverDetails({refetchOnMountOrArgChange: true })
     const { t } = useTranslation();
     return (
         !isEmpty(driverInfo?.expiredFields) ?  <View style={[FindRideStyles.container, { padding: 10, }]}>

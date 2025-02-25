@@ -16,6 +16,7 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import useGetDriverWallet from '../hooks/useGetDriverWallet';
 
 const walletCopy = {
   'DEBIT': {
@@ -64,7 +65,7 @@ const WalletPage = ({ navigation }) => {
   const [transactions, setTransactions] = useState([]);
   const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading, isFetching }] = useLazyGetDriverTransactionsQuery({ page, id: driverInfo?.id, pageSize: PageSize });
   const { t } = useTranslation()
-
+  useGetDriverWallet();
   useEffect(() => {
     if (transactionHistory?.transactions?.length) {
       setTransactions((prevTransactionHistory) => {
@@ -82,32 +83,32 @@ const WalletPage = ({ navigation }) => {
     if (transactionHistory?.lastKey) {
       setLastKey((prevLastKey) => ({ ...prevLastKey, ...transactionHistory?.lastKey }));
     }
-  }, [isFetching, transactionHistory]);
+  }, [transactionHistory]);
 
   const resetState = () => {
     setPage(1);
     setLastKey({});
     setTransactions([]);
   };
+  const fetchWallet = async (page) => {
+    refetch({
+      page: page || 1,
+      id: driverInfo?.id,
+      pageSize: PageSize
+    });
+  };
 
   useFocusEffect(
     useCallback(() => {
-      const fetchInitialData = async () => {
-        await refetch({
-          page: page || 1,
-          id: driverInfo?.id,
-          pageSize: PageSize
-        });
-      };
       if (transactionHistory?.total > PageSize * page || isEmpty(transactionHistory)) {
-        fetchInitialData();
+        fetchWallet();
       }
-      return () => {
-        console.log('walletpage unmount');
-        resetState();
-      };
-    }, [driverInfo?.id, refetch, page])
+    }, [driverInfo?.id, refetch])
   );
+
+  useEffect(() =>{
+    fetchWallet(page)
+  },[page])
 
   const loadMore = useCallback(() => {
     if (!isFetching && transactionHistory?.total >= page * PageSize) {

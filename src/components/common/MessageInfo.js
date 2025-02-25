@@ -19,13 +19,13 @@ import { useTranslation } from 'react-i18next';
 const MessageInfo = () => {
     const { t } = useTranslation();
 
-    const { userInfo, driverInfo } = useSelector(state => state.auth);
-    const { refetch } = useGetDriverDetails(userInfo?.id, { refetchOnMountOrArgChange: true })
+    const { driverInfo } = useSelector(state => state.auth);
+    const { fetchDetails } = useGetDriverDetails({ refetchOnMountOrArgChange: true }, true)
     const updateDriverStatus = useUpdateDriverStatus();
 
     useFocusEffect(
         useCallback(() => {
-            refetch();
+            fetchDetails();
         }, [])
     );
 

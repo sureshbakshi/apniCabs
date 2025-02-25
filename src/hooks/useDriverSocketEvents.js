@@ -25,9 +25,14 @@ export const useDriverEvents = () => {
                 dispatch(setRideRequest(request))
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
-                dispatch(updateRideStatus(request))
-                dispatch(clearRideChats())
-                driverSocket.emit(SOCKET_EVENTS.rideCompleted);
+                if(request?.type === 'REQUEST') {
+                    //request individual cancel request, cancel all, auto cancel 
+                    dispatch(updateRideRequest(request))
+                } else {
+                    dispatch(updateRideStatus(request))
+                    dispatch(clearRideChats())
+                    driverSocket.emit(SOCKET_EVENTS.rideCompleted);
+                }
             } else {
                 dispatch(updateRideRequest(request))
             }

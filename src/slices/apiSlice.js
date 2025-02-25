@@ -380,13 +380,13 @@ export const apiSlice = createApi({
 
     // request apis end
     getDriverDetails: builder.query({
-      query: id => ({
+      query: ({id}) => ({
         method: 'GET',
         url: api_path.drivers(id),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["FARE"]
+      // providesTags: ["FARE"]
     }),
     getRideDetails: builder.query({
       query: id => ({
@@ -504,7 +504,6 @@ export const {
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
   useLazyGetRequestsByCategoryQuery,
-  useGetDriverDetailsQuery,
   useLazyGetDriverDetailsQuery,
   useUpdateDriverLocationMutation,
   useLazyDriverActiveRideQuery,

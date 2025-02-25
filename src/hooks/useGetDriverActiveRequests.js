@@ -6,13 +6,13 @@ import { clearDriverState, setActiveRide, setDriverWallet, setRideRequest } from
 import { useFocusEffect } from "@react-navigation/native";
 import { delay } from "lodash";
 import { _isDriverOffline } from "../util";
+import useGetDriverWallet from "./useGetDriverWallet";
 export default () => {
     const dispatch = useDispatch();
     const driverInfo = useSelector(state => state.auth.driverInfo );
     const isOffline  = _isDriverOffline();
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useLazyDriverActiveRideQuery({}, { skip: isOffline, refetchOnMountOrArgChange: true });
-    const [refetchWallet, { data: wallet }] = useLazyGetDriverWalletQuery({ id: driverInfo?.id }, { skip: isOffline || driverInfo?.id, refetchOnMountOrArgChange: true });
-
+    const fetchWallet = useGetDriverWallet(undefined, true)
     // const { getCurrentLocation } = useGetCurrentLocation();
  
     useFocusEffect(
@@ -21,8 +21,9 @@ export default () => {
                 // delay(() => {
                     // if(activeRequestInfo)
                 if(driverInfo?.id){
+                    console.log("refetchWallet")
                     refetch?.(Math.random()) // workaround to force refetch
-                    refetchWallet({id: driverInfo?.id, key: Math.random()}, {force: true})
+                    fetchWallet()
                 }
                 // }, 250)
                 // getCurrentLocation()
@@ -42,9 +43,5 @@ export default () => {
 
             }
         }
-
-        if (wallet) {
-            dispatch(setDriverWallet(wallet))
-        }
-    }, [activeDriverRideDetails, isDriverError, wallet])
+    }, [activeDriverRideDetails, isDriverError])
 }

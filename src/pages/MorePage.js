@@ -19,9 +19,9 @@ import { useTranslation } from 'react-i18next';
 
 const MorePage = () => {
   const { logOut } = useLogout();
-  const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
+  const { userInfo: profile } = useSelector(state => state.auth);
   const {t} = useTranslation();
-  useGetDriverDetails(profile?.id, { skip: !driverInfo?.id || !profile?.id, refetchOnMountOrArgChange: true })
+  useGetDriverDetails({ refetchOnMountOrArgChange: true })
 
   return (
     <>
