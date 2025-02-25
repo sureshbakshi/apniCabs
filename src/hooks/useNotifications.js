@@ -11,7 +11,7 @@ let isInitialized = false;
 const notificationKey = 'gcm.notification'
 export default () => {
   const dispatch = useDispatch()
-  useRegisterDeviceToken()
+  // useRegisterDeviceToken()
   useHandleDeeplinks()
 
   const requestNotificationPermission = async () => {
@@ -61,6 +61,7 @@ export default () => {
   }
 
   const triggerNotfication = (remoteNotification) => {
+    console.log({ remoteNotification })
     if (remoteNotification?.payload) {
       const notification = unflattenObj(remoteNotification.payload, notificationKey)
       if (notification) {

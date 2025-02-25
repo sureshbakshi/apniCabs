@@ -25,8 +25,8 @@ export const useDriverEvents = () => {
                 dispatch(setRideRequest(request))
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
-                dispatch(updateRideRequest(request))
-                dispatch(clearRideChats(clearRideChats))
+                dispatch(updateRideStatus(request))
+                dispatch(clearRideChats())
                 driverSocket.emit(SOCKET_EVENTS.rideCompleted);
             } else {
                 dispatch(updateRideRequest(request))

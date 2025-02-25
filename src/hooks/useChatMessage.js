@@ -34,7 +34,7 @@ const useChatMessage = () => {
             const styles = (userInfo.id === data.userId) ? myStyle : otherUserStyle
             dispatch(setRideChats({
                 ride_id: '',
-                message: { message: data.message?.text, ...styles }
+                message: { message: data.message, ...styles }
             }))
         });
     }

@@ -27,9 +27,8 @@ const ChatUI = () => {
 
   const sendMessage = () => {
     if (inputText.trim()) {
-      const newMessage = { id: Date.now(), text: inputText };
-      if (newMessage) {
-        socket.emit(SOCKET_EVENTS.sendMessage, newMessage);
+      if (inputText) {
+        socket.emit(SOCKET_EVENTS.sendMessage, inputText);
       }
       setInputText("");
     }
@@ -43,6 +42,7 @@ const ChatUI = () => {
       }, 100);
     }
   }, [rideChats?.messages]);
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

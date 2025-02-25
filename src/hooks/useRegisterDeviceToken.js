@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from "react"
 import { useSendDeviceTokenMutation } from "../slices/apiSlice"
 import { useSelector } from "react-redux";
-import { Platform } from "react-native";
 
 export default () => {
     const { device_token, access_token } = useSelector((state) => state.auth)

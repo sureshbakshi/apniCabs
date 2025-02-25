@@ -22,7 +22,7 @@ export default () => {
                     // if(activeRequestInfo)
                 if(driverInfo?.id){
                     refetch?.(Math.random()) // workaround to force refetch
-                    refetchWallet({id: driverInfo?.id}, {force: true})
+                    refetchWallet({id: driverInfo?.id, key: Math.random()}, {force: true})
                 }
                 // }, 250)
                 // getCurrentLocation()
