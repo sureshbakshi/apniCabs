@@ -16,15 +16,15 @@ import { useDispatch } from 'react-redux';
 import { useGetSignupOTPMutation, useSignupMutation } from '../slices/apiSlice';
 import { updateUserCheck } from '../slices/authSlice';
 import { COLORS, ELEMENTS, ROUTES_NAMES, SELECT_OPTIONS_KEYS, SIGN_UP_FORM, USER_ROLES } from '../constants';
-import { signupSchema } from '../schema';
+import { driverSignupSchema, signupSchema, signupUserSchema } from '../schema';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
 import CustomButton from '../components/common/CustomButton';
 import config, { openOwnerPortal } from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
-
-const city = [{
+const isDriver= config.ROLE === USER_ROLES.DRIVER
+const DRIVER_ADD_FIELDS = [{
   name: "city",
   label: "City",
   element: ELEMENTS.select,
@@ -32,10 +32,18 @@ const city = [{
   props: {
     placeholder: "Select City",
   }
+},{
+  name: "gender",
+  label: "Gender",
+  element: ELEMENTS.select,
+  fieldKey: SELECT_OPTIONS_KEYS.gender,
+  props: {
+    placeholder: "Select Gender",
+  }
 }]
 const SIGN_UP_FORM_FIELDS = [
   ...SIGN_UP_FORM,
-  ...(config.ROLE === 'DRIVER' ? city : [])
+  ...(config.ROLE === 'DRIVER' ? DRIVER_ADD_FIELDS : [])
 ]
 const SignUpPage = () => {
   const { t } = useTranslation();
@@ -85,24 +93,24 @@ const SignUpPage = () => {
                   <OTPForm
                     successHandler={successHandler}
                     formFields={SIGN_UP_FORM_FIELDS}
-                    formSchema={signupSchema}
+                    formSchema={ isDriver ? driverSignupSchema : signupUserSchema}
                     formMutation={useGetSignupOTPMutation}
                     initialState={initialState}
                     getOTPPayloadKeys={['phone']}
                     additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER }}
                     verifyOTPMutation={useSignupMutation}
                     additionalVerifyOTPPayload={additionalVerifyOTPPayload}
-                    formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city']}
+                    formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city', 'gender']}
                     submitBtnLabel={'Get OTP'}
                     heading={'Sign Up'}
                   />
-                  <CustomButton
+                  {/* <CustomButton
                     onClick={openOwnerPortal}
                     label={'Become a Driver'}
                     iconRight={{ name: 'arrow-top-right', size: 'large' }}
                     styles={{ backgroundColor: COLORS.button_blue_bg, marginTop: 10 }}
                     isLowerCase
-                  />
+                  /> */}
                 </View>
                 <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
                   <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>{t('account')}</Text>

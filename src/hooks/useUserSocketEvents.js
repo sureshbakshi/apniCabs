@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice";
 
 import { _isLoggedIn, isValidEvent } from "../util";
-import userSocket from '../sockets/socketConfig';
+import  {getSocketInstance} from '../sockets/socketConfig';
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
 import { store } from "../store";
 import useNotificationSound from "./useNotificationSound";
@@ -15,7 +15,7 @@ const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
     driver_location: 'DriverLocationSocket'
 }
-
+const userSocket = getSocketInstance()
 
 export const disconnectUserSocket = () => {
     userSocket.disconnect()

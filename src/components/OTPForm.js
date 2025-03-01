@@ -8,7 +8,7 @@ import {
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
 import { Text } from '../components/common';
-import { COLORS, ELEMENTS, SELECT_OPTIONS_KEYS, USER_ROLES } from '../constants';
+import { COLORS, ELEMENTS, GENDER_TYPES, SELECT_OPTIONS_KEYS, USER_ROLES } from '../constants';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useForm, FormProvider, Controller } from "react-hook-form";
@@ -22,13 +22,13 @@ import { useGetCitiesQuery } from '../slices/apiSlice';
 import { useTranslation } from 'react-i18next';
 
 
-const cities = [{ "id": "c3ca6e35-8eac-4806-a59b-8d0c9d832946", "code": "HYD", "name": "Hyderabad", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }, { "id": "f79b2eb5-ed50-4b20-87ab-c7b5612aff68", "code": "BZA", "name": "Vijayawada", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }]
+// const cities = [{ "id": "c3ca6e35-8eac-4806-a59b-8d0c9d832946", "code": "HYD", "name": "Hyderabad", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }, { "id": "f79b2eb5-ed50-4b20-87ab-c7b5612aff68", "code": "BZA", "name": "Vijayawada", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }]
 
 export default ({ heading, successHandler, formFields, formSchema, formMutation, getOTPPayloadKeys = [], initialState, submitBtnLabel, additionalOTPPayload = {}, verifyOTPMutation, formPayloadKeys, additionalVerifyOTPPayload = {} }) => {
     const { t } = useTranslation();
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         formMutation();
-    // const { data: cities } = useGetCitiesQuery({}, { refetchOnMountOrArgChange: true });
+    const { data: cities } = useGetCitiesQuery({}, { refetchOnMountOrArgChange: true });
 
     const { androidDeviceCode } = useSelector(state => state.auth)
     const [otpInfo, setOTPInfo] = useState(null)
@@ -92,8 +92,10 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
     }
     const cityTypesFormat = cities?.map((item) => ({ ...item, value: item.id, label: item.name }))
     const options = {
-        [SELECT_OPTIONS_KEYS.city]: cityTypesFormat
+        [SELECT_OPTIONS_KEYS.city]: cityTypesFormat,
+        [SELECT_OPTIONS_KEYS.gender]: GENDER_TYPES
     }
+    console.log({formFields, formSchema})
     return (
 
         <View>

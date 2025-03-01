@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import { isEmpty } from 'lodash'
 import { setDriverStatus } from "../slices/driverSlice"
 import { DriverAvailableStatus } from "../constants"
-import { isDriver } from "../util"
+import { isDriver, isOwner } from "../util"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -19,7 +19,7 @@ export const useDisptachDriverDetails = (details) => {
 
 
 export default useGetDriverDetails = (options, isCb=false) => {
-    const isDriverLogged = isDriver()
+    const isDriverLogged = isDriver() || isOwner()
     const { driverInfo, userInfo } = useSelector(state => state.auth);
     const id = driverInfo?.id || userInfo?.id
     if (id) {

@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/Auth.context";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { clearAuthData } from "../slices/authSlice";
 import { useRequestAlertHandler } from './useActiveRequestBackHandler';
-
+import {disconnectSocket} from '../sockets/socketConfig'
 export default useLogout = () => {
   const { signOut } = useAuthContext();
   const dispatch = useDispatch();
@@ -12,6 +12,7 @@ export default useLogout = () => {
 
   const logOutHandler = async () => {
     await GoogleSignin.signOut();
+    disconnectSocket()
     dispatch(clearAuthData());
   }
 

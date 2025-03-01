@@ -22,8 +22,8 @@ import ScreenContainer from '../ScreenContainer';
 import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
-import socket from '../../sockets/socketConfig';
-
+import {getSocketInstance} from '../../sockets/socketConfig';
+const socket = getSocketInstance()
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { access_token } = useSelector((state) => state.auth)

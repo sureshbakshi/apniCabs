@@ -8,7 +8,7 @@ export default ({ label, name, options,onChange, ...props }) => {
         <SelectDropdown
             data={options || []}
             onSelect={(selectedItem, index) => {
-                onChange(selectedItem?.id);
+                onChange(selectedItem?.value);
             }}
             renderButton={(selectedItem, isOpened) => {
                 return (

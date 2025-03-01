@@ -6,8 +6,26 @@ import { styles } from './navigation/TabBar';
 export const ELEMENTS = {
   select: "select"
 };
+
+export const GENDER_TYPES = [
+  {
+    name: "Male",
+    value: "Male",
+  },
+  {
+    name: "Female",
+    value: "Female",
+  },
+  {
+    name: "Other",
+    value: "Other",
+  }
+];
+
+
 export const SELECT_OPTIONS_KEYS = {
-  city: "city"
+  city: "city",
+  gender: "gender"
 };
 export const authInitialState = {
   googleInfo: null,

@@ -3,6 +3,7 @@ import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { formatTransactions, getUserId, showErrorMessage } from '../util';
+import {disconnectSocket} from '../sockets/socketConfig'
 
 import { Platform } from 'react-native';
 
@@ -37,6 +38,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
   if (result.error && result.error.status === 401) {
     console.log(result.error)
+    disconnectSocket()
     api.dispatch(clearAuthData());
     setTimeout(() => {
       navigate(ROUTES_NAMES.signIn);
@@ -97,7 +99,7 @@ const api_urls = {
   payment: 'payment',
   wallet: 'wallet',
   create: 'create',
-  cities: 'cities',
+  cities: 'user/cities',
   confirm: 'confirm',
   rating: 'rating',
   shareLink: 'sharelink'
@@ -469,7 +471,7 @@ export const apiSlice = createApi({
     getCities: builder.query({
       query: (id) => ({
         method: "GET",
-        url: api_path.users(api_urls.cities),
+        url: api_urls.cities,
       }),
       transformResponse: (response) => response,
       transformErrorResponse: (response) => response,

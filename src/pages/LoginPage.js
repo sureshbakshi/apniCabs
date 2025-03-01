@@ -27,7 +27,7 @@ import ScreenContainer from '../components/ScreenContainer';
 import { useAuthContext } from '../context/Auth.context';
 import Config from 'react-native-config';
 import { navigate } from '../util/navigationService';
-import { disconnectSocket } from '../sockets/socketConfig';
+// import { disconnectSocket } from '../sockets/socketConfig';
 import images from '../util/images';
 import config, { openOwnerPortal } from '../util/config';
 import { useForm, FormProvider, Controller } from "react-hook-form";
@@ -68,9 +68,9 @@ const LoginPage = () => {
     }
   }, [logindata]);
 
-  useEffect(() => {
-    disconnectSocket()
-  }, [])
+  // useEffect(() => {
+  //   disconnectSocket()
+  // }, [])
 
   // useEffect(() => {
   //   console.log('userCheckData', userCheckData);

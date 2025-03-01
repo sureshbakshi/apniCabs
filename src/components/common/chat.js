@@ -4,10 +4,10 @@ import ContainerWrapper from './ContainerWrapper';
 import CustomButton from './CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
-import socket from '../../sockets/socketConfig';
+import {getSocketInstance} from '../../sockets/socketConfig';
 import { getScreen, isDriver } from '../../util';
 import { useTranslation } from 'react-i18next';
-
+const socket = getSocketInstance()
 const ChatUI = () => {
   const { t } = useTranslation();
   const [inputText, setInputText] = useState(''); // Stores the current input text

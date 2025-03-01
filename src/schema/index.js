@@ -91,7 +91,7 @@ export const fareSchema = yup.object().shape({
         .required("Please enter fare amount above 50km"),
 });
 
-export const signupSchema = yup.object().shape({
+export const signupSchema = {
     "name": yup
         .string()
         .required("Please enter name")
@@ -110,13 +110,6 @@ export const signupSchema = yup.object().shape({
         .string()
         .required("Please enter phone number")
         .matches(phone, "Please enter valid 10 digit phone number"),
-    // "password": yup
-    //     .string()
-    //     .required("Please enter password")
-    //     .min(6, 'Minimum 6 Characters required'),
-    "city": yup
-        .string()
-        .required("City is required"),
     "referredBy": yup
         .string()
         .test('valid-referral-code', 'Please enter a valid referral code', (value, context) => {
@@ -126,4 +119,16 @@ export const signupSchema = yup.object().shape({
             return true;
         })
         .nullable(true),
+}
+export const signupUserSchema = yup.object().shape({...signupSchema});
+
+
+export const driverSignupSchema = yup.object().shape({
+    ...signupSchema,
+    "city": yup
+        .string()
+        .required("City is required"),
+    "gender": yup
+        .string()
+        .required("Gender is required"),
 });

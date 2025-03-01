@@ -17,8 +17,8 @@ import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useTranslation } from 'react-i18next';
-import socket from '../sockets/socketConfig';
-
+import {getSocketInstance} from '../sockets/socketConfig';
+const socket = getSocketInstance()
 const ActiveRidePage = () => {
   const { t } = useTranslation();
   const isDriverLogged = isDriver();

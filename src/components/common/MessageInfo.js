@@ -3,9 +3,9 @@ import { ScrollView, View } from 'react-native';
 import { COLORS, ExpiryStatus } from '../../constants';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { Text } from './Text';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import useGetDriverDetails, { useUpdateDriverStatus } from '../../hooks/useGetDriverDetails';
+import useGetDriverDetails, { } from '../../hooks/useGetDriverDetails';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';
 import { openOwnerPortal } from '../../util/config';
@@ -14,14 +14,14 @@ import NotificationsPageStyles from '../../styles/Notifications';
 import { Icon } from './Icon';
 import CommonStyles from '../../styles/commonStyles';
 import { useTranslation } from 'react-i18next';
+import useLogout from '../../hooks/useLogout';
 
 
 const MessageInfo = () => {
     const { t } = useTranslation();
-
-    const { driverInfo } = useSelector(state => state.auth);
+    const { logOut } = useLogout()
+    const { driverInfo, userInfo } = useSelector(state => state.auth);
     const { fetchDetails } = useGetDriverDetails({ refetchOnMountOrArgChange: true }, true)
-    const updateDriverStatus = useUpdateDriverStatus();
 
     useFocusEffect(
         useCallback(() => {
@@ -29,10 +29,8 @@ const MessageInfo = () => {
         }, [])
     );
 
-    useEffect(() => {
-        updateDriverStatus(false)
-    }, [])
 
+    console.log({ driverInfo })
     const isNotVehicleAssigned = isEmpty(driverInfo?.Vehicle)
     const message = isNotVehicleAssigned ? t('driver_update_msg') : t('user_update_msg')
 
@@ -45,11 +43,13 @@ const MessageInfo = () => {
                 <View>
                     <Text style={[NotificationsPageStyles.info]}>{t('generic_message_info_1')} {message}. {t('generic_message_info_2')}</Text>
                     <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                        <View style={NotificationsPageStyles.blackQuote}>
-                            <Text style={[NotificationsPageStyles.heading]}>{t('reason_title')}: </Text>
-                        </View>
-                        {!isDriverVerified(driverInfo) && <Text style={[NotificationsPageStyles.name]}>{driverInfo?.DriverDetail?.reject_reason}.</Text>}
-                        {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>{t('driver_update_msg')}</Text>}
+                        {!isDriverVerified(driverInfo) && <>
+                            <View style={NotificationsPageStyles.blackQuote}>
+                                <Text style={[NotificationsPageStyles.heading]}>{t('reason_title')}: </Text>
+                            </View>
+                            <Text style={[NotificationsPageStyles.name]}>{driverInfo?.DriverDetail?.reject_reason}.</Text>
+                        </>}
+                        {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>{t('driver_vehicle_update_msg')}</Text>}
                     </View>
                     {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
                         <View style={NotificationsPageStyles.blackQuote}>
@@ -72,6 +72,15 @@ const MessageInfo = () => {
                                 width: 85, height: 32,
                                 borderRadius: 5
                             }} onClick={openOwnerPortal} />
+                        <CustomButton
+                            label={t('logout')}
+                            styles={{
+                                backgroundColor: COLORS.card_bg, margin: 5,
+                                width: 85, height: 32,
+                                borderRadius: 5
+                            }}
+                            textStyles={{ lineHeight: 13, fontSize: 12, fontWeight: 400, textTransform: 'capitalize', color: COLORS.black }}
+                            onClick={logOut} />
                     </View>
                 </View>
             </View>

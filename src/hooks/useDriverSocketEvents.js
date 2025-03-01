@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from "react"
-import driverSocket from "../sockets/socketConfig"
+import {getSocketInstance} from "../sockets/socketConfig"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isLoggedIn, isValidEvent } from "../util"
 import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice"
 import { ClearRideStatus, DriverAvailableStatus, RideStatus, SOCKET_EVENTS } from "../constants"
-import { store } from "../store"
 import useNotificationSound from "./useNotificationSound"
 import useChatMessage from "./useChatMessage"
 
@@ -13,6 +12,7 @@ const DRIVER_SOCKET_EVENTS = {
     get_ride_requests: 'DriverRequestSocket',
 }
 
+const driverSocket = getSocketInstance()
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
     const { playSound } = useNotificationSound()
@@ -89,7 +89,8 @@ export default (() => {
     }, [driverSocket])
 
     const connectSocket = useCallback(() => {
-            driverSocket.connect();
+        console.log("connectSocket", driverSocket)
+            driverSocket?.connect();
     }, [driverSocket]);
 
 
@@ -97,7 +98,7 @@ export default (() => {
     useEffect(() => {
         console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline , isLoggedIn})
         if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
-            console.log('================= on connect ======================')
+            console.log('================= request connect ======================')
             connectSocket()
             onGetRideRequests(updateRideRequests);
             updateDriverSocketId()
