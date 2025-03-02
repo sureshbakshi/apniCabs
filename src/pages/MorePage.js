@@ -51,7 +51,7 @@ const MorePage = () => {
                   <Text style={MoreStyles.name}>{t('my_profile')}</Text>
                 </Pressable>
                 {!isDriver() ? <>
-                  <Pressable
+                  {/* <Pressable
                     style={MoreStyles.list}
                     android_ripple={{ color: '#ccc' }}
                     onPress={() => {
@@ -62,7 +62,7 @@ const MorePage = () => {
                       <Icon name="account-hard-hat" size="large" color={COLORS.brand_blue} />
                     </View>
                     <Text style={MoreStyles.name}>{t('become_driver')}</Text>
-                  </Pressable>
+                  </Pressable> */}
                   {/* <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
