@@ -242,7 +242,7 @@ export const SUPPORT = {
   }
 }
 
-export const ClearRideStatus = [RideStatus.USER_CANCELLED, RideStatus.DRIVER_CANCELLED, RideStatus.COMPLETED]
+export const ClearRideStatus = [RideStatus.USER_CANCELLED, RideStatus.DRIVER_CANCELLED, RideStatus.COMPLETED, RideStatus.AUTO_CANCELLED]
 
 
 export const TAB_BAR_ICONS = {

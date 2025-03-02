@@ -11,7 +11,7 @@ import { navigate } from './navigationService';
 import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
 import config from '../util/config';
-import { isEmpty } from 'lodash';
+import { isEmpty , debounce} from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -290,3 +290,14 @@ export const mergeObjectsWithoutDuplicates = (array1, array2, key) => {
   ].reduce((map, obj) => map.set(obj[key], obj), new Map());
   return [...mergedArray.values()];
 }
+
+
+/**
+ * Utility function to debounce submit handlers.
+ * @param {Function} handler - The original submit handler.
+ * @param {number} delay - The debounce delay in milliseconds.
+ * @returns {Function} - A debounced version of the handler.
+ */
+export const debounceHandler = (handler, delay = 1000) => {
+  return debounce(handler, delay);
+};

@@ -18,19 +18,17 @@ import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import RecentSearchHistory from '../components/RecentSearchHistory';
-import { setIsBottomDialogStatus } from '../slices/authSlice';
 import BottomModal from '../components/common/BottomModal';
 import useModal from '../hooks/useModal';
 import { useTranslation } from 'react-i18next';
+import { debounceHandler } from '../util';
 
 const SearchRidePage = () => {
   const { t } = useTranslation();
-  const route = useRoute();
   const dispatch = useDispatch();
   const { isSocketConnected, vehicleTypes } = useSelector((state) => state.auth);
   const { selectedOtherContact } = useSelector((state) => state.user);
   const { isVisible, openModal, closeModal } = useModal();
-  const list = useSelector(state => state.user?.rideRequests?.vehicles);
   const searchHistory = useSelector(state => state.user.recentSearchHistory);
   const { location, updateLocation, getDistance, resetState } = useAppContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
@@ -131,8 +129,10 @@ const SearchRidePage = () => {
       }
     }
   }
+
+  const debouncedSearchHandler = debounceHandler(searchHandler, 500);
   const isSearchDisabled = () => {
-    return isEmpty(location.from) || isEmpty(location.to)
+    return isEmpty(location.from) || isEmpty(location.to) || isLoading
   }
 
   const navigateToSelectOnMapPage = () => {
@@ -192,14 +192,14 @@ const SearchRidePage = () => {
               >
               <Text style={SearchRideStyles.text}>{'Find Captain'}</Text>
             </Pressable> */}
-
             <CustomButton
               styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
               disabled={isSearchDisabled()}
               label={'Find Captain'}
               isLowerCase
               isLoading={isLoading}
-              onClick={searchHandler}
+              indicatorProps={{size: 'small', style: {paddingRight: 10}}}
+              onClick={debouncedSearchHandler}
             />
           </View>
           {!isEmpty(searchHistory[focusKey]) ? <View>

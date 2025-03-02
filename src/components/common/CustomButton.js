@@ -5,7 +5,7 @@ import { COLORS } from "../../constants";
 import { Text, Icon } from ".";
 import ActivityIndicator from "./ActivityIndicator";
 
-export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles, containerStyles = {}, ...rest }) => {
+export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles, containerStyles = {}, indicatorProps,...rest }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = (e) => {
@@ -23,7 +23,7 @@ export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCas
                     { ...(styles || {}), opacity: rest?.disabled ? 0.6 : 1 }
                 ]}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', ...contentContainerStyles }}>
-                        {isLoading && <ActivityIndicator />}
+                        {isLoading && <ActivityIndicator  {...indicatorProps} />}
                         {(iconLeft && !isLoading) &&
                             <View style={{ paddingRight: 8, ...iconStyles }}>
                                 <Icon name={iconLeft?.name} size={iconLeft?.size || 'large'} color={iconLeft?.color || COLORS.white} />

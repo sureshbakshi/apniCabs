@@ -117,12 +117,12 @@ const WalletPage = ({ navigation }) => {
       // if (transactionHistory?.total > PageSize * page || isEmpty(transactionHistory)) {
         fetchWallet();
       // }
-    }, [driverInfo?.id, refetch])
+    }, [driverInfo?.id])
   );
 
-  useEffect(() =>{
-    fetchWallet(page)
-  },[page])
+  // useEffect(() =>{
+  //   fetchWallet(page)
+  // },[page])
 
   const loadMore = useCallback(() => {
     if (!isFetching && transactionHistory?.total >= page * PageSize) {

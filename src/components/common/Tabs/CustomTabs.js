@@ -4,7 +4,7 @@ import FindRideStyles from '../../../styles/FindRidePageStyles';
 import { Tabs, TabScreen, TabsProvider, useTabIndex } from 'react-native-paper-tabs';
 import _ from 'lodash';
 import { COLORS, DEFAULT_VEHICLE_TYPES, VEHICLE_TYPES } from '../../../constants';
-import { Capitalize } from '../../../util';
+import { Capitalize, debounceHandler } from '../../../util';
 import CaptainsCard from './CaptainsCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveRequestDrivers } from '../../../slices/userSlice';
@@ -25,12 +25,16 @@ const CustomTabs = ({ extraProps, data }) => {
       }
     }, [categoryResponse])
 
+
     const handleChangeIndex = (index) => {
+      console.log(index)
       refetch({ category: vehicleList[index].code, request_id });
     }
+
+    const deboundedHandleChangeIndex = debounceHandler(handleChangeIndex, 150)
   return (
     <View style={FindRideStyles.container}>
-      <TabsProvider defaultIndex={0}         onChangeIndex={handleChangeIndex}      >
+      <TabsProvider defaultIndex={0} onChangeIndex={deboundedHandleChangeIndex}      >
         <Tabs
           mode="scrollable"
           style={[FindRideStyles.tabs]}
@@ -46,10 +50,11 @@ const CustomTabs = ({ extraProps, data }) => {
                 label={Capitalize(vehicle.name)}
                 icon={VEHICLE_TYPES[vehicle.code]}
                 key={`${i}`}
-                onPressIn={() => {
-                  console.log('vehicle.code', vehicle.code)
-                    refetch({ category: vehicle.code, request_id });
-                  }}>
+                // onPressIn={() => {
+                //   console.log('vehicle.code', vehicle.code)
+                //     refetch({ category: vehicle.code, request_id });
+                //   }}
+                  >
                 <View style={FindRideStyles.section}>
                   <ScrollView
                     showsVerticalScrollIndicator={true}
