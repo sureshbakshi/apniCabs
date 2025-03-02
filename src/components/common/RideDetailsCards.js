@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
 import {getSocketInstance} from '../../sockets/socketConfig';
+import useGetDriverLocation from '../../hooks/useGetDriverLocation';
 const socket = getSocketInstance()
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
@@ -206,7 +207,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
         if (isEmpty(otp)) {
             showErrorMessage(t('error_otp'))
         } else {
-            getCurrentLocation(otpSubmitHandler)
+            getCurrentLocation(otpSubmitHandler, true)
         }
 
     }
@@ -252,7 +253,9 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 
 export default ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
-    const { currentLocation, getCurrentLocation } = useGetCurrentLocation()
+    const { getCurrentLocation } = useGetCurrentLocation()
+      const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
+    
     const dispatch = useDispatch()
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
         useCompleteRideRequestMutation();
@@ -274,6 +277,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
     }
     const isActiveRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
+    const fromLocation = driverCurrentLocation || activeRequestInfo.from
     return (
         <>
             <View style={[FindRideStyles.card]}>
@@ -283,9 +287,9 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                 </ScreenContainer>
             </View>
             {(isActiveRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
-                <OpenMapButton route={{ start: activeRequestInfo.from, end: activeRequestInfo.to, navigate: true }} />
+                <OpenMapButton route={{ start: fromLocation, end: activeRequestInfo.to, navigate: true }} />
                 <CustomButton
-                    onClick={() => getCurrentLocation(completeRideHandler)}
+                    onClick={() => getCurrentLocation(completeRideHandler, true)}
                     disabled={isCompleteRideLoading}
                     styles={
                         { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }

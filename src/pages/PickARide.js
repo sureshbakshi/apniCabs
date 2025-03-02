@@ -6,7 +6,6 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, DriverAvailableStatus, ROUTES_NAMES, RideStatus, default_btn_styles } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDriverDetails';
-import { _isDriverOnline } from '../util';
 import { updateRideRequest } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';

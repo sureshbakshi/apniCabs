@@ -71,7 +71,7 @@ const Card = ({ request_id, ...item }) => {
   // const { request_id } = useSelector(state => state.user?.rideRequests);
   const dispatch = useDispatch();
 
-  const [sendRequest, { data: requestData, error: requestError, isLoading }] =
+  const [sendRequest, { data: requestData, error: requestError, isLoading: isSendRequest }] =
     useSendRequestMutation();
 
   const [cancelRequest, { isLoading: isCancelRequestLoading }] = useCancelRequestMutation();
@@ -82,13 +82,13 @@ const Card = ({ request_id, ...item }) => {
 
   const handleSendRequest = item => {
     let payload = { request_id, driver_id: item?.id, fare: item?.fare, category: item?.category };
-    if (item.status === RideStatus.REQUESTED) {
+    if (item.status === RideStatus.REQUESTED && !isCancelRequestLoading) {
       cancelRequest(payload).unwrap().then((res) => {
         updateDriverRequestStatus(RideStatus?.USER_CANCELLED);
       }).catch((err) => {
         console.log('cancel request err', err)
       });
-    } else if (!item.status) {
+    } else if (!item.status && !isSendRequest) {
       sendRequest(payload);
     } else {
       showErrorMessage('No action performed on this request.')

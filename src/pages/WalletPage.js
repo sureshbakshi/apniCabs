@@ -3,7 +3,7 @@ import { View, Button, Pressable, ScrollView, FlatList } from 'react-native';
 import WalletStyles from '../styles/WalletPageStyles';
 import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
-import { useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
+import { useGetDriverTransactionsMutation, useLazyGetDriverTransactionsQuery } from '../slices/apiSlice';
 import { COLORS, ROUTES_NAMES } from '../constants';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
@@ -63,21 +63,35 @@ const WalletPage = ({ navigation }) => {
   const [page, setPage] = useState(1);
   const [lastKey, setLastKey] = useState({});
   const [transactions, setTransactions] = useState([]);
-  const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading, isFetching }] = useLazyGetDriverTransactionsQuery({ page, id: driverInfo?.id, pageSize: PageSize });
+  const [refetch, { data: transactionHistory, error: transactionHistoryError, isLoading, isFetching }] = useGetDriverTransactionsMutation({ page, id: driverInfo?.id, pageSize: PageSize });
   const { t } = useTranslation()
   useGetDriverWallet();
   useEffect(() => {
     if (transactionHistory?.transactions?.length) {
       setTransactions((prevTransactionHistory) => {
-        // Remove duplicate transactions by using the request_id or created_at (or another unique identifier)
-        const uniqueTransactions = [
-          ...prevTransactionHistory,
-          ...transactionHistory.transactions.filter(
-            (transaction) =>
-              !prevTransactionHistory.some((prev) => prev.request_id === transaction.request_id)
-          ),
-        ];
-        return uniqueTransactions;
+        // Create a new array with updated transactions
+        const updatedTransactions = prevTransactionHistory.map((prevTransaction) => {
+          // If the transaction already exists, update it with the new transaction data
+          const newTransaction = transactionHistory.transactions.find(
+            (transaction) => transaction.request_id === prevTransaction.request_id
+          );
+    
+          // If a matching transaction exists, return the updated one
+          if (newTransaction) {
+            return { ...prevTransaction, ...newTransaction };
+          }
+    
+          // If no matching transaction, return the previous one unchanged
+          return prevTransaction;
+        });
+    
+        // Add any new transactions that were not already in the previous history
+        const newTransactions = transactionHistory.transactions.filter(
+          (transaction) => !prevTransactionHistory.some((prev) => prev.request_id === transaction.request_id)
+        );
+    
+        // Combine updated transactions and new transactions
+        return [...updatedTransactions, ...newTransactions];
       });
     }
     if (transactionHistory?.lastKey) {
@@ -100,9 +114,9 @@ const WalletPage = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      if (transactionHistory?.total > PageSize * page || isEmpty(transactionHistory)) {
+      // if (transactionHistory?.total > PageSize * page || isEmpty(transactionHistory)) {
         fetchWallet();
-      }
+      // }
     }, [driverInfo?.id, refetch])
   );
 

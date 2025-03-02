@@ -22,7 +22,7 @@ const createSocketInstance = () => {
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: Infinity,
-      reconnectionDelay: 50000,
+      reconnectionDelay: 5000,
       origins: '*',
       extraHeaders: {
 

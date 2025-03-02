@@ -43,6 +43,7 @@ const UserList = ({ onCloseModal }) => {
         const contact = await getPhoneNumber();
         if (contact) {
             dispatch(setOtherContactList(contact));
+            dispatch(setSelectedOtherContact(contact));
         }
     }
 

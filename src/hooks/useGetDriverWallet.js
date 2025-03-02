@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useLazyGetDriverWalletQuery } from "../slices/apiSlice";
+import { useGetDriverWalletMutation, useGetDriverWalletQuery, useLazyGetDriverWalletQuery } from "../slices/apiSlice";
 import { setDriverWallet } from "../slices/driverSlice";
 import { _isDriverOffline } from "../util";
 import { useCallback, useEffect } from "react";
@@ -9,15 +9,13 @@ export default useGetDriverWallet = (options, isCb = false) => {
     const driverInfo = useSelector(state => state.auth.driverInfo);
     const isOffline = _isDriverOffline();
     const dispatch = useDispatch()
-    const [refetchWallet, { data: wallet }] = useLazyGetDriverWalletQuery({ id: driverInfo?.id }, { skip: isOffline || driverInfo?.id, refetchOnMountOrArgChange: true, ...options });
+    const[refetchWallet] = useGetDriverWalletMutation({ id: driverInfo?.id , sessionId: Math.random()}, { skip: isOffline || driverInfo?.id, refetchOnMountOrArgChange: true,fetchPolicy: "cache-and-network",nextFetchPolicy: "network-only", ...options });
 
-    const fetchWallet = () => {
-        refetchWallet({ id: driverInfo?.id }, { force: true })
+    const fetchWallet = async() => {
+        refetchWallet({ id: driverInfo?.id }, { force: true }).unwrap().then((wallet) =>{
+            dispatch(setDriverWallet(wallet))
+        })
     }
-    // useEffect(() => {
-    //     fetchWallet()
-    // }, [])
-
     useFocusEffect(
         useCallback(() => {
             if (!isOffline && driverInfo?.id) {
@@ -29,12 +27,5 @@ export default useGetDriverWallet = (options, isCb = false) => {
     if (isCb) {
         return fetchWallet
     }
-
-    useEffect(() => {
-        if (wallet) {
-            dispatch(setDriverWallet(wallet))
-        }
-    }, [wallet])
-
 
 } 

@@ -14,6 +14,7 @@ import { RideStatus } from '../constants';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 import useLocationWatcher from '../hooks/useLocationWatcher';
 import { debounce } from 'lodash';
+import useGetDriverLocation from '../hooks/useGetDriverLocation';
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] }, // Lighter background for map
   { elementType: 'labels.text.fill', stylers: [{ color: '#555555' }] }, // Lighter label text
@@ -120,9 +121,7 @@ const markerIDs = ['Marker1', 'Marker2'];
 
 const ActiveMapPage = ({ activeRequestInfo }) => {
   const isDriverLogged = isDriver();
-  const { currentLocation } = useGetCurrentLocation();
-  const {driverLocation: watchedLocation} = useSelector(state => state.driver);
-  const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
+  const location = useGetDriverLocation(isDriverLogged)
 
   const { driverLocation } = useSelector(state => state.user);
   // console.log({ watchedLocation, driverLocation })
@@ -160,7 +159,6 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
     latitude: isOnRide ? activeLocation?.latitude : Number(activeRequestInfo?.from_latitude),
     longitude: isOnRide ? activeLocation?.longitude : Number(activeRequestInfo?.from_longitude),
   }
-  
   useEffect(() => {
     if (to_location?.latitude) {
       debouncedFocusMap();
@@ -170,6 +168,16 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
   const isNotNaN = !isNaN(regionLatnLng?.latitude);
 
   // console.log({activeRequestInfo, activeLocation})
+  // const routeCoordinates = [
+  //   {
+  //     latitude: regionLatnLng?.latitude + SPACE,
+  //     longitude: regionLatnLng?.longitude + SPACE,
+  //   },
+  //   {
+  //     latitude: Number(to_location?.latitude) - SPACE,
+  //     longitude: Number(to_location?.longitude) - SPACE,
+  //   }
+  // ]
   return (
     <View style={styles.container}>
       {/* <View style={{ backgroundColor: 'yellow', padding: 10, position: 'absolute', zIndex: 1000, top: 0 }}>
@@ -211,6 +219,8 @@ const ActiveMapPage = ({ activeRequestInfo }) => {
               longitude: Number(to_location?.longitude) - SPACE,
             }}
           >
+            {/* <Polyline coordinates={routeCoordinates} strokeWidth={6} strokeColor="#ff0000" /> */}
+
             <ImageView source={(isOnRide) ? images.pin : getVehicleImage(vehicleImage)}
               style={{ minHeight: 5, minWidth: 5, height: 30, width: 30 }} />
           </Marker> : null}

@@ -240,7 +240,7 @@ export const apiSlice = createApi({
     }),
 
     // users end
-    driverActiveRide: builder.query({
+    driverActiveRide: builder.mutation({
       query: () => ({
         method: 'GET',
         url: api_path.request(api_urls.driverActiveRide),
@@ -350,7 +350,7 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
     }),
     // transaction starts
-    getDriverTransactions: builder.query({
+    getDriverTransactions: builder.mutation({
       query: ({ id, page, pageSize, lastKey }) => ({
         method: 'GET',
         url: api_path.wallet(`${id}/transactions?pageNumber=${page}&pageSize=${pageSize}`),
@@ -367,14 +367,14 @@ export const apiSlice = createApi({
       transformErrorResponse: response => response,
       providesTags: ["RideStatus", "RideComplete"]
     }),
-    getDriverWallet: builder.query({
+    getDriverWallet: builder.mutation({
       query: ({ id }) => ({
         method: 'GET',
         url: api_path.wallet(`${id}`),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["RideStatus", "RideComplete"]
+      // providesTags: ["RideStatus", "RideComplete"]
     }),
     // transaction end
 
@@ -508,7 +508,7 @@ export const {
   useLazyGetRequestsByCategoryQuery,
   useLazyGetDriverDetailsQuery,
   useUpdateDriverLocationMutation,
-  useLazyDriverActiveRideQuery,
+  useDriverActiveRideMutation,
   useRideRequestMutation,
   useCompleteRideRequestMutation,
   useCancelAcceptedRequestMutation,
@@ -517,8 +517,7 @@ export const {
   useDriverRideHistoryQuery,
   useUserRideHistoryQuery,
   useLazyUserRideHistoryQuery,
-  useGetDriverTransactionsQuery,
-  useLazyGetDriverTransactionsQuery,
+  useGetDriverTransactionsMutation,
   useEditFareMutation,
   useCancelRequestMutation,
   useCancelAllRequestMutation,
@@ -527,7 +526,7 @@ export const {
   useGetVehicleTypesQuery,
   useGetRideDetailsQuery,
   useSubscriptionListQuery,
-  useLazyGetDriverWalletQuery,
+  useGetDriverWalletMutation,
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,

@@ -112,23 +112,24 @@ const SearchRidePage = () => {
   }
 
   const searchHandler = async () => {
-    try {
-      const { distance, duration } = await getDistance();
-      const { from, to } = location;
-      if (from && to && distance && duration) {
-        let fromCity = filter(from.address_components, {
-          types: ['locality'],
-        });
-        let toCity = filter(to.address_components, {
-          types: ['locality'],
-        });
-        findDrivers({from, to, fromCity, toCity, distance, duration});
-        updateSearchHistory({from, to, fromCity, toCity})
+    if(!isLoading) {
+      try {
+        const { distance, duration } = await getDistance();
+        const { from, to } = location;
+        if (from && to && distance && duration) {
+          let fromCity = filter(from.address_components, {
+            types: ['locality'],
+          });
+          let toCity = filter(to.address_components, {
+            types: ['locality'],
+          });
+          findDrivers({from, to, fromCity, toCity, distance, duration});
+          updateSearchHistory({from, to, fromCity, toCity})
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
-   
   }
   const isSearchDisabled = () => {
     return isEmpty(location.from) || isEmpty(location.to)
@@ -197,6 +198,7 @@ const SearchRidePage = () => {
               disabled={isSearchDisabled()}
               label={'Find Captain'}
               isLowerCase
+              isLoading={isLoading}
               onClick={searchHandler}
             />
           </View>

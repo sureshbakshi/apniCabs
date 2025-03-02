@@ -92,7 +92,7 @@ export const Capitalize = (str) => {
 
 export const _isDriverOnline = () => {
   const onlineStatus = store.getState().driver.onlineStatus;
-  return Boolean(onlineStatus === DriverAvailableStatus.ONLINE)
+  return Boolean(onlineStatus === DriverAvailableStatus.ONLINE) || Boolean(onlineStatus === DriverAvailableStatus.BUSY)
 }
 
 export const _isDriverOffline = () => {

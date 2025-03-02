@@ -10,10 +10,11 @@ export default () => {
     const isDriverLogged = isDriver();
     const isAccepted = isDriverAccepted();
     const isOnline = _isDriverOnline();
+    const is_available = isAccepted || isOnline
 
 
     const debouncedLocationUpdate = debounce((location) => {
-        if (Boolean(location?.latitude) && isDriverLogged && isOnline && driverInfo?.Vehicle) {
+        if (Boolean(location?.latitude) && isDriverLogged && is_available && driverInfo?.Vehicle) {
             const { company, model, colour, type } = driverInfo?.Vehicle;
             const { latitude, longitude } = location
             let payload = {

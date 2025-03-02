@@ -14,6 +14,7 @@ import CommonStyles from '../styles/commonStyles';
 import FindRidePageStyles from '../styles/FindRidePageStyles';
 import generateInvoice from '../util/generateInvoice';
 import ActivityIndicator from '../components/common/ActivityIndicator';
+import { useTranslation } from 'react-i18next';
 
 export const getColorNBg = (status) => {
   return colorsNBg[status] || { color: COLORS.black, bg: COLORS.bg_secondary, label: status }
@@ -82,11 +83,12 @@ const Card = ({ item, keys }) => {
   </Pressable>
 }
 const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
+  const { t } = useTranslation()
   return (
     <SafeAreaView style={styles.container}>
       <View style={[FindRidePageStyles.pageContainer]}>
         <ContainerWrapper>
-          {!!data?.length && <View style={styles.section}>
+          {!!data?.length ? <View style={styles.section}>
             <FlatList
               data={data}
               renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
@@ -95,7 +97,7 @@ const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
               onEndReachedThreshold={0.5}
               ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
             />
-          </View>}
+          </View> : <SearchLoader msg={t('no_records')} />}
         </ContainerWrapper>
       </View>
     </SafeAreaView>
