@@ -44,6 +44,8 @@ const UserList = ({ onCloseModal }) => {
         if (contact) {
             dispatch(setOtherContactList(contact));
             dispatch(setSelectedOtherContact(contact));
+            setSelectedUser(contact)
+
         }
     }
 

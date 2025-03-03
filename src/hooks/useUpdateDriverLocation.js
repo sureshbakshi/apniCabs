@@ -12,7 +12,6 @@ export default () => {
     const isOnline = _isDriverOnline();
     const is_available = isAccepted || isOnline
 
-
     const updateDriverLocationToServer = (location) => {
         if (Boolean(location?.latitude) && isDriverLogged && is_available && driverInfo?.Vehicle) {
             const { company, model, colour, type } = driverInfo?.Vehicle;

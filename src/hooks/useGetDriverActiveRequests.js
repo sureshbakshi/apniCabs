@@ -7,7 +7,7 @@ import { _isDriverOffline } from "../util";
 import useGetDriverWallet from "./useGetDriverWallet";
 export default () => {
     const dispatch = useDispatch();
-    const driverInfo = useSelector(state => state.auth.driverInfo );
+    const {driverInfo} = useSelector(state => state.auth );
     const isOffline  = _isDriverOffline();
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useDriverActiveRideMutation({}, { skip: isOffline, refetchOnMountOrArgChange: true });
     useGetDriverWallet(undefined, true)

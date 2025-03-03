@@ -27,7 +27,7 @@ const getValue = (data, key) => {
 const Card = ({ item, keys }) => {
   const status = getValue(item, keys.status)
   const fare = getValue(item, keys.fare)
-  const time = getValue(item, keys.rideTime)
+  const time = getValue(item, keys.rideTime) || getValue(item, keys.createdAt)
   const { color, bg, label, image } = getColorNBg(status)
   return <Pressable style={[styles.card, {
     borderLeftWidth: 5,
