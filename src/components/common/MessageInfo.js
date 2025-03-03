@@ -30,7 +30,6 @@ const MessageInfo = () => {
     );
 
 
-    console.log({ driverInfo })
     const isNotVehicleAssigned = isEmpty(driverInfo?.Vehicle)
     const message = isNotVehicleAssigned ? t('driver_update_msg') : t('user_update_msg')
 

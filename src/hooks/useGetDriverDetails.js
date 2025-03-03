@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
+import { useGetDriverDetailsMutation, useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
 import { isEmpty } from 'lodash'
@@ -23,7 +23,7 @@ export default useGetDriverDetails = (options, isCb=false) => {
     const { driverInfo, userInfo } = useSelector(state => state.auth);
     const id = driverInfo?.id || userInfo?.id
     if (id) {
-        const [refetch, { data: driverDetails }] = useLazyGetDriverDetailsQuery( {id}, { skip: !id || !isDriverLogged, ...options })
+        const [refetch, { data: driverDetails }] = useGetDriverDetailsMutation( {id}, { skip: !id || !isDriverLogged, ...options })
         const fetchDetails = () =>{
             if (id && isDriverLogged) {
                 refetch({id})

@@ -90,14 +90,18 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
         errorHandler: errorHandler,
         verifyOTPMutation: verifyOTPMutation
     }
-    const cityTypesFormat = cities?.map((item) => ({ ...item, value: item.id, label: item.name }))
+    const cityTypesFormat = cities
+        ?.filter((item) => item.is_active === 1)  // Filter cities where is_active is 1
+        .map((item) => ({
+            ...item,            // Keep all original properties
+            value: item.id,     // Add value as item.id
+            label: item.name    // Add label as item.name
+        }));
     const options = {
         [SELECT_OPTIONS_KEYS.city]: cityTypesFormat,
         [SELECT_OPTIONS_KEYS.gender]: GENDER_TYPES
     }
-    console.log({formFields, formSchema})
     return (
-
         <View>
             <Text style={LoginStyles.logoHeardertext}>{heading} as {config.ROLE === USER_ROLES.DRIVER ? "Driver" : 'User'} </Text>
 

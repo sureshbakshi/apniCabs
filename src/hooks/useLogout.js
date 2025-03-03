@@ -5,13 +5,14 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { clearAuthData } from "../slices/authSlice";
 import { useRequestAlertHandler } from './useActiveRequestBackHandler';
 import {disconnectSocket} from '../sockets/socketConfig'
+import { isDriver } from '../util';
 export default useLogout = () => {
   const { signOut } = useAuthContext();
+  const isDriverLogged = isDriver()
   const dispatch = useDispatch();
   const { requestAlertHandler } = useRequestAlertHandler();
 
   const logOutHandler = async () => {
-    await GoogleSignin.signOut();
     disconnectSocket()
     dispatch(clearAuthData());
   }
@@ -19,8 +20,8 @@ export default useLogout = () => {
   const logOut = () => {
     try {
       const sucess = signOut();
-      if (sucess) {
-        requestAlertHandler(logOutHandler)
+      if (sucess ) {
+        isDriverLogged ? logOutHandler() : requestAlertHandler(logOutHandler)
       }
     } catch (error) {
       console.error(error);

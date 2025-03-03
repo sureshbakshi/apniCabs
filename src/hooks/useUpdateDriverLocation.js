@@ -13,7 +13,7 @@ export default () => {
     const is_available = isAccepted || isOnline
 
 
-    const debouncedLocationUpdate = debounce((location) => {
+    const updateDriverLocationToServer = (location) => {
         if (Boolean(location?.latitude) && isDriverLogged && is_available && driverInfo?.Vehicle) {
             const { company, model, colour, type } = driverInfo?.Vehicle;
             const { latitude, longitude } = location
@@ -30,10 +30,10 @@ export default () => {
             }
             updateDriverLocation(payload);
         }
-    }, 250)
-
-    const updateDriverLocationToServer = (location) => {
-        debouncedLocationUpdate(location)
     }
+
+    // const updateDriverLocationToServer = (location) => {
+    //     debouncedLocationUpdate(location)
+    // }
     return updateDriverLocationToServer
 }

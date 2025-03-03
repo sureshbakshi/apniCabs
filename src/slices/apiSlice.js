@@ -381,7 +381,7 @@ export const apiSlice = createApi({
 
 
     // request apis end
-    getDriverDetails: builder.query({
+    getDriverDetails: builder.mutation({
       query: ({id}) => ({
         method: 'GET',
         url: api_path.drivers(id),
@@ -506,7 +506,7 @@ export const {
   useUpdateDriverStatusMutation,
   useGetRideRequestMutation,
   useLazyGetRequestsByCategoryQuery,
-  useLazyGetDriverDetailsQuery,
+  useGetDriverDetailsMutation,
   useUpdateDriverLocationMutation,
   useDriverActiveRideMutation,
   useRideRequestMutation,

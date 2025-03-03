@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Pressable, TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 navigator.geolocation = require('react-native-geolocation-service');
-import Config from "../util/config";
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 import { isEmpty } from "lodash";
