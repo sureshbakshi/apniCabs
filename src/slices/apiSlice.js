@@ -23,7 +23,7 @@ const baseQuery = fetchBaseQuery({
     if (getState().auth.device_token) {
       headers.set('app-token', `${getState().auth.device_token}`);
     }
-    headers.set('device_type', Platform.os);
+    headers.set('device_type', Platform.OS);
     return headers;
   },
 });

@@ -15,14 +15,7 @@ export default () => {
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {
-                // delay(() => {
-                    // if(activeRequestInfo)
-                if(driverInfo?.id){
-                    console.log("refetchWallet")
-                    refetch?.() // workaround to force refetch
-                }
-                // }, 250)
-                // getCurrentLocation()
+                refetch?.() // workaround to force refetch
             }
         }, [])
     );
