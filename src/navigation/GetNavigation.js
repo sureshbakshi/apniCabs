@@ -10,7 +10,7 @@ import useLogout from '../hooks/useLogout';
 import { ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import CommonStyles from '../styles/commonStyles';
-import { ROUTES_NAMES } from '../constants';
+import { ROUTES_NAMES, USER_ROLES } from '../constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MessageInfo from '../components/common/MessageInfo';
 
@@ -19,11 +19,13 @@ const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
 
 
 export const GetAuthRoutes = () => {
-    const isDriverLogged = isDriver()
+    const { driverInfo, userInfo } = useSelector(state => state.auth);
     const isUserLogged = isUser()
-    const isOwnerLogged = isOwner()
     const { logOut } = useLogout()
     const { t } = useTranslation()
+    const roles = driverInfo?.DriverRoles || userInfo?.roles;
+    const isDriverLogged = roles.includes(USER_ROLES.DRIVER);
+    const isOwnerLogged = roles.includes(USER_ROLES.OWNER);
     if (isDriverLogged) {
         route = <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
             <DriverTabNavigator />

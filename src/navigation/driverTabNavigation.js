@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import useLocationWatcher from '../hooks/useLocationWatcher';
 import { useEffect } from 'react';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,12 +25,15 @@ export default function DriverTabNavigator() {
   useDriverSocketEvents()
   useAppStateListner()
   useLocationWatcher()
-  const {getCurrentLocation} = useGetCurrentLocation()
-  const {t} = useTranslation()
+  const { getCurrentLocation } = useGetCurrentLocation()
+  const { t } = useTranslation()
+  const { driverInfo } = useSelector(state => state.auth);
 
   useEffect(() => {
-    getCurrentLocation(undefined, true)
-  },[])
+    if (driverInfo?.Vehicle) {
+      getCurrentLocation(undefined, true)
+    }
+  }, [driverInfo])
   return (
     <AppProvider>
       <Tab.Navigator

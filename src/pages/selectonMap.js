@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash';
 import config from '../util/config';
 import { useAppContext } from '../context/App.context';
 import { useTranslation } from 'react-i18next';
+import { getScreen } from '../util';
 
 const initial_region = {
     latitude: 17.5184667,
@@ -37,7 +38,6 @@ const SelectOnPage = () => {
             const { lat, lng } = location[focusKey]?.geometry?.location;
             setRegionChange({ ...initial_region, latitude: lat, longitude: lng });
             setAddress(location[focusKey]);
-            mapRef.current?.animateToRegion(region);
         } else {
             const { latitude, longitude } = currentLocation;
             if (latitude) {
@@ -51,7 +51,25 @@ const SelectOnPage = () => {
         getCurrentLocation();
     }, [])
 
+    const areRegionsEqual = (region1, region2, tolerance = 0.00001) => {
+        return (
+            Math.abs(region1.latitude - region2.latitude) < tolerance &&
+            Math.abs(region1.longitude - region2.longitude) < tolerance &&
+            Math.abs(region1.latitudeDelta - region2.latitudeDelta) < tolerance &&
+            Math.abs(region1.longitudeDelta - region2.longitudeDelta) < tolerance
+        );
+    };
 
+    useEffect(() => {
+        if (mapRef.current && region) {
+            const currentRegion = mapRef.current.__lastRegion;
+    
+            if (!currentRegion || !areRegionsEqual(currentRegion, region)) {
+                mapRef.current.animateToRegion(region);
+                mapRef.current.__lastRegion = region;
+            }
+        }
+    }, [region]);
 
     const getAddress = async (region = region) => {
         const apiKey = config.GOOGLE_PLACES_KEY;
@@ -85,16 +103,17 @@ const SelectOnPage = () => {
                 <MapView
                     ref={mapRef}
                     provider={PROVIDER_GOOGLE}
-                    style={{ height: 550 }}
+                    style={{ height: getScreen().screenHeight - 350 }}
                     initialRegion={region}
                     onRegionChangeComplete={onRegionChange}>
-                    <Marker
+                    {!isEmpty(address) && <Marker
                         coordinate={region}
                         onDragEnd={(e) => onRegionChange(e.nativeEvent.coordinate)}
-                        draggable />
+                        draggable />}
+
                 </MapView>
 
-                <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }]}>
+                <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
                     <View style={[CommonStyles.p15]}>
                         <View style={[CommonStyles.shadow, { position: 'absolute', top: -50, left: 20 }]}>
                             <HeaderBackButton />
@@ -112,7 +131,7 @@ const SelectOnPage = () => {
                         <CustomButton
                             iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
                             isLoading={isEmpty(address)}
-                            styles={{ backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
+                            styles={{ maxHeight: 70, backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
                             textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
                             label={address?.formatted_address}
                         />
