@@ -12,6 +12,8 @@ import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
 import { useTranslation } from 'react-i18next';
 import useLocationWatcher from '../hooks/useLocationWatcher';
+import { useEffect } from 'react';
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +24,12 @@ export default function DriverTabNavigator() {
   useDriverSocketEvents()
   useAppStateListner()
   useLocationWatcher()
+  const {getCurrentLocation} = useGetCurrentLocation()
   const {t} = useTranslation()
+
+  useEffect(() => {
+    getCurrentLocation(undefined, true)
+  },[])
   return (
     <AppProvider>
       <Tab.Navigator

@@ -13,7 +13,7 @@ export default (activeCb) => {
         nextAppState => {
           if (nextAppState === 'active') {
             activeCb?.();
-            getCurrentLocation()
+            getCurrentLocation(undefined, true)
           }
           console.log('Next AppState is: ', nextAppState);
         },
