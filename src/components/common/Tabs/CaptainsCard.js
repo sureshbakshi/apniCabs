@@ -164,7 +164,7 @@ const Card = ({ request_id, ...item }) => {
     </View>
   );
 };
-const CaptainsCard = ({ driversList, keyProp, extraProps, isfetching }) => {
+const CaptainsCard = ({ driversList, keyProp, extraProps, isFetching }) => {
   const { t } = useTranslation();
   // const dispatch = useDispatch();
   //   const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
@@ -176,21 +176,23 @@ const CaptainsCard = ({ driversList, keyProp, extraProps, isfetching }) => {
   //       dispatch(setActiveRequestDrivers(categoryResponse))
   //     }
   //   }, [categoryResponse])
-  if (isfetching) {
-    return <Text>Loading...</Text>
+  if (isFetching) {
+    return <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Finding Near by Drivers...</Text>
   }
   return (
-    driversList?.length ? driversList?.map(item => {
-      return (
-        <Card
-          {...{
-            ...item,
-            ...extraProps,
-          }}
-          key={`${keyProp}_${item.id}`}
-        />
-      );
-    }) : <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>{t('driver_not_found')}</Text>
+    <>
+      {driversList?.length ? driversList?.map(item => {
+        return (
+          <Card
+            {...{
+              ...item,
+              ...extraProps,
+            }}
+            key={`${keyProp}_${item.id}`}
+          />
+        );
+      }) : <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>{t('driver_not_found')}</Text>}
+    </>
   )
 }
 

@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
-import { debounce } from 'lodash';
 import { isDriver, isDriverAccepted, _isDriverOnline } from '../util';
 import { DriverAvailableStatus } from "../constants";
 
@@ -23,10 +22,11 @@ export default () => {
                 "status": isAccepted ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
                 "driver": {
                     "name": driverInfo?.name,
-                    "email": driverInfo?.email
+                    ...(driverInfo?.email ? { email: driverInfo?.email } : {})
                 },
                 "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code , registrationNumber: driverInfo?.Vehicle?.registration_number}
             }
+
             updateDriverLocation(payload);
         }
     }

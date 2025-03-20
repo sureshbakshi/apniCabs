@@ -9,7 +9,7 @@ import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: 'http://43.204.100.95:3001/',
-  baseUrl: 'https://apnicabi.com/api/v1/',
+  baseUrl: 'https://api.apnicabi.com/',
   // baseUrl: 'http://192.168.0.104:8080/api/', //rajesh IP
   // baseUrl: 'http://192.168.29.235:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {

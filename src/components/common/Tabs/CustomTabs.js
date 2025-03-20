@@ -8,30 +8,31 @@ import { Capitalize, debounceHandler } from '../../../util';
 import CaptainsCard from './CaptainsCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveRequestDrivers } from '../../../slices/userSlice';
-import {  useLazyGetRequestsByCategoryQuery } from '../../../slices/apiSlice';
+import { useLazyGetRequestsByCategoryQuery } from '../../../slices/apiSlice';
+import { Text } from 'react-native-paper';
 
 const CustomTabs = ({ extraProps, data }) => {
-  const {vehicleTypes} = useSelector(state => state.auth);
+  const { vehicleTypes } = useSelector(state => state.auth);
   const vehicleList = vehicleTypes || DEFAULT_VEHICLE_TYPES;
 
   const dispatch = useDispatch();
-    const {activeRequestDrivers: driverListByCategory, activeRequestId: request_id} = useSelector(state => state.user);
-    const defaultCode =  vehicleList[0]?.code;
-    const [ refetch, {data: categoryResponse, error: rideHistoryError, isFetching }] = useLazyGetRequestsByCategoryQuery({ request_id, category: defaultCode }, {refetchOnMountOrArgChange: true, skip: !request_id || !defaultCode});
-  
-    useEffect(() => {
-      if (categoryResponse) {
-        dispatch(setActiveRequestDrivers(categoryResponse))
-      }
-    }, [categoryResponse])
+  const { activeRequestDrivers: driverListByCategory, activeRequestId: request_id } = useSelector(state => state.user);
+  const defaultCode = vehicleList[0]?.code;
+  const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery({ request_id, category: defaultCode }, { refetchOnMountOrArgChange: true, skip: !request_id || !defaultCode });
 
-
-    const handleChangeIndex = (index) => {
-      console.log(index)
-      refetch({ category: vehicleList[index].code, request_id });
+  useEffect(() => {
+    if (categoryResponse) {
+      dispatch(setActiveRequestDrivers(categoryResponse))
     }
+  }, [categoryResponse])
 
-    const deboundedHandleChangeIndex = debounceHandler(handleChangeIndex, 150)
+
+  const handleChangeIndex = (index) => {
+    console.log(index)
+    refetch({ category: vehicleList[index].code, request_id });
+  }
+
+  const deboundedHandleChangeIndex = debounceHandler(handleChangeIndex, 50)
   return (
     <View style={FindRideStyles.container}>
       <TabsProvider defaultIndex={0} onChangeIndex={deboundedHandleChangeIndex}      >
@@ -50,23 +51,20 @@ const CustomTabs = ({ extraProps, data }) => {
                 label={Capitalize(vehicle.name)}
                 icon={VEHICLE_TYPES[vehicle.code]}
                 key={`${i}`}
-                // onPressIn={() => {
-                //   console.log('vehicle.code', vehicle.code)
-                //     refetch({ category: vehicle.code, request_id });
-                //   }}
-                  >
+              >
                 <View style={FindRideStyles.section}>
                   <ScrollView
                     showsVerticalScrollIndicator={true}
                   >
-                    {
-                      <CaptainsCard
+                    <>
+                      {!isLoading && <CaptainsCard
                         keyProp={i}
-                        extraProps={{...extraProps, request_id, category: vehicle.code}}
-                        driversList={ driverListByCategory?.[vehicle.code] || []}
+                        extraProps={{ ...extraProps, request_id, category: vehicle.code }}
+                        driversList={driverListByCategory?.[vehicle.code] || []}
                         isFetching={isFetching}
-                      />
-                    }
+                      />}
+
+                    </>
                   </ScrollView>
                 </View>
               </TabScreen>

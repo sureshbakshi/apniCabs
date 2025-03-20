@@ -1,58 +1,33 @@
 import React, { useEffect } from 'react';
 import {
   View,
-  TextInput,
   Pressable,
-  ImageBackground,
-  ScrollView,
-  Image,
   StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
-import CommonStyles from '../styles/commonStyles';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { Icon, ImageView, Text } from '../components/common';
+import { Text } from '../components/common';
 import { COLORS, LOGIN_FORM, ROUTES_NAMES, USER_ROLES } from '../constants';
 import { useDispatch } from 'react-redux';
 import {
-  updateGoogleUserInfo,
   updateUserCheck,
 } from '../slices/authSlice';
 import { useGetLoginOTPMutation, useLoginMutation, useUserCheckMutation, useVerifyOTPMutation } from '../slices/apiSlice';
 import { isEmpty } from 'lodash';
 import ScreenContainer from '../components/ScreenContainer';
-import { useAuthContext } from '../context/Auth.context';
-import Config from 'react-native-config';
 import { navigate } from '../util/navigationService';
-// import { disconnectSocket } from '../sockets/socketConfig';
-import images from '../util/images';
-import config, { openOwnerPortal } from '../util/config';
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import config from '../util/config';
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
-import CustomButton from '../components/common/CustomButton';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
 import { useTranslation } from 'react-i18next';
-
-// const initialState = {
-//   email: 'sureshbakshi88@gmail.com',
-//   password: 'abc123',
-// };
 
 const initialState = {
   mobile: '',
   // password: ''
 }
 
-GoogleSignin.configure({
-  androidClientId: Config.ANDROID_GOOGLE_SIGN_IN_KEY, // client ID of type WEB for your server (needed to verify user ID and offline access)
-  iosClientId: Config.IOS_GOOGLE_SIGN_IN_KEY,
-  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-});
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -68,46 +43,6 @@ const LoginPage = () => {
     }
   }, [logindata]);
 
-  // useEffect(() => {
-  //   disconnectSocket()
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('userCheckData', userCheckData);
-  //   if (userCheckData?.token) {
-  //     handleLogin(userCheckData);
-  //     dispatch(updateUserCheck(userCheckData));
-  //   } else if (userCheckError) {
-  //     navigate(ROUTES_NAMES.signUp);
-  //   }
-  // }, [userCheckData, userCheckError]);
-
-  const GoogleSignIn = async () => {
-    // try {
-    //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    //   const googleUserInfo = await GoogleSignin.signIn();
-    //   const { accessToken } = await GoogleSignin.getTokens()
-    //   const { email } = googleUserInfo.user;
-    //   dispatch(updateGoogleUserInfo({ accessToken, ...googleUserInfo }));
-    //   userCheck(email)
-    //     .unwrap()
-    //     .then(data => {
-    //       dispatch(updateUserCheck(data));
-    //     })
-    //     .catch(error => navigate(ROUTES_NAMES.signUp));
-    // } catch (error) {
-    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-    //     // user cancelled the login flow
-    //   } else if (error.code === statusCodes.IN_PROGRESS) {
-    //     // operation (e.g. sign in) is in progress already
-    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-    //     // play services not available or outdated
-    //   } else {
-    //     // some other error happened
-    //   }
-    // }
-    navigate(ROUTES_NAMES.signUp)
-  };
 
   const {
     watch,
@@ -223,7 +158,7 @@ const LoginPage = () => {
                 <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>{t('no_account')}</Text>
                 <Pressable
                   android_ripple={{ color: '#fff' }}
-                  onPress={GoogleSignIn}>
+                  onPress={ () => navigate(ROUTES_NAMES.signUp)}>
                   <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign Up</Text>
                 </Pressable>
               </View>
