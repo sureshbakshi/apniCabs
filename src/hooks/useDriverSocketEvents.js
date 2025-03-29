@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react"
-import {getSocketInstance} from "../sockets/socketConfig"
+import { createSocketInstance, getSocketInstance } from "../sockets/socketConfig"
 import { useDispatch, useSelector } from "react-redux"
 import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
 import { _isLoggedIn, isValidEvent } from "../util"
@@ -7,12 +7,13 @@ import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSli
 import { ClearRideStatus, DriverAvailableStatus, RideStatus, SOCKET_EVENTS } from "../constants"
 import useNotificationSound from "./useNotificationSound"
 import useChatMessage from "./useChatMessage"
+import delay from 'lodash/delay'
 
 const DRIVER_SOCKET_EVENTS = {
     get_ride_requests: 'DriverRequestSocket',
 }
 
-const driverSocket = getSocketInstance()
+let driverSocket = getSocketInstance()
 export const useDriverEvents = () => {
     const dispatch = useDispatch()
     const { playSound } = useNotificationSound()
@@ -25,7 +26,7 @@ export const useDriverEvents = () => {
                 dispatch(setRideRequest(request))
                 playSound()
             } else if (ClearRideStatus.includes(status)) {
-                if(request?.type === 'REQUEST') {
+                if (request?.type === 'REQUEST') {
                     //request individual cancel request, cancel all, auto cancel 
                     dispatch(updateRideRequest(request))
                 } else {
@@ -45,9 +46,10 @@ export const useDriverEvents = () => {
 
 const onGetRideRequests = (cb) => {
     driverSocket.on(DRIVER_SOCKET_EVENTS.get_ride_requests, (request) => {
-        console.log('on new request', request)
+        // console.log('on new request', request)
         const newUpdatedRequest = {
             Request: request,
+            id: request.request_id,
             ...request
         }
         cb(newUpdatedRequest)
@@ -63,7 +65,7 @@ const ignoreEvents = [];
 // ['connect', 'disconnect', DRIVER_SOCKET_EVENTS.get_ride_requests];
 
 export default (() => {
-    const { isSocketConnected } = useSelector((state) => state.auth)
+    const { isSocketConnected, userInfo } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const { updateRideRequests } = useDriverEvents();
     const { onlineStatus, activeRequestInfo } = useSelector((state) => state.driver);
@@ -83,22 +85,28 @@ export default (() => {
 
     const updateDriverSocketId = useCallback(() => {
         if (driverSocket?.id) {
-            console.log(`============= Update driver socket id ==========: ${driverSocket?.id}`)
+            // console.log(`============= Update driver socket id ==========: ${driverSocket?.id}`)
             dispatch(updatedSocketConnectionStatus(driverSocket?.id))
         }
     }, [driverSocket])
 
     const connectSocket = useCallback(() => {
-        console.log("connectSocket", driverSocket)
-            driverSocket?.connect();
+        console.log('================= driverSocket connect request======================', driverSocket?.auth)
+        if (driverSocket?.auth.userId !== userInfo?.id) {
+            console.log('================= driverSocket connect update ======================', userInfo.id)
+            createSocketInstance()
+            delay(() => {
+                driverSocket = getSocketInstance()
+            }, 50)
+        }
     }, [driverSocket]);
 
 
 
     useEffect(() => {
-        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline , isLoggedIn})
-        if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected) && !Boolean(driverSocket?.connected)) {
-            console.log('================= request connect ======================')
+        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline, isLoggedIn })
+        if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected)) {
+            // console.log('================= request connect ======================')
             connectSocket()
             onGetRideRequests(updateRideRequests);
             updateDriverSocketId()
@@ -109,7 +117,7 @@ export default (() => {
 
     useEffect(() => {
         driverSocket.on('connect', (res) => {
-            console.log('================= on connect ======================', res, driverSocket?.id)
+            // console.log('================= on connect ======================', res, driverSocket?.id)
             updateDriverSocketId()
             onGetRideRequests(updateRideRequests);
 

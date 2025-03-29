@@ -1,9 +1,18 @@
 import { useSelector } from "react-redux";
 import useGetCurrentLocation from "./useGetCurrentLocation";
+import isEmpty from "lodash/isEmpty";
+import { useEffect } from "react";
 
 export default (isDriverLogged) => {
-    const { currentLocation } = useGetCurrentLocation();
+    const { currentLocation, getCurrentLocation } = useGetCurrentLocation();
     const { driverLocation: watchedLocation } = useSelector(state => state.driver);
+
+    useEffect(() => {
+        if (isEmpty(currentLocation?.latitude)) {
+            getCurrentLocation()
+        }
+    }, [currentLocation?.latitude])
+
     const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
     return location
 }

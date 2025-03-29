@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from "react-redux"
 import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice";
 
 import { _isLoggedIn, isValidEvent } from "../util";
-import  {getSocketInstance} from '../sockets/socketConfig';
+import { createSocketInstance, getSocketInstance } from '../sockets/socketConfig';
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
-import { store } from "../store";
 import useNotificationSound from "./useNotificationSound";
 import audio from "../assets/audio";
 import { ClearRideStatus, RideStatus, SOCKET_EVENTS } from "../constants";
 import useChatMessage from "./useChatMessage";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
+import delay from 'lodash/delay'
+
 const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
     driver_location: 'DriverLocationSocket'
 }
-const userSocket = getSocketInstance()
+let userSocket = getSocketInstance()
 
 export const disconnectUserSocket = () => {
     userSocket.disconnect()
@@ -26,7 +27,7 @@ const ignoreEvents = []
 
 export default (() => {
     const { isSocketConnected, userInfo } = useSelector((state) => state.auth);
-    const { activeRequestId, activeRequestInfo} = useSelector((state) => state.user);
+    const { activeRequestId, activeRequestInfo } = useSelector((state) => state.user);
     const onChat = useChatMessage();
     const { playSound } = useNotificationSound();
 
@@ -46,7 +47,7 @@ export default (() => {
     const onRequestUpdate = () => {
         userSocket.on(USER_SOCKET_EVENTS.request_status, (updatedRequest) => {
             // Handle the driver list update in the UI
-            console.log(USER_SOCKET_EVENTS.request_status,updatedRequest )
+            console.log(USER_SOCKET_EVENTS.request_status, updatedRequest)
             // cb(updatedRequest)
             const formatRequest = {
                 updatedRequest
@@ -81,23 +82,27 @@ export default (() => {
 
     const updateSockeId = () => {
         console.log(`============= updateSockeId ==========`, userSocket?.id)
-        if(userSocket?.id){
+        if (userSocket?.id) {
             dispatch(updatedSocketConnectionStatus(userSocket?.id))
         }
     }
 
     const connectSocket = () => {
-        if (userSocket.connected) {
+        if (userSocket.connected && (userSocket?.auth?.userId === userInfo?.id)) {
             console.log(`============= user Client connection - add device ==========`)
             updateSockeId()
         } else {
-            console.log(`============= user Client connection - request ==========`)
-            userSocket.connect()
+            // console.log("user connectSocket", userSocket)
+            createSocketInstance()
+            delay(() => {
+                userSocket = getSocketInstance()
+                updateSockeId()
+            }, 50)
         }
     }
 
     useEffect(() => {
-        if (isLoggedIn && !Boolean(isSocketConnected) && !Boolean(userSocket?.connected)) {
+        if (isLoggedIn && !Boolean(isSocketConnected)) {
             connectSocket()
             onRequestUpdate()
             onDriverLocationUpdate()

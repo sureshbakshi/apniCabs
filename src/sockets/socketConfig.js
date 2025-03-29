@@ -9,7 +9,8 @@ const socketUri = config.SOCKET_URL
 // Ensure the socket instance is created only once
 let socket = null;
 
-const createSocketInstance = () => {
+export const createSocketInstance = () => {
+  console.log('Creating socket instance...', socket);
   if (!socket) {
     const state = store?.getState(); // Access state to get user info
     socket = io(socketUri, {

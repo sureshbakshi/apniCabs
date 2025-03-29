@@ -456,6 +456,8 @@ export const LOGIN_FORM = [
     label: "Phone number",
     props: {
       placeholder: "Enter phone number",
+      inputmode: "numeric",
+      keyboardType: "number-pad"
     },
   },
   // {
