@@ -6,7 +6,6 @@ import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { getScreen, isDriver } from '../util';
-import ActiveMapPage from './ActiveMap';
 import RideDetailsCards from '../components/common/RideDetailsCards';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { Text } from '../components/common';
@@ -18,6 +17,8 @@ import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useTranslation } from 'react-i18next';
 import {getSocketInstance} from '../sockets/socketConfig';
+import DriverMap from './DriverMap';
+import UserMap from './userMap';
 const socket = getSocketInstance()
 const ActiveRidePage = () => {
   const { t } = useTranslation();
@@ -74,7 +75,7 @@ const ActiveRidePage = () => {
                 textStyles={{ fontSize: 12 }}
               />
             </View>
-            <ActiveMapPage activeRequestInfo={activeRequestInfo} />
+            {isDriverLogged ? <DriverMap activeRequestInfo={activeRequestInfo}/> : <UserMap activeRequestInfo={activeRequestInfo}/>}
           </View>
           <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.white, padding: 15, paddingBottom: 3, borderTopLeftRadius: 18, borderTopRightRadius: 18 }]}>
             {/* {isDriverLogged ? <CardWrapper title={'User Details'}>

@@ -15,6 +15,7 @@ import useLocationWatcher from '../hooks/useLocationWatcher';
 import { useEffect } from 'react';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useSelector } from 'react-redux';
+import useGetDriverDetails from '../hooks/useGetDriverDetails';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +26,7 @@ export default function DriverTabNavigator() {
   useDriverSocketEvents()
   useAppStateListner()
   useLocationWatcher()
+  useGetDriverDetails()
   const { getCurrentLocation } = useGetCurrentLocation()
   const { t } = useTranslation()
   const { driverInfo } = useSelector(state => state.auth);

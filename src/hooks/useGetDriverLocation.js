@@ -3,7 +3,7 @@ import useGetCurrentLocation from "./useGetCurrentLocation";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 
-export default (isDriverLogged) => {
+export default () => {
     const { currentLocation, getCurrentLocation } = useGetCurrentLocation();
     const { driverLocation: watchedLocation } = useSelector(state => state.driver);
 
@@ -13,6 +13,6 @@ export default (isDriverLogged) => {
         }
     }, [currentLocation?.latitude])
 
-    const location = (isDriverLogged && watchedLocation?.latitude) ? watchedLocation : currentLocation;
+    const location = (watchedLocation?.latitude) ? watchedLocation : currentLocation;
     return location
 }

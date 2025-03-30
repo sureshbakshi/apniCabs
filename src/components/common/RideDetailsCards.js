@@ -275,7 +275,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             console.log(err)
         })
     }
-    const isActiveRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
+    const isDriverOnRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
     const fromLocation = driverCurrentLocation || activeRequestInfo.from
     return (
@@ -286,7 +286,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                     {(isAccepted && isDriverLogged) && <RenderOTP {...{ activeRequestInfo }} />}
                 </ScreenContainer>
             </View>
-            {(isActiveRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
+            {(isDriverOnRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 <OpenMapButton route={{ start: fromLocation, end: activeRequestInfo.to, navigate: true }} />
                 <CustomButton
                     onClick={() => getCurrentLocation(completeRideHandler, true)}
