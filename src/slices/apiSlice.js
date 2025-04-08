@@ -8,8 +8,9 @@ import {disconnectSocket} from '../sockets/socketConfig'
 import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
+  baseUrl: 'https://api.dev.apnicabi.com/',
   // baseUrl: 'http://43.204.100.95:3001/',
-  baseUrl: 'https://apim.apnicabi.com/',
+  // baseUrl: 'https://apim.apnicabi.com/',
   // baseUrl: 'http://192.168.0.104:8080/api/', //rajesh IP
   // baseUrl: 'http://192.168.29.235:8080/api/', //suresh IP
   prepareHeaders: (headers, { getState }) => {

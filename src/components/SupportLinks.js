@@ -11,14 +11,14 @@ import { useSelector } from 'react-redux';
 import { isDriver } from '../util';
 
 export default () => {
-    const [refetch, { data: appLinks }] = useLazyGetAppLinksQuery({ isActive: 0 }, { refetchOnMountOrArgChange: true })
+    const [refetch, { data: appLinks }] = useLazyGetAppLinksQuery({ isActive: 1 }, { refetchOnMountOrArgChange: true })
     const auth = useSelector(state => state.auth)
     const roleId = isDriver() ? ROLE_IDS[USER_ROLES.DRIVER] : ROLE_IDS[USER_ROLES.USER]
 
     useFocusEffect(
         useCallback(() => {
             refetch({
-                isActive: 0
+                isActive: 1
             })
         }, [])
     );
