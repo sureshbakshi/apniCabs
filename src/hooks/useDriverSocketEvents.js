@@ -91,13 +91,17 @@ export default (() => {
     }, [driverSocket])
 
     const connectSocket = useCallback(() => {
-        console.log('================= driverSocket connect request======================', driverSocket?.auth)
-        if (driverSocket?.auth.userId !== userInfo?.id) {
-            console.log('================= driverSocket connect update ======================', userInfo.id)
+        // console.log('================= driverSocket connect request======================', driverSocket?.auth)
+        if (driverSocket.connected && (driverSocket?.auth?.userId === userInfo?.id)) {
+            // console.log(`============= updateDriverSocketId ==========`)
+            updateDriverSocketId()
+        } else {
+            // console.log("driver connectSocket", driverSocket)
             createSocketInstance()
             delay(() => {
                 driverSocket = getSocketInstance()
-            }, 50)
+                updateDriverSocketId()
+            }, 5)
         }
     }, [driverSocket]);
 
@@ -109,7 +113,7 @@ export default (() => {
             // console.log('================= request connect ======================')
             connectSocket()
             onGetRideRequests(updateRideRequests);
-            updateDriverSocketId()
+
         } else if ((!isLoggedIn || !isDriverOnline)) {
             disconnectDriverSocket();
         }

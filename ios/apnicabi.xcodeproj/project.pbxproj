@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* apnicabiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* apnicabiTests.m */; };
-		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -16,11 +16,13 @@
 		7699B88040F8A987B510C191 /* libPods-apnicabi-apnicabiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-apnicabi-apnicabiTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9309ACAE2B42C8B10020BDC4 /* geoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */; };
-		9312BC7B2D1496E600F73C1B /* apnicabiDriverDev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C7F2762D144F2600839B3E /* apnicabiDriverDev-Info.plist */; };
-		9312BC7C2D1496EC00F73C1B /* apnicabiDev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C7F2A62D144F7700839B3E /* apnicabiDev-Info.plist */; };
-		9312BC7D2D1496F000F73C1B /* apnicabiDriver-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C7F2BE2D144F8600839B3E /* apnicabiDriver-Info.plist */; };
 		9312BC822D14BA9000F73C1B /* LaunchScreen_driver.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9312BC802D14BA7B00F73C1B /* LaunchScreen_driver.storyboard */; };
 		9312BC832D14BA9000F73C1B /* LaunchScreen_driver.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9312BC802D14BA7B00F73C1B /* LaunchScreen_driver.storyboard */; };
+		93A786002DB0383200D6AC7D /* apnicabiDev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A785FF2DB0383200D6AC7D /* apnicabiDev-Info.plist */; };
+		93A786022DB0385700D6AC7D /* apnicabiDriverDev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A786012DB0385700D6AC7D /* apnicabiDriverDev-Info.plist */; };
+		93A786042DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */; };
+		93A786052DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */; };
+		93A786062DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */; };
 		93C7F2632D144F2600839B3E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		93C7F2642D144F2600839B3E /* geoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */; };
 		93C7F2652D144F2600839B3E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -91,12 +93,12 @@
 		9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoLocation.swift; sourceTree = "<group>"; };
 		930D07B62B81E3C8002CA68D /* apnicabi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = apnicabi.entitlements; path = apnicabi/apnicabi.entitlements; sourceTree = "<group>"; };
 		9312BC802D14BA7B00F73C1B /* LaunchScreen_driver.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen_driver.storyboard; path = apnicabi/LaunchScreen_driver.storyboard; sourceTree = "<group>"; };
+		93A785FF2DB0383200D6AC7D /* apnicabiDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "apnicabiDev-Info.plist"; sourceTree = "<group>"; };
+		93A786012DB0385700D6AC7D /* apnicabiDriverDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "apnicabiDriverDev-Info.plist"; sourceTree = "<group>"; };
+		93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "apnicabiDriver-Info.plist"; sourceTree = "<group>"; };
 		93C7F2752D144F2600839B3E /* apnicabiDriverDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = apnicabiDriverDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		93C7F2762D144F2600839B3E /* apnicabiDriverDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "apnicabiDriverDev-Info.plist"; path = "/Users/sureshkumar/Desktop/cabi_project/my-monorepo/apniCabs/ios/apnicabiDriverDev-Info.plist"; sourceTree = "<absolute>"; };
 		93C7F2A52D144F7700839B3E /* apnicabiDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = apnicabiDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		93C7F2A62D144F7700839B3E /* apnicabiDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "apnicabiDev-Info.plist"; path = "/Users/sureshkumar/Desktop/cabi_project/my-monorepo/apniCabs/ios/apnicabiDev-Info.plist"; sourceTree = "<absolute>"; };
 		93C7F2BD2D144F8600839B3E /* apnicabiDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = apnicabiDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		93C7F2BE2D144F8600839B3E /* apnicabiDriver-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "apnicabiDriver-Info.plist"; path = "/Users/sureshkumar/Desktop/cabi_project/my-monorepo/apniCabs/ios/apnicabiDriver-Info.plist"; sourceTree = "<absolute>"; };
 		93E52C6E2C9604CD00849876 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "apnicabi/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
@@ -123,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
 				BA0CE36F580407E1CA3B001B /* libPods-apnicabi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,9 +222,9 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				E0FB20BBF5264C39ADB9A739 /* Resources */,
-				93C7F2762D144F2600839B3E /* apnicabiDriverDev-Info.plist */,
-				93C7F2A62D144F7700839B3E /* apnicabiDev-Info.plist */,
-				93C7F2BE2D144F8600839B3E /* apnicabiDriver-Info.plist */,
+				93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */,
+				93A785FF2DB0383200D6AC7D /* apnicabiDev-Info.plist */,
+				93A786012DB0385700D6AC7D /* apnicabiDriverDev-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -450,7 +452,7 @@
 				9312BC832D14BA9000F73C1B /* LaunchScreen_driver.storyboard in Resources */,
 				93C7F26C2D144F2600839B3E /* Nunito-Regular.ttf in Resources */,
 				93C7F26D2D144F2600839B3E /* poppins_regular.ttf in Resources */,
-				9312BC7B2D1496E600F73C1B /* apnicabiDriverDev-Info.plist in Resources */,
+				93A786062DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */,
 				93C7F26E2D144F2600839B3E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,13 +461,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9312BC7C2D1496EC00F73C1B /* apnicabiDev-Info.plist in Resources */,
 				93C7F2992D144F7700839B3E /* LaunchScreen.storyboard in Resources */,
 				93C7F29A2D144F7700839B3E /* Images.xcassets in Resources */,
 				93C7F29B2D144F7700839B3E /* Nunito-Bold.ttf in Resources */,
 				93C7F29C2D144F7700839B3E /* Nunito-Regular.ttf in Resources */,
 				93C7F29D2D144F7700839B3E /* poppins_regular.ttf in Resources */,
 				93C7F29E2D144F7700839B3E /* GoogleService-Info.plist in Resources */,
+				93A786042DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,12 +475,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93A786052DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */,
 				93C7F2B12D144F8600839B3E /* LaunchScreen.storyboard in Resources */,
+				93A786022DB0385700D6AC7D /* apnicabiDriverDev-Info.plist in Resources */,
 				93C7F2B22D144F8600839B3E /* Images.xcassets in Resources */,
 				93C7F2B32D144F8600839B3E /* Nunito-Bold.ttf in Resources */,
 				9312BC822D14BA9000F73C1B /* LaunchScreen_driver.storyboard in Resources */,
 				93C7F2B42D144F8600839B3E /* Nunito-Regular.ttf in Resources */,
-				9312BC7D2D1496F000F73C1B /* apnicabiDriver-Info.plist in Resources */,
+				93A786002DB0383200D6AC7D /* apnicabiDev-Info.plist in Resources */,
 				93C7F2B52D144F8600839B3E /* poppins_regular.ttf in Resources */,
 				93C7F2B62D144F8600839B3E /* GoogleService-Info.plist in Resources */,
 			);

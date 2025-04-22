@@ -19,7 +19,7 @@ export default () => {
 
     const playSound = (filePath = audio.knock) => {
         try {
-            SoundPlayer.playUrl(filePath)
+            SoundPlayer.playAsset(filePath)
         } catch (e) {
             console.log(`cannot play the sound file`, e)
         }

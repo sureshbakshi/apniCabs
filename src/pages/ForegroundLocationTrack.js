@@ -63,7 +63,7 @@ const ForegroundLocationTrack = () => {
             id: 1244,
             title: 'Location Tracking',
             message: 'Location Tracking',
-            icon: 'ic_launcher',
+            icon: 'icon',
             button: false,
             button2: false,
             setOnlyAlertOnce: true,

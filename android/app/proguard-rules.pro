@@ -11,4 +11,6 @@
 -keep class com.apnicabi.BuildConfig { *; }
 -keep class com.google.android.libraries.places.api.** { *; }
 -keep class com.google.android.gms.common.api.** { *; }
+-keep class com.johnsonsu.rnsoundplayer.** { *; }
+
 

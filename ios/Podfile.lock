@@ -1,10 +1,4 @@
 PODS:
-  - AppAuth (1.7.5):
-    - AppAuth/Core (= 1.7.5)
-    - AppAuth/ExternalUserAgent (= 1.7.5)
-  - AppAuth/Core (1.7.5)
-  - AppAuth/ExternalUserAgent (1.7.5):
-    - AppAuth/Core
   - boost (1.76.0)
   - BugsnagReactNative (7.25.1):
     - React-Core
@@ -81,14 +75,6 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleSignIn (7.1.0):
-    - AppAuth (< 2.0, >= 1.7.3)
-    - GTMAppAuth (< 5.0, >= 4.1.1)
-    - GTMSessionFetcher/Core (~> 3.3)
-  - GTMAppAuth (4.1.1):
-    - AppAuth/Core (~> 1.7)
-    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
-  - GTMSessionFetcher/Core (3.4.1)
   - libevent (2.1.12)
   - lottie-ios (4.3.4)
   - lottie-react-native (6.4.1):
@@ -428,9 +414,6 @@ PODS:
     - React-Core
   - RNDeviceInfo (14.0.0):
     - React-Core
-  - RNGoogleSignin (10.0.1):
-    - GoogleSignIn (~> 7.0)
-    - React-Core
   - RNKeychain (8.1.2):
     - React-Core
   - RNPermissions (4.1.5):
@@ -440,7 +423,7 @@ PODS:
     - React-RCTImage
   - RNShare (10.0.2):
     - React-Core
-  - RNSoundPlayer (0.13.2):
+  - RNSoundPlayer (0.14.5):
     - React-Core
   - RNVectorIcons (10.0.0):
     - React-Core
@@ -522,7 +505,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -533,7 +515,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AppAuth
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -545,9 +526,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
     - libevent
     - lottie-ios
     - OpenSSL-Universal
@@ -651,8 +629,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
-  RNGoogleSignin:
-    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
   RNPermissions:
@@ -669,9 +645,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
-  BugsnagReactNative: 0e335dab2447e0cb761ca271d6d26699e4ae61db
+  BugsnagReactNative: 3369fa488e98e74c24ac3dc552a71fec8f290bd7
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: d58428b28fe1f5070fe993495b0e2eaf701d3820
@@ -687,42 +662,39 @@ SPEC CHECKSUMS:
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
-  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
-  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
-  GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 3d98679b41fa6fd6aff2352b3953dbd3df8a397e
-  lottie-react-native: a2ae9c27c273b060b2affff2957bc0ff7fdca353
+  lottie-react-native: 75da908905bb0cac63e4a19f2abe6ac005516411
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c154ebcfbf41d6fef86c52674fc1aa08837ff538
   RCTTypeSafety: 3063e5a1e5b1dc2cbeda5c8f8926c0ad1a6b0871
   React: 0a1a36e8e81cfaac244ed88b97f23ab56e5434f0
   React-callinvoker: 679a09fbfe1a8bbf0c8588b588bf3ef85e7e4922
-  React-Codegen: d97acffec98e41a27c09519fcf528492513d534a
-  React-Core: 303d67476e2b9bbc943438612bd4a1feb05f370f
-  React-CoreModules: 06cbf15185e6daf9fb3aec02c963f4807bd794b3
-  React-cxxreact: 6ff28d35025bc38f0e521aab50810d278b8a1b2b
+  React-Codegen: d193cea3041a51bb7f7c098775baaca7f08c297c
+  React-Core: 174804e53a4e51dd537477116512c2544d83f895
+  React-CoreModules: 1013caf74cf92eb6218a70bf19fac2b3d3e824a6
+  React-cxxreact: fc6ca9dc60ef171542b90b57ab7d8c93756cf1a5
   React-jsc: a7ada8baac0b07c60e27a4d25150357e316be2b0
-  React-jsi: b0da4157773252c53d61af1d6b17083ac394dfed
-  React-jsiexecutor: 272deb09db352916b331dc7a0dd1c78b22ff8e54
+  React-jsi: 2a5c9ed3517052e4248f503ded107811f82e92a7
+  React-jsiexecutor: cbde118cab2c4b4b38891a296f9831b430030422
   React-jsinspector: ea8101acf525ec08b2d87ddf0637d45f8e3b4148
-  React-logger: 97987f46779d8dd24656474ad0c43a5b459f31d6
-  react-native-config: aa47e487f8850a747bf849bb6a398a0bba93fbbd
-  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
-  react-native-immediate-phone-call: eb8a86325478db6c066eac6ecf8fa9ba3fbf66c5
-  react-native-maps: e2b78affd8e90c807a87bd042dc6b1af2decbcf1
-  react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
-  react-native-otp-auto-fill: 722b3b99ddad3a2e92b6dacafdad6ab533e6ae2a
-  react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
-  react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
-  react-native-select-contact: f88ccd9dbee6c4d1c32507291b431cf558a2ed42
-  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
+  React-logger: 03886c4e5609fd1c8aa7ed4eb96b84e85594daee
+  react-native-config: 53a5e0a87973fb344c02914563a8b6090a986617
+  react-native-geolocation-service: 32b2c2a3b91e70ce2a8d0c684801aaeb0a07e0ec
+  react-native-html-to-pdf: 7a49e6c58ac5221bcc093027b195f4b214f27a9d
+  react-native-immediate-phone-call: 31642355bfc4c20fb262ea0bdc50b575daa52335
+  react-native-maps: db6ce5e3546e278243190f1193da02742c115b56
+  react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5
+  react-native-otp-auto-fill: ac52a4437cd7e7f41dfa00db994df6898dcf744a
+  react-native-pager-view: 56aab0804cd2801623e67ae288ed8b71a482f97e
+  react-native-safe-area-context: 9fdf214647353ab717139d164c9e1f163045eb1c
+  react-native-select-contact: faae93abd824cfff97d28906d76f4e4efddbaa9b
+  react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   React-perflogger: c7ccda3d1d1da837f7ff4e54e816022a6803ee87
   React-RCTActionSheet: 01c125aebbad462a24228f68c584c7a921d6c28e
   React-RCTAnimation: 5277a9440acffc4a5b7baa6ae3880fe467277ae6
-  React-RCTAppDelegate: 5c41b6b2966de35953492c981bb56ddb50da8e6d
+  React-RCTAppDelegate: 42a552c7cae9c983bf3c49f394117e812383e555
   React-RCTBlob: 8c12b8d0ce081d19c549ce2927a95d043009c05a
   React-RCTImage: 65319acfe82b85219b2d410725a593abe19ac795
   React-RCTLinking: a5fc2b9d7a346d6e7d34de8093bb5d1064042508
@@ -731,21 +703,20 @@ SPEC CHECKSUMS:
   React-RCTText: 05c244b135d75d4395eb35c012949a5326f8ab70
   React-RCTVibration: 0af3babdeee1b2d052811a2f86977d1e1c81ebd1
   React-runtimeexecutor: 4bf9a9086d27f74065fce1dddac274aa95216952
-  ReactCommon: cef15901c6c18404881a89fd84b75ff4da2257c9
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
-  RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
-  RNDeviceInfo: 6192a9c9167e256803e554038b22b3b2b40163dc
-  RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
-  RNKeychain: a65256b6ca6ba6976132cc4124b238a5b13b3d9c
-  RNPermissions: 291897442ea8c0cc518e28f34e218685a279b094
-  RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
-  RNShare: 859ff710211285676b0bcedd156c12437ea1d564
-  RNSoundPlayer: 369105c565b8fe6ea0a43fc882dc81eba444e842
-  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
+  ReactCommon: 7b20082489693ae0901dd8e3f676ce09431e6c6d
+  RNCAsyncStorage: b934e5ab140257f25f5d67ded2464646731e4349
+  RNCClipboard: 4abb037e8fe3b98a952564c9e0474f91c492df6d
+  RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
+  RNKeychain: df33ae4d27df06622fc14190b790ba8749f6be76
+  RNPermissions: 9be710e96ae0d81489cfd8f6f2b6125fb156995a
+  RNScreens: 4f2dbf88d1ba333a4455a29833e30510b21f14c5
+  RNShare: 01c717e457489779d16293d2afef36995aadd001
+  RNSoundPlayer: 7961678d02c7339d9e9cfb78b9f3e8fde17f9df2
+  RNVectorIcons: fab5ba3ec74be0cdd3952ca28416214a921722a2
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 5b0304b3dbef2b52e078052138e23a19c7dacaef
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: 2dacf83d2903d11b8db92789bde631c17a7a2649
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

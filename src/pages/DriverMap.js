@@ -27,7 +27,7 @@ const DriverMap = ({ activeRequestInfo }) => {
         image: images.pin
     }
     return (
-        <RideMap from_details={from_details} to_details={to_details} />
+        (activeRequestInfo?.from_longitude && activeRequestInfo?.to_longitude) ? <RideMap from_details={from_details} to_details={to_details} /> : null
     );
 };
 export default DriverMap;
