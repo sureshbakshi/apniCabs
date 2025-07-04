@@ -34,9 +34,9 @@ export const checkAndroidPermissions = async () => {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
-                title: 'Apnicabi',
+                title: 'Pik bike',
                 message:
-                    'Apnicabi needs to use your location to show routes and to find drivers.',
+                    'Pik bike needs to use your location to show routes and to find drivers.',
             },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {

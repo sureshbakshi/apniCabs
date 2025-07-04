@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Apni Cabi Dev</string>
+	<string>Pik bike Dev</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -86,10 +86,10 @@
 	<false/>
 	<key>bugsnag</key>
 	<dict>
-		<key>apiKey</key>
-		<string>e183ea16fe75fad110a7cf97e357f382</string>
 		<key>NSContactsUsageDescription</key>
 		<string>This app uses your contacts to book taxi for others.</string>
+		<key>apiKey</key>
+		<string>e183ea16fe75fad110a7cf97e357f382</string>
 	</dict>
 </dict>
 </plist>

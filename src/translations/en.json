@@ -2,7 +2,7 @@
     "welcome": "Welcome",
     "no_account":"Don’t have an account?",
     "account":"Already have an account?",
-    "get_started_title": "Start your journey with Apni Cabi as",
+    "get_started_title": "Start your journey with Pik bike as",
     "get_started_des":"We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.",
     "get_started_btn": "Get Started",
     "submit_btn":"Submit",
@@ -38,12 +38,12 @@
          "driver_cancelled":{
             "title": "Booking Cancelled",
             "description": "We're sorry, but your ride has been canceled by the driver.",
-            "subText": "We apologize for any inconvenience caused. Thank you for using Apnicabi. We appreciate your understanding."
+            "subText": "We apologize for any inconvenience caused. Thank you for using Pik bike. We appreciate your understanding."
          },
          "completed":{
             "title": "Trip Completed",
-            "driver_description": "Thank you for completing the ride with Apnicabi. We appreciate your dedication to providing a safe and reliable transportation experience for our passengers.",
-            "user_description": "Thank you for riding with Apnicabi! Your trip has been successfully completed  and look forward to serving you again soon."
+            "driver_description": "Thank you for completing the ride with Pik bike. We appreciate your dedication to providing a safe and reliable transportation experience for our passengers.",
+            "user_description": "Thank you for riding with Pik bike! Your trip has been successfully completed  and look forward to serving you again soon."
          }
     },
     "please_select_a_reason":"Please select a reason",
