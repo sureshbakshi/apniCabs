@@ -1,7 +1,7 @@
 import { View } from "react-native"
 import { Text } from "react-native-paper"
 import images from "../../util/images"
-import LottieAnimation from 'lottie-react-native';
+// import LottieAnimation from 'lottie-react-native';
 import ImageView from "./imageView/ImageView";
 
 export default ({msg, source = images.homeBanner, containerStyles = {}, textStyles = {}, animationProps, isLoader= true}) => {

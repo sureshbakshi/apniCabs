@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apnicabi - Ride Location Tracking</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .leaflet-routing-container {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const trackId = decodeURIComponent(params.get('data') || '');
+
+        let fromLocation; // Fixed Start Location
+        let toLocation;   // Fixed End Location
+        let map;          // Map instance
+        let routingControl; // Routing control instance
+        let liveLocationMarker; // Marker for live location
+
+        // Define custom icons
+        const iconPath = `./assets/img/`;
+        const icons = {
+            CAR: L.icon({
+                iconUrl: `${iconPath}car-2.png`,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+            }),
+            BIKE: L.icon({
+                iconUrl: `${iconPath}bike.png`,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+            }),
+            AUTO: L.icon({
+                iconUrl: `${iconPath}auto.png`,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+            }),
+            // Add more icons as needed
+        };
+
+        // Function to fetch data
+        async function fetchData() {
+            try {
+                const response = await fetch(`https://apnicabi.com/api/v1/request/request/live-track?trackId=${trackId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                const { from_location, to_location, location, driver_details} = data;
+                fromLocation = [from_location.latitude, from_location.longitude];
+                toLocation = [to_location.latitude, to_location.longitude];
+
+                if (!map) {
+                    initializeMap(data);
+                }
+
+                if (location?.latitude) {
+                    updateRouteWithLiveLocation([location.latitude, location.longitude], driver_details.type);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+
+        // Initialize the map
+        function initializeMap(data) {
+            map = L.map('map').setView(fromLocation, 12);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            // Markers
+            L.marker(fromLocation).addTo(map).bindPopup(`From: ${data?.from}`).openPopup();
+            L.marker(toLocation).addTo(map).bindPopup(`To: ${data?.to}`).openPopup();
+            // Routing Control
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(fromLocation),
+                    L.latLng(toLocation),
+                ],
+                routeWhileDragging: true,
+                showAlternatives: false,
+                addWaypoints: false,
+                lineOptions: {
+                    styles: [{ color: 'blue', weight: 4 }],
+                },
+            }).addTo(map);
+        }
+
+        // Function to update the route with live location
+        function updateRouteWithLiveLocation(liveLocation, type) {
+            const icon = icons[type] || icons['car']; // Default to car icon if type is not found
+
+            if (!liveLocationMarker) {
+                liveLocationMarker = L.marker(liveLocation, { icon }).addTo(map).bindPopup('Driver location').openPopup();
+            } else {
+                liveLocationMarker.setLatLng(liveLocation).setIcon(icon);
+            }
+
+            routingControl.setWaypoints([
+                L.latLng(fromLocation),
+                L.latLng(liveLocation),
+                L.latLng(toLocation),
+            ]);
+            console.log('Updated live location:', liveLocation);
+        }
+
+       
+        fetchData();
+        setInterval(fetchData, 30*1000);
+    </script>
+</body>
+
+</html>
