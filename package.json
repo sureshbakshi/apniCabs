@@ -24,7 +24,8 @@
     "bugsnag:upload-dsym": "bugsnag-cli upload dsym ios/",
     "bugsnag:upload-rn-ios": "bugsnag-cli upload react-native-ios",
     "bugsnag:upload": "bugsnag-cli upload android-ndk android/ && bugsnag-cli upload android-proguard android/ && bugsnag-cli upload react-native-android && bugsnag-cli upload dsym ios/ && bugsnag-cli upload react-native-ios",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "project:clean": "react-native-clean-project"
   },
   "dependencies": {
     "@bugsnag/plugin-react-navigation": "^7.25.0",
@@ -41,12 +42,12 @@
     "axios": "^1.5.1",
     "i18next": "^24.2.0",
     "lodash": "^4.17.21",
-    "lottie-react-native": "6.4.1",
     "moment": "^2.30.1",
     "react": "18.2.0",
     "react-hook-form": "^7.49.2",
     "react-i18next": "^15.2.0",
-    "react-native": "0.71.2",
+    "react-native": "0.72.4",
+    "react-native-clean-project": "^4.0.3",
     "react-native-config": "^1.5.3",
     "react-native-device-info": "^14.0.0",
     "react-native-env": "^0.0.6",
@@ -86,9 +87,9 @@
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
     "@bugsnag/cli": "^2.4.0",
-    "@react-native-community/eslint-config": "^3.2.0",
-    "@tsconfig/react-native": "^2.0.2",
-    "@types/jest": "^29.2.1",
+    "@react-native/eslint-config": "^0.72.2",
+    "@react-native/metro-config": "^0.72.11",
+    "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
     "@types/react-native-vector-icons": "^6.4.15",
     "@types/react-test-renderer": "^18.0.0",
@@ -96,7 +97,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.19.0",
     "jest": "^29.2.1",
-    "metro-react-native-babel-preset": "0.73.7",
+    "metro-react-native-babel-preset": "0.76.8",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.4.1",
@@ -104,7 +105,7 @@
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },
-  "jest": {
-    "preset": "react-native"
+  "engines": {
+    "node": ">=16"
   }
 }

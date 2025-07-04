@@ -1042,6 +1042,7 @@
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1077,6 +1078,7 @@
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1158,6 +1160,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -1222,6 +1225,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -1250,6 +1254,7 @@
 				INFOPLIST_FILE = "apnicabiDriverDev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Driver Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1285,6 +1290,7 @@
 				INFOPLIST_FILE = "apnicabiDriverDev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Driver Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1320,6 +1326,7 @@
 				INFOPLIST_FILE = "apnicabiDev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1355,6 +1362,7 @@
 				INFOPLIST_FILE = "apnicabiDev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1390,7 +1398,7 @@
 				INFOPLIST_FILE = "apnicabiDriver-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				IPHONEOS_DEPLOYMENT_TARGET = "12.4 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1426,7 +1434,7 @@
 				INFOPLIST_FILE = "apnicabiDriver-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Apni Cabi Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				IPHONEOS_DEPLOYMENT_TARGET = "12.4 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
