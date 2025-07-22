@@ -1036,7 +1036,7 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = apnicabi/Info.plist;
@@ -1047,7 +1047,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.15;
+				MARKETING_VERSION = 1.1.16;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1073,7 +1073,7 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				INFOPLIST_FILE = apnicabi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike Cabi";
@@ -1083,7 +1083,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.15;
+				MARKETING_VERSION = 1.1.16;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

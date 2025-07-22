@@ -4,6 +4,7 @@ import {
     TextInput,
     Keyboard,
     Platform,
+    Linking,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
 import CommonStyles from '../styles/commonStyles';
@@ -20,6 +21,7 @@ import config from '../util/config';
 import Dropdown from './common/Dropdown';
 import { useGetCitiesQuery } from '../slices/apiSlice';
 import { useTranslation } from 'react-i18next';
+import { Checkbox } from 'react-native-paper';
 
 
 // const cities = [{ "id": "c3ca6e35-8eac-4806-a59b-8d0c9d832946", "code": "HYD", "name": "Hyderabad", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }, { "id": "f79b2eb5-ed50-4b20-87ab-c7b5612aff68", "code": "BZA", "name": "Vijayawada", "is_active": 1, "created_by": null, "created_at": "2025-01-20T08:46:14.000Z", "updated_by": null, "updated_at": null, "deleted_by": null, "deleted_at": null }]
@@ -114,28 +116,49 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                                 render={({ field: { onChange, onBlur, value } }) => {
                                     return (
                                         <>
-                                            <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.props?.placeholder || field.label}</Text>
-                                            {field.element === ELEMENTS.select ?
-                                                <Dropdown
-                                                    label={field.label}
-                                                    name={field.name}
-                                                    options={options[field.fieldKey]}
-                                                    {...field.props}
-                                                    onChange={onChange}
-                                                />
-                                                :
-                                                <TextInput
-                                                    name={field.name}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(value) => {
-                                                        onChange(value);
-                                                    }}
-                                                    value={value?.toString()}
-                                                    placeholderTextColor={COLORS.gray}
-                                                    style={[LoginStyles.textInputPickup]}
-                                                    disable={otpInfo}
-                                                    {...field.props}
-                                                />
+                                            {field.element === ELEMENTS.checkbox ? (
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                                                    <Checkbox
+                                                        status={value ? 'checked' : 'unchecked'}
+                                                        onPress={() => onChange(!value)}
+                                                        color={COLORS.primary}
+                                                        {...field.props}
+                                                    />
+                                                    <Text
+                                                        onPress={() => {
+                                                            if (field?.url) Linking.openURL(field.url);
+                                                            onChange?.(!value)
+                                                        }}
+
+                                                        style={{ marginLeft: 8, color: field?.url ? COLORS.brand_blue: COLORS.black }}
+                                                    >
+                                                        {field.label}
+                                                    </Text>
+                                                </View>
+                                            ) : (
+                                                <>
+                                                    <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.props?.placeholder || field.label}</Text>
+                                                    {field.element === ELEMENTS.select ?
+                                                        <Dropdown
+                                                            label={field.label}
+                                                            name={field.name}
+                                                            options={options[field.fieldKey]}
+                                                            {...field.props}
+                                                            onChange={onChange}
+                                                        /> :
+                                                        <TextInput
+                                                            name={field.name}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(value) => {
+                                                                onChange(value);
+                                                            }}
+                                                            value={value?.toString()}
+                                                            placeholderTextColor={COLORS.gray}
+                                                            style={[LoginStyles.textInputPickup]}
+                                                            disable={otpInfo}
+                                                            {...field.props}
+                                                        />}
+                                                </>)
                                             }
                                         </>
                                     )

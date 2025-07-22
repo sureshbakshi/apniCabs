@@ -12,7 +12,7 @@ import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideReques
 import { updateRideStatus, setActiveRide } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
-import { clearRideChats, setDialogStatus } from '../../slices/authSlice';
+import { clearRideChats, setDialogStatus, setDriverCallOptionsDialogStatus } from '../../slices/authSlice';
 import CustomButton from './CustomButton';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import OpenMapButton from './OpenMapButton';
@@ -55,7 +55,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
             isLowerCase
         />
         <CustomButton
-            onClick={() => phoneNumber ? RNImmediatePhoneCall.immediatePhoneCall(`+91${phoneNumber}`) : null}
+            onClick={() => dispatch(setDriverCallOptionsDialogStatus(true))}
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.primary, height: 40 }
             }

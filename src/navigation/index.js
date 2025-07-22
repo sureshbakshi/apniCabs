@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import SomethingWentWrong from '../components/common/Error';
 import RideStatusDialog from '../components/common/RideStatusDialog';
+import CallOptionsDialog from '../components/common/callOptionsDialog';
 
 Bugsnag.start({
   plugins: [new BugsnagPluginReactNavigation()],
@@ -41,6 +42,7 @@ function App() {
           <GetNavigation />
         </BugsnagNavigationContainer>
         <CancelReasonDialog />
+        <CallOptionsDialog />
         <RideStatusDialog />
       </ErrorBoundary>
     </>

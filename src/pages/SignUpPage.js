@@ -23,7 +23,7 @@ import CustomButton from '../components/common/CustomButton';
 import config, { openOwnerPortal } from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
-const isDriver= config.ROLE === USER_ROLES.DRIVER
+const isDriver = config.ROLE === USER_ROLES.DRIVER
 const DRIVER_ADD_FIELDS = [{
   name: "city",
   label: "City",
@@ -32,7 +32,7 @@ const DRIVER_ADD_FIELDS = [{
   props: {
     placeholder: "Select City",
   }
-},{
+}, {
   name: "gender",
   label: "Gender",
   element: ELEMENTS.select,
@@ -44,6 +44,14 @@ const DRIVER_ADD_FIELDS = [{
 const SIGN_UP_FORM_FIELDS = [
   ...SIGN_UP_FORM,
   ...(config.ROLE === 'DRIVER' ? DRIVER_ADD_FIELDS : [])
+  ,
+  {
+    name: 'agreeTerms',
+    label: 'I agree to the Terms and Conditions',
+    element: ELEMENTS.checkbox,
+    defaultValue: false,
+    url: 'https://pikbike.com/terms_and_conditions.html',
+  }
 ]
 const SignUpPage = () => {
   const { t } = useTranslation();
@@ -52,6 +60,7 @@ const SignUpPage = () => {
   const initialState = {
     name: googleInfo?.name || '',
     email: googleInfo?.email || '',
+    agreeTerms: false,
     phone: '',
     referredBy: ''
   }
@@ -93,7 +102,7 @@ const SignUpPage = () => {
                   <OTPForm
                     successHandler={successHandler}
                     formFields={SIGN_UP_FORM_FIELDS}
-                    formSchema={ isDriver ? driverSignupSchema : signupUserSchema}
+                    formSchema={isDriver ? driverSignupSchema : signupUserSchema}
                     formMutation={useGetSignupOTPMutation}
                     initialState={initialState}
                     getOTPPayloadKeys={['phone']}

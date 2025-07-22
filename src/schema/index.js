@@ -119,8 +119,11 @@ export const signupSchema = {
             return true;
         })
         .nullable(true),
+    "agreeTerms": yup
+        .boolean()
+        .oneOf([true], "You must accept the terms and conditions"),
 }
-export const signupUserSchema = yup.object().shape({...signupSchema});
+export const signupUserSchema = yup.object().shape({ ...signupSchema });
 
 
 export const driverSignupSchema = yup.object().shape({

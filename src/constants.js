@@ -4,7 +4,8 @@ import { formatStatusText, formattedDate } from './util';
 import { styles } from './navigation/TabBar';
 
 export const ELEMENTS = {
-  select: "select"
+  select: "select",
+  checkbox: "checkbox",
 };
 
 export const GENDER_TYPES = [
@@ -34,6 +35,7 @@ export const authInitialState = {
   driverInfo: null,
   isSocketConnected: false,
   isDialogOpen: false,
+  isCallDriverDialogOpen: false,
   device_token: null,
   vehicleTypes: null,
   androidDeviceCode: null,
@@ -50,7 +52,7 @@ export const USER_ROLES = {
 export const ROLE_IDS = {
   [USER_ROLES.USER]: '8d9b7a03-dc12-4d5d-a8ee-6575bc5342e0',
   [USER_ROLES.DRIVER]: '7f4f1d06-8387-4bc3-8855-c8e0956b1c50',
-  [USER_ROLES.OWNER] : '3cb09115-b4ef-4ed3-8658-f08a3a672451'
+  [USER_ROLES.OWNER]: '3cb09115-b4ef-4ed3-8658-f08a3a672451'
 }
 
 export const DEFAULT_VEHICLE_TYPES = [
@@ -194,7 +196,7 @@ export const RideStatus = {
   DRIVER_CANCELLED: 'DRIVER_CANCELLED',
   PENDING: 'PENDING',
   UNAVAILABLE: 'UNAVAILABLE',
-  INITIATED:'INITIATED'
+  INITIATED: 'INITIATED'
 }
 
 export const RIDE_STATUS_LABELS = {
@@ -534,7 +536,7 @@ export const SIGN_UP_FORM = [
       placeholder: "Referral Code",
       required: false,
     },
-  },
+  }
 ];
 
 export const MAPS_LABELS = {

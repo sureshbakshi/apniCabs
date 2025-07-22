@@ -30,6 +30,9 @@ const authSlice = createSlice({
     setDialogStatus: (state, action) => {
       state.isDialogOpen = action.payload;
     },
+    setDriverCallOptionsDialogStatus: (state, action) => {
+      state.isCallDriverDialogOpen = action.payload;
+    },
     setVehicleTypes: (state, action) => {
       state.vehicleTypes = action.payload;
     },
@@ -60,6 +63,7 @@ export const {
   setDriverDetails,
   updatedSocketConnectionStatus,
   setDialogStatus,
+  setDriverCallOptionsDialogStatus,
   setDeviceToken,
   setVehicleTypes,
   setAndroidDeviceCode,
