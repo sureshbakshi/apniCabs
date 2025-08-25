@@ -34,7 +34,7 @@ const Refer = () => {
         <View style={TermsAndConditionsStyles.container}>
             <HeaderImage
                 bgImg={images.referBg}
-                bgStyles={{ height: 350 }}
+                bgStyles={{ height: 280 }}
                 fgImg={images.referGiftBox}
                 fgStyles={{
                     resizeMode: 'contain',
@@ -48,7 +48,7 @@ const Refer = () => {
                         <View style={TermsAndConditionsStyles.list}>
                             <Text style={[CommonStyles.font24, CommonStyles.bold, { textAlign: 'center' }]}>{t('refer_title')}</Text>
                         </View>
-                        <View style={[TermsAndConditionsStyles.list, { marginBottom: 70 }]}>
+                        <View style={[TermsAndConditionsStyles.list, { marginBottom: 30 }]}>
                             <Text style={[CommonStyles.font14, { textAlign: 'center' }]}>
                                 {t('refer_des')}
                             </Text>
@@ -62,8 +62,8 @@ const Refer = () => {
                             </Text>
                         </View> */}
                         <View style={[TermsAndConditionsStyles.list, { marginVertical: 5 }]}>
-                            <Text style={[CommonStyles.font16, { color: COLORS.text_dark1 }]}>
-                                Share Your Invite Code
+                            <Text style={[CommonStyles.font16, { color: COLORS.text_dark1 , textAlign: 'center' }]}>
+                                {/* Share Your Invite Code */}
                                 {t('refer_code_txt')}
                             </Text>
                             <Pressable

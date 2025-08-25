@@ -35,7 +35,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     useEffect(() => {
         if (error !== null && shareToken?.shareLink) {
             const encodedData = encodeURIComponent(shareToken?.shareLink);
-            const link = `https://apnicabi.com/live-location.html?data=${encodedData}&token=${access_token}`;
+            const link = `https://pikbike.com/live-location.html?data=${encodedData}`;
             Share.open({ message: `${link}` })
                 .then(() => console.log('Shared successfully'))
                 .catch((err) => console.error('Sharing error:', err));

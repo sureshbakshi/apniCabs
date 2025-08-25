@@ -120,7 +120,7 @@ const getInvoiceHtml = (info) => {
         </div>
         <div class="footer">
             If you have any questions, contact us at 
-            <a href="mailto:contact@apnicabi.com">contact@apnicabi.com</a>
+            <a href="mailto:contact@pikbike.com">contact@pikbike.com</a>
         </div>
     </div>
 </body>

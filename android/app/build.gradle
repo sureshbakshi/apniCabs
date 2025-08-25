@@ -110,16 +110,16 @@ android {
         user {
             dimension "user_type"
             applicationId appId // Unique package name for the rider app
-            versionCode 23
-            versionName "2.0.00"
+            versionCode 29
+            versionName "2.1.04"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
         }
         driver {
             dimension "user_type"
             applicationId appId // Unique package name for the driver app
-            versionCode 22
-            versionName "2.0.0"
+            versionCode 29
+            versionName "2.1.04"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
 

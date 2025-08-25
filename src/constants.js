@@ -239,8 +239,8 @@ export const SUPPORT = {
     value: '18003095959'
   },
   email: {
-    label: 'contact@apnicabi.com',
-    value: 'contact@apnicabi.com?subject=Support'
+    label: 'contact@pikbike.com',
+    value: 'contact@pikbike.com?subject=Support'
   }
 }
 

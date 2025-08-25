@@ -17,10 +17,10 @@ export const openUrl = (uri) => {
 };
 
 export const webLinks = {
-  ownerPortal: 'http://owner.apnicabi.com/',
-  terms: 'https://www.apnidukandari.com/terms-and-conditions',
-  privacy: 'https://www.apnidukandari.com/privacy-policy',
-  payment: 'https://apnicabi.com/payment.html',
+  ownerPortal: 'http://owner.pikbike.com/',
+  terms: 'https://www.pikbike.com/terms-and-conditions',
+  privacy: 'https://www.pikbike.com/privacy-policy',
+  payment: 'https://pikbike.com/payment.html',
 }
 
 export const openOwnerPortal = () => {

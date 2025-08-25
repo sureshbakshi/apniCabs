@@ -29,9 +29,9 @@ const PaymentScreen = ({ navigation, route }) => {
       <SafeAreaView style={{ flex: 1 }}>
         <WebView
           ref={webviewRef}
-          source={{ uri: `https://owner.apnicabi.com?authToken=${authorization}` }}
+          source={{ uri: `https://owner.pikbike.com?authToken=${authorization}` }}
           onShouldStartLoadWithRequest={(request) => {
-            if (request.url !== 'https://owner.apnicabi.com') {
+            if (request.url !== 'https://owner.pikbike.com') {
               // Handle the request for new windows or external URLs
               // For example, open in the same WebView, open in another WebView, or use a Linking library
               return false;

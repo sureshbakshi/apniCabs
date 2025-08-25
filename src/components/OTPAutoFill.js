@@ -51,7 +51,7 @@ export default ({ route, data, callbackFunctions }) => {
                     space={2}
                 />
             </View>
-            <Text style={{ marginBottom: 8, fontSize: 16 }}>{otpInfo?.otp}</Text>
+            {/* <Text style={{ marginBottom: 8, fontSize: 16 }}>{otpInfo?.otp}</Text> */}
             {/* <CustomButton label={'Submit OTP'} onClick={handleComplete} /> */}
         </SafeAreaView>
     );

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* apnicabiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* apnicabiTests.m */; };
-		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -125,7 +124,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
 				BA0CE36F580407E1CA3B001B /* libPods-apnicabi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1036,18 +1034,18 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = apnicabi/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike Cabi";
+				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1073,17 +1071,17 @@
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				INFOPLIST_FILE = apnicabi/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike Cabi";
+				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1242,7 +1240,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B0B7F8790262C24174CD5A70 /* Pods-apnicabi-apnicabiDriverDev.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDriver;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
@@ -1279,7 +1277,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17141F6D9C59B70967F1AABA /* Pods-apnicabi-apnicabiDriverDev.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDriver;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
@@ -1386,13 +1384,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDC35E3D20F7918307A3ABB9 /* Pods-apnicabi-apnicabiDriver.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDriver;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "apnicabiDriver-Info.plist";
@@ -1403,7 +1401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.15;
+				MARKETING_VERSION = 1.1.16;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1423,13 +1421,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFC03665D261566D984E03AA /* Pods-apnicabi-apnicabiDriver.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDriver;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = apnicabi/apnicabi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MYW49D7MA3;
 				INFOPLIST_FILE = "apnicabiDriver-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pik bike Driver";
@@ -1439,7 +1437,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.15;
+				MARKETING_VERSION = 1.1.16;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
