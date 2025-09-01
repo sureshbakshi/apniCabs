@@ -1,21 +1,12 @@
 import React, { useEffect } from 'react';
 import { checkAndroidPermissions } from '../util/location';
-import { useGetVehicleTypesQuery } from '../slices/apiSlice';
-import { useDispatch } from 'react-redux';
-import { setVehicleTypes } from '../slices/authSlice';
 import { StatusBar } from 'react-native';
 import { COLORS } from '../constants';
+import { useVehicleTypes } from '../hooks/useVehicleTypes';
 
 function AppContainer(WrappedComponent) {
   return props => {
-    const { data: vehicleTypes } = useGetVehicleTypesQuery()
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-      if (vehicleTypes) {
-        dispatch(setVehicleTypes(vehicleTypes))
-      }
-    }, [vehicleTypes])
+    useVehicleTypes();
 
     const fetchLocation = async () => {
       await checkAndroidPermissions()

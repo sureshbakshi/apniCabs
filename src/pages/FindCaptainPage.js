@@ -1,23 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
-import { CustomScrollbar, CustomTabs } from '../components/common';
+import { CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import { isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
-import CaptainsCard from '../components/common/Tabs/CaptainsCard';
-import { COLORS, ROUTES_NAMES, VEHICLE_TYPES } from '../constants';
-import { Text } from 'react-native-paper';
-import { Icon } from '../components/common';
-import { navigate } from '../util/navigationService';
+import { COLORS} from '../constants';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { useVehicleTypes } from '../hooks/useVehicleTypes';
 
 const FindCaptainPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation();  
   const { requestAlertHandler } = useRequestAlertHandler(t('cancel_request'));
   const { requestInfo } = useSelector(state => state.user);
 

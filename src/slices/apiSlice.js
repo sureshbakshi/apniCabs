@@ -8,7 +8,7 @@ import {disconnectSocket} from '../sockets/socketConfig'
 import { Platform } from 'react-native';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://api.dev.apnicabi.com/',
+  baseUrl: 'https://api.dev.pikbike.com/',
   // baseUrl: 'http://43.204.100.95:3001/',
   // baseUrl: 'https://apim.apnicabi.com/',
   // baseUrl: 'http://192.168.0.104:8080/api/', //rajesh IP
@@ -187,6 +187,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      invalidatesTags: ["VehicleType"]
     }),
     updateDriverStatus: builder.mutation({
       query: body => ({
@@ -206,7 +207,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
-      providesTags: ["RideComplete"]
+      providesTags: ["RideComplete", "VehicleType"]
     }),
     // request Apis
     sendRequest: builder.mutation({
@@ -266,6 +267,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      providesTags: ['ActiveRide']
     }),
     rideRequest: builder.mutation({
       query: body => ({
@@ -320,6 +322,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      invalidatesTags: ['ActiveRide', 'VehicleType']
     }),
     updateDriverLocation: builder.mutation({
       query: body => ({
@@ -349,6 +352,7 @@ export const apiSlice = createApi({
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+      providesTags: ["VehicleType"]
     }),
     // transaction starts
     getDriverTransactions: builder.mutation({
@@ -490,7 +494,7 @@ export const apiSlice = createApi({
     }),
   }),
 
-  tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus', 'AppLinks'],
+  tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus', 'AppLinks', 'VehicleType', 'ActiveRide'],
 });
 
 export const {

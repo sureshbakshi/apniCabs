@@ -1,141 +1,100 @@
-import { useCallback, useEffect } from "react"
-import { createSocketInstance, getSocketInstance } from "../sockets/socketConfig"
-import { useDispatch, useSelector } from "react-redux"
-import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice"
-import { _isLoggedIn, isValidEvent } from "../util"
-import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice"
-import { ClearRideStatus, DriverAvailableStatus, RideStatus, SOCKET_EVENTS } from "../constants"
-import useNotificationSound from "./useNotificationSound"
-import useChatMessage from "./useChatMessage"
-import delay from 'lodash/delay'
+import { useEffect, useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updatedSocketConnectionStatus, clearRideChats } from "../slices/authSlice";
+import { setRideRequest, updateRideRequest, updateRideStatus } from "../slices/driverSlice";
+import { createSocketInstance, getSocketInstance } from '../sockets/socketConfig';
+import useNotificationSound from "./useNotificationSound";
+import useChatMessage from "./useChatMessage";
+import { RideStatus, ClearRideStatus, SOCKET_EVENTS, DriverAvailableStatus } from "../constants";
 
 const DRIVER_SOCKET_EVENTS = {
     get_ride_requests: 'DriverRequestSocket',
-}
-
-let driverSocket = getSocketInstance()
-export const useDriverEvents = () => {
-    const dispatch = useDispatch()
-    const { playSound } = useNotificationSound()
-
-    const updateRideRequests = (request) => {
-        const { status } = request || {}
-        console.log('updateRideRequests', request)
-        if (status) {
-            if (status === RideStatus.REQUESTED) {
-                dispatch(setRideRequest(request))
-                playSound()
-            } else if (ClearRideStatus.includes(status)) {
-                if (request?.type === 'REQUEST') {
-                    //request individual cancel request, cancel all, auto cancel 
-                    dispatch(updateRideRequest(request))
-                } else {
-                    dispatch(updateRideStatus(request))
-                    dispatch(clearRideChats())
-                    driverSocket.emit(SOCKET_EVENTS.rideCompleted);
-                }
-            } else {
-                dispatch(updateRideRequest(request))
-            }
-        }
-    }
-
-    return { updateRideRequests }
-}
-
-
-const onGetRideRequests = (cb) => {
-    driverSocket.on(DRIVER_SOCKET_EVENTS.get_ride_requests, (request) => {
-        // console.log('on new request', request)
-        const newUpdatedRequest = {
-            Request: request,
-            id: request.request_id,
-            ...request
-        }
-        cb(newUpdatedRequest)
-    });
 };
 
-
-export const disconnectDriverSocket = () => {
-    console.log(`============= Driver Client disconnection - request ==========`, driverSocket)
-    driverSocket.disconnect()
-}
-const ignoreEvents = [];
-// ['connect', 'disconnect', DRIVER_SOCKET_EVENTS.get_ride_requests];
-
-export default (() => {
-    const { isSocketConnected, userInfo } = useSelector((state) => state.auth)
+export default function useDriverSocketEvents() {
+    const { userInfo, access_token } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    const { updateRideRequests } = useDriverEvents();
     const { onlineStatus, activeRequestInfo } = useSelector((state) => state.driver);
-    const onChat = useChatMessage()
-
+    const onChat = useChatMessage();
     const isDriverOnline = onlineStatus !== DriverAvailableStatus.OFFLINE;
-    const isLoggedIn = _isLoggedIn();
-    const baseSocketOn = driverSocket.on;
-
-    driverSocket.on = function (eventName) {
-        if (isValidEvent.call(this, eventName, ignoreEvents)) {
-            return;
-        }
-        return baseSocketOn.apply(this, arguments);
-    };
-
+    const isLoggedIn = !!userInfo?.id && !!access_token;
+    const [socketReady, setSocketReady] = useState(false);
+    const { playSound } = useNotificationSound();
 
     const updateDriverSocketId = useCallback(() => {
-        if (driverSocket?.id) {
-            // console.log(`============= Update driver socket id ==========: ${driverSocket?.id}`)
-            dispatch(updatedSocketConnectionStatus(driverSocket?.id))
+        const socket = getSocketInstance();
+        if (socket?.id) {
+            dispatch(updatedSocketConnectionStatus(socket?.id));
         }
-    }, [driverSocket])
+    }, [dispatch]);
 
-    const connectSocket = useCallback(() => {
-        // console.log('================= driverSocket connect request======================', driverSocket?.auth)
-        if (driverSocket.connected && (driverSocket?.auth?.userId === userInfo?.id)) {
-            // console.log(`============= updateDriverSocketId ==========`)
-            updateDriverSocketId()
-        } else {
-            // console.log("driver connectSocket", driverSocket)
-            createSocketInstance()
-            delay(() => {
-                driverSocket = getSocketInstance()
-                updateDriverSocketId()
-            }, 5)
-        }
-    }, [driverSocket]);
+    // Called when socket connects
+    const handleSocketConnected = useCallback((socket) => {
+        updateDriverSocketId();
+        setSocketReady(s => !s); // Toggle to trigger useEffect
+    }, [updateDriverSocketId]);
 
-
-
+    // Create/connect socket when needed
     useEffect(() => {
-        console.log({ isSocketConnected, driverSocket: driverSocket?.connected, isDriverOnline, isLoggedIn })
-        if (isDriverOnline && isLoggedIn && !Boolean(isSocketConnected)) {
-            // console.log('================= request connect ======================')
-            connectSocket()
-            onGetRideRequests(updateRideRequests);
-
+         const socket = getSocketInstance();
+        if (isDriverOnline && isLoggedIn && !socket?.connected) {
+            createSocketInstance(
+                { userId: userInfo.id, token: access_token },
+                handleSocketConnected
+            );
         } else if ((!isLoggedIn || !isDriverOnline)) {
-            disconnectDriverSocket();
+            dispatch(updatedSocketConnectionStatus(null));
+            const socket = getSocketInstance();
+            socket?.disconnect();
         }
-    }, [isDriverOnline, isLoggedIn, isSocketConnected, driverSocket?.connected])
+        // eslint-disable-next-line
+    }, [isDriverOnline, isLoggedIn, userInfo?.id, access_token, handleSocketConnected, dispatch]);
 
+    // Attach listeners when socket is ready
     useEffect(() => {
-        driverSocket.on('connect', (res) => {
-            // console.log('================= on connect ======================', res, driverSocket?.id)
-            updateDriverSocketId()
-            onGetRideRequests(updateRideRequests);
+        const socket = getSocketInstance();
+        if (!socket) return;
 
-        })
-        driverSocket.on('disconnect', err => {
-            console.log('disconnected', err)
-            dispatch(updatedSocketConnectionStatus(null))
-        })
-    }, [driverSocket]);
+        const handleRideRequest = (request) => {
+            console.log('Received DriverRequestSocket event:', request);
+            const { status } = request || {};
+            if (status) {
+                if (status === RideStatus.REQUESTED) {
+                    dispatch(setRideRequest(request));
+                    playSound();
+                } else if (ClearRideStatus.includes(status)) {
+                    if (request?.type === 'REQUEST') {
+                        dispatch(updateRideRequest(request));
+                    } else {
+                        dispatch(updateRideStatus(request));
+                        dispatch(clearRideChats());
+                        socket?.emit(SOCKET_EVENTS.rideCompleted);
+                    }
+                } else {
+                    dispatch(updateRideRequest(request));
+                }
+            }
+        };
 
+        const handleDisconnect = () => {
+            dispatch(updatedSocketConnectionStatus(null));
+        };
+
+        socket.on(DRIVER_SOCKET_EVENTS.get_ride_requests, handleRideRequest);
+        socket.on('disconnect', handleDisconnect);
+
+        return () => {
+            socket.off(DRIVER_SOCKET_EVENTS.get_ride_requests, handleRideRequest);
+            socket.off('disconnect', handleDisconnect);
+        };
+    }, [socketReady, dispatch, playSound]);
+
+    // Attach chat listeners when needed
     useEffect(() => {
-        if (activeRequestInfo?.id && isSocketConnected) {
-            onChat(driverSocket);
+        const socket = getSocketInstance();
+        if (activeRequestInfo?.id && socket?.connected) {
+            onChat(socket);
         }
-    }, [activeRequestInfo?.id])
-})
+    }, [activeRequestInfo?.id, onChat]);
+}
 

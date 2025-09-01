@@ -196,7 +196,8 @@ export const RideStatus = {
   DRIVER_CANCELLED: 'DRIVER_CANCELLED',
   PENDING: 'PENDING',
   UNAVAILABLE: 'UNAVAILABLE',
-  INITIATED: 'INITIATED'
+  INITIATED: 'INITIATED',
+  AVAILABLE: 'AVAILABLE'
 }
 
 export const RIDE_STATUS_LABELS = {
@@ -330,7 +331,7 @@ export const VEHICLE_IMAGES = {
 export const VEHICLE_TYPES = {
   'CAR': 'car-side',
   'AUTO': 'golf-cart',//rv-truck,truck
-  'BIKE': 'bike'
+  'BIKE': 'motorbike'
 }
 
 export const VEHICLE_INFORMATION = [{

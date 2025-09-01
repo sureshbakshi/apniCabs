@@ -1,129 +1,106 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice";
-
-import { _isLoggedIn, isValidEvent } from "../util";
-import { createSocketInstance, getSocketInstance } from '../sockets/socketConfig';
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
+import { createSocketInstance, getSocketInstance } from '../sockets/socketConfig';
 import useNotificationSound from "./useNotificationSound";
-import audio from "../assets/audio";
-import { ClearRideStatus, RideStatus, SOCKET_EVENTS } from "../constants";
 import useChatMessage from "./useChatMessage";
+import audio from "../assets/audio";
+import { RideStatus, ClearRideStatus, SOCKET_EVENTS } from "../constants";
 import isEmpty from "lodash/isEmpty";
-import delay from 'lodash/delay'
 
 const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
     driver_location: 'DriverLocationSocket'
-}
-let userSocket = getSocketInstance()
+};
 
-export const disconnectUserSocket = () => {
-    userSocket.disconnect()
-}
-const ignoreEvents = []
-// ['connect', 'disconnect', USER_SOCKET_EVENTS.request_status, USER_SOCKET_EVENTS.driver_location]
-
-
-export default (() => {
-    const { isSocketConnected, userInfo } = useSelector((state) => state.auth);
+export default function useUserSocketEvents() {
+    const { isSocketConnected, userInfo, access_token } = useSelector((state) => state.auth);
     const { activeRequestId, activeRequestInfo } = useSelector((state) => state.user);
-    const onChat = useChatMessage();
-    const { playSound } = useNotificationSound();
-
     const dispatch = useDispatch();
-    const isLoggedIn = _isLoggedIn();
-    const baseSocketOn = userSocket.on;
+    const onChat = useChatMessage();
+    const [socketReady, setSocketReady] = useState(false);
+    const { playSound } = useNotificationSound();
+    const isLoggedIn = !!userInfo?.id && !!access_token;
 
-    userSocket.on = function (eventName) {
-        if (isValidEvent.call(this, eventName, ignoreEvents)) {
-            return;
+    const updateUserSocketId = useCallback(() => {
+        const socket = getSocketInstance();
+        if (socket?.id) {
+            dispatch(updatedSocketConnectionStatus(socket?.id));
         }
-        // console.log({new: eventName, cb: this._callbacks, arguments})
-        return baseSocketOn.apply(this, arguments);
-    };
+    }, [dispatch]);
 
-    // listeners
-    const onRequestUpdate = () => {
-        userSocket.on(USER_SOCKET_EVENTS.request_status, (updatedRequest) => {
-            // Handle the driver list update in the UI
-            console.log(USER_SOCKET_EVENTS.request_status, updatedRequest)
-            // cb(updatedRequest)
-            const formatRequest = {
-                updatedRequest
-            }
+    // Called when socket connects
+    const handleSocketConnected = useCallback((socket) => {
+        updateUserSocketId();
+        setSocketReady(s => !s); // Toggle to trigger useEffect
+    }, [updateUserSocketId]);
+
+    // Create/connect socket when needed
+    useEffect(() => {
+         const socket = getSocketInstance();
+        if (isLoggedIn && !socket?.connected) {
+            createSocketInstance(
+                { userId: userInfo.id, token: access_token },
+                handleSocketConnected
+            );
+        } else if (!isLoggedIn) {
+            dispatch(updatedSocketConnectionStatus(null));
+            const socket = getSocketInstance();
+            socket?.disconnect();
+        }
+        // eslint-disable-next-line
+    }, [isLoggedIn, isSocketConnected, userInfo?.id, access_token, handleSocketConnected, dispatch]);
+
+    // Attach listeners when socket is ready
+    useEffect(() => {
+        const socket = getSocketInstance();
+        if (!socket) return;
+
+        const handleRequestUpdate = (updatedRequest) => {
+            console.log('Received UserRequestSocket event:', updatedRequest);
             if (!isEmpty(updatedRequest)) {
-                const { status } = updatedRequest || {}
+                const { status } = updatedRequest || {};
                 if (status) {
                     if (status === RideStatus.ACCEPTED) {
-                        playSound(audio.booking)
+                        playSound(audio.booking);
                     }
                     if (ClearRideStatus.includes(status)) {
-                        userSocket.emit(SOCKET_EVENTS.rideCompleted);
+                        socket.emit(SOCKET_EVENTS.rideCompleted);
                         dispatch(clearRideChats());
                     }
                 }
-                dispatch(updateDriversRequest(updatedRequest))
+                dispatch(updateDriversRequest(updatedRequest));
             }
-        });
-    };
+        };
 
-    const onDriverLocationUpdate = () => {
-        // console.log('socket._callbacks', userSocket._callbacks)
-        userSocket.on(USER_SOCKET_EVENTS.driver_location, (updatedLocation) => {
-            // Handle the driver list update in the UI
-            // cb(updatedRequest)
-            console.log(USER_SOCKET_EVENTS.driver_location, updatedLocation)
+        const handleDriverLocationUpdate = (updatedLocation) => {
+            console.log('Received DriverLocationSocket event:', updatedLocation);
             if (updatedLocation?.latitude) {
-                dispatch(updateDriverLocation(updatedLocation))
+                dispatch(updateDriverLocation(updatedLocation));
             }
-        });
-    }
+        };
 
-    const updateSockeId = () => {
-        console.log(`============= updateSockeId ==========`, userSocket?.id)
-        if (userSocket?.id) {
-            dispatch(updatedSocketConnectionStatus(userSocket?.id))
-        }
-    }
+        const handleDisconnect = () => {
+            dispatch(updatedSocketConnectionStatus(null));
+        };
 
-    const connectSocket = () => {
-        if (userSocket.connected && (userSocket?.auth?.userId === userInfo?.id)) {
-            console.log(`============= user Client connection - add device ==========`)
-            updateSockeId()
-        } else {
-            // console.log("user connectSocket", userSocket)
-            createSocketInstance()
-            delay(() => {
-                userSocket = getSocketInstance()
-                updateSockeId()
-            }, 50)
-        }
-    }
+        socket.on(USER_SOCKET_EVENTS.request_status, handleRequestUpdate);
+        socket.on(USER_SOCKET_EVENTS.driver_location, handleDriverLocationUpdate);
+        socket.on('disconnect', handleDisconnect);
 
+        return () => {
+            socket.off(USER_SOCKET_EVENTS.request_status, handleRequestUpdate);
+            socket.off(USER_SOCKET_EVENTS.driver_location, handleDriverLocationUpdate);
+            socket.off('disconnect', handleDisconnect);
+        };
+    }, [socketReady, dispatch, playSound]);
+
+    // Attach chat listeners when needed
     useEffect(() => {
-        if (isLoggedIn && !Boolean(isSocketConnected)) {
-            connectSocket()
-            onRequestUpdate()
-            onDriverLocationUpdate()
-        } else if (!isLoggedIn) {
-            disconnectUserSocket();
-        }
-    }, [isLoggedIn, isSocketConnected]);
-
-    useEffect(() => {
+        const socket = getSocketInstance();
         if (activeRequestId && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
-            onChat(userSocket);
+            onChat(socket);
         }
-    }, [activeRequestId])
-
-    useEffect(() => {
-        userSocket.on('connect', () => {
-            onRequestUpdate()
-            onDriverLocationUpdate()
-            updateSockeId()
-        })
-        userSocket.on('disconnect', err => dispatch(updatedSocketConnectionStatus(null)))
-
-    })
-})
+    }, [activeRequestId, isSocketConnected, activeRequestInfo?.status, onChat]);
+}

@@ -88,7 +88,7 @@ const Card = ({ request_id, ...item }) => {
       }).catch((err) => {
         console.log('cancel request err', err)
       });
-    } else if (!item.status && !isLoading) {
+    } else if (item.status === RideStatus.AVAILABLE && !isLoading) {
       sendRequest(payload);
     } else {
       showErrorMessage('No action performed on this request.')
@@ -129,7 +129,7 @@ const Card = ({ request_id, ...item }) => {
         </View>
         <View style={FindRideStyles.right}>
           <Text style={[FindRideStyles.name, { alignSelf: 'flex-end' }]}>
-            ₹{item.fare}
+            {item?.fare && `₹${item?.fare}`}
           </Text>
           <CustomButton
             // styles={[{ , height: 40, marginHorizontal: 3, paddingVertical: 0, opacity: isLoading || isCancelRequestLoading ? 0.6 : 1 }]}

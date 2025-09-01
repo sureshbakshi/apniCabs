@@ -116,7 +116,7 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
-  const { isSocketConnected } = useSelector((state) => state.auth)
+  const isSocketConnected = useSelector((state) => state.auth.isSocketConnected);
   const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
 
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
@@ -188,6 +188,7 @@ export const PickARide = () => {
               onClick={toggleSwitch}
             />
           </View>}
+          {/* <Text>{isSocketConnected}</Text> */}
           {isOnline || rideRequests.length > 0 ? (
             <>
               {!isSocketConnected ? <SocketStatus /> :
@@ -205,7 +206,7 @@ export const PickARide = () => {
             <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
               You are currently offline. Turn on your availability to receive ride requests.</Text>
           </View>}
-          {walletInfo?.balance < 100 && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
+          {walletInfo?.amount < 100 && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
             <Pressable
               style={[CommonStyles.shadow, { padding: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 25, backgroundColor: COLORS.primary, paddingHorizontal: 14 }]}
               onPress={() => navigate(ROUTES_NAMES.wallet,)}>

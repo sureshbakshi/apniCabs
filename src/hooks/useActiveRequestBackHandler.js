@@ -43,7 +43,7 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
        
         return true;
     }
-    const requestAlertHandler = debounce(requestAlert, 250)
+    const requestAlertHandler = requestAlert //debounce(requestAlert, 150)
     return { requestAlertHandler }
 }
 
