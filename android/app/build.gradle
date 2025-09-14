@@ -1,94 +1,22 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply plugin: "com.bugsnag.android.gradle"
+apply plugin: 'com.google.gms.google-services'
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
-import com.android.build.OutputFile
-import org.apache.tools.ant.taskdefs.condition.Os
-
-/**
- * This is the configuration block to customize your React Native Android app.
- * By default you don't need to apply any configuration, just uncomment the lines you need.
- */
 react {
-    /* Folders */
-    //   The root of your project, i.e. where "package.json" lives. Default is '..'
-    // root = file("../")
-    //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
-    // reactNativeDir = file("../node_modules/react-native")
-    //   The folder where the react-native Codegen package is. Default is ../node_modules/react-native-codegen
-    // codegenDir = file("../node_modules/react-native-codegen")
-    //   The cli.js file which is the React Native CLI entrypoint. Default is ../node_modules/react-native/cli.js
-    // cliFile = file("../node_modules/react-native/cli.js")
-
-    /* Variants */
-    //   The list of variants to that are debuggable. For those we're going to
-    //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
-    //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
-    // debuggableVariants = ["liteDebug", "prodDebug"]
-
-    /* Bundling */
-    //   A list containing the node command and its flags. Default is just 'node'.
-    // nodeExecutableAndArgs = ["node"]
-    //
-    //   The command to run when bundling. By default is 'bundle'
-    // bundleCommand = "ram-bundle"
-    //
-    //   The path to the CLI configuration file. Default is empty.
-    // bundleConfig = file(../rn-cli.config.js)
-    //
-    //   The name of the generated asset file containing your JS bundle
-    // bundleAssetName = "MyApplication.android.bundle"
-    //
-    //   The entry file for bundle generation. Default is 'index.android.js' or 'index.js'
-    // entryFile = file("../js/MyApplication.android.js")
-    //
-    //   A list of extra flags to pass to the 'bundle' commands.
-    //   See https://github.com/react-native-community/cli/blob/main/docs/commands.md#bundle
-    // extraPackagerArgs = []
-
-    /* Hermes Commands */
-    //   The hermes compiler command to run. By default it is 'hermesc'
-    // hermesCommand = "$rootDir/my-custom-hermesc/bin/hermesc"
-    //
-    //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     hermesFlags = ["-O", "-output-source-map"]
 }
 
-/**
- * Set this to true to create four separate APKs instead of one,
- * one for each native architecture. This is useful if you don't
- * use App Bundles (https://developer.android.com/guide/app-bundle/)
- * and want to have separate APKs to upload to the Play Store.
- */
 def enableSeparateBuildPerCPUArchitecture = false
-
-/**
- * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
- */
 def enableProguardInReleaseBuilds = true
-
-/**
- * The preferred build flavor of JavaScriptCore (JSC)
- *
- * For example, to use the international variant, you can use:
- * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
- *
- * The international variant includes ICU i18n library and necessary data
- * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
- * give correct results when using with locales other than en-US. Note that
- * this variant is about 6MiB larger per architecture than default.
- */
 def jscFlavor = 'org.webkit:android-jsc:+'
-
-/**
- * Private function to get the list of Native Architectures you want to build.
- * This reads the value from reactNativeArchitectures in your gradle.properties
- * file and works together with the --active-arch-only flag of react-native run-android.
- */
 def reactNativeArchitectures() {
     def value = project.getProperties().get("reactNativeArchitectures")
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
+
 def googleMapsKey = project.env.getOrDefault("GOOGLE_MAPS_KEY", "")
 def appId = project.env.getOrDefault("APP_ID", "")
 
@@ -99,61 +27,46 @@ android {
     splits {
         abi {
             reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
-            include (*reactNativeArchitectures())
+            // Build per-ABI APKs to reduce size per artifact (upload all to Play Console)
+            enable true
+            universalApk false
+            include(*reactNativeArchitectures())
         }
     }
     flavorDimensions "user_type", "build_type"
-    //println "GOOGLE_MAPS_KEYhhh: ${googleMapsKey}"
     productFlavors {
         user {
             dimension "user_type"
-            applicationId appId // Unique package name for the rider app
-            versionCode 31
+            applicationId appId
+            versionCode 32
             versionName "2.1.1"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
         }
         driver {
             dimension "user_type"
-            applicationId appId // Unique package name for the driver app
-            versionCode 31
+            applicationId appId
+            versionCode 32
             versionName "2.1.1"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
-
         }
-        // Development build variant
         dev {
             dimension "build_type"
-            // applicationIdSuffix ".debug" // Makes package unique for debug builds
             versionNameSuffix "-dev"
-            // buildConfigField "String", "GOOGLE_MAPS_KEY", googleMapsKey
-            // buildConfigField "String", "GOOGLE_MAPS_KEY", "\"${project.env.get("GOOGLE_MAPS_KEY")}\""
-            // Add manifestPlaceholders
-            manifestPlaceholders = [
-                GOOGLE_MAPS_KEY: googleMapsKey ?: ""
-            ]
-
+            manifestPlaceholders = [GOOGLE_MAPS_KEY: googleMapsKey ?: ""]
         }
-
-        // Production build variant
         prod {
             dimension "build_type"
-            // buildConfigField "String", "GOOGLE_MAPS_KEY", "\"${project.env.get("GOOGLE_MAPS_KEY")}\""
-                        // Add manifestPlaceholders
-            manifestPlaceholders = [
-                   GOOGLE_MAPS_KEY: googleMapsKey ?: ""
-            ]
-
+            manifestPlaceholders = [GOOGLE_MAPS_KEY: googleMapsKey ?: ""]
         }
     }
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        // resValue "string", "build_config_package", "com.apnicabi"
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60"
+    // Only package required locales
+    resConfigs "en", "hi"
     }
     signingConfigs {
         debug {
@@ -162,7 +75,7 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release{
+        release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
                 storePassword MYAPP_UPLOAD_STORE_PASSWORD
@@ -177,52 +90,44 @@ android {
             matchingFallbacks = ['debug', 'release']
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
             crunchPngs false
-            // minifyEnabled enableProguardInReleaseBuilds
-            // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // Reduce APK size
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-    // applicationVariants are e.g. debug, release
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // https://developer.android.com/studio/build/configure-apk-splits.html
-            // Example: versionCode 1 will generate 1001 for armeabi-v7a, 1002 for x86, etc.
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        defaultConfig.versionCode * 1000 + versionCodes.get(abi)
-            }
-
+    // Exclude unused metadata to shave a bit of size
+    packagingOptions {
+        resources {
+            excludes += [
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE',
+                'META-INF/LICENSE.txt',
+                'META-INF/license.txt',
+                'META-INF/NOTICE',
+                'META-INF/NOTICE.txt',
+                'META-INF/notice.txt',
+                'META-INF/AL2.0',
+                'META-INF/LGPL2.1'
+            ]
         }
     }
 }
 
-
-
-
-
 dependencies {
-    // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
-    implementation(project(':react-native-maps')){
-      exclude group: 'com.google.android.gms'
-  }
-    implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    implementation(project(':react-native-maps')) {
+        exclude group: 'com.google.android.gms'
+    }
     implementation 'com.google.android.gms:play-services-base:18.0.1'
     implementation('com.google.android.gms:play-services-location:21.0.1')
     implementation('com.google.android.gms:play-services-maps:18.0.2')
     implementation project(':react-native-notifications')
     implementation project(':react-native-html-to-pdf')
-
-    // implementation('com.google.firebase:firebase-core:16.0.0')
-    // implementation "com.google.firebase:firebase-messaging:23.1.2"
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation project(':react-native-immediate-phone-call')
 
@@ -230,8 +135,8 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
-
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
@@ -239,8 +144,5 @@ dependencies {
     }
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply plugin: "com.bugsnag.android.gradle"
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
-apply plugin: 'com.google.gms.google-services'
-
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+applyNativeModulesAppBuildGradle(project)

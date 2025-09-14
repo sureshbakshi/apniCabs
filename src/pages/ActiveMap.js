@@ -15,6 +15,7 @@ import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
 import useLocationWatcher from '../hooks/useLocationWatcher';
 import { debounce } from 'lodash';
 import useGetDriverLocation from '../hooks/useGetDriverLocation';
+// Use the named export Marker
 const mapStyle = [
   { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] }, // Lighter background for map
   { elementType: 'labels.text.fill', stylers: [{ color: '#555555' }] }, // Lighter label text

@@ -3,12 +3,13 @@ import { navigate } from '../util/navigationService';
 import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { showErrorMessage } from '../util';
-import {disconnectSocket} from '../sockets/socketConfig'
+import { disconnectSocket } from '../sockets/socketConfig'
 
 import { Platform } from 'react-native';
+import config from '../util/config';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://api.dev.pikbike.com/',
+  baseUrl: config.BASE_URL,
   // baseUrl: 'http://43.204.100.95:3001/',
   // baseUrl: 'https://apim.apnicabi.com/',
   // baseUrl: 'http://192.168.0.104:8080/api/', //rajesh IP
@@ -65,7 +66,7 @@ const api_path = {
   vehicle: path => `driver-vehicle/vehicle/${path}`,
   request: path => `request/request/${path}`,
   transactions: path => `transactions/${path}`,
-  subscription: path => `user/subscription`,
+  subscription: path => `user/subscription${path ? `/${path}` : ''}`,
   payment: path => `payment/${path}`,
   sos: path => `sos/${path}`,
   links: path => `user/links?${path}`,
@@ -387,7 +388,7 @@ export const apiSlice = createApi({
 
     // request apis end
     getDriverDetails: builder.mutation({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         method: 'GET',
         url: api_path.drivers(id),
       }),
@@ -435,6 +436,14 @@ export const apiSlice = createApi({
       query: () => ({
         method: 'GET',
         url: api_path.subscription(),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
+    getFee: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.subscription('fee'),
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
@@ -521,6 +530,7 @@ export const {
   useLazyDriverRideHistoryQuery,
   useDriverRideHistoryQuery,
   useUserRideHistoryQuery,
+  useGetFeeQuery,
   useLazyUserRideHistoryQuery,
   useGetDriverTransactionsMutation,
   useEditFareMutation,

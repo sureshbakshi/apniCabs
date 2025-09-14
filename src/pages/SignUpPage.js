@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View,
-  TextInput,
   Pressable,
-  ImageBackground,
-  ScrollView,
-  Platform,
   StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
@@ -81,59 +77,62 @@ const SignUpPage = () => {
     <View style={LoginStyles.container}>
       <StatusBar translucent backgroundColor="transparent" />
       <HeaderImage />
-      <ScrollView>
-        <ScreenContainer>
-          <KeyboardAwareScrollView extraHeight={180} extraScrollHeight={-100} enableOnAndroid>
-            <View style={[LoginStyles.section]}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        enableOnAndroid={true}
+        keyboardShouldPersistTaps="handled"
+        extraHeight={30}
+      >
+        {/* <ScreenContainer> */}
+          <View style={[LoginStyles.section]}>
+            <View>
               <View>
-                <View>
-                  {/* <RadioButton.Group onValueChange={newValue => setRole(newValue)} value={role}  >
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15 }}>
-                      <RadioButton value={USER_ROLES.OWNER} color={COLORS.primary} />
-                      <Text style={{ color: COLORS.black, fontWeight: 'bold' }}>USER</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15, marginLeft: 15 }}>
-                      <RadioButton value={USER_ROLES.DRIVER} color={COLORS.primary} />
-                      <Text style={{ color: COLORS.black, fontWeight: 'bold' }}>DRIVER</Text>
-                    </View>
+                {/* <RadioButton.Group onValueChange={newValue => setRole(newValue)} value={role}  >
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15 }}>
+                    <RadioButton value={USER_ROLES.OWNER} color={COLORS.primary} />
+                    <Text style={{ color: COLORS.black, fontWeight: 'bold' }}>USER</Text>
                   </View>
-                </RadioButton.Group> */}
-                  <OTPForm
-                    successHandler={successHandler}
-                    formFields={SIGN_UP_FORM_FIELDS}
-                    formSchema={isDriver ? driverSignupSchema : signupUserSchema}
-                    formMutation={useGetSignupOTPMutation}
-                    initialState={initialState}
-                    getOTPPayloadKeys={['phone']}
-                    additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER }}
-                    verifyOTPMutation={useSignupMutation}
-                    additionalVerifyOTPPayload={additionalVerifyOTPPayload}
-                    formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city', 'gender']}
-                    submitBtnLabel={'Get OTP'}
-                    heading={'Sign Up'}
-                  />
-                  {/* <CustomButton
-                    onClick={openOwnerPortal}
-                    label={'Become a Driver'}
-                    iconRight={{ name: 'arrow-top-right', size: 'large' }}
-                    styles={{ backgroundColor: COLORS.button_blue_bg, marginTop: 10 }}
-                    isLowerCase
-                  /> */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15, marginLeft: 15 }}>
+                    <RadioButton value={USER_ROLES.DRIVER} color={COLORS.primary} />
+                    <Text style={{ color: COLORS.black, fontWeight: 'bold' }}>DRIVER</Text>
+                  </View>
                 </View>
-                <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
-                  <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>{t('account')}</Text>
-                  <Pressable
-                    android_ripple={{ color: '#fff' }}
-                    onPress={() => navigate('SignIn')}>
-                    <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign In</Text>
-                  </Pressable>
-                </View>
+              </RadioButton.Group> */}
+                <OTPForm
+                  successHandler={successHandler}
+                  formFields={SIGN_UP_FORM_FIELDS}
+                  formSchema={isDriver ? driverSignupSchema : signupUserSchema}
+                  formMutation={useGetSignupOTPMutation}
+                  initialState={initialState}
+                  getOTPPayloadKeys={['phone']}
+                  additionalOTPPayload={{ isDriver: config.ROLE === USER_ROLES.DRIVER }}
+                  verifyOTPMutation={useSignupMutation}
+                  additionalVerifyOTPPayload={additionalVerifyOTPPayload}
+                  formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city', 'gender']}
+                  submitBtnLabel={'Get OTP'}
+                  heading={'Sign Up'}
+                />
+                {/* <CustomButton
+                  onClick={openOwnerPortal}
+                  label={'Become a Driver'}
+                  iconRight={{ name: 'arrow-top-right', size: 'large' }}
+                  styles={{ backgroundColor: COLORS.button_blue_bg, marginTop: 10 }}
+                  isLowerCase
+                /> */}
+              </View>
+              <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
+                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>{t('account')}</Text>
+                <Pressable
+                  android_ripple={{ color: '#fff' }}
+                  onPress={() => navigate('SignIn')}>
+                  <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign In</Text>
+                </Pressable>
               </View>
             </View>
-          </KeyboardAwareScrollView>
-        </ScreenContainer>
-      </ScrollView>
+          </View>
+        {/* </ScreenContainer> */}
+      </KeyboardAwareScrollView>
     </View>
   );
 };

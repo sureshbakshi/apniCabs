@@ -23,7 +23,7 @@ export const GetAuthRoutes = () => {
     const isUserLogged = isUser()
     const { logOut } = useLogout()
     const { t } = useTranslation()
-    const roles = driverInfo?.DriverRoles || userInfo?.roles;
+    const roles = driverInfo?.DriverRoles || userInfo?.roles || [];
     const isDriverLogged = roles.includes(USER_ROLES.DRIVER);
     const isOwnerLogged = roles.includes(USER_ROLES.OWNER);
     if (isDriverLogged) {

@@ -11,8 +11,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1670E99783895D71BC8062BC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 18B499DDBE2906FD605AAE5C /* PrivacyInfo.xcprivacy */; };
 		1BFF1C52EB9B42B4BC97AC4C /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */; };
+		1F3773B19DFEAADFAF2D9802 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1EF1DF344A8E0159577C1930 /* PrivacyInfo.xcprivacy */; };
+		729D6CD2A5EA27E4EA1421D4 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B30D8A753393D4CAAC265766 /* PrivacyInfo.xcprivacy */; };
 		7699B88040F8A987B510C191 /* libPods-apnicabi-apnicabiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-apnicabi-apnicabiTests.a */; };
+		7CF8249454FA8ED57378201E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 01F10D37CA6AEB05A2A56678 /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9309ACAE2B42C8B10020BDC4 /* geoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309ACAD2B42C8B10020BDC4 /* geoLocation.swift */; };
 		9312BC822D14BA9000F73C1B /* LaunchScreen_driver.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9312BC802D14BA7B00F73C1B /* LaunchScreen_driver.storyboard */; };
@@ -72,6 +76,7 @@
 		00E356EE1AD99517003FC87E /* apnicabiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = apnicabiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* apnicabiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = apnicabiTests.m; sourceTree = "<group>"; };
+		01F10D37CA6AEB05A2A56678 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = apnicabi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* apnicabi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = apnicabi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = apnicabi/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = apnicabi/AppDelegate.mm; sourceTree = "<group>"; };
@@ -79,7 +84,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = apnicabi/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = apnicabi/main.m; sourceTree = "<group>"; };
 		17141F6D9C59B70967F1AABA /* Pods-apnicabi-apnicabiDriverDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriverDev.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev.release.xcconfig"; sourceTree = "<group>"; };
+		18B499DDBE2906FD605AAE5C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = apnicabi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-apnicabi-apnicabiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi-apnicabiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EF1DF344A8E0159577C1930 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = apnicabi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		30665B71B98177B0F38C8D75 /* libPods-apnicabi-apnicabiDriver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi-apnicabiDriver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-apnicabi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi/Pods-apnicabi.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-apnicabi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi.release.xcconfig"; path = "Target Support Files/Pods-apnicabi/Pods-apnicabi.release.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +109,7 @@
 		A29F6EBBA67843C29856356A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		A88625A2624E4E81A9B99748 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		B0B7F8790262C24174CD5A70 /* Pods-apnicabi-apnicabiDriverDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriverDev.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev.debug.xcconfig"; sourceTree = "<group>"; };
+		B30D8A753393D4CAAC265766 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = apnicabi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BDA757224CFE68CA59502D20 /* libPods-apnicabi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-apnicabi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC35E3D20F7918307A3ABB9 /* Pods-apnicabi-apnicabiDriver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriver.debug.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver.debug.xcconfig"; sourceTree = "<group>"; };
 		DFC03665D261566D984E03AA /* Pods-apnicabi-apnicabiDriver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-apnicabi-apnicabiDriver.release.xcconfig"; path = "Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +194,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				9309ACAC2B42C8B10020BDC4 /* apnicabi-Bridging-Header.h */,
+				B30D8A753393D4CAAC265766 /* PrivacyInfo.xcprivacy */,
 			);
 			name = apnicabi;
 			sourceTree = "<group>";
@@ -223,6 +232,9 @@
 				93A786032DB0389000D6AC7D /* apnicabiDriver-Info.plist */,
 				93A785FF2DB0383200D6AC7D /* apnicabiDev-Info.plist */,
 				93A786012DB0385700D6AC7D /* apnicabiDriverDev-Info.plist */,
+				1EF1DF344A8E0159577C1930 /* PrivacyInfo.xcprivacy */,
+				01F10D37CA6AEB05A2A56678 /* PrivacyInfo.xcprivacy */,
+				18B499DDBE2906FD605AAE5C /* PrivacyInfo.xcprivacy */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -279,7 +291,6 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
 				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -302,7 +313,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -324,7 +334,6 @@
 				93C7F2662D144F2600839B3E /* Frameworks */,
 				93C7F2682D144F2600839B3E /* Resources */,
 				93C7F26F2D144F2600839B3E /* Bundle React Native code and images */,
-				93C7F2702D144F2600839B3E /* [CP] Embed Pods Frameworks */,
 				93C7F2712D144F2600839B3E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -346,7 +355,6 @@
 				93C7F2962D144F7700839B3E /* Frameworks */,
 				93C7F2982D144F7700839B3E /* Resources */,
 				93C7F29F2D144F7700839B3E /* Bundle React Native code and images */,
-				93C7F2A02D144F7700839B3E /* [CP] Embed Pods Frameworks */,
 				93C7F2A12D144F7700839B3E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -368,7 +376,6 @@
 				93C7F2AE2D144F8600839B3E /* Frameworks */,
 				93C7F2B02D144F8600839B3E /* Resources */,
 				93C7F2B72D144F8600839B3E /* Bundle React Native code and images */,
-				93C7F2B82D144F8600839B3E /* [CP] Embed Pods Frameworks */,
 				93C7F2B92D144F8600839B3E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -437,6 +444,7 @@
 				1BFF1C52EB9B42B4BC97AC4C /* Nunito-Regular.ttf in Resources */,
 				E6BF709FBF7144EF87817C0E /* poppins_regular.ttf in Resources */,
 				93E52C6F2C9604CE00849876 /* GoogleService-Info.plist in Resources */,
+				729D6CD2A5EA27E4EA1421D4 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +460,7 @@
 				93C7F26D2D144F2600839B3E /* poppins_regular.ttf in Resources */,
 				93A786062DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */,
 				93C7F26E2D144F2600839B3E /* GoogleService-Info.plist in Resources */,
+				1670E99783895D71BC8062BC /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +475,7 @@
 				93C7F29D2D144F7700839B3E /* poppins_regular.ttf in Resources */,
 				93C7F29E2D144F7700839B3E /* GoogleService-Info.plist in Resources */,
 				93A786042DB0389000D6AC7D /* apnicabiDriver-Info.plist in Resources */,
+				1F3773B19DFEAADFAF2D9802 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +493,7 @@
 				93A786002DB0383200D6AC7D /* apnicabiDev-Info.plist in Resources */,
 				93C7F2B52D144F8600839B3E /* poppins_regular.ttf in Resources */,
 				93C7F2B62D144F8600839B3E /* GoogleService-Info.plist in Resources */,
+				7CF8249454FA8ED57378201E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,23 +515,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi/Pods-apnicabi-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi/Pods-apnicabi-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-apnicabi/Pods-apnicabi-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		93C7F2602D144F2600839B3E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -578,23 +572,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		93C7F2702D144F2600839B3E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriverDev/Pods-apnicabi-apnicabiDriverDev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		93C7F2712D144F2600839B3E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -670,23 +647,6 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		93C7F2A02D144F7700839B3E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDev/Pods-apnicabi-apnicabiDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDev/Pods-apnicabi-apnicabiDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDev/Pods-apnicabi-apnicabiDev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		93C7F2A12D144F7700839B3E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -761,23 +721,6 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		93C7F2B82D144F8600839B3E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiDriver/Pods-apnicabi-apnicabiDriver-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		93C7F2B92D144F8600839B3E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -837,23 +780,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-apnicabi-apnicabiTests/Pods-apnicabi-apnicabiTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -1100,8 +1026,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1127,6 +1054,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_ARCHS = "";
@@ -1147,6 +1075,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1165,8 +1095,13 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = false;
 			};
 			name = Debug;
 		};
@@ -1174,8 +1109,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1201,6 +1137,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1213,6 +1150,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1230,8 +1169,13 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = false;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

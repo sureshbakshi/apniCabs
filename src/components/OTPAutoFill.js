@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, SafeAreaView, Keyboard, View } from 'react-native';
+import { StyleSheet, Keyboard, View } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
-import { COLORS, USER_ROLES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
 import LoginStyles from '../styles/LoginPageStyles';
-import config from '../util/config';
 
 export default ({ route, data, callbackFunctions }) => {
     const otpInfo = route?.params?.data || data
 
-    console.log({otpInfo, params: route?.params?.data })
     const dispatch = useDispatch()
     const [submitOTPHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         callbackFunctions.verifyOTPMutation();
@@ -38,11 +35,10 @@ export default ({ route, data, callbackFunctions }) => {
         dispatch(setAndroidDeviceCode(code))
         callbackFunctions?.getOTP?.(code)
     };
-
     return (
-        <SafeAreaView style={[styles.container]}>
+        <>
             <Text style={{ marginBottom: 8, fontSize: 16 }}>Enter OTP</Text>
-            <View style={[LoginStyles.textInputPickup, {paddingTop: 10, paddingBottom:0}]}>
+            <View style={[LoginStyles.textInputPickup, { paddingTop: 10, paddingBottom: 0 }]}>
                 <OtpAutoFillViewManager
                     onComplete={handleComplete}
                     onAndroidSignature={androidDeviceCode ? () => { } : handleOnAndroidSignature}
@@ -51,9 +47,7 @@ export default ({ route, data, callbackFunctions }) => {
                     space={2}
                 />
             </View>
-            {/* <Text style={{ marginBottom: 8, fontSize: 16 }}>{otpInfo?.otp}</Text> */}
-            {/* <CustomButton label={'Submit OTP'} onClick={handleComplete} /> */}
-        </SafeAreaView>
+        </>
     );
 }
 
@@ -65,5 +59,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         minHeight: 36,
         fontSize: 16,
-      }
+    }
 });

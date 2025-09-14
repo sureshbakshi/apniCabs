@@ -7,6 +7,7 @@ import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native
 import { getScreen } from '../util';
 import { ImageView } from '../components/common';
 import { debounce } from 'lodash';
+// Use the named export Marker
 
 const mapStyle = [
     { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] }, // Lighter background for map

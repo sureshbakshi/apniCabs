@@ -9,7 +9,7 @@ import useGetDriverDetails, { useUpdateDriverStatus } from '../hooks/useGetDrive
 import { updateRideRequest } from '../slices/driverSlice';
 import SocketStatus from '../components/common/SocketStatus';
 import SearchLoader from '../components/common/SearchLoader';
-import { useUpdateRequestMutation } from '../slices/apiSlice';
+import { useGetFeeQuery, useUpdateRequestMutation } from '../slices/apiSlice';
 import { Icon } from '../components/common';
 import { navigate } from '../util/navigationService';
 import CustomButton from '../components/common/CustomButton';
@@ -118,7 +118,8 @@ const DriverCard = ({ list }) => {
 export const PickARide = () => {
   const isSocketConnected = useSelector((state) => state.auth.isSocketConnected);
   const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
-
+  const feeQuery = useGetFeeQuery({}, { refetchOnMountOrArgChange: true });
+  const { data: fees, error: feeError, isLoading: feeLoading, isSuccess: feeSuccess } = feeQuery;
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
   const [isOnline, toggleDriveStatus] = useState(is_available)
   const { t } = useTranslation();
@@ -206,7 +207,7 @@ export const PickARide = () => {
             <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
               You are currently offline. Turn on your availability to receive ride requests.</Text>
           </View>}
-          {walletInfo?.amount < 100 && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
+          {walletInfo?.amount < (fees?.wallet_min || 20) && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
             <Pressable
               style={[CommonStyles.shadow, { padding: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 25, backgroundColor: COLORS.primary, paddingHorizontal: 14 }]}
               onPress={() => navigate(ROUTES_NAMES.wallet,)}>

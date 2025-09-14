@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
@@ -22,14 +24,29 @@ const CustomTabs = ({ extraProps, data }) => {
 
   const dispatch = useDispatch();
   const { activeRequestDrivers: driverListByCategory, activeRequestId: request_id } = useSelector(state => state.user);
-  const defaultCode = vehicleList[0]?.code;
-  const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery({ request_id, category: defaultCode }, { refetchOnMountOrArgChange: true, skip: !request_id || !defaultCode });
+  const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery();
+
+  // Call API on mount with first vehicle code if exists
+  useEffect(() => {
+    if (request_id && vehicleList[0]?.code) {
+      refetch({ request_id, category: vehicleList[0].code });
+    }
+  }, [request_id, vehicleList.length > 0 ? vehicleList[0].code : null]);
+
+    // Refetch when this screen is focused (tab switch or navigation back)
+  useFocusEffect(
+    React.useCallback(() => {
+      if (request_id && vehicleList[index]?.code) {
+        refetch({ request_id, category: vehicleList[index].code });
+      }
+    }, [request_id, vehicleList.length > 0 ? vehicleList[index]?.code : null, index])
+  );
 
   useEffect(() => {
     if (categoryResponse) {
       dispatch(setActiveRequestDrivers(categoryResponse))
     }
-  }, [categoryResponse])
+  }, [categoryResponse]);
 
   const [index, setIndex] = useState(0);
 
@@ -57,7 +74,9 @@ const CustomTabs = ({ extraProps, data }) => {
 
   const handleIndexChange = (i) => {
     setIndex(i);
-    refetch({ category: vehicleList[i].code, request_id });
+    if (vehicleList[i]?.code && request_id) {
+      refetch({ request_id, category: vehicleList[i].code });
+    }
   };
 
   const renderTabBar = props => (

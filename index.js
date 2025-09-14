@@ -3,6 +3,9 @@
  */
 
 import { AppRegistry, AppState } from 'react-native';
+// Ensure secure random and crypto are available before anything else
+import 'react-native-get-random-values';
+import './src/shims/crypto';
 import App from './src/navigation/index';
 import { name as appName } from './app.json';
 import { store, persistor } from './src/store/index';
