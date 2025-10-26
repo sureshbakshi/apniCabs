@@ -31,6 +31,7 @@
     "project:clean": "react-native-clean-project"
   },
   "dependencies": {
+    "hermes-engine": "^0.15.2",
     "@bugsnag/plugin-react-navigation": "^7.25.0",
     "@bugsnag/react-native": "^7.25.0",
     "@hookform/resolvers": "^3.3.3",

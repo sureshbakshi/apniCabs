@@ -1,3 +1,4 @@
+def hermesEnabled = true
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -38,16 +39,16 @@ android {
         user {
             dimension "user_type"
             applicationId appId
-            versionCode 32
-            versionName "2.1.1"
+            versionCode 34
+            versionName "2.1.3"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
         }
         driver {
             dimension "user_type"
             applicationId appId
-            versionCode 32
-            versionName "2.1.1"
+            versionCode 34
+            versionName "2.1.3"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
         }

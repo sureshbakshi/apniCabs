@@ -8,7 +8,7 @@ import ProfileImage from '../components/common/ProfileImage';
 const MyProfilePage = () => {
   const profile = useSelector(state => state.auth?.userInfo);
   if (!profile) return null;
-
+  const userId = profile?.appUserId || profile?.appDriverId;
 
   return (
     <View style={MyProfileStyles.container}>
@@ -20,7 +20,7 @@ const MyProfilePage = () => {
                 <ProfileImage />
               </View>
               <View style={MyProfileStyles.middle}>
-                <Text style={MyProfileStyles.name}>{profile.name}</Text>
+                <Text style={MyProfileStyles.name}>{profile.name} {userId ? `(${userId})` : null}</Text>
                 {/* <Text style={MyProfileStyles.review}>11 Reviews</Text> */}
               </View>
             </View>

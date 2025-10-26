@@ -4856,6 +4856,11 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+hermes-engine@^0.15.2:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.11.0.tgz#bb224730d230a02a5af02c4e090d1f52d57dd3db"
+  integrity sha512-7aMUlZja2IyLYAcZ69NBnwJAR5ZOYlSllj0oMpx08a8HzxHOys0eKCzfphrf6D0vX1JGO1QQvVsQKe6TkYherw==
+
 hermes-estree@0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/hermes-estree/-/hermes-estree-0.19.1.tgz#d5924f5fac2bf0532547ae9f506d6db8f3c96392"
@@ -7322,7 +7327,7 @@ react-native-clean-project@^4.0.3:
   resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-4.0.3.tgz#7ea174d2cb789e0c1d24defbeba561fcbf1beb9e"
   integrity sha512-tWNhac5R4BetY7sZSRgaWUDSMpT207nJRuUwMZInmYJR3HucMZGIIUaiDH/pbFxXSDq4GMj4P7FnHxGLDobJ8w==
 
-react-native-config@^1.7.0:
+react-native-config@^1.5.9:
   version "1.5.9"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.5.9.tgz#a96a3148baa70c050c9f33204716d908f440fdad"
   integrity sha512-j6EZ+zgcNW21POGDOdE/A42lt9ZZbQvpAfY8rMn/LCWneb+UcxN8DCq1tXcHUW4Yu4adAlDvpuw1WFqj4DR3hw==

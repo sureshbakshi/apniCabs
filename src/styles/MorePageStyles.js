@@ -104,11 +104,11 @@ const MoreStyles = StyleSheet.create({
     fontWeight: '800',
   },
   address: {
-    color: '#a1a1a1',
+    color: COLORS.gray,
     fontSize: 13,
   },
   review: {
-    color: '#ccc',
+    color: COLORS.gray,
     fontSize: 13,
     marginBottom: 20,
   },

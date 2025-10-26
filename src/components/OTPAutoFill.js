@@ -1,23 +1,25 @@
-import * as React from 'react';
-import { StyleSheet, Keyboard, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
-import LoginStyles from '../styles/LoginPageStyles';
+import useKeyboardDismiss from '../hooks/useKeyboardDismiss';
 
-export default ({ route, data, callbackFunctions }) => {
+export default ({ route, data, callbackFunctions, scrollRef }) => {
     const otpInfo = route?.params?.data || data
 
     const dispatch = useDispatch()
     const [submitOTPHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         callbackFunctions.verifyOTPMutation();
     const { androidDeviceCode } = useSelector(state => state.auth)
+    const { dismiss, HiddenInput } = useKeyboardDismiss();
 
     const handleComplete = ({
         nativeEvent: { code },
     }) => {
-        Keyboard?.dismiss()
+        // dismiss keyboard using reusable hook
+        dismiss();
         submitOTPHandler({ ...otpInfo, otp: code, }).unwrap()
             .then(data => {
                 if (data) {
@@ -38,15 +40,21 @@ export default ({ route, data, callbackFunctions }) => {
     return (
         <>
             <Text style={{ marginBottom: 8, fontSize: 16 }}>Enter OTP</Text>
-            <View style={[LoginStyles.textInputPickup, { paddingTop: 10, paddingBottom: 0 }]}>
+            <View style={[styles.textInputPickup]}>
+                {/* hidden input used only to force blur/fallback keyboard dismissal */}
                 <OtpAutoFillViewManager
                     onComplete={handleComplete}
                     onAndroidSignature={androidDeviceCode ? () => { } : handleOnAndroidSignature}
-                    style={styles.textInputPickup}
+                    style={{
+                        fontSize: 40,
+                        height: 55,
+                    }}
                     length={4} // Define the length od OTP. This is a must
-                    space={2}
+                    space={1}
                 />
+
             </View>
+            <HiddenInput />
         </>
     );
 }
@@ -56,8 +64,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     textInputPickup: {
+        borderColor: '#CCCCCC',
+        borderRadius: 8,
+        borderWidth: 0.5,
         paddingHorizontal: 15,
-        minHeight: 36,
-        fontSize: 16,
     }
 });

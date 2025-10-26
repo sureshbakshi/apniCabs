@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Pressable,
@@ -60,6 +60,8 @@ const SignUpPage = () => {
     phone: '',
     referredBy: ''
   }
+  const scrollRef = useRef(null);
+
 
   const successHandler = (signUpdata) => {
     if (signUpdata) {
@@ -82,6 +84,7 @@ const SignUpPage = () => {
         enableOnAndroid={true}
         keyboardShouldPersistTaps="handled"
         extraHeight={30}
+        ref={scrollRef}
       >
         {/* <ScreenContainer> */}
           <View style={[LoginStyles.section]}>
@@ -112,6 +115,7 @@ const SignUpPage = () => {
                   formPayloadKeys={['name', 'email', 'phone', 'referredBy', 'city', 'gender']}
                   submitBtnLabel={'Get OTP'}
                   heading={'Sign Up'}
+                  scrollRef={scrollRef}
                 />
                 {/* <CustomButton
                   onClick={openOwnerPortal}

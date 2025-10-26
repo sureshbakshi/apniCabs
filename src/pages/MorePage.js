@@ -22,7 +22,7 @@ const MorePage = () => {
   const { userInfo: profile } = useSelector(state => state.auth);
   const {t} = useTranslation();
   useGetDriverDetails({ refetchOnMountOrArgChange: true })
-
+const userId = profile?.appUserId || profile?.appDriverId;
   return (
     <>
      
@@ -36,6 +36,7 @@ const MorePage = () => {
                 </View>
                 <View style={MoreStyles.middle}>
                   <Text style={MoreStyles.name}>{profile?.name}</Text>
+                  {userId ? <Text style={MoreStyles.address}>{userId}</Text> : null}
                 </View>
               </View>
             </View>
