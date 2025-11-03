@@ -503,15 +503,26 @@ export const FORGOT_PASSWORD = [
 export const SIGN_UP_FORM = [
   {
     name: 'name',
-    label: "Name*",
+    label: "Name",
     props: {
-      placeholder: "Enter name*",
+      placeholder: "Enter name",
       required: true,
     },
   },
   {
+    name: 'phone',
+    label: "Phone Number",
+    props: {
+      placeholder: "Enter phone number",
+      required: true,
+      inputMode: 'numeric',
+      keyboardType: 'number-pad',
+
+    },
+  },
+  {
     name: 'email',
-    label: "Email Address",
+    label: "Email Address (Optional)",
     props: {
       placeholder: "Enter email address",
       // required: false,
@@ -520,19 +531,8 @@ export const SIGN_UP_FORM = [
     },
   },
   {
-    name: 'phone',
-    label: "Phone Number*",
-    props: {
-      placeholder: "Enter phone number*",
-      required: true,
-      inputMode: 'numeric',
-      keyboardType: 'number-pad',
-
-    },
-  },
-  {
     name: 'referredBy',
-    label: "Referral Code",
+    label: "Referral Code (Optional)",
     props: {
       placeholder: "Referral Code",
       required: false,

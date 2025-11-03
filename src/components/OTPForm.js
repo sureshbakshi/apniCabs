@@ -21,7 +21,8 @@ import OTPAutoFill from '../components/OTPAutoFill';
 import { extractKeys, showErrorMessage } from '../util';
 import config from '../util/config';
 import Dropdown from './common/Dropdown';
-import { useGetCitiesQuery } from '../slices/apiSlice';
+import { useLazyGetCitiesQuery } from '../slices/apiSlice';
+import { InteractionManager } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
@@ -34,7 +35,18 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
     const { t } = useTranslation();
     const [submitHandler, { data: OTPResponse, error: getOTPError, isLoginLoading }] =
         formMutation();
-    const { data: cities } = useGetCitiesQuery({}, { refetchOnMountOrArgChange: true });
+    const [triggerGetCities, { data: cities, error: citiesError, isFetching: citiesFetching, isLoading: citiesLoading }] = useLazyGetCitiesQuery();
+
+    useEffect(() => {
+        const task = InteractionManager.runAfterInteractions(() => {
+            try {
+                triggerGetCities({}, { refetchOnMountOrArgChange: true });
+            } catch (e) {
+                console.log('triggerGetCities error', e);
+            }
+        });
+        return () => task && task.cancel && task.cancel();
+    }, [triggerGetCities]);
 
     const { androidDeviceCode } = useSelector(state => state.auth)
     const [otpInfo, setOTPInfo] = useState(null)
@@ -142,12 +154,12 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
     const [otpHeight, setOtpHeight] = React.useState(undefined);
 
     // derived flag used to show OTP panel
-    const showOTP = Boolean(payload && !getOTPError);
+    const showOTP = Boolean(payload && OTPResponse && !getOTPError);
 
     // initialize positions when container width changes (do NOT run on showOTP changes)
     // otherwise positions are set instantly and animations are cancelled
     React.useEffect(() => {
-        if (containerWidth) setPositions(Boolean(payload && !getOTPError), containerWidth);
+        if (containerWidth) setPositions(Boolean(payload && OTPResponse && !getOTPError), containerWidth);
     }, [containerWidth, setPositions, /* intentionally exclude showOTP to allow animateTo to run */]);
 
     // when measured panel heights change or showOTP toggles, set the container height
@@ -178,13 +190,13 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                 >
                     {/* Form panel */}
                     <Animated.View
-                         style={{
-                             position: 'absolute',
-                             top: 0,
-                             left: 0,
-                             right: 0,
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
                             transform: [{ translateX: formTranslate }],
-                         }}
+                        }}
                         onLayout={(e) => {
                             const { height } = e.nativeEvent.layout;
                             // always record the form content height
@@ -221,7 +233,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                                                             </View>
                                                         ) : (
                                                             <>
-                                                                <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.props?.placeholder || field.label}</Text>
+                                                                <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.label || field.props?.placeholder }</Text>
                                                                 {field.element === ELEMENTS.select ?
                                                                     <Dropdown
                                                                         label={field.label}
@@ -240,6 +252,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                                                                         placeholderTextColor={COLORS.gray}
                                                                         style={[LoginStyles.textInputPickup]}
                                                                         disable={otpInfo}
+                                                                        label={field.label}
                                                                         {...field.props}
                                                                     />}
                                                             </>)
@@ -254,6 +267,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                                     </View>
                                 );
                             })}
+                            {(citiesLoading || citiesFetching) && <Text>Fetching cities...</Text>}
                             <CustomButton
                                 onClick={handleSubmit(onSubmit)}
                                 label={submitBtnLabel || t('submit_btn')}
@@ -267,13 +281,13 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
 
                     {/* OTP panel */}
                     <Animated.View
-                         style={{
-                             position: 'absolute',
-                             top: 0,
-                             left: 0,
-                             right: 0,
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
                             transform: [{ translateX: otpTranslate }],
-                         }}
+                        }}
                         onLayout={(e) => {
                             const { height } = e.nativeEvent.layout;
                             // always record the otp content height

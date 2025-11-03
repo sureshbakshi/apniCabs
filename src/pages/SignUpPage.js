@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Pressable,
   StatusBar,
 } from 'react-native';
 import LoginStyles from '../styles/LoginPageStyles';
-import ScreenContainer from '../components/ScreenContainer';
 import { navigate } from '../util/navigationService';
 import { Text } from '../components/common';
 import { useDispatch } from 'react-redux';
@@ -15,8 +14,7 @@ import { COLORS, ELEMENTS, ROUTES_NAMES, SELECT_OPTIONS_KEYS, SIGN_UP_FORM, USER
 import { driverSignupSchema, signupSchema, signupUserSchema } from '../schema';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
-import CustomButton from '../components/common/CustomButton';
-import config, { openOwnerPortal } from '../util/config';
+import config from '../util/config';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
 const isDriver = config.ROLE === USER_ROLES.DRIVER

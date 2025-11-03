@@ -6,7 +6,7 @@ buildscript {
         minSdkVersion = 23
         compileSdkVersion = 35
         targetSdkVersion = 35
-    ndkVersion = "26.2.11394342"
+        ndkVersion = "26.3.11579264"
         googlePlayServicesVersion = "21.0.1"
     }
     repositories {
@@ -14,8 +14,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.4.2")
-        classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.+")
+        classpath("com.android.tools.build:gradle:8.6.0")
+        classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.+")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath 'com.google.gms:google-services:4.3.15'
     }

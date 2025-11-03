@@ -25,7 +25,6 @@ import { useTranslation } from 'react-i18next';
 
 const initialState = {
   mobile: '',
-  // password: ''
 }
 
 
@@ -33,8 +32,6 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const [login, { data: logindata, error: loginError, isLoginLoading }] =
     useLoginMutation();
-  const [userCheck, { data: userCheckData, error: userCheckError }] =
-    useUserCheckMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {

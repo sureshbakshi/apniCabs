@@ -545,7 +545,7 @@ export const {
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
   useLazyGetAppLinksQuery,
-  useGetCitiesQuery,
+  useLazyGetCitiesQuery,
   useUpdateRatingMutation,
   useLazyGetShareLinkQuery
 } = apiSlice;

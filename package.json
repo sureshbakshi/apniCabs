@@ -31,9 +31,8 @@
     "project:clean": "react-native-clean-project"
   },
   "dependencies": {
-    "hermes-engine": "^0.15.2",
-    "@bugsnag/plugin-react-navigation": "^7.25.0",
-    "@bugsnag/react-native": "^7.25.0",
+    "@bugsnag/plugin-react-navigation": "8.6.0",
+    "@bugsnag/react-native": "8.7",
     "@hookform/resolvers": "^3.3.3",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-clipboard/clipboard": "^1.13.2",
@@ -44,6 +43,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.6.8",
+    "hermes-engine": "^0.11.0",
     "i18next": "^24.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

@@ -26,7 +26,11 @@ export default ({ route, data, callbackFunctions, scrollRef }) => {
                     callbackFunctions?.successHandler?.(data)
                 }
             })
-            .catch(error => callbackFunctions?.errorHandler?.(error));
+            .catch(error => {
+                // console.log('error', error)
+                //  showErrorMessage(error || 'Something went wrong. Please retry.')
+                // callbackFunctions?.errorHandler?.(error)
+            });
     };
 
 

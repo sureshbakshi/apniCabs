@@ -28,27 +28,27 @@ android {
     splits {
         abi {
             reset()
-            // Build per-ABI APKs to reduce size per artifact (upload all to Play Console)
             enable true
             universalApk false
             include(*reactNativeArchitectures())
         }
     }
+
     flavorDimensions "user_type", "build_type"
     productFlavors {
         user {
             dimension "user_type"
             applicationId appId
-            versionCode 34
-            versionName "2.1.3"
+            versionCode 36
+            versionName "2.1.4"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
         }
         driver {
             dimension "user_type"
             applicationId appId
-            versionCode 34
-            versionName "2.1.3"
+            versionCode 36
+            versionName "2.1.4"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
         }
@@ -62,13 +62,14 @@ android {
             manifestPlaceholders = [GOOGLE_MAPS_KEY: googleMapsKey ?: ""]
         }
     }
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60"
-    // Only package required locales
-    resConfigs "en", "hi"
+        resConfigs "en", "hi"
     }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -85,6 +86,7 @@ android {
             }
         }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -93,15 +95,17 @@ android {
         release {
             signingConfig signingConfigs.release
             crunchPngs false
-            // Reduce APK size
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-    // Exclude unused metadata to shave a bit of size
-    packagingOptions {
+    // ✅ Updated packaging for 16 KB zip alignment
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false // <— required for 16 KB alignment
+        }
         resources {
             excludes += [
                 'META-INF/DEPENDENCIES',
@@ -116,20 +120,26 @@ android {
             ]
         }
     }
+
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
     implementation("com.facebook.react:react-android")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+
     implementation(project(':react-native-maps')) {
         exclude group: 'com.google.android.gms'
     }
     implementation 'com.google.android.gms:play-services-base:18.0.1'
     implementation('com.google.android.gms:play-services-location:21.0.1')
     implementation('com.google.android.gms:play-services-maps:18.0.2')
+
     implementation project(':react-native-notifications')
     implementation project(':react-native-html-to-pdf')
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation platform("com.google.firebase:firebase-bom:32.8.0")
     implementation project(':react-native-immediate-phone-call')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
