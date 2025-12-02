@@ -297,11 +297,11 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                     >
 
                         <View style={{ marginBottom: 10 }}>
-                            <OTPAutoFill
+                            {showOTP && <OTPAutoFill
                                 key={otpKey}
                                 data={{ code: otpInfo?.code, ...(payload && payload), ...additionalVerifyOTPPayload }}
                                 callbackFunctions={callbackFunctions}
-                            />
+                            />}
                             <Text
                                 onPress={handleEditDetails}
                                 style={{ marginTop: 8, color: COLORS.primary_blue, textDecorationLine: 'underline', textAlign: 'center' }}

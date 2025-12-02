@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { COLORS, ExpiryStatus } from '../../constants';
+import { COLORS, ExpiryStatus, SUPPORT } from '../../constants';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { Text } from './Text';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import { Icon } from './Icon';
 import CommonStyles from '../../styles/commonStyles';
 import { useTranslation } from 'react-i18next';
 import useLogout from '../../hooks/useLogout';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 
 const MessageInfo = () => {
@@ -35,22 +36,27 @@ const MessageInfo = () => {
 
     return (
         <View style={[FindRideStyles.container, { alignItems: 'center', justifyContent: 'center', padding: 15 }]}>
-            <View style={[NotificationsPageStyles.card, CommonStyles.shadow, { flexDirection: 'row', gap: 15, height: 'auto' }]} >
+            <View style={[NotificationsPageStyles.card, CommonStyles.shadow, { gap: 15, height: 'auto', justifyContent: 'center', alignItems: 'center' }]} >
                 <View style={NotificationsPageStyles.box}>
-                    <Icon name='flash' size='small' color={COLORS.black} />
+                    <Icon name='alert-octagon' size='extraLarge' color={COLORS.primary} />
                 </View>
-                <View>
-                    <Text style={[NotificationsPageStyles.info]}>{t('generic_message_info_1')} {message}. {t('generic_message_info_2')}</Text>
-                    <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
-                        {!isDriverVerified(driverInfo) && <>
-                            <View style={NotificationsPageStyles.blackQuote}>
-                                <Text style={[NotificationsPageStyles.heading]}>{t('reason_title')}: </Text>
-                            </View>
-                            <Text style={[NotificationsPageStyles.name]}>{driverInfo?.DriverDetail?.reject_reason}.</Text>
-                        </>}
-                        {isNotVehicleAssigned && <Text style={[FindRideStyles.name]}>{t('driver_vehicle_update_msg')}</Text>}
-                    </View>
-                    {!isEmpty(driverInfo?.expiredFields) && <View style={[FindRideStyles.subHeader, { margin: 10 }]}>
+                <View style={{ alignItems: 'center' }} >
+                    {isNotVehicleAssigned && <>
+                        <Text style={[FindRideStyles.name, { textAlign: 'center', marginBottom: 10 }]}>{t('activate_account_title')}</Text>
+                        <View style={{ alignItems: 'flex-start', marginVertical: 10 }}>
+                            <Text style={[NotificationsPageStyles.info]}>1. {t('activate_vehicle_number')}</Text>
+                            <Text style={[NotificationsPageStyles.info]}>2. {t('activate_license_number')}</Text>
+                            <Text style={[NotificationsPageStyles.info]}>3. {t('activate_aadhaar_number')}</Text>
+                        </View>
+                        <Text style={[NotificationsPageStyles.info, { textAlign: 'center' }]}>{t('activate_account_footer')}</Text>
+                    </>}
+                    {!isDriverVerified(driverInfo) && <>
+                        <View style={NotificationsPageStyles.blackQuote}>
+                            <Text style={[NotificationsPageStyles.heading]}>{t('reason_title')}: </Text>
+                        </View>
+                        <Text style={[NotificationsPageStyles.name]}>{driverInfo?.DriverDetail?.reject_reason}.</Text>
+                    </>}
+                    {!isEmpty(driverInfo?.expiredFields) && <View>
                         <View style={NotificationsPageStyles.blackQuote}>
                             <Text style={[NotificationsPageStyles.heading]}>{t('notice_title')}</Text>
                         </View>
@@ -72,14 +78,20 @@ const MessageInfo = () => {
                                 borderRadius: 5
                             }} onClick={openOwnerPortal} />
                         <CustomButton
-                            label={t('logout')}
+                            label={t('call_us')}
+                            iconLeft={{
+                                name: 'phone',
+                                size: 'small',
+                                color: COLORS.black
+                            }}
                             styles={{
                                 backgroundColor: COLORS.card_bg, margin: 5,
                                 width: 85, height: 32,
                                 borderRadius: 5
                             }}
                             textStyles={{ lineHeight: 13, fontSize: 12, fontWeight: 400, textTransform: 'capitalize', color: COLORS.black }}
-                            onClick={logOut} />
+                            onClick={() => RNImmediatePhoneCall?.immediatePhoneCall(SUPPORT.mobile.value)}
+                        />
                     </View>
                 </View>
             </View>

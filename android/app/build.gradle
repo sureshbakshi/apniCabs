@@ -47,7 +47,7 @@ android {
         driver {
             dimension "user_type"
             applicationId appId
-            versionCode 36
+            versionCode 38
             versionName "2.1.4"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"

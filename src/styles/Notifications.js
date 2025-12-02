@@ -5,7 +5,7 @@ const NotificationsPageStyles = StyleSheet.create({
   card:{
     backgroundColor: COLORS.white,
     borderRadius: 24,
-    borderBottomWidth:1,
+    // borderBottomWidth:1,
     // borderBottomColor:'#BCBCBC',
     margin: 15,
     padding: 15,
@@ -16,8 +16,8 @@ const NotificationsPageStyles = StyleSheet.create({
     padding:20
 },
   box: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     borderRadius: 30,
     backgroundColor: '#DDDEE1',
     alignItems: 'center',
@@ -60,7 +60,8 @@ const NotificationsPageStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems:'center',
     justifyContent: 'flex-start',
-    gap: 15
+    gap: 15,
+    marginTop:10
   },
 });
 export default NotificationsPageStyles;

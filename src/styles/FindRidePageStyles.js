@@ -90,9 +90,9 @@ const FindRideStyles = StyleSheet.create({
   name: {
     color: COLORS.black,
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
     lineHeight: 24,
-    marginVertical: 3,
+    marginBottom: 10,
   },
   vehicle: {
     color: COLORS.black,

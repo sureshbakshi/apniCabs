@@ -6,7 +6,7 @@ buildscript {
         minSdkVersion = 23
         compileSdkVersion = 35
         targetSdkVersion = 35
-        ndkVersion = "26.3.11579264"
+        ndkVersion = "28.0.12433566"
         googlePlayServicesVersion = "21.0.1"
     }
     repositories {

@@ -21,6 +21,7 @@
     "release:user": "cd android && ENVFILE=.env.prod.user ./gradlew bundleUserProdRelease && cd ..",
     "release:driver": "cd android && ENVFILE=.env.prod.driver ./gradlew bundleDriverProdRelease && cd ..",
     "clean": "cd android && ./gradlew clean && cd ..",
+    "clean:project": "react-native-clean-project",
     "bugsnag:create-build": "bugsnag-cli create-build",
     "bugsnag:upload-android-ndk": "bugsnag-cli upload android-ndk android/",
     "bugsnag:upload-android-proguard": "bugsnag-cli upload android-proguard android/",
