@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isDriver, isOwner, isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
@@ -13,6 +13,7 @@ import CommonStyles from '../styles/commonStyles';
 import { ROUTES_NAMES, USER_ROLES } from '../constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MessageInfo from '../components/common/MessageInfo';
+import ServiceUnavailableScreen from '../pages/ServiceUnavailableScreen';
 
 const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
 const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
@@ -64,11 +65,33 @@ export const GetAuthRoutes = () => {
 }
 export default () => {
     const { access_token } = useSelector(state => state.auth);
-    useNotifications()
+    const [isServiceAvailable, setIsServiceAvailable] = useState(true);
+
+    useNotifications();
+    // useEffect(() => {
+    //     const checkService = async () => {
+    //         try {
+    //             const response = await fetch('/api/health', {
+    //                 headers: { Authorization: `Bearer ${access_token}` }
+    //             });
+    //             setIsServiceAvailable(response.ok);
+    //         } catch {
+    //             setIsServiceAvailable(false);
+    //         }
+    //     };
+    //     if (access_token) {
+    //         checkService();
+    //         const interval = setInterval(checkService, 30000); // Check every 30s
+    //         return () => clearInterval(interval);
+    //     }
+    // }, [access_token]);
+
 
     let route = null
     if (isEmpty(access_token)) {
         route = <LoginNavigator />;
+    } else if (!isServiceAvailable) {
+        route = <ServiceUnavailableScreen />;
     } else {
         route = <GetAuthRoutes />
     }
