@@ -13,6 +13,7 @@ import HeaderBackButton from '../components/common/HeaderBackButton';
 import CommonStyles from '../styles/commonStyles'
 import ChatUI from '../components/common/chat';
 import { useTranslation } from 'react-i18next';
+import ServiceUnavailableScreen from '../pages/ServiceUnavailableScreen';
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -43,7 +44,7 @@ export default function DriverStackNavigator({ navigation, route }) {
           name={ROUTES_NAMES.activeRide}
           options={{ title: t('active_ride') }}
           component={ActiveRidePageContainer}
-        /> 
+        />
         <Stack.Screen
           name={ROUTES_NAMES.chat}
           options={{
@@ -66,9 +67,11 @@ export default function DriverStackNavigator({ navigation, route }) {
         options={{ title: t('notifications'), headerShown: true, headerShadowVisible: false }}
         component={Notifications}
       />
-
-
-
+      <Stack.Screen
+        name={ROUTES_NAMES.serviceUnavailable}
+        options={{ title: t('serviceUnavailable'), headerShown: false, headerShadowVisible: false }}
+        component={ServiceUnavailableScreen}
+      />
     </Stack.Navigator>
   );
 }

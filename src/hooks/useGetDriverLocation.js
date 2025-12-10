@@ -9,7 +9,7 @@ export default () => {
 
     useEffect(() => {
         if (isEmpty(currentLocation?.latitude)) {
-            getCurrentLocation()
+            getCurrentLocation(null, true)
         }
     }, [currentLocation?.latitude])
 

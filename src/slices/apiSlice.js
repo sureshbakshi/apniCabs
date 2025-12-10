@@ -71,7 +71,8 @@ const api_path = {
   sos: path => `sos/${path}`,
   links: path => `user/links?${path}`,
   location: path => `location/location${path ? `/${path}` : ''}`,
-  wallet: path => `payment/wallet/${path}`
+  wallet: path => `payment/wallet/${path}`,
+  city: path => `location/city/${path ? `${path}` : ''}`
 };
 const api_urls = {
   login: 'login',
@@ -104,7 +105,8 @@ const api_urls = {
   cities: 'user/cities',
   confirm: 'confirm',
   rating: 'rating',
-  shareLink: 'sharelink'
+  shareLink: 'sharelink',
+  lookup: 'lookup',
 };
 
 export const apiSlice = createApi({
@@ -334,6 +336,15 @@ export const apiSlice = createApi({
       transformResponse: response => response,
       transformErrorResponse: response => response,
     }),
+    cityLookup: builder.mutation({
+      query: body => ({
+        method: 'POST',
+        url: api_path.city(api_urls.lookup),
+        body,
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
     editFare: builder.mutation({
       query: ({ id, ...rest }) => ({
         method: "PATCH",
@@ -547,5 +558,6 @@ export const {
   useLazyGetAppLinksQuery,
   useLazyGetCitiesQuery,
   useUpdateRatingMutation,
-  useLazyGetShareLinkQuery
+  useLazyGetShareLinkQuery,
+  useCityLookupMutation
 } = apiSlice;

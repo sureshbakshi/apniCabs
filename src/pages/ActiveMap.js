@@ -12,7 +12,6 @@ import images from '../util/images';
 import { delay, get } from 'lodash';
 import { RideStatus } from '../constants';
 import useUpdateDriverLocation from '../hooks/useUpdateDriverLocation';
-import useLocationWatcher from '../hooks/useLocationWatcher';
 import { debounce } from 'lodash';
 import useGetDriverLocation from '../hooks/useGetDriverLocation';
 // Use the named export Marker

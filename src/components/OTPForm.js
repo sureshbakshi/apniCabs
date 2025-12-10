@@ -48,7 +48,6 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
         return () => task && task.cancel && task.cancel();
     }, [triggerGetCities]);
 
-    const { androidDeviceCode } = useSelector(state => state.auth)
     const [otpInfo, setOTPInfo] = useState(null)
     const [payload, setPayload] = useState(null)
     const [otpKey, setOtpKey] = useState(0);
@@ -90,9 +89,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
         // const { confirm_password, ...otpPayload } = formData
         const OTPPayload = extractKeys(formData, getOTPPayloadKeys);
         console.log('OTPPayload', OTPPayload)
-        if (androidDeviceCode || Platform.OS === 'ios') {
-            submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) }); //add device code
-        }
+        submitHandler({ ...OTPPayload, ...(additionalOTPPayload && additionalOTPPayload) }); //add device code
         const formPayload = extractKeys(formData, formPayloadKeys)
         setPayload(formPayload);
         Keyboard?.dismiss()
@@ -233,7 +230,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                                                             </View>
                                                         ) : (
                                                             <>
-                                                                <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.label || field.props?.placeholder }</Text>
+                                                                <Text style={{ marginBottom: 8, fontSize: 16, fontFamily: 'Poppins' }}>{field.label || field.props?.placeholder}</Text>
                                                                 {field.element === ELEMENTS.select ?
                                                                     <Dropdown
                                                                         label={field.label}

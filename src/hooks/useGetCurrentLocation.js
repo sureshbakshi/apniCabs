@@ -17,31 +17,44 @@ export default () => {
     const dispatch = useDispatch()
 
     const getCurrentLocation = async (cb, isDriver = false) => {
-        const granted = await checkAndroidPermissions();
-        if (granted) {
-            await Geolocation.getCurrentPosition(
-                async (position) => {
-                    if (position?.coords) {
-                        const locationDetails = await getLocation(position?.coords, setLocation);
-                        cb?.(locationDetails)
-                        if (isDriver) {
-                            updateDriverLocationToServer(locationDetails)
-                            const { latitude, longitude } = locationDetails;
-                            if (latitude && longitude) dispatch(setDriverLocation({ latitude, longitude }))
+        try {
+            const granted = await checkAndroidPermissions();
+            if (!granted) {
+                showErrorMessage('Location permission denied');
+                return null;
+            }
+
+            return new Promise(async (resolve, reject) => {
+                await Geolocation.getCurrentPosition(
+                    async (position) => {
+                        if (position?.coords) {
+                            const details = await getLocation(position.coords, setLocation);
+                            cb?.(details);
+                            if (isDriver) {
+                                updateDriverLocationToServer(details);
+                                const { latitude, longitude } = details;
+                                if (latitude && longitude) {
+                                    dispatch(setDriverLocation({ latitude, longitude }));
+                                }
+                            }
+                            resolve(details);
+                        } else {
+                            reject(new Error('No coordinates found'));
                         }
-                        return locationDetails
-                    }
-                },
-                (error) => {
-                    // See error code charts below.
-                    // console.log(error?.code, error?.message);
-                    showErrorMessage('Please enable GPS');
-                    getCurrentLocation()
-                },
-                defaultOptions
-            );
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        showErrorMessage('Please enable GPS');
+                        reject(error);
+                    },
+                    defaultOptions
+                );
+            });
+        } catch (error) {
+            console.error('getCurrentLocation error:', error);
+            return null;
         }
-    }
+    };
 
     useEffect(() => {
         // getCurrentLocation()

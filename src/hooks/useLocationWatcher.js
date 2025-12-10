@@ -11,7 +11,7 @@ let watchId = undefined;
 
 export default () => {
     const dispatch = useDispatch();
-    const driverStatus = useSelector((state) => state.driver.driverStatus)
+    const driverStatus = useSelector((state) => state.driver.onlineStatus);
     const updateDriverLocationToServer = useUpdateDriverLocation()
 
     const watchPosition = async () => {
@@ -52,11 +52,12 @@ export default () => {
     };
 
     const clearWatch = () => {
-        if (watchId) {
+        if (watchId !== undefined) {
             Geolocation.clearWatch(watchId)
             watchId = undefined
         }
     }
+
 
     useEffect(() => {
         if (driverStatus === DriverAvailableStatus.OFFLINE) {

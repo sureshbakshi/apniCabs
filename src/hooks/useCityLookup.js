@@ -1,0 +1,57 @@
+// useCityLookup.ts
+import { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useCityLookupMutation } from '../slices/apiSlice';
+import { DriverAvailableStatus, ROUTES_NAMES } from '../constants';
+import { useUpdateDriverStatus } from './useGetDriverDetails';
+import useGetCurrentLocation from './useGetCurrentLocation';
+import { useSelector } from 'react-redux';
+import { set } from 'react-hook-form';
+
+const useCityLookup = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const { driverInfo } = useSelector(state => state.auth);
+    const vehicleId = driverInfo?.Vehicle?.id;
+    const navigation = useNavigation();
+    const [updateCityLookup] = useCityLookupMutation();
+    const updateDriverStatus = useUpdateDriverStatus();
+    const { getCurrentLocation } = useGetCurrentLocation();
+
+
+    const onRefresh = useCallback(
+        async () => {
+            const { latitude, longitude } = await getCurrentLocation(null, true) || {};
+            if (!latitude || !longitude || !vehicleId) {
+                return;
+            }
+            try {
+                setIsLoading(true);
+                const payload = {
+                    latitude,
+                    longitude,
+                    vehicleType: vehicleId,
+                };
+
+                const response = await updateCityLookup(payload).unwrap();
+
+                if (response?.status === 200) {
+                    setIsLoading(false);
+                    updateDriverStatus(Boolean(DriverAvailableStatus.ONLINE));
+                    navigation.navigate(ROUTES_NAMES.pickRide);
+                }
+            } catch (error) {
+                setIsLoading(false);
+                if (error.status === 404) {
+                    navigation.navigate(ROUTES_NAMES.serviceUnavailable)
+                } else {
+                    console.log('Error updating location:', error);
+                }
+            }
+        },
+        [navigation, updateCityLookup, updateDriverStatus]
+    );
+
+    return { onRefresh, updateDriverStatus, isLoading };
+};
+
+export default useCityLookup;

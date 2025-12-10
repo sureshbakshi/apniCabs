@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // or any icon lib
-import { COLORS } from '../constants';
+import { COLORS, DriverAvailableStatus } from '../constants';
+import { useRoute } from '@react-navigation/native';
+import useCityLookup from '../hooks/useCityLookup';
 
-const ServiceUnavailableScreen = ({ onRefresh }) => {
+const ServiceUnavailableScreen = () => {
+    const route = useRoute();
+    const { location, vehicleId } = route.params || {};
+    const { onRefresh, updateDriverStatus, isLoading } = useCityLookup();
+    const handleRefresh = async () => {
+        onRefresh({ location, vehicleId })
+    };
+
+
+    useEffect(() => {
+        updateDriverStatus(false);
+    }, []);
     return (
         <View style={styles.container}>
             <View style={styles.iconWrapper}>
@@ -18,9 +31,9 @@ const ServiceUnavailableScreen = ({ onRefresh }) => {
             <Text style={styles.helperText}>
                 Please check back later or contact support if you believe this is an error.
             </Text>
-            <TouchableOpacity style={styles.button} onPress={onRefresh}>
+            <TouchableOpacity style={styles.button} onPress={handleRefresh}>
                 <Icon name="refresh" size={20} color={COLORS.white} />
-                <Text style={styles.buttonText}>Refresh</Text>
+                <Text style={styles.buttonText}>{isLoading ? "Loading..." : "Refresh"}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -33,8 +46,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F7F8FA',
         paddingHorizontal: 24,
-        paddingTop: 120,
         alignItems: 'center',
+        justifyContent: 'center',
     },
     iconWrapper: {
         marginBottom: 24,

@@ -181,6 +181,7 @@ export const ROUTES_NAMES = {
   language: 'Language',
   chat: 'Chat',
   contacts: 'Contacts',
+  serviceUnavailable: 'ServiceUnavailableScreen',
 }
 
 export const RideStatus = {

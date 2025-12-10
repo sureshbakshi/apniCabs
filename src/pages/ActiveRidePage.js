@@ -16,7 +16,7 @@ import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useTranslation } from 'react-i18next';
-import {getSocketInstance} from '../sockets/socketConfig';
+import { getSocketInstance } from '../sockets/socketConfig';
 import DriverMap from './DriverMap';
 import UserMap from './userMap';
 const socket = getSocketInstance()
@@ -75,7 +75,7 @@ const ActiveRidePage = () => {
                 textStyles={{ fontSize: 12 }}
               />
             </View>
-            {isDriverLogged ? <DriverMap activeRequestInfo={activeRequestInfo}/> : <UserMap activeRequestInfo={activeRequestInfo}/>}
+            {isDriverLogged ? <DriverMap activeRequestInfo={activeRequestInfo} /> : <UserMap activeRequestInfo={activeRequestInfo} />}
           </View>
           <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.white, padding: 15, paddingBottom: 3, borderTopLeftRadius: 18, borderTopRightRadius: 18 }]}>
             {/* {isDriverLogged ? <CardWrapper title={'User Details'}>

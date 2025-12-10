@@ -18,22 +18,22 @@ export const useDisptachDriverDetails = (details) => {
 }
 
 
-export default useGetDriverDetails = (options, isCb=false) => {
+export default useGetDriverDetails = (options, isCb = false) => {
     const isDriverLogged = isDriver() || isOwner()
     const { driverInfo, userInfo } = useSelector(state => state.auth);
     const id = driverInfo?.id || userInfo?.id
     if (id) {
-        const [refetch, { data: driverDetails }] = useGetDriverDetailsMutation( {id}, { skip: !id || !isDriverLogged, ...options })
-        const fetchDetails = () =>{
+        const [refetch, { data: driverDetails }] = useGetDriverDetailsMutation({ id }, { skip: !id || !isDriverLogged, ...options })
+        const fetchDetails = () => {
             if (id && isDriverLogged) {
-                refetch({id})
+                refetch({ id })
             }
         }
         useEffect(() => {
             fetchDetails()
         }, [id, isDriverLogged])
         useDisptachDriverDetails(driverDetails)
-        if(isCb){
+        if (isCb) {
             return { fetchDetails }
         }
     }
