@@ -66,18 +66,27 @@ const initialState = {
   activeRequestId: null,
   recentSearchHistory: { from: [], to: [] },
   otherContactList: [mySelf],
-  selectedOtherContact: mySelf
+  selectedOtherContact: mySelf,
+  activeVehicleTypes: []
 }
 const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
+    setActiveTabs: (state, action) => {
+      const { id, vehicleTypes, status } = action.payload;
+      if (id) {
+        state.activeRequestId = id
+        state.activeRequestInfo = { ...state.activeRequestInfo, status: status || state.activeRequestInfo?.status || RideStatus.INITIATED };
+        state.activeVehicleTypes = [...vehicleTypes];
+      }
+    },
     setActiveRequestDrivers: (state, action) => {
       // on initial request - searchride page
       // on request category change - bike, car etc
-      const { id, category, code, drivers, status } = action.payload;
+      const { id, vehicle_type, drivers, status } = action.payload;
       if (id) {
-        const key = category || code;
+        const key = vehicle_type;
         state.activeRequestId = id
         state.activeRequestInfo = { ...state.activeRequestInfo, status: status || state.activeRequestInfo?.status || RideStatus.INITIATED };
         state.activeRequestDrivers = { ...(state.activeRequestDrivers || {}), [key]: drivers };
@@ -177,7 +186,8 @@ export const {
   setRecentSearchHistory,
   setOtherContactList,
   setSelectedOtherContact,
-  clearUserRideState
+  clearUserRideState,
+  setActiveTabs
 } = userSlice.actions;
 
 export default userSlice.reducer;

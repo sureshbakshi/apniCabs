@@ -77,11 +77,11 @@ const Card = ({ request_id, ...item }) => {
   const [cancelRequest, { isLoading: isCancelRequestLoading }] = useCancelRequestMutation();
 
   const updateDriverRequestStatus = (status) => {
-    dispatch(updateActiveRequestDrivers({ ...item, status, request_id, category: item?.category }));
+    dispatch(updateActiveRequestDrivers({ ...item, status, request_id, vehicle_type: item?.category }));
   }
 
   const handleSendRequest = item => {
-    let payload = { request_id, driver_id: item?.id, fare: item?.fare, category: item?.category };
+    let payload = { request_id, driver_id: item?.id, fare: item?.fare, vehicle_type: item?.category };
     if (item.status === RideStatus.REQUESTED && !isCancelRequestLoading) {
       cancelRequest(payload).unwrap().then((res) => {
         updateDriverRequestStatus(RideStatus?.USER_CANCELLED);

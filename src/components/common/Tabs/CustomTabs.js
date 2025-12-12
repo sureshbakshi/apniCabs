@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
@@ -12,49 +12,47 @@ import { setActiveRequestDrivers } from '../../../slices/userSlice';
 import { useLazyGetRequestsByCategoryQuery } from '../../../slices/apiSlice';
 import images from '../../../util/images';
 import { Text } from '../Text';
-import { useVehicleTypes } from '../../../hooks/useVehicleTypes';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
 const CustomTabs = ({ extraProps, data }) => {
-  useVehicleTypes();
-
-  const { vehicleTypes } = useSelector(state => state.auth);
-  const vehicleList = vehicleTypes?.filter(v => v?.is_active === 1) || [];
+  const [index, setIndex] = useState(0);
+  const { activeVehicleTypes: vehicleList } = useSelector(state => state.user);
+  // const vehicleList = vehicleTypes?.filter(v => v?.is_active === 1) || [];
 
   const dispatch = useDispatch();
   const { activeRequestDrivers: driverListByCategory, activeRequestId: request_id } = useSelector(state => state.user);
   const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery();
 
-  // Call API on mount with first vehicle code if exists
+  // Initial load effect (runs once when both ready)
   useEffect(() => {
-    if (request_id && vehicleList[0]?.code) {
-      refetch({ request_id, category: vehicleList[0].code });
+    if (request_id && vehicleList?.length > 0) {
+      // Trigger initial tab load
+      handleIndexChange(0);
     }
-  }, [request_id, vehicleList.length > 0 ? vehicleList[0].code : null]);
+  }, [request_id, vehicleList?.length]);
 
-    // Refetch when this screen is focused (tab switch or navigation back)
+  // Keep useFocusEffect for tab switches
   useFocusEffect(
-    React.useCallback(() => {
-      if (request_id && vehicleList[index]?.code) {
-        refetch({ request_id, category: vehicleList[index].code });
+    useCallback(() => {
+      if (request_id && vehicleList?.[index]?.id) {
+        refetch({ request_id, category: vehicleList[index].id });
       }
-    }, [request_id, vehicleList.length > 0 ? vehicleList[index]?.code : null, index])
+    }, [request_id, index, vehicleList])
   );
-
   useEffect(() => {
     if (categoryResponse) {
       dispatch(setActiveRequestDrivers(categoryResponse))
     }
   }, [categoryResponse]);
 
-  const [index, setIndex] = useState(0);
 
-  const routes = vehicleList.map((vehicle, i) => ({
+  const routes = vehicleList?.map((vehicle, i) => ({
     key: vehicle.code,
     title: Capitalize(vehicle.name),
     icon: images[vehicle.code] || null,
     code: vehicle.code,
+    id: vehicle.id,
   }));
 
   const renderScene = ({ route }) => (
@@ -63,8 +61,8 @@ const CustomTabs = ({ extraProps, data }) => {
         {!isLoading && (
           <CaptainsCard
             keyProp={route.key}
-            extraProps={{ ...extraProps, request_id, category: route.code }}
-            driversList={driverListByCategory?.[route.code] || []}
+            extraProps={{ ...extraProps, request_id, category: route.id }}
+            driversList={driverListByCategory?.[route.id] || []}
             isFetching={isFetching}
           />
         )}
@@ -72,17 +70,17 @@ const CustomTabs = ({ extraProps, data }) => {
     </View>
   );
 
-  const handleIndexChange = (i) => {
+  const handleIndexChange = useCallback((i) => {
     setIndex(i);
-    if (vehicleList[i]?.code && request_id) {
-      refetch({ request_id, category: vehicleList[i].code });
+    if (vehicleList[i]?.id && request_id) {
+      refetch({ request_id, category: vehicleList[i].id });
     }
-  };
+  }, [vehicleList, request_id, refetch]);
 
-  const renderTabBar = props => (
+  const renderTabBar = useCallback(props => (
     <View style={styles.tabBar}>
-      {props.navigationState.routes.map((route, i) => {
-        const isActive = index === i;
+      {props.navigationState?.routes.map((route, i) => {
+        const isActive = props.navigationState?.index === i;
         return (
           <TouchableOpacity
             key={route.key}
@@ -110,7 +108,7 @@ const CustomTabs = ({ extraProps, data }) => {
         );
       })}
     </View>
-  );
+  ), [vehicleList.length]);
 
   return (
     <View style={FindRideStyles.container}>

@@ -2,17 +2,16 @@ import React from 'react';
 import { CustomTabs } from '../components/common';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import { useSelector } from 'react-redux';
-import { COLORS} from '../constants';
+import { COLORS } from '../constants';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useVehicleTypes } from '../hooks/useVehicleTypes';
 
 const FindCaptainPage = () => {
-  const { t } = useTranslation();  
+  const { t } = useTranslation();
   const { requestAlertHandler } = useRequestAlertHandler(t('cancel_request'));
   const { requestInfo } = useSelector(state => state.user);
 
@@ -31,7 +30,7 @@ const FindCaptainPage = () => {
         {/* <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingVertical: 5, borderRadius: 12, marginBottom: 10 }}>
           <Timeline data={[extraProps.from, extraProps.to]} />
         </View> */}
-        <CustomTabs extraProps={extraProps} /> 
+        <CustomTabs extraProps={extraProps} />
         {/* {
           list?.length > 1 ? <CustomTabs extraProps={extraProps} /> :
             <>

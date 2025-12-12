@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SocketStatus from '../components/common/SocketStatus';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
 import { filter } from 'lodash';
-import { requestInfo, setActiveRequestDrivers, setRecentSearchHistory } from '../slices/userSlice';
+import { requestInfo, setActiveTabs, setRecentSearchHistory } from '../slices/userSlice';
 import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
 import ContainerWrapper from '../components/common/ContainerWrapper';
@@ -38,7 +38,7 @@ const SearchRidePage = () => {
     if (error) {
       console.log({ error });
     } else if (rideList) {
-      dispatch(setActiveRequestDrivers(rideList));
+      dispatch(setActiveTabs(rideList));
     }
   }, [error, rideList]);
 
@@ -66,7 +66,7 @@ const SearchRidePage = () => {
     return DEFAULT_VEHICLE_TYPES[0].code
   }
 
-  const updateSearchHistory = ({from, to, fromCity, toCity}) => {
+  const updateSearchHistory = ({ from, to, fromCity, toCity }) => {
     const history = {
       from: {
         address_components: from.address_components,
@@ -86,7 +86,7 @@ const SearchRidePage = () => {
     dispatch(setRecentSearchHistory(history))
   }
 
-  const findDrivers = ({from, to, fromCity, toCity, distance, duration}) => {
+  const findDrivers = ({ from, to, fromCity, toCity, distance, duration }) => {
     let payload = {
       from: {
         location: from.formatted_address,
@@ -102,7 +102,6 @@ const SearchRidePage = () => {
       },
       distance: Number((distance.value / 1000).toFixed(1)),
       duration: duration.text,
-      category: getDefaultVehicleType(),
       ...othersContactInfo()
     };
     dispatch(requestInfo(payload));
@@ -110,7 +109,7 @@ const SearchRidePage = () => {
   }
 
   const searchHandler = async () => {
-    if(!isLoading) {
+    if (!isLoading) {
       try {
         const { distance, duration } = await getDistance();
         const { from, to } = location;
@@ -121,8 +120,8 @@ const SearchRidePage = () => {
           let toCity = filter(to.address_components, {
             types: ['locality'],
           });
-          findDrivers({from, to, fromCity, toCity, distance, duration});
-          updateSearchHistory({from, to, fromCity, toCity})
+          findDrivers({ from, to, fromCity, toCity, distance, duration });
+          updateSearchHistory({ from, to, fromCity, toCity })
         }
       } catch (error) {
         console.error("Error:", error);
@@ -198,7 +197,7 @@ const SearchRidePage = () => {
               label={'Find Captain'}
               isLowerCase
               isLoading={isLoading}
-              indicatorProps={{size: 'small', style: {paddingRight: 10}}}
+              indicatorProps={{ size: 'small', style: { paddingRight: 10 } }}
               onClick={debouncedSearchHandler}
             />
           </View>

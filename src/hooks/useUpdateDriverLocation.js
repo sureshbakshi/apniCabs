@@ -26,7 +26,7 @@ export default () => {
                     "name": driverInfo?.name,
                     ...(driverInfo?.email ? { email: driverInfo?.email } : {})
                 },
-                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code, registrationNumber: driverInfo?.Vehicle?.registration_number, type_id: vehicleId }
+                "vehicle": { company, model, colour, type: driverInfo?.Vehicle?.VehicleType?.code, registrationNumber: driverInfo?.Vehicle?.registration_number, type_id: type }
             }
             let response = updateDriverLocation(payload);
             response.unwrap().then((res) => {
