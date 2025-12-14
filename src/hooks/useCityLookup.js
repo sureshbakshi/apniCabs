@@ -11,7 +11,7 @@ import { set } from 'react-hook-form';
 const useCityLookup = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { driverInfo } = useSelector(state => state.auth);
-    const vehicleId = driverInfo?.Vehicle?.id;
+    const vehicleTypeId = driverInfo?.Vehicle?.type;
     const navigation = useNavigation();
     const [updateCityLookup] = useCityLookupMutation();
     const updateDriverStatus = useUpdateDriverStatus();
@@ -21,7 +21,7 @@ const useCityLookup = () => {
     const onRefresh = useCallback(
         async () => {
             const { latitude, longitude } = await getCurrentLocation(null, true) || {};
-            if (!latitude || !longitude || !vehicleId) {
+            if (!latitude || !longitude || !vehicleTypeId) {
                 return;
             }
             try {
@@ -29,7 +29,7 @@ const useCityLookup = () => {
                 const payload = {
                     latitude,
                     longitude,
-                    vehicleType: vehicleId,
+                    vehicleType: vehicleTypeId,
                 };
 
                 const response = await updateCityLookup(payload).unwrap();

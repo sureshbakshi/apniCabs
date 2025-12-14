@@ -39,7 +39,7 @@ export default ({ route, data, callbackFunctions, scrollRef }) => {
         nativeEvent: { code },
     }) => {
         dispatch(setAndroidDeviceCode(code))
-        callbackFunctions?.getOTP?.(code)
+        // callbackFunctions?.getOTP?.(code)
     };
     return (
         <>
