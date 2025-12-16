@@ -76,7 +76,7 @@ const MessageInfo = () => {
                                 margin: 5,
                                 width: 85, height: 32,
                                 borderRadius: 5
-                            }} onClick={openOwnerPortal} />
+                            }} onClick={() => { logOut(); openOwnerPortal(); }} />
                         <CustomButton
                             label={t('call_us')}
                             iconLeft={{

@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import { isDriver, isOwner, isUser, showErrorMessage } from '../util';
+import { isUser, showErrorMessage } from '../util';
 import { isEmpty } from 'lodash';
 // import UserTabNavigator from './userTabNavigation';
 // import DriverTabNavigator from './driverTabNavigation';
@@ -9,10 +9,8 @@ import useNotifications from '../hooks/useNotifications';
 import useLogout from '../hooks/useLogout';
 import { ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import CommonStyles from '../styles/commonStyles';
-import { ROUTES_NAMES, USER_ROLES } from '../constants';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MessageInfo from '../components/common/MessageInfo';
+import { USER_ROLES } from '../constants';
+import OwnerTabNavigator from './ownerTabNavigation';
 
 const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
 const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
@@ -35,26 +33,9 @@ export const GetAuthRoutes = () => {
             <UserTabNavigator />
         </Suspense>
     } else if (isOwnerLogged) {
-        const Stack = createNativeStackNavigator();
-        route = <Stack.Navigator
-            screenOptions={{
-                headerTransparent: true,
-                headerTintColor: '#fff',
-                headerStyle: {
-                    marginBottom: 50,
-                },
-                headerTitleStyle: {
-                    ...CommonStyles.headerFont
-                },
-                headerShown: false,
-                animation: 'slide_from_right'
-            }}>
-            <Stack.Screen
-                name={ROUTES_NAMES.messageInfo}
-                options={{ title: t('notification') }}
-                component={MessageInfo}
-            />
-        </Stack.Navigator>
+        route = <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+            <OwnerTabNavigator />
+        </Suspense>
     } else {
         logOut()
         showErrorMessage(t('login_permission_error'))

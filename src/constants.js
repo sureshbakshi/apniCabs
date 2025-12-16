@@ -255,6 +255,7 @@ export const TAB_BAR_ICONS = {
   [ROUTES_NAMES.findRide]: ['home-search-outline', 'home-search-outline'],
   [ROUTES_NAMES.rideHistoryStack]: ['clock-outline', 'clock-outline'],
   [ROUTES_NAMES.wallet]: ['wallet', 'wallet-outline'],
+  [ROUTES_NAMES.messageInfo]: ['home-search-outline', 'home-search-outline'],
   [ROUTES_NAMES.moreDetails]: ['account-settings', 'account-settings-outline']
 }
 
