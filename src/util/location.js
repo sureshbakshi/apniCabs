@@ -3,17 +3,18 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
-import {filter} from 'lodash'
+import { filter } from 'lodash'
 import config from './config';
 
-export  const defaultOptions = {
+export const defaultOptions = {
     enableHighAccuracy: true,
-    maximumAge: 3 * 1000,
-    timeout: 30 * 1000,
+    maximumAge: 10 * 1000,
+    timeout: 60 * 1000,
     forceRequestLocation: true,
-    interval: 5 * 1000,
-    useSignificantChanges: true,
-    distanceFilter: 3,
+    interval: 60 * 1000,
+    fastestInterval: 50 * 1000,
+    useSignificantChanges: false,
+    distanceFilter: 0,
     showLocationDialog: true,
     forceRequestLocation: true
 }
@@ -80,7 +81,7 @@ export const getLocation = async (coords, cb) => {
             }
         } else {
             // return new Error('Distance calculation error');
-            bugLogger({status, results, gk: apiKey})
+            bugLogger({ status, results, gk: apiKey })
             showErrorMessage(`Error while location request ${status}`)
         }
     } catch (error) {

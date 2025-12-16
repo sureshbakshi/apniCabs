@@ -6,7 +6,7 @@ import { DriverAvailableStatus, ROUTES_NAMES } from '../constants';
 import { useUpdateDriverStatus } from './useGetDriverDetails';
 import useGetCurrentLocation from './useGetCurrentLocation';
 import { useSelector } from 'react-redux';
-import { set } from 'react-hook-form';
+import isEmpty from 'lodash/isEmpty';
 
 const useCityLookup = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -34,10 +34,10 @@ const useCityLookup = () => {
 
                 const response = await updateCityLookup(payload).unwrap();
 
-                if (response?.status === 200) {
+                if (!isEmpty(response?.data)) {
                     setIsLoading(false);
                     updateDriverStatus(Boolean(DriverAvailableStatus.ONLINE));
-                    navigation.navigate(ROUTES_NAMES.pickRide);
+                    navigation.navigate(ROUTES_NAMES.searchRide);
                 }
             } catch (error) {
                 setIsLoading(false);

@@ -1,20 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../components/common';
 import CommonStyles from '../styles/commonStyles';
 import { COLORS } from '../constants';
 
 export default function TabBar({ state, descriptors, navigation }) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={[styles.tabBar, CommonStyles.shadow]}>
+    <View
+      style={[
+        styles.tabBar,
+        CommonStyles.shadow,
+        { bottom: insets.bottom + 5 || 8 }, // use safe area instead of fixed 15 [web:10][web:9]
+      ]}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
+          options.tabBarLabel ?? options.title ?? route.name;
 
         const isFocused = state.index === index;
 
@@ -52,9 +57,9 @@ export default function TabBar({ state, descriptors, navigation }) {
             <View style={{ flexDirection: 'row', backgroundColor: bg, paddingVertical: 8, paddingHorizontal: 16, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
               {options.tabBarIcon({ isFocused, color })}
               {isFocused &&
-              <Text style={{ color: color, marginLeft: 5, opacity: isFocused ? 1 : 0, lineHeight: 20 }} numberOfLines={1}>
-                {label}
-              </Text>
+                <Text style={{ color: color, marginLeft: 5, opacity: isFocused ? 1 : 0, lineHeight: 20 }} numberOfLines={1}>
+                  {label}
+                </Text>
               }
             </View>
           </TouchableOpacity>
@@ -67,7 +72,7 @@ export const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
     flexDirection: 'row',
-    bottom: 15,
+    //bottom: 15,
     justifyContent: 'center',
     marginHorizontal: 15,
     backgroundColor: COLORS.white,

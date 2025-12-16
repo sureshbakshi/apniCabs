@@ -13,7 +13,7 @@ export default () => {
         city: '',
         address: '',
     })
-    const updateDriverLocationToServer = useUpdateDriverLocation()
+    const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation()
     const dispatch = useDispatch()
 
     const getCurrentLocation = async (cb, isDriver = false) => {
@@ -31,7 +31,7 @@ export default () => {
                             const details = await getLocation(position.coords, setLocation);
                             cb?.(details);
                             if (isDriver) {
-                                updateDriverLocationToServer(details);
+                                debouncedUpdateDriverLocationToServer(details);
                                 const { latitude, longitude } = details;
                                 if (latitude && longitude) {
                                     dispatch(setDriverLocation({ latitude, longitude }));

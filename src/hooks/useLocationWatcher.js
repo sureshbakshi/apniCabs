@@ -12,7 +12,7 @@ let watchId = undefined;
 export default () => {
     const dispatch = useDispatch();
     const driverStatus = useSelector((state) => state.driver.onlineStatus);
-    const updateDriverLocationToServer = useUpdateDriverLocation()
+    const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation()
 
     const watchPosition = async () => {
         let granted = false;
@@ -35,7 +35,7 @@ export default () => {
                             console.log('watchPosition', position)
 
                             dispatch(setDriverLocation({ latitude, longitude }))
-                            updateDriverLocationToServer({ latitude, longitude })
+                            debouncedUpdateDriverLocationToServer({ latitude, longitude })
 
                         }
                     },
