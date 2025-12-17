@@ -25,7 +25,7 @@ const FindCaptainPage = () => {
   //   return <Text style={{ padding: 15, textAlign: 'center', fontWeight: 'bold' }}>Drivers not found at the moment. Please try later!</Text>
   // }
   return (
-    <SafeAreaView style={[FindRideStyles.container, FindRideStyles.pageContainer]}>
+    <SafeAreaView style={[FindRideStyles.container]}>
       <ContainerWrapper>
         {/* <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingVertical: 5, borderRadius: 12, marginBottom: 10 }}>
           <Timeline data={[extraProps.from, extraProps.to]} />

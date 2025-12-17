@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 
 const MoreStyles = StyleSheet.create({
@@ -12,7 +12,7 @@ const MoreStyles = StyleSheet.create({
     padding: 10,
     width: '100%',
     alignItems: 'center',
-    justifyContent:'center'
+    justifyContent: 'center'
   },
   headerText: {
     color: '#fff',
@@ -24,23 +24,23 @@ const MoreStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  listSection:{
+  listSection: {
     backgroundColor: '#fff',
-    marginBottom:10
+    marginBottom: 10
   },
-  list:{
-    flexDirection:'row',
-    flex:1,
-    alignItems:'center',
-    padding:20,
-    borderBottomWidth:1,
-    borderBottomColor:'#BCBCBC'
+  list: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#BCBCBC'
   },
-  listIcon:{
-    width:20,
-    height:20,
-    marginLeft:20,
-    marginRight:40
+  listIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 20,
+    marginRight: 40
   },
   card: {
     backgroundColor: '#fff',
@@ -67,7 +67,7 @@ const MoreStyles = StyleSheet.create({
   middle: {
     flex: 1,
     padding: 10,
-    justifyContent:'center'
+    justifyContent: 'center'
   },
   profileIcon: {
     width: 100,
@@ -81,7 +81,7 @@ const MoreStyles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 3,
   },
-  menu_name:{
+  menu_name: {
     color: '#070707',
     fontWeight: '700',
     fontSize: 12,
@@ -96,9 +96,9 @@ const MoreStyles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0.25,
     color: '#fff',
-    marginTop:30
+    marginTop: 30
   },
-  balTxt:{
+  balTxt: {
     fontSize: 40,
     color: '#fff',
     fontWeight: '800',
@@ -122,12 +122,12 @@ const MoreStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    marginBottom:10,
-    backgroundColor:'#ED3D01',
-    marginHorizontal:20,
-    borderRadius:12,
-    height:56,
-    marginTop:20
+    marginBottom: 10,
+    backgroundColor: '#ED3D01',
+    marginHorizontal: 20,
+    borderRadius: 12,
+    height: 56,
+    marginTop: 20
   },
   buttonTxt: {
     fontSize: 14,

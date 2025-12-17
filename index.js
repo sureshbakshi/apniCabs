@@ -14,6 +14,8 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/constants';
 import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import './i18n';
 
 if (!__DEV__) {
@@ -21,16 +23,18 @@ if (!__DEV__) {
 }
 
 function AppWithProvider() {
- 
+
 
   return (
 
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <AuthProvider>
-          {/* <StrictMode> */}
-          <App />
-          {/* </StrictMode> */}
+          <SafeAreaProvider>
+            {/* <StrictMode> */}
+            <App />
+            {/* </StrictMode> */}
+          </SafeAreaProvider>
         </AuthProvider>
       </PersistGate>
       <Toast config={toastConfig} />

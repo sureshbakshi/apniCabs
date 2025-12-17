@@ -32,24 +32,24 @@ export default ({ route }) => {
     }
 
     const activeRequestInfo = {
-        ...rideDetails, 
+        ...rideDetails,
         details: rideDetails?.RequestRides?.driver_details
     }
     return (
         <SafeAreaView style={styles.container}>
-            <View style={[FindRideStyles.pageContainer]}>
-            <View style={[FindRideStyles.container]}>
-                <ContainerWrapper>
-                    {/* <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
+            {/* <View style={[FindRideStyles.pageContainer]}> */}
+            {/* <View style={[FindRideStyles.container]}> */}
+            <ContainerWrapper>
+                {/* <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>User Details</Text>
                         <AvatarInfo dp={avatar} name={name} avatarContainerStyles={{alignItems: 'center'}}/>
                     </View> */}
-                    <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
-                        <Text style={{ fontSize: 14, fontWeight: "700", lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
-                        <RideDetailsView activeRequestInfo={activeRequestInfo} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
-                    </View>
-                </ContainerWrapper>
-            </View>
+                <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
+                    <Text style={{ fontSize: 14, fontWeight: "700", lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
+                    <RideDetailsView activeRequestInfo={activeRequestInfo} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
+                </View>
+            </ContainerWrapper>
+            {/* </View> */}
             {/* <View style={{ margin: 10 }}>
                 <CardWrapper title={'USER DETAILS'}>
                     <VehicleCard activeRequestInfo={rideDetails} details={USER_DETAILS} isonRide={false} avatar={'userDetails.avatar'} />
@@ -66,7 +66,7 @@ export default ({ route }) => {
                     </View>
                 </CardWrapper>}
             </View> */}
-            </View>
+            {/* </View> */}
         </SafeAreaView>
     );
 };

@@ -13,7 +13,7 @@ export default function TabBar({ state, descriptors, navigation }) {
       style={[
         styles.tabBar,
         CommonStyles.shadow,
-        { bottom: insets.bottom + 5 || 8 }, // use safe area instead of fixed 15 [web:10][web:9]
+        { bottom: insets.bottom + 5 || 8 }
       ]}
     >
       {state.routes.map((route, index) => {
@@ -70,7 +70,7 @@ export default function TabBar({ state, descriptors, navigation }) {
 }
 export const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
+    // position: 'absolute',
     flexDirection: 'row',
     //bottom: 15,
     justifyContent: 'center',

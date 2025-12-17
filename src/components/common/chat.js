@@ -4,7 +4,7 @@ import ContainerWrapper from './ContainerWrapper';
 import CustomButton from './CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
-import {getSocketInstance} from '../../sockets/socketConfig';
+import { getSocketInstance } from '../../sockets/socketConfig';
 import { getScreen, isDriver } from '../../util';
 import { useTranslation } from 'react-i18next';
 const socket = getSocketInstance()
@@ -45,12 +45,12 @@ const ChatUI = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-       extraHeight={180} 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidingView}
-      >
-        <ContainerWrapper style={{ height: getScreen().screenHeight - 200 }}>
+      <ContainerWrapper>
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
+        >
           {/* Message List */}
           <FlatList
             ref={flatListRef}
@@ -76,8 +76,8 @@ const ChatUI = () => {
             />
             <CustomButton label={t('send_btn')} onPress={sendMessage} isLowerCase />
           </View>
-        </ContainerWrapper>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ContainerWrapper>
     </SafeAreaView>
   );
 };

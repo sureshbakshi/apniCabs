@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
-import commonStyles  from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 
 const FindRideStyles = StyleSheet.create({
   pageContainer: {
@@ -10,20 +10,20 @@ const FindRideStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  switchBtn:{
-    alignItems:'center',
-    justifyContent:'space-between',
-    flexDirection:'row',
-    backgroundColor:COLORS.primary,
-    padding:10,
-    minHeight:45
+  switchBtn: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: COLORS.primary,
+    padding: 10,
+    minHeight: 45
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
-    height:60,
-    padding:10
+    height: 60,
+    padding: 10
   },
   headerText: {
     color: '#fff',
@@ -54,22 +54,23 @@ const FindRideStyles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 15,
     padding: 15,
-    marginHorizontal:1,
+    marginHorizontal: 1,
     ...commonStyles.shadow
   },
-  cardtop:{
+  cardtop: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  cardBottom:{
+  cardBottom: {
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'center',
     gap: 15
   },
-  center:{
-      flexDirection: 'row',
-      alignItems:'center',
-      justifyContent: 'center'
+  center: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   left: {
     padding: 10,
@@ -116,16 +117,16 @@ const FindRideStyles = StyleSheet.create({
     lineHeight: 27,
     color: COLORS.blue
   },
-  greenTxt:{
+  greenTxt: {
     color: COLORS.gray,
     fontSize: 16,
     fontWeight: '500',
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical:12,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     backgroundColor: COLORS.brand_yellow,
     flex: 1,
@@ -136,8 +137,8 @@ const FindRideStyles = StyleSheet.create({
     // letterSpacing: 0.25,
     color: COLORS.white,
   },
-  tabs:{
-    backgroundColor:COLORS.white,
+  tabs: {
+    backgroundColor: COLORS.white,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -146,11 +147,11 @@ const FindRideStyles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     borderRadius: 12,
     marginBottom: 8,
   },
-  textInputPickup:{
+  textInputPickup: {
     backgroundColor: '#f2f4f6',
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,

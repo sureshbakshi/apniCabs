@@ -69,7 +69,7 @@ const ActiveRidePage = () => {
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
       <KeyboardAwareScrollView extraHeight={180} extraScrollHeight={-60} enableOnAndroid>
-        <ContainerWrapper style={{ height: screenHeight - 160 }}>
+        <ContainerWrapper>
           <View style={{ height: (screenHeight - 345) }}>
             <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingTop: 10, paddingBottom: 0, borderRadius: 12, margin: 15, zIndex: 10000 }}>
               <Timeline

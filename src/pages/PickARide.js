@@ -16,6 +16,7 @@ import CustomButton from '../components/common/CustomButton';
 import CommonStyles from '../styles/commonStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
@@ -116,6 +117,7 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
+  const insets = useSafeAreaInsets();
   const isSocketConnected = useSelector((state) => state.auth.isSocketConnected);
   const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
   const feeQuery = useGetFeeQuery({}, { refetchOnMountOrArgChange: true });
@@ -123,7 +125,7 @@ export const PickARide = () => {
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
   const [isOnline, toggleDriveStatus] = useState(is_available)
   const { t } = useTranslation();
-  useGetDriverDetails({refetchOnMountOrArgChange: true })
+  useGetDriverDetails({ refetchOnMountOrArgChange: true })
   const updateDriverStatus = useUpdateDriverStatus();
 
 
@@ -141,33 +143,33 @@ export const PickARide = () => {
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
   return (
     <SafeAreaView style={[FindRideStyles.container]}>
-      <View style={[FindRideStyles.pageContainer]}>
-        <ContainerWrapper>
-          <View>
-            {/* <Text style={FindRideStyles.headerText}>
+      {/* <View style={[FindRideStyles.pageContainer]}> */}
+      <ContainerWrapper>
+        <View>
+          {/* <Text style={FindRideStyles.headerText}>
           {isOnline ? 'Online' : 'Offline'}
         </Text> */}
-            <View style={[{
-              padding: 0, alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-            }]}>
+          <View style={[{
+            padding: 0, alignItems: 'center',
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+          }]}>
 
-              {walletInfo && <Pressable
-                style={[CommonStyles.shadow, { height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 10, marginTop: 10, backgroundColor: COLORS.white, paddingHorizontal: 15 }]}
-                onPress={() => navigate(ROUTES_NAMES.wallet,)}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
-                  <Icon name="wallet-outline" size="large" color={COLORS.gray} />
-                  <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{walletInfo?.amount}</Text> Credits</Text>
-                </View>
-              </Pressable>}
-              <Pressable
-                style={[CommonStyles.shadow, { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white }]}
-                onPress={() => navigate(ROUTES_NAMES.notifications)}>
-                <Icon name="bell-badge-outline" size="large" color={COLORS.gray} />
-              </Pressable>
-              {/* <Switch
+            {walletInfo && <Pressable
+              style={[CommonStyles.shadow, { height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 10, marginTop: 10, backgroundColor: COLORS.white, paddingHorizontal: 15 }]}
+              onPress={() => navigate(ROUTES_NAMES.wallet,)}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
+                <Icon name="wallet-outline" size="large" color={COLORS.gray} />
+                <Text>
+                  <Text style={{ fontWeight: 'bold' }}>{walletInfo?.amount}</Text> Credits</Text>
+              </View>
+            </Pressable>}
+            <Pressable
+              style={[CommonStyles.shadow, { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 40, marginRight: 20, marginTop: 10, backgroundColor: COLORS.white }]}
+              onPress={() => navigate(ROUTES_NAMES.notifications)}>
+              <Icon name="bell-badge-outline" size="large" color={COLORS.gray} />
+            </Pressable>
+            {/* <Switch
             trackColor={{ false: COLORS.white, true: COLORS.white }}
             thumbColor={isOnline ? COLORS.light_green : COLORS.primary_soft}
             ios_backgroundColor="#3e3e3e"
@@ -175,50 +177,50 @@ export const PickARide = () => {
             value={Boolean(isOnline)}
             style={{ transform: [{ scaleX: .9 }, { scaleY: .9 }] }}
           /> */}
-            </View>
           </View>
-          {(showStatusButton) && <View style={{ position: 'absolute', bottom: 10, right: 0, zIndex: 2, }}>
-            <CustomButton
-              label={isOnline ? 'Online' : 'Offline'}
-              styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
-              textStyles={{ fontSize: 12, lineHeight: 12, textAlign: 'center', marginTop: 2 }}
-              contentContainerStyles={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-              isLowerCase
-              iconLeft={{ name: 'account-circle-outline', size: 'large' }}
-              iconStyles={{ paddingRight: 0 }}
-              onClick={toggleSwitch}
-            />
-          </View>}
-          {/* <Text>{isSocketConnected}</Text> */}
-          {isOnline || rideRequests.length > 0 ? (
-            <>
-              {!isSocketConnected ? <SocketStatus /> :
-                rideRequests?.length <= 0 ? <SearchLoader msg={t('search_ride_msg')} source={images.homeBanner} /> :
-                  <View style={FindRideStyles.section}>
-                    {rideRequests?.length ? (
-                      <ScrollView>
-                        <DriverCard list={rideRequests} />
-                      </ScrollView>
-                    ) : null}
-                  </View>
-              }
-            </>
-          ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-              You are currently offline. Turn on your availability to receive ride requests.</Text>
-          </View>}
-          {walletInfo?.amount < (fees?.wallet_min || 20) && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
-            <Pressable
-              style={[CommonStyles.shadow, { padding: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 25, backgroundColor: COLORS.primary, paddingHorizontal: 14 }]}
-              onPress={() => navigate(ROUTES_NAMES.wallet,)}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
-                <Text style={{ color: COLORS.white }}>Your credits is running low. Please recharge to ensure you don't miss any ride requests.</Text>
-              </View>
-            </Pressable>
-          </View>}
+        </View>
+        {(showStatusButton) && <View style={{ position: 'absolute', bottom: insets.bottom + 15, right: 15, zIndex: 2, }}>
+          <CustomButton
+            label={isOnline ? 'Online' : 'Offline'}
+            styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
+            textStyles={{ fontSize: 12, lineHeight: 12, textAlign: 'center', marginTop: 2 }}
+            contentContainerStyles={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+            isLowerCase
+            iconLeft={{ name: 'account-circle-outline', size: 'large' }}
+            iconStyles={{ paddingRight: 0 }}
+            onClick={toggleSwitch}
+          />
+        </View>}
+        {/* <Text>{isSocketConnected}</Text> */}
+        {isOnline || rideRequests.length > 0 ? (
+          <>
+            {!isSocketConnected ? <SocketStatus /> :
+              rideRequests?.length <= 0 ? <SearchLoader msg={t('search_ride_msg')} source={images.homeBanner} /> :
+                <View style={FindRideStyles.section}>
+                  {rideRequests?.length ? (
+                    <ScrollView>
+                      <DriverCard list={rideRequests} />
+                    </ScrollView>
+                  ) : null}
+                </View>
+            }
+          </>
+        ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+            You are currently offline. Turn on your availability to receive ride requests.</Text>
+        </View>}
+        {walletInfo?.amount < (fees?.wallet_min || 20) && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
+          <Pressable
+            style={[CommonStyles.shadow, { padding: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 25, backgroundColor: COLORS.primary, paddingHorizontal: 14 }]}
+            onPress={() => navigate(ROUTES_NAMES.wallet,)}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
+              <Text style={{ color: COLORS.white }}>Your credits is running low. Please recharge to ensure you don't miss any ride requests.</Text>
+            </View>
+          </Pressable>
+        </View>}
 
-        </ContainerWrapper>
-      </View>
+      </ContainerWrapper>
+      {/* </View> */}
     </SafeAreaView>
   );
 };

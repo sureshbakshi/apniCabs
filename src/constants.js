@@ -3,6 +3,9 @@ import images from './util/images';
 import { formatStatusText, formattedDate } from './util';
 import { styles } from './navigation/TabBar';
 
+export const TAB_BAR_HEIGHT = 65;
+
+
 export const ELEMENTS = {
   select: "select",
   checkbox: "checkbox",

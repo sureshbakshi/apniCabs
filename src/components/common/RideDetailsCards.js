@@ -22,7 +22,7 @@ import ScreenContainer from '../ScreenContainer';
 import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
-import {getSocketInstance} from '../../sockets/socketConfig';
+import { getSocketInstance } from '../../sockets/socketConfig';
 import useGetDriverLocation from '../../hooks/useGetDriverLocation';
 const socket = getSocketInstance()
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
@@ -42,7 +42,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
         }
     }, [shareToken?.shareLink]);
 
-    return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
+    return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth, justifyContent: 'center', flex: 1 }}>
         <CustomButton
             onClick={(e) => {
                 navigate(ROUTES_NAMES.chat)
@@ -124,7 +124,7 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
             <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>
                 <AvatarInfo {...{ dp: driver_avatar, vehicle, name, avatarStyles, canShowVehicleInfo: !isDriverLogged }} avatarContainerStyles={{ alignItems: 'center', ...avatarContainerStyles }} />
                 {fare && isOnRide && <View style={[{ alignItems: 'flex-end' }]}>
-                    <Text style={[FindRideStyles.name]}>
+                    <Text style={[FindRideStyles.name, { marginBottom: 0 }]}>
                         {'\u20B9'}{fare}
                     </Text>
                     {!isDriverLogged && <>
@@ -197,7 +197,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
             from: getFromLocation(location)
         }
         rideRequest(payload).unwrap().then((res) => {
-            dispatch(setActiveRide({...activeRequestInfo, status: RideStatus.ONRIDE}))
+            dispatch(setActiveRide({ ...activeRequestInfo, status: RideStatus.ONRIDE }))
         }).then((err) => {
             console.log(err)
         })
@@ -254,8 +254,8 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 export default ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { getCurrentLocation } = useGetCurrentLocation()
-      const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
-    
+    const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
+
     const dispatch = useDispatch()
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
         useCompleteRideRequestMutation();
