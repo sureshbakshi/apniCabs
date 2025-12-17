@@ -79,7 +79,9 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                         onInputFocus(locationKey);
                     },
                     onChange: (event) => {
+                        setListViewDisplayed('auto');
                         const { value } = event.nativeEvent;
+                        console.log('GooglePlaces onChange', locationKey, value);
                         if (isEmpty(value)) {
                             return onSelection(locationKey, null)
                         }

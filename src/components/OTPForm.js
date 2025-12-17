@@ -293,7 +293,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                     >
 
                         <View style={{ marginBottom: 10 }}>
-                            {showOTP && <OTPAutoFill
+                            {<OTPAutoFill
                                 key={otpKey}
                                 data={{ code: otpInfo?.code, ...(payload && payload), ...additionalVerifyOTPPayload }}
                                 callbackFunctions={callbackFunctions}

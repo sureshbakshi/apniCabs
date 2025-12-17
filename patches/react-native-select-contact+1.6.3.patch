@@ -1,13 +1,13 @@
-diff --git a/node_modules/react-native-otp-auto-fill/android/.project b/node_modules/react-native-otp-auto-fill/android/.project
+diff --git a/node_modules/react-native-select-contact/android/.project b/node_modules/react-native-select-contact/android/.project
 new file mode 100644
-index 0000000..68c3df5
+index 0000000..d9a3d8b
 --- /dev/null
-+++ b/node_modules/react-native-otp-auto-fill/android/.project
++++ b/node_modules/react-native-select-contact/android/.project
 @@ -0,0 +1,28 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<projectDescription>
-+	<name>react-native-otp-auto-fill</name>
-+	<comment>Project react-native-otp-auto-fill created by Buildship.</comment>
++	<name>react-native-select-contact</name>
++	<comment>Project react-native-select-contact created by Buildship.</comment>
 +	<projects>
 +	</projects>
 +	<buildSpec>
@@ -22,7 +22,7 @@ index 0000000..68c3df5
 +	</natures>
 +	<filteredResources>
 +		<filter>
-+			<id>1761395851152</id>
++			<id>1761395851160</id>
 +			<name></name>
 +			<type>30</type>
 +			<matcher>
@@ -32,21 +32,21 @@ index 0000000..68c3df5
 +		</filter>
 +	</filteredResources>
 +</projectDescription>
-diff --git a/node_modules/react-native-otp-auto-fill/android/build.gradle b/node_modules/react-native-otp-auto-fill/android/build.gradle
-index fa31c78..0ab3758 100644
---- a/node_modules/react-native-otp-auto-fill/android/build.gradle
-+++ b/node_modules/react-native-otp-auto-fill/android/build.gradle
-@@ -2,7 +2,7 @@ buildscript {
+diff --git a/node_modules/react-native-select-contact/android/build.gradle b/node_modules/react-native-select-contact/android/build.gradle
+index 65aa1d7..a7cd356 100644
+--- a/node_modules/react-native-select-contact/android/build.gradle
++++ b/node_modules/react-native-select-contact/android/build.gradle
+@@ -9,7 +9,7 @@ buildscript {
      if (project == rootProject) {
          repositories {
              google()
 -            jcenter()
 +            mavenCentral()
          }
- 
          dependencies {
-@@ -49,7 +49,7 @@ repositories {
-         url("$rootDir/../node_modules/react-native/android")
+             classpath 'com.android.tools.build:gradle:3.5.2'
+@@ -43,7 +43,7 @@ repositories {
+         url "$rootDir/../node_modules/jsc-android/dist"
      }
      google()
 -    jcenter()

@@ -1,19 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import FindRideStyles from '../styles/FindRidePageStyles';
+import React, { useEffect, useRef, useState } from 'react';
 import ContainerWrapper from '../components/common/ContainerWrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import { Platform, Text, View } from 'react-native';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import CommonStyles from '../styles/commonStyles';
 import CustomButton from '../components/common/CustomButton';
-import { ImageView } from '../components/common';
 import images from '../util/images';
 import { COLORS, MAPS_LABELS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import isEmpty from 'lodash/isEmpty';
-import config from '../util/config';
 import { useAppContext } from '../context/App.context';
 import { useTranslation } from 'react-i18next';
 import { getScreen } from '../util';
@@ -47,6 +43,7 @@ const SelectOnPage = () => {
         if (!isEmpty(location[focusKey]?.geometry)) {
             const { lat, lng } = location[focusKey]?.geometry?.location;
             setRegionChange({ ...initial_region, latitude: lat, longitude: lng });
+            setMarkerCoordinate({ latitude: lat, longitude: lng });
             setAddress(location[focusKey]);
         } else {
             const { latitude, longitude } = userLocation || {};
@@ -142,8 +139,6 @@ const SelectOnPage = () => {
                     imageStyle={{ height: 50, width: 50 }}
                 />
             </MapView>
-
-
 
             <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
                 <View style={[CommonStyles.p15]}>

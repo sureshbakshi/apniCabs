@@ -1,5 +1,6 @@
 import { Linking } from "react-native";
 import Config from "react-native-config";
+console.log('Config', Config);
 
 export default {
   SOCKET_URL: Config.SOCKET_URL,
