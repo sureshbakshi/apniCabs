@@ -56,7 +56,7 @@ const CustomTabs = ({ extraProps, data }) => {
   }));
 
   const renderScene = ({ route }) => (
-    <View style={FindRideStyles.section}>
+    <View style={[FindRideStyles.section, { paddingHorizontal: 10 }]}>
       <ScrollView showsVerticalScrollIndicator={true}>
         {!isLoading && (
           <CaptainsCard

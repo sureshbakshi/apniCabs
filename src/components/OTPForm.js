@@ -268,7 +268,7 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
                             <CustomButton
                                 onClick={handleSubmit(onSubmit)}
                                 label={submitBtnLabel || t('submit_btn')}
-                                disabled={Boolean(isError || otpInfo)}
+                                disabled={Boolean(isLoginLoading || isError || otpInfo)}
                                 iconRight={{ name: 'arrow-right', size: 'large' }}
                                 isLowerCase
                             />

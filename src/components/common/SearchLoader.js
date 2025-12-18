@@ -4,8 +4,8 @@ import images from "../../util/images"
 // import LottieAnimation from 'lottie-react-native';
 import ImageView from "./imageView/ImageView";
 
-export default ({msg, source = images.homeBanner, containerStyles = {}, textStyles = {}, animationProps, isLoader= true}) => {
-    const message = msg || 'Loading...'
+export default ({ msg, source = images.homeBanner, containerStyles = {}, textStyles = {}, animationProps, isLoader = true }) => {
+    const message = msg ?? 'Loading...'
     return (
         <><View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, ...containerStyles }}>
             <Text style={{ fontWeight: 'bold', ...textStyles }}>{message}</Text>

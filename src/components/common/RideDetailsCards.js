@@ -42,7 +42,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
         }
     }, [shareToken?.shareLink]);
 
-    return <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth, justifyContent: 'center', flex: 1 }}>
+    return <View style={{ flexDirection: 'row', gap: 10, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
             onClick={(e) => {
                 navigate(ROUTES_NAMES.chat)

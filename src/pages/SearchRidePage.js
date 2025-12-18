@@ -142,10 +142,7 @@ const SearchRidePage = () => {
   }
 
   return (
-    // <ImageBackground
-    //   source={images.backgroundImage}
-    //   resizeMode="cover"
-    //   style={SearchRideStyles.image}>
+
     <SafeAreaView style={SearchRideStyles.container}>
       <ContainerWrapper>
         {isSocketConnected ? <View style={SearchRideStyles.section}>
@@ -203,16 +200,16 @@ const SearchRidePage = () => {
           </View>
           {!isEmpty(searchHistory[focusKey]) ? <View>
             <RecentSearchHistory searchHistory={searchHistory} focusKey={focusKey} updateLocation={updateLocation} />
-          </View> : <SearchLoader msg=' ' />}
+          </View> : <SearchLoader msg='' />}
         </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
+        <BottomModal
+          visible={isVisible}
+          onCloseModal={closeModal}
+        />
       </ContainerWrapper>
-      <BottomModal
-        visible={isVisible}
-        onCloseModal={closeModal}
-      />
+
     </SafeAreaView>
 
-    // </ImageBackground>
   );
 };
 export default SearchRidePage;
