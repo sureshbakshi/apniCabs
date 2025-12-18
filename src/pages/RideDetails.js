@@ -46,7 +46,7 @@ export default ({ route }) => {
                     </View> */}
                 <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                     <Text style={{ fontSize: 14, fontWeight: "700", lineHeight: 18, marginBottom: 10 }}>Ride Details</Text>
-                    <RideDetailsView activeRequestInfo={activeRequestInfo} driverDetails={rideDetails?.RequestRides?.driver_details} isOnRide={false} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
+                    <RideDetailsView isRideHistory={false} activeRequestInfo={activeRequestInfo} driverDetails={rideDetails?.RequestRides?.driver_details} containerStyles={{ padding: 0 }} avatarContainerStyles={{ paddingHorizontal: 0 }} />
                 </View>
             </ContainerWrapper>
             {/* </View> */}

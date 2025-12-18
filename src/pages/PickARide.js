@@ -196,7 +196,7 @@ export const PickARide = () => {
           <>
             {!isSocketConnected ? <SocketStatus /> :
               rideRequests?.length <= 0 ? <SearchLoader msg={t('search_ride_msg')} source={images.homeBanner} /> :
-                <View style={FindRideStyles.section}>
+                <View style={[FindRideStyles.section, { paddingHorizontal: 10 }]}>
                   {rideRequests?.length ? (
                     <ScrollView>
                       <DriverCard list={rideRequests} />

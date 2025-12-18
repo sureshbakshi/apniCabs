@@ -7,7 +7,7 @@ import { COLORS, SOCKET_EVENTS } from '../../constants';
 import { getSocketInstance } from '../../sockets/socketConfig';
 import { getScreen, isDriver } from '../../util';
 import { useTranslation } from 'react-i18next';
-const socket = getSocketInstance()
+const socket = getSocketInstance();
 const ChatUI = () => {
   const { t } = useTranslation();
   const [inputText, setInputText] = useState(''); // Stores the current input text
@@ -27,7 +27,7 @@ const ChatUI = () => {
 
   const sendMessage = () => {
     if (inputText.trim()) {
-      if (inputText) {
+      if (inputText && socket) {
         socket.emit(SOCKET_EVENTS.sendMessage, inputText);
       }
       setInputText("");

@@ -30,32 +30,28 @@ export default function FareSettings() {
     const { driverInfo } = useSelector((state) => state.auth);
     useGetDriverDetails({ refetchOnMountOrArgChange: true })
     const [editVehicleFare] = useEditFareMutation();
-    const fare = driverInfo?.Vehicle?.VehicleFare
-    const {
-        watch,
-        control,
-        handleSubmit,
-        formState: { errors, isDirty },
-        ...methods
-    } = useForm({
+    const fare = driverInfo?.Vehicle?.VehicleFare;
+
+    const methods = useForm({
         mode: "onSubmit",
-        defaultValues: {
-            base_fare: fare?.base_fare || '',
-            fare_0_10_km: fare?.fare_0_10_km || '',
-            fare_10_20_km: fare?.fare_10_20_km || '',
-            fare_20_50_km: fare?.fare_20_50_km || '',
-            fare_above_50_km: fare?.fare_above_50_km || '',
-        },
         resolver: yupResolver(fareSchema),
     });
+
+    const { control, handleSubmit, formState: { errors, isDirty }, reset } = methods;
+
+    useEffect(() => {
+        if (fare) {
+            reset({
+                base_fare: fare.base_fare || '',
+                per_km: fare.per_km || '',
+            });
+        }
+    }, [fare, reset]);
 
     const onSubmit = (data) => {
         const {
             base_fare,
-            fare_0_10_km,
-            fare_10_20_km,
-            fare_20_50_km,
-            fare_above_50_km,
+            per_km
         } = Object.fromEntries(
             Object.entries(data).map(([key, value]) => [key, Number(value)])
         );
@@ -63,10 +59,7 @@ export default function FareSettings() {
             if (driverInfo?.Vehicle?.id) {
                 editVehicleFare({
                     base_fare,
-                    fare_0_10_km,
-                    fare_10_20_km,
-                    fare_20_50_km,
-                    fare_above_50_km,
+                    per_km,
                     id: driverInfo.Vehicle.id,
                 }).unwrap()
                     .then(data => {
@@ -105,11 +98,8 @@ export default function FareSettings() {
                                                     onChangeText={(value) => {
                                                         onChange(value);
                                                     }}
-                                                    value={value.toString()}
+                                                    value={value?.toString()}
                                                     placeholderTextColor={COLORS.gray}
-                                                    // type={"number"}
-                                                    keyboardType='number-pad'
-                                                    inputMode="numeric"
                                                     style={[{ padding: 5, height: 36, backgroundColor: COLORS.white, marginVertical: 10, borderWidth: 1, borderColor: '#BFBFBF', borderRadius: 15 }]}
                                                     {...field.props}
                                                 />

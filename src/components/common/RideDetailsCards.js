@@ -25,22 +25,53 @@ import Share from 'react-native-share';
 import { getSocketInstance } from '../../sockets/socketConfig';
 import useGetDriverLocation from '../../hooks/useGetDriverLocation';
 const socket = getSocketInstance()
+
+const ShareButton = ({ activeRequestInfo, label }) => {
+    const [getShareLink, { data: shareToken, isLoading, error }] = useLazyGetShareLinkQuery();
+
+    const sendShare = (shareLink) => {
+        const encodedData = encodeURIComponent(shareLink);
+        const link = `https://pikbike.com/live-location.html?data=${encodedData}`;
+        Share.open({ message: `${link}` })
+            .then(() => console.log('Shared successfully'))
+            .catch((err) => console.error('Sharing error:', err));
+    }
+
+    const shareLocation = () => {
+        if (shareToken?.shareLink) {
+            sendShare(shareToken.shareLink)
+        } else {
+            getShareLink({ request_id: activeRequestInfo?.id }).unwrap().then((res) => {
+                if (res?.shareLink) {
+                    sendShare(res.shareLink)
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
+    }
+
+    return (
+        <CustomButton
+            onClick={shareLocation}
+            styles={
+                { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
+            }
+            textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
+            label={label || ''}
+            iconLeft={{ name: 'share', size: 'medium' }}
+            iconStyles={{ paddingRight: 0 }}
+            isLowerCase
+        />
+    )
+
+}
+
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { access_token } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-    const [getShareLink, { data: shareToken, isLoading, error }] = useLazyGetShareLinkQuery();
-    const phoneNumber = activeRequestInfo?.details?.phone;
-
-    useEffect(() => {
-        if (error !== null && shareToken?.shareLink) {
-            const encodedData = encodeURIComponent(shareToken?.shareLink);
-            const link = `https://pikbike.com/live-location.html?data=${encodedData}`;
-            Share.open({ message: `${link}` })
-                .then(() => console.log('Shared successfully'))
-                .catch((err) => console.error('Sharing error:', err));
-        }
-    }, [shareToken?.shareLink]);
 
     return <View style={{ flexDirection: 'row', gap: 10, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
@@ -76,17 +107,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
             // label={t('cancel_btn')}
             isLowerCase
         />
-        {!isDriverLogged && <CustomButton
-            onClick={() => getShareLink({ request_id: activeRequestInfo?.id })}
-            styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.primary_green, height: 40 }
-            }
-            textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
-            // label={'Call up'}
-            iconLeft={{ name: 'share', size: 'medium' }}
-            iconStyles={{ paddingRight: 0 }}
-            isLowerCase
-        />}
+        {!isDriverLogged && <ShareButton activeRequestInfo={activeRequestInfo} />}
     </View>
 }
 
@@ -112,7 +133,7 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
     )
 }
 
-export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
+export const RideDetailsView = ({ isRideHistory, activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
     const { t } = useTranslation();
     const { details, fare } = activeRequestInfo
     const driver_avatar = details?.photo || details?.vehicle?.photo
@@ -123,11 +144,11 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
         <View style={{ padding: 10, ...containerStyles }}>
             <View style={[FindRideStyles.cardtop, { justifyContent: 'space-between' }]}>
                 <AvatarInfo {...{ dp: driver_avatar, vehicle, name, avatarStyles, canShowVehicleInfo: !isDriverLogged }} avatarContainerStyles={{ alignItems: 'center', ...avatarContainerStyles }} />
-                {fare && isOnRide && <View style={[{ alignItems: 'flex-end' }]}>
+                {fare && <View style={[{ alignItems: 'flex-end' }]}>
                     <Text style={[FindRideStyles.name, { marginBottom: 0 }]}>
                         {'\u20B9'}{fare}
                     </Text>
-                    {!isDriverLogged && <>
+                    {!isDriverLogged && !isOnRide && <>
                         <Text style={[FindRideStyles.otpText, { marginTop: 10 }]}>
                             {activeRequestInfo.otp}
                         </Text>
@@ -137,7 +158,7 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
                     </>}
                 </View>}
             </View>
-            {!isOnRide && <View style={{ marginTop: 10 }}><Timeline
+            {isRideHistory && <View style={{ marginTop: 10 }}><Timeline
                 data={[
                     activeRequestInfo.from_location,
                     activeRequestInfo.to_location,
@@ -160,13 +181,13 @@ export const RideDetailsView = ({ activeRequestInfo, isDriverLogged = false, isO
                 </View>
             </View> */}
             {
-                activeRequestInfo?.distance && !isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                activeRequestInfo?.distance && isRideHistory && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
                     <Text style={[styles.text2]}>Duration: {activeRequestInfo?.duration}</Text>
                     <Text style={[styles.text2]}>{t('distance')}: {activeRequestInfo?.distance} Km</Text>
                 </View>
             }
-            {activeRequestInfo?.id && !isOnRide && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequestInfo?.id}</Text>}
-            {!isOnRide && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, alignItems: 'center' }}>
+            {activeRequestInfo?.id && isRideHistory && <Text style={[styles.text2, { marginVertical: 5, }]} numberOfLines={1}>Ride ID : {activeRequestInfo?.id}</Text>}
+            {isRideHistory && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, alignItems: 'center' }}>
                 <Text style={[FindRideStyles.name]}>{fare ? `\u20B9${fare}` : ''}</Text>
                 <Text style={[{ color: color }]}>{label}</Text>
                 {/* <Text style={styles.address}>3 Seats left</Text> */}
@@ -275,14 +296,15 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             console.log(err)
         })
     }
-    const isDriverOnRide = (activeRequestInfo.status === RideStatus.ONRIDE && isDriverLogged)
+    const isOnRide = (activeRequestInfo.status === RideStatus.ONRIDE)
+    const isDriverOnRide = (isOnRide && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
     const fromLocation = driverCurrentLocation || activeRequestInfo.from
     return (
         <>
             <View style={[FindRideStyles.card]}>
                 <ScreenContainer>
-                    <RideDetailsView {...{ activeRequestInfo, isDriverLogged }} />
+                    <RideDetailsView {...{ activeRequestInfo, isDriverLogged, isOnRide }} />
                     {(isAccepted && isDriverLogged) && <RenderOTP {...{ activeRequestInfo }} />}
                 </ScreenContainer>
             </View>
@@ -301,6 +323,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             </View>
             }
             {isAccepted && <CancelRide activeRequestInfo={activeRequestInfo} isDriverLogged={isDriverLogged} />}
+            {(isOnRide && !isDriverLogged) && <ShareButton activeRequestInfo={activeRequestInfo} label={'Share Location'} />}
             {/* <View>{isAccepted ? cancelRide(activeRequestInfo, t) : null}</View> */}
         </>
     );

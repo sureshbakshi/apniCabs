@@ -393,37 +393,48 @@ export const BASE_FARE_FORM = [
     name: 'base_fare',
     label: "Base fare",
     props: {
-      placeholder: "Enter Base fare amount",
+      placeholder: "100",
+      inputMode: "numeric",
+      keyboardType: "number-pad"
     },
   },
   {
-    name: 'fare_0_10_km',
-    label: "Fare for 0 to 10km",
+    name: 'per_km',
+    label: "Per KM fare",
     props: {
-      placeholder: "Enter fare amount for below 10km",
+      placeholder: "200",
+      inputMode: "numeric",
+      keyboardType: "number-pad"
     },
   },
-  {
-    name: 'fare_10_20_km',
-    label: "Fare for 10.1 to 20km",
-    props: {
-      placeholder: "Enter fare amount for 10.1 to 20km",
-    },
-  },
-  {
-    name: 'fare_20_50_km',
-    label: "Fare for 20.1 to 50km",
-    props: {
-      placeholder: "Enter fare amount for 20.1 to 50km",
-    },
-  },
-  {
-    name: 'fare_above_50_km',
-    label: "Fare for above 50 km",
-    props: {
-      placeholder: "Enter fare amount above 50km",
-    },
-  },
+  // {
+  //   name: 'fare_0_10_km',
+  //   label: "Fare for 0 to 10km",
+  //   props: {
+  //     placeholder: "Enter fare amount for below 10km",
+  //   },
+  // },
+  // {
+  //   name: 'fare_10_20_km',
+  //   label: "Fare for 10.1 to 20km",
+  //   props: {
+  //     placeholder: "Enter fare amount for 10.1 to 20km",
+  //   },
+  // },
+  // {
+  //   name: 'fare_20_50_km',
+  //   label: "Fare for 20.1 to 50km",
+  //   props: {
+  //     placeholder: "Enter fare amount for 20.1 to 50km",
+  //   },
+  // },
+  // {
+  //   name: 'fare_above_50_km',
+  //   label: "Fare for above 50 km",
+  //   props: {
+  //     placeholder: "Enter fare amount above 50km",
+  //   },
+  // },
 ];
 
 export const CONTACTS_FORM = [
