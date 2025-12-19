@@ -12,7 +12,7 @@ const DRIVER_SOCKET_EVENTS = {
 };
 
 export default function useDriverSocketEvents() {
-    const { userInfo, access_token } = useSelector((state) => state.auth);
+    const { userInfo, access_token, isSocketConnected } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const { onlineStatus, activeRequestInfo } = useSelector((state) => state.driver);
     const onChat = useChatMessage();
@@ -92,13 +92,13 @@ export default function useDriverSocketEvents() {
     // Attach chat listeners when needed
     useEffect(() => {
         const socket = getSocketInstance();
-        if (activeRequestInfo?.id && socket?.connected) {
+        if (activeRequestInfo.id && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
             const cleanup = onChat(socket, activeRequestInfo.id);
             return () => {
                 cleanup?.();
             };
         }
         return undefined;
-    }, [activeRequestInfo?.id, onChat]);
+    }, [activeRequestInfo.id, isSocketConnected, activeRequestInfo?.status, onChat]);
 }
 
