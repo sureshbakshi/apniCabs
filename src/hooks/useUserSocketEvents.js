@@ -38,7 +38,7 @@ export default function useUserSocketEvents() {
 
     // Create/connect socket when needed
     useEffect(() => {
-         const socket = getSocketInstance();
+        const socket = getSocketInstance();
         if (isLoggedIn && !socket?.connected) {
             createSocketInstance(
                 { userId: userInfo.id, token: access_token },
@@ -100,7 +100,11 @@ export default function useUserSocketEvents() {
     useEffect(() => {
         const socket = getSocketInstance();
         if (activeRequestId && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
-            onChat(socket);
+            const cleanup = onChat(socket, activeRequestId);
+            return () => {
+                cleanup?.();
+            };
         }
+        return undefined;
     }, [activeRequestId, isSocketConnected, activeRequestInfo?.status, onChat]);
 }

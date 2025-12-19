@@ -1,47 +1,68 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import ContainerWrapper from './ContainerWrapper';
 import CustomButton from './CustomButton';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { COLORS, SOCKET_EVENTS } from '../../constants';
 import { getSocketInstance } from '../../sockets/socketConfig';
-import { getScreen, isDriver } from '../../util';
+import { isDriver } from '../../util';
 import { useTranslation } from 'react-i18next';
-const socket = getSocketInstance();
+
 const ChatUI = () => {
   const { t } = useTranslation();
-  const [inputText, setInputText] = useState(''); // Stores the current input text
-  const { rideChats } = useSelector((state) => state.auth);
   const isDriverLogged = isDriver();
-  const { activeRequestId } = useSelector((state) => isDriverLogged ? state.driver : state.user);
-  const flatListRef = useRef();
+  const rideChats = useSelector((state) => state.auth.rideChats);
+  const activeRequestId = useSelector((state) => isDriverLogged ? state.driver.activeRequestId : state.user.activeRequestId);
+  const flatListRef = useRef(null);
 
   useEffect(() => {
-    console.log('activeRequestId', activeRequestId)
-    if (socket && activeRequestId) {
-      console.log('activeRequestId', activeRequestId)
-      socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestId);  // Replace with the actual rideId
-    }
-  }, [activeRequestId, socket])
+    const socket = getSocketInstance();
+    if (!socket || !socket.connected || !activeRequestId) return;
+    socket.emit(SOCKET_EVENTS.joinRoom, activeRequestId);
+  }, [activeRequestId]);
 
+  // Move input state inside a memoized child to avoid re-renders of the whole Chat on typing
+  const scrollToBottom = useCallback(() => {
+    flatListRef.current?.scrollToEnd?.({ animated: true });
+  }, []);
 
-  const sendMessage = () => {
-    if (inputText.trim()) {
-      if (inputText && socket) {
-        socket.emit(SOCKET_EVENTS.sendMessage, inputText);
+  const MessageBubble = memo(({ item }) => (
+    <View style={[styles.messageBubble, { ...item.bg_style }]}>
+      <Text style={[styles.messageText, { ...item.text_style }]}>{item?.message}</Text>
+    </View>
+  ));
+
+  const renderItem = useCallback(({ item }) => (
+    <MessageBubble item={item} />
+  ), []);
+
+  const ChatInput = memo(({ placeholder, sendLabel }) => {
+    const [text, setText] = useState('');
+
+    const onSubmit = useCallback(() => {
+      const message = text.trim();
+      if (!message) return;
+      const socket = getSocketInstance();
+      if (socket && socket.connected) {
+        socket.emit(SOCKET_EVENTS.sendMessage, message);
       }
-      setInputText("");
-    }
-  };
+      setText('');
+    }, [text]);
 
-  // Scroll to the end whenever messages change
-  useEffect(() => {
-    if (flatListRef?.current && rideChats?.messages?.length > 0) {
-      setTimeout(() => {
-        flatListRef.current.scrollToEnd({ animated: true });
-      }, 100);
-    }
-  }, [rideChats?.messages]);
+    return (
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder={placeholder}
+          returnKeyType="send"
+          onSubmitEditing={onSubmit}
+        />
+        <CustomButton label={sendLabel} onPress={onSubmit} isLowerCase />
+      </View>
+    );
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,27 +76,20 @@ const ChatUI = () => {
           <FlatList
             ref={flatListRef}
             data={rideChats?.messages || []}
-            keyExtractor={(item, index) => String(index)}
-            renderItem={({ item }) => (
-              <View style={[styles.messageBubble, {
-                ...item.bg_style
-              }]}>
-                <Text style={[styles.messageText, { ...item.text_style }]}>{item?.message}</Text>
-              </View>
-            )}
+            keyExtractor={(item, index) => item?.id ? String(item.id) : String(index)}
+            renderItem={renderItem}
+            onContentSizeChange={scrollToBottom}
             contentContainerStyle={styles.messageList}
+            initialNumToRender={20}
+            maxToRenderPerBatch={20}
+            windowSize={5}
+            removeClippedSubviews={true}
+            showsVerticalScrollIndicator={false}
+            maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
           />
 
           {/* Input and Send Button */}
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={inputText}
-              onChangeText={setInputText}
-              placeholder={t('chat_placeholder')}
-            />
-            <CustomButton label={t('send_btn')} onPress={sendMessage} isLowerCase />
-          </View>
+          <ChatInput placeholder={t('chat_placeholder')} sendLabel={t('send_btn')} />
         </KeyboardAvoidingView>
       </ContainerWrapper>
     </SafeAreaView>
@@ -121,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatUI;
+export default memo(ChatUI);

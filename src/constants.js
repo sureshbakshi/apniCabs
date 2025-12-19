@@ -564,5 +564,6 @@ export const MAPS_LABELS = {
 export const SOCKET_EVENTS = {
   rideCompleted: 'ride-completed',
   sendMessage: 'send-message',
-  joinRoom: 'join-room'
+  joinRoom: 'join-room',
+  newMessage: 'new-message',
 }

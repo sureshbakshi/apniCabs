@@ -36,7 +36,7 @@ export default function useDriverSocketEvents() {
 
     // Create/connect socket when needed
     useEffect(() => {
-         const socket = getSocketInstance();
+        const socket = getSocketInstance();
         if (isDriverOnline && isLoggedIn && !socket?.connected) {
             createSocketInstance(
                 { userId: userInfo.id, token: access_token },
@@ -93,8 +93,12 @@ export default function useDriverSocketEvents() {
     useEffect(() => {
         const socket = getSocketInstance();
         if (activeRequestInfo?.id && socket?.connected) {
-            onChat(socket);
+            const cleanup = onChat(socket, activeRequestInfo.id);
+            return () => {
+                cleanup?.();
+            };
         }
+        return undefined;
     }, [activeRequestInfo?.id, onChat]);
 }
 
