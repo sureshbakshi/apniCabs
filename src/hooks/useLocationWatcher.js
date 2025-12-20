@@ -2,12 +2,25 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
 import { showErrorMessage } from "../util";
-import { checkAndroidPermissions, defaultOptions, getLocation } from "../util/location";
+import { checkAndroidPermissions } from "../util/location";
 import { useDispatch, useSelector } from "react-redux";
 import { setDriverLocation } from "../slices/driverSlice";
 import useUpdateDriverLocation from "./useUpdateDriverLocation";
 import { DriverAvailableStatus } from "../constants";
 let watchId = undefined;
+
+export const defaultOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 10 * 1000,
+    timeout: 60 * 1000,
+    forceRequestLocation: true,
+    interval: 60 * 1000,
+    fastestInterval: 50 * 1000,
+    useSignificantChanges: false,
+    distanceFilter: 0,
+    showLocationDialog: true,
+    forceRequestLocation: true
+}
 
 export default () => {
     const dispatch = useDispatch();

@@ -6,18 +6,6 @@ import axios from 'axios';
 import { filter } from 'lodash'
 import config from './config';
 
-export const defaultOptions = {
-    enableHighAccuracy: true,
-    maximumAge: 10 * 1000,
-    timeout: 60 * 1000,
-    forceRequestLocation: true,
-    interval: 60 * 1000,
-    fastestInterval: 50 * 1000,
-    useSignificantChanges: false,
-    distanceFilter: 0,
-    showLocationDialog: true,
-    forceRequestLocation: true
-}
 
 export const requestIosLocationPermissions = async () => {
     await Geolocation.setRNConfiguration({

@@ -6,6 +6,19 @@ import useUpdateDriverLocation from "./useUpdateDriverLocation";
 import { useDispatch } from "react-redux";
 import { setDriverLocation } from "../slices/driverSlice";
 
+export const defaultCurrentLocationOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 10 * 1000,
+    timeout: 30 * 1000,
+    forceRequestLocation: true,
+    interval: 5 * 1000,
+    fastestInterval: 5 * 1000,
+    useSignificantChanges: false,
+    distanceFilter: 0,
+    showLocationDialog: true,
+    forceRequestLocation: true
+}
+
 export default () => {
     const [currentLocation, setLocation] = useState({
         latitude: '',
@@ -47,7 +60,7 @@ export default () => {
                         showErrorMessage('Please enable GPS');
                         reject(error);
                     },
-                    defaultOptions
+                    defaultCurrentLocationOptions
                 );
             });
         } catch (error) {
