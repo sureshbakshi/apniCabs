@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash'
 import { setDriverStatus } from "../slices/driverSlice"
 import { DriverAvailableStatus } from "../constants"
 import { isDriver, isOwner } from "../util"
+import useGetCurrentLocation from "./useGetCurrentLocation"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -41,11 +42,16 @@ export default useGetDriverDetails = (options, isCb = false) => {
 }
 
 export const useUpdateDriverStatus = () => {
+    const { getCurrentLocation } = useGetCurrentLocation();
     const [_updateDriverStatus] = useUpdateDriverStatusMutation();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const updateDriverStatus = (isOnline, cb) => {
-        _updateDriverStatus({ is_available: isOnline ? 1 : 0 }).unwrap().then((res) => {
+    const updateDriverStatus = async (isOnline, cb) => {
+        const { latitude, longitude } = await getCurrentLocation(null, true) || {};
+        if ((!latitude || !longitude) && isOnline) {
+            return;
+        }
+        _updateDriverStatus({ is_available: isOnline ? 1 : 0, }).unwrap().then((res) => {
             dispatch(setDriverStatus({ is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE }))
         }).catch(() => cb?.(!isOnline))
     }
