@@ -92,13 +92,13 @@ export default function useDriverSocketEvents() {
     // Attach chat listeners when needed
     useEffect(() => {
         const socket = getSocketInstance();
-        if (activeRequestInfo.id && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
+        if (activeRequestInfo?.id && isSocketConnected && activeRequestInfo?.status === RideStatus.ACCEPTED) {
             const cleanup = onChat(socket, activeRequestInfo.id);
             return () => {
                 cleanup?.();
             };
         }
         return undefined;
-    }, [activeRequestInfo.id, isSocketConnected, activeRequestInfo?.status, onChat]);
+    }, [activeRequestInfo?.id, isSocketConnected, activeRequestInfo?.status, onChat]);
 }
 
