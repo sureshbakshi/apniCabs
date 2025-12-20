@@ -65,34 +65,31 @@ const ChatUI = () => {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ContainerWrapper>
+    <ContainerWrapper>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+      >
+        {/* Message List */}
+        <FlatList
+          ref={flatListRef}
+          data={rideChats?.messages || []}
+          keyExtractor={(item, index) => item?.id ? String(item.id) : String(index)}
+          renderItem={renderItem}
+          onContentSizeChange={scrollToBottom}
+          contentContainerStyle={styles.messageList}
+          initialNumToRender={20}
+          maxToRenderPerBatch={20}
+          windowSize={5}
+          removeClippedSubviews={true}
+          showsVerticalScrollIndicator={false}
+          maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
+        />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardAvoidingView}
-        >
-          {/* Message List */}
-          <FlatList
-            ref={flatListRef}
-            data={rideChats?.messages || []}
-            keyExtractor={(item, index) => item?.id ? String(item.id) : String(index)}
-            renderItem={renderItem}
-            onContentSizeChange={scrollToBottom}
-            contentContainerStyle={styles.messageList}
-            initialNumToRender={20}
-            maxToRenderPerBatch={20}
-            windowSize={5}
-            removeClippedSubviews={true}
-            showsVerticalScrollIndicator={false}
-            maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
-          />
-
-          {/* Input and Send Button */}
-          <ChatInput placeholder={t('chat_placeholder')} sendLabel={t('send_btn')} />
-        </KeyboardAvoidingView>
-      </ContainerWrapper>
-    </SafeAreaView>
+        {/* Input and Send Button */}
+        <ChatInput placeholder={t('chat_placeholder')} sendLabel={t('send_btn')} />
+      </KeyboardAvoidingView>
+    </ContainerWrapper>
   );
 };
 

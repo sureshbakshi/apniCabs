@@ -178,34 +178,32 @@ const WalletPage = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[WalletStyles.container]}>
-      <ContainerWrapper style={{ paddingHorizontal: 10, marginBottom: 5 }}>
-        <View style={[WalletStyles.header, { margin: 0, marginBottom: 5 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={WalletStyles.box}>
-              <Icon name='wallet-outline' size='large' color={COLORS.white} />
-            </View>
-            <View>
-              <Text style={WalletStyles.graytxt}>{t('total_credits')}</Text>
-              {walletInfo?.id ? <Text style={WalletStyles.balTxt}>{walletInfo?.amount}</Text> : null}
-              <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans) }}>
-                <Text style={WalletStyles.buttonTxt}>{t('add_credits')}</Text>
-                <Icon name='chevron-right' size='large' color={COLORS.primary} />
-              </Pressable>
-            </View>
+    <ContainerWrapper style={{ paddingHorizontal: 10, marginBottom: 5 }}>
+      <View style={[WalletStyles.header, { margin: 0, marginBottom: 5 }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={WalletStyles.box}>
+            <Icon name='wallet-outline' size='large' color={COLORS.white} />
+          </View>
+          <View>
+            <Text style={WalletStyles.graytxt}>{t('total_credits')}</Text>
+            {walletInfo?.id ? <Text style={WalletStyles.balTxt}>{walletInfo?.amount}</Text> : null}
+            <Pressable style={WalletStyles.button} onPress={() => { navigate(ROUTES_NAMES.myPlans) }}>
+              <Text style={WalletStyles.buttonTxt}>{t('add_credits')}</Text>
+              <Icon name='chevron-right' size='large' color={COLORS.primary} />
+            </Pressable>
           </View>
         </View>
-        <FlatList
-          data={transactions}
-          renderItem={({ item, i }) => <RequestCard item={item} key={i} />}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
-          ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />}
-        />
-      </ContainerWrapper>
-    </SafeAreaView>
+      </View>
+      <FlatList
+        data={transactions}
+        renderItem={({ item, i }) => <RequestCard item={item} key={i} />}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+        ListEmptyComponent={<SearchLoader msg="No Transactions found." isLoader={false} containerStyles={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />}
+      />
+    </ContainerWrapper>
   );
 };
 export default WalletPage;

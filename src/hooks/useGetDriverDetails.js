@@ -12,7 +12,7 @@ export const useDisptachDriverDetails = (details) => {
     useEffect(() => {
         if (!isEmpty(details)) {
             dispatch(setDriverDetails(details))
-            dispatch(setDriverStatus(details))
+            // dispatch(setDriverStatus(details))
         }
     }, [details])
 }

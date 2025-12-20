@@ -133,7 +133,7 @@ export const AvatarInfo = ({ dp, vehicle, avatarContainerStyles, avatarStyles, n
     )
 }
 
-export const RideDetailsView = ({ isRideHistory, activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
+export const RideDetailsView = ({ isRideHistory = false, activeRequestInfo, isDriverLogged = false, isOnRide = true, avatarStyles = {}, avatarContainerStyles = {}, containerStyles = {} }) => {
     const { t } = useTranslation();
     const { details, fare } = activeRequestInfo
     const driver_avatar = details?.photo || details?.vehicle?.photo

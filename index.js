@@ -2,7 +2,7 @@
  * @format
  */
 
-import { AppRegistry, AppState } from 'react-native';
+import { AppRegistry, AppState, StatusBar } from 'react-native';
 // Ensure secure random and crypto are available before anything else
 import 'react-native-get-random-values';
 import './src/shims/crypto';
@@ -11,10 +11,10 @@ import { name as appName } from './app.json';
 import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { toastConfig } from './src/constants';
+import { COLORS, toastConfig } from './src/constants';
 import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import './i18n';
 
@@ -32,7 +32,9 @@ function AppWithProvider() {
         <AuthProvider>
           <SafeAreaProvider>
             {/* <StrictMode> */}
-            <App />
+            <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }} edges={['top', 'left', 'right']}>
+              <App />
+            </SafeAreaView>
             {/* </StrictMode> */}
           </SafeAreaProvider>
         </AuthProvider>

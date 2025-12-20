@@ -24,34 +24,31 @@ const MorePage = () => {
   useGetDriverDetails({ refetchOnMountOrArgChange: true })
   const userId = profile?.appUserId || profile?.appDriverId;
   return (
-    <>
-
-      <SafeAreaView style={MoreStyles.container}>
-        <ContainerWrapper>
-          <View style={MoreStyles.card}>
-            <View style={MoreStyles.cardtop}>
-              <View style={MoreStyles.left}>
-                <ProfileImage />
-              </View>
-              <View style={MoreStyles.middle}>
-                <Text style={MoreStyles.name}>{profile?.name}</Text>
-                {userId ? <Text style={MoreStyles.address}>{userId}</Text> : null}
-              </View>
-            </View>
+    <ContainerWrapper>
+      <View style={MoreStyles.card}>
+        <View style={MoreStyles.cardtop}>
+          <View style={MoreStyles.left}>
+            <ProfileImage />
           </View>
-          <ScrollView persistentScrollbar>
-            <View style={MoreStyles.listSection}>
-              <Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => navigate('MyProfile')}>
-                <View style={MoreStyles.listIcon}>
-                  <Icon name="account" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>{t('my_profile')}</Text>
-              </Pressable>
-              {!isDriver() ? <>
-                {/* <Pressable
+          <View style={MoreStyles.middle}>
+            <Text style={MoreStyles.name}>{profile?.name}</Text>
+            {userId ? <Text style={MoreStyles.address}>{userId}</Text> : null}
+          </View>
+        </View>
+      </View>
+      <ScrollView persistentScrollbar>
+        <View style={MoreStyles.listSection}>
+          <Pressable
+            style={MoreStyles.list}
+            android_ripple={{ color: '#ccc' }}
+            onPress={() => navigate('MyProfile')}>
+            <View style={MoreStyles.listIcon}>
+              <Icon name="account" size="large" color={COLORS.primary} />
+            </View>
+            <Text style={MoreStyles.name}>{t('my_profile')}</Text>
+          </Pressable>
+          {!isDriver() ? <>
+            {/* <Pressable
                     style={MoreStyles.list}
                     android_ripple={{ color: '#ccc' }}
                     onPress={() => {
@@ -63,7 +60,7 @@ const MorePage = () => {
                     </View>
                     <Text style={MoreStyles.name}>{t('become_driver')}</Text>
                   </Pressable> */}
-                {/* <Pressable
+            {/* <Pressable
                 style={MoreStyles.list}
                 android_ripple={{ color: '#ccc' }}
                 onPress={() => navigate('Contacts')}
@@ -73,63 +70,61 @@ const MorePage = () => {
                 </View>
                 <Text style={MoreStyles.name}>Emergency contacts</Text>
               </Pressable> */}
-                <SupportLinks />
+            <SupportLinks />
 
-              </>
-                : null}
-              {isDriver() ? <><Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => navigate('FareSettings')}>
-                <View style={MoreStyles.listIcon}>
-                  <Icon name="pencil" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>{t('edit_fare')}</Text>
-              </Pressable>
-                <Pressable
-                  style={MoreStyles.list}
-                  android_ripple={{ color: '#ccc' }}
-                  onPress={() => navigate(ROUTES_NAMES.refer)}>
-                  <View style={MoreStyles.listIcon}>
-                    <Icon name="cash" size="large" color={COLORS.primary} />
-                  </View>
-                  <Text style={MoreStyles.name}>{t('refer_now')}</Text>
-                </Pressable>
-                <Pressable
-                  style={MoreStyles.list}
-                  android_ripple={{ color: '#ccc' }}
-                  onPress={openOwnerPortal}>
-                  <View style={MoreStyles.listIcon}>
-                    <Icon name="web" size="large" color={COLORS.primary} />
-                  </View>
-                  <Text style={MoreStyles.name}>{t('settings')}</Text>
-                </Pressable>
-                <SupportLinks />
-
-              </> : null}
-              <Pressable
-                style={MoreStyles.list}
-                android_ripple={{ color: '#ccc' }}
-                onPress={() => navigate(ROUTES_NAMES.language)}>
-                <View style={MoreStyles.listIcon}>
-                  <Icon name="account" size="large" color={COLORS.primary} />
-                </View>
-                <Text style={MoreStyles.name}>{t('language')}</Text>
-              </Pressable>
-
-
+          </>
+            : null}
+          {isDriver() ? <><Pressable
+            style={MoreStyles.list}
+            android_ripple={{ color: '#ccc' }}
+            onPress={() => navigate('FareSettings')}>
+            <View style={MoreStyles.listIcon}>
+              <Icon name="pencil" size="large" color={COLORS.primary} />
             </View>
+            <Text style={MoreStyles.name}>{t('edit_fare')}</Text>
+          </Pressable>
             <Pressable
+              style={MoreStyles.list}
               android_ripple={{ color: '#ccc' }}
-              style={MoreStyles.button}
-              onPress={logOut}>
-              <Text style={MoreStyles.greenTxt}>{t('logout')}</Text>
+              onPress={() => navigate(ROUTES_NAMES.refer)}>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="cash" size="large" color={COLORS.primary} />
+              </View>
+              <Text style={MoreStyles.name}>{t('refer_now')}</Text>
             </Pressable>
-            <Text style={{ textAlign: 'center', padding: 10 }}>v{DeviceInfo.getReadableVersion()}</Text>
-          </ScrollView>
-        </ContainerWrapper>
-      </SafeAreaView>
-    </>
+            <Pressable
+              style={MoreStyles.list}
+              android_ripple={{ color: '#ccc' }}
+              onPress={openOwnerPortal}>
+              <View style={MoreStyles.listIcon}>
+                <Icon name="web" size="large" color={COLORS.primary} />
+              </View>
+              <Text style={MoreStyles.name}>{t('settings')}</Text>
+            </Pressable>
+            <SupportLinks />
+
+          </> : null}
+          <Pressable
+            style={MoreStyles.list}
+            android_ripple={{ color: '#ccc' }}
+            onPress={() => navigate(ROUTES_NAMES.language)}>
+            <View style={MoreStyles.listIcon}>
+              <Icon name="account" size="large" color={COLORS.primary} />
+            </View>
+            <Text style={MoreStyles.name}>{t('language')}</Text>
+          </Pressable>
+
+
+        </View>
+        <Pressable
+          android_ripple={{ color: '#ccc' }}
+          style={MoreStyles.button}
+          onPress={logOut}>
+          <Text style={MoreStyles.greenTxt}>{t('logout')}</Text>
+        </Pressable>
+        <Text style={{ textAlign: 'center', padding: 10 }}>v{DeviceInfo.getReadableVersion()}</Text>
+      </ScrollView>
+    </ContainerWrapper>
   );
 };
 export default MorePage;

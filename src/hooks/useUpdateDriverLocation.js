@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
-import { isDriver, isDriverAccepted, _isDriverOnline } from '../util';
+import { isDriver, isDriverBusy, _isDriverOnline } from '../util';
 import { DriverAvailableStatus, ROUTES_NAMES } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useRef, useCallback, useEffect } from 'react';
@@ -9,10 +9,11 @@ export default () => {
     const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
     const [updateDriverLocation] = useUpdateDriverLocationMutation();
     const isDriverLogged = isDriver();
-    const isAccepted = isDriverAccepted();
+    const isBusy = isDriverBusy();
     const isOnline = _isDriverOnline();
     const navigation = useNavigation();
-    const is_available = isAccepted || isOnline;
+    const is_available = isBusy || isOnline;
+
 
     // Debounce refs - shared across all calls
     const queueRef = useRef([]);
@@ -59,7 +60,7 @@ export default () => {
             "driverId": profile.id,
             "location": { latitude: location.latitude, longitude: location.longitude },
             "category": driverInfo?.Vehicle?.VehicleType?.code,
-            "status": isAccepted ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
+            "status": isBusy ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
             "driver": {
                 "name": driverInfo?.name,
                 ...(driverInfo?.email ? { email: driverInfo?.email } : {})
@@ -77,7 +78,7 @@ export default () => {
         // Queue the update (prevents duplicates)
         queueRef.current.push({ payload, timestamp: Date.now() });
         processQueue();
-    }, [profile.id, driverInfo, isDriverLogged, is_available, isAccepted, processQueue]);
+    }, [profile.id, driverInfo, isDriverLogged, is_available, isBusy, processQueue]);
 
     // Cleanup on unmount
     useEffect(() => {

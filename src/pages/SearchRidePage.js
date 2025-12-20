@@ -142,45 +142,43 @@ const SearchRidePage = () => {
   }
 
   return (
-
-    <SafeAreaView style={SearchRideStyles.container}>
-      <ContainerWrapper>
-        {isSocketConnected ? <View style={SearchRideStyles.section}>
-          <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
-            <Timeline data={['', '']} height={25} />
-          </View>
-          <GooglePlaces
-            placeholder={t('pickup_placeholder')}
-            containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
-            textContainerStyles={{ borderBottomWidth: 0.5 }}
-            locationKey='from'
-            onSelection={updateLocation}
-            currentLocation={true}
-            onInputFocus={inputFocusHandler}
-            locationDetails={location.from}
+    <ContainerWrapper>
+      {isSocketConnected ? <View style={SearchRideStyles.section}>
+        <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
+          <Timeline data={['', '']} height={25} />
+        </View>
+        <GooglePlaces
+          placeholder={t('pickup_placeholder')}
+          containerStyles={{ zIndex: 2, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+          textContainerStyles={{ borderBottomWidth: 0.5 }}
+          locationKey='from'
+          onSelection={updateLocation}
+          currentLocation={true}
+          onInputFocus={inputFocusHandler}
+          locationDetails={location.from}
+        />
+        <GooglePlaces onInputFocus={inputFocusHandler} placeholder={t('drop_placeholder')} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} locationDetails={location.to} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 }}>
+          <CustomButton
+            iconLeft={{ name: 'map-marker-radius-outline', size: 'medium', color: COLORS.black }}
+            label={t('select_on_map_btn')}
+            isLowerCase
+            styles={{ backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.bg_secondary, borderRadius: 20, width: 170, height: 40 }}
+            textStyles={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold', color: COLORS.black, lineHeight: 17 }}
+            onClick={navigateToSelectOnMapPage}
           />
-          <GooglePlaces onInputFocus={inputFocusHandler} placeholder={t('drop_placeholder')} containerStyles={{ zIndex: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} locationKey='to' onSelection={updateLocation} locationDetails={location.to} />
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 }}>
-            <CustomButton
-              iconLeft={{ name: 'map-marker-radius-outline', size: 'medium', color: COLORS.black }}
-              label={t('select_on_map_btn')}
-              isLowerCase
-              styles={{ backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.bg_secondary, borderRadius: 20, width: 170, height: 40 }}
-              textStyles={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold', color: COLORS.black, lineHeight: 17 }}
-              onClick={navigateToSelectOnMapPage}
-            />
-            <CustomButton
-              label={selectedOtherContact?.name || t('my_self')}
-              styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
-              textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
-              isLowerCase
-              onClick={openModal}
-            />
-          </View>
+          <CustomButton
+            label={selectedOtherContact?.name || t('my_self')}
+            styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
+            textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
+            isLowerCase
+            onClick={openModal}
+          />
+        </View>
 
 
-          <View style={{ marginTop: 5 }}>
-            {/* <Pressable
+        <View style={{ marginTop: 5 }}>
+          {/* <Pressable
               style={isSearchDisabled() ? [SearchRideStyles.button, { backgroundColor: COLORS.gray }] : [SearchRideStyles.button]}
               android_ripple={{ color: '#fff' }}
               disabled={isSearchDisabled()}
@@ -188,28 +186,25 @@ const SearchRidePage = () => {
               >
               <Text style={SearchRideStyles.text}>{'Find Captain'}</Text>
             </Pressable> */}
-            <CustomButton
-              styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
-              disabled={isSearchDisabled()}
-              label={'Find Captain'}
-              isLowerCase
-              isLoading={isLoading}
-              indicatorProps={{ size: 'small', style: { paddingRight: 10 } }}
-              onClick={debouncedSearchHandler}
-            />
-          </View>
-          {!isEmpty(searchHistory[focusKey]) ? <View>
-            <RecentSearchHistory searchHistory={searchHistory} focusKey={focusKey} updateLocation={updateLocation} />
-          </View> : <SearchLoader msg='' />}
-        </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
-        <BottomModal
-          visible={isVisible}
-          onCloseModal={closeModal}
-        />
-      </ContainerWrapper>
-
-    </SafeAreaView>
-
+          <CustomButton
+            styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
+            disabled={isSearchDisabled()}
+            label={'Find Captain'}
+            isLowerCase
+            isLoading={isLoading}
+            indicatorProps={{ size: 'small', style: { paddingRight: 10 } }}
+            onClick={debouncedSearchHandler}
+          />
+        </View>
+        {!isEmpty(searchHistory[focusKey]) ? <View>
+          <RecentSearchHistory searchHistory={searchHistory} focusKey={focusKey} updateLocation={updateLocation} />
+        </View> : <SearchLoader msg='' />}
+      </View> : <SocketStatus multipleMsg={false} textStyles={{ color: COLORS.white }} />}
+      <BottomModal
+        visible={isVisible}
+        onCloseModal={closeModal}
+      />
+    </ContainerWrapper>
   );
 };
 export default SearchRidePage;

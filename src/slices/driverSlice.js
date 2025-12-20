@@ -21,11 +21,11 @@ const driverSlice = createSlice({
       // on socket request, on accept and on decline
       const requestObj = action.payload
       if (requestObj.status === RideStatus.ACCEPTED || requestObj.status === RideStatus.ONRIDE) {
-        state.activeRequestInfo = {...requestObj, id: requestObj?.request_id || requestObj?.id};
+        state.activeRequestInfo = { ...requestObj, id: requestObj?.request_id || requestObj?.id };
         state.rideRequests = []
         state.onlineStatus = 'BUSY';
       } else {
-        state.rideRequests = state.rideRequests.filter((request) => (requestObj.request_id || requestObj.id)!== (request.request_id || request.id))
+        state.rideRequests = state.rideRequests.filter((request) => (requestObj.request_id || requestObj.id) !== (request.request_id || request.id))
       }
     },
     setActiveRide: (state, action) => {
@@ -36,13 +36,14 @@ const driverSlice = createSlice({
       } else {
         const { id } = requestObj || {}
         state.activeRequestId = id;
-        state.activeRequestInfo = requestObj
+        state.activeRequestInfo = requestObj;
+        state.onlineStatus = 'BUSY';
       }
     },
     updateRideStatus: (state, action) => {
       const { status } = action.payload || {}
       if (ClearRideStatus.includes(status)) {
-        state.rideStatusUpdate = {...state.activeRequestInfo, ...action.payload}
+        state.rideStatusUpdate = { ...state.activeRequestInfo, ...action.payload }
         state.activeRequestInfo = null;
         state.rideRequests = [];
         state.onlineStatus = 'ONLINE';

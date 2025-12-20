@@ -11,7 +11,7 @@ import { navigate } from './navigationService';
 import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
 import config from '../util/config';
-import { isEmpty , debounce} from 'lodash';
+import { isEmpty, debounce } from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {
@@ -92,7 +92,7 @@ export const Capitalize = (str) => {
 
 export const _isDriverOnline = () => {
   const onlineStatus = store.getState().driver.onlineStatus;
-  return Boolean(onlineStatus === DriverAvailableStatus.ONLINE) || Boolean(onlineStatus === DriverAvailableStatus.BUSY)
+  return Boolean(onlineStatus === DriverAvailableStatus.ONLINE)
 }
 
 export const _isDriverOffline = () => {
@@ -100,9 +100,9 @@ export const _isDriverOffline = () => {
   return Boolean(onlineStatus === DriverAvailableStatus.OFFLINE)
 }
 
-export const isDriverAccepted = () => {
-  const isOnline = store.getState().auth?.driverInfo?.DriverDetail?.is_available;
-  return Boolean(isOnline === DriverAvailableStatus.ACCEPTED) || Boolean(isOnline === DriverAvailableStatus.ONRIDE)
+export const isDriverBusy = () => {
+  const activeRequestInfo = store.getState().driver?.activeRequestInfo;
+  return Boolean(activeRequestInfo?.id);
 }
 
 export const _isLoggedIn = () => {

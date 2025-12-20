@@ -3,11 +3,11 @@ import { shadow } from 'react-native-paper';
 import { COLORS } from '../constants';
 
 const CommonStyles = StyleSheet.create({
-  p10:{
-    padding:10
+  p10: {
+    padding: 10
   },
-  p15:{
-    padding:15
+  p15: {
+    padding: 15
   },
   mb5: {
     marginBottom: 5,

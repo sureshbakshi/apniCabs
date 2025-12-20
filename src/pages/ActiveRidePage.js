@@ -67,36 +67,34 @@ const ActiveRidePage = () => {
     return null;
   }
   return (
-    <SafeAreaView style={[FindRideStyles.container]}>
-      <KeyboardAwareScrollView extraHeight={180} extraScrollHeight={-60} enableOnAndroid>
-        <ContainerWrapper>
-          <View style={{ height: (screenHeight - 345) }}>
-            <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingTop: 10, paddingBottom: 0, borderRadius: 12, margin: 15, zIndex: 10000 }}>
-              <Timeline
-                data={[activeRequestInfo?.from, activeRequestInfo?.to]}
-                numberOfLines={1}
-                textStyles={{ fontSize: 12 }}
-              />
-            </View>
-            {isDriverLogged ? <DriverMap activeRequestInfo={activeRequestInfo} /> : <UserMap activeRequestInfo={activeRequestInfo} />}
+    <KeyboardAwareScrollView extraHeight={180} extraScrollHeight={-60} enableOnAndroid>
+      <ContainerWrapper>
+        <View style={{ height: (screenHeight - 345) }}>
+          <View style={{ backgroundColor: COLORS.card_bg, padding: 15, paddingTop: 10, paddingBottom: 0, borderRadius: 12, margin: 15, zIndex: 10000 }}>
+            <Timeline
+              data={[activeRequestInfo?.from, activeRequestInfo?.to]}
+              numberOfLines={1}
+              textStyles={{ fontSize: 12 }}
+            />
           </View>
-          <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.white, padding: 15, paddingBottom: 3, borderTopLeftRadius: 18, borderTopRightRadius: 18 }]}>
-            {/* {isDriverLogged ? <CardWrapper title={'User Details'}>
+          {isDriverLogged ? <DriverMap activeRequestInfo={activeRequestInfo} /> : <UserMap activeRequestInfo={activeRequestInfo} />}
+        </View>
+        <View style={[ActiveRidePageStyles.cardBottom, { backgroundColor: COLORS.white, padding: 15, paddingBottom: 3, borderTopLeftRadius: 18, borderTopRightRadius: 18 }]}>
+          {/* {isDriverLogged ? <CardWrapper title={'User Details'}>
             <VehicleCard activeRequestInfo={activeRequestInfo} details={USER_INFORMATION} avatar={'user.avatar'} />
           </CardWrapper> :
             <CardWrapper title={'Vehicle Details'}>
               <VehicleCard activeRequestInfo={activeRequestInfo} details={VEHICLE_INFORMATION} avatar={'driver.vehicle.vehicle_image'} showOtp={true} />
             </CardWrapper>} */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-              <Text>{t('distance')}</Text>
-              <Text>{requestInfo?.duration} {requestInfo?.distance ? `- ${requestInfo.distance} km` : ''}</Text>
-            </View>
-            {!isEmpty(activeRequestInfo) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequestInfo={requestInfo} />}
-
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+            <Text>{t('distance')}</Text>
+            <Text>{requestInfo?.duration} {requestInfo?.distance ? `- ${requestInfo.distance} km` : ''}</Text>
           </View>
-        </ContainerWrapper>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+          {!isEmpty(activeRequestInfo) && <RideDetailsCards isDriverLogged={isDriverLogged} activeRequestInfo={requestInfo} />}
+
+        </View>
+      </ContainerWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 

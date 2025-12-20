@@ -85,22 +85,18 @@ const Card = ({ item, keys }) => {
 const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
   const { t } = useTranslation()
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <View style={[FindRidePageStyles.pageContainer]}> */}
-      <ContainerWrapper style={{ paddingHorizontal: 10 }}>
-        {!!data?.length ? <View style={styles.section}>
-          <FlatList
-            data={data}
-            renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
-            keyExtractor={item => item.id}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
-          />
-        </View> : <SearchLoader msg={t('no_records')} />}
-      </ContainerWrapper>
-      {/* </View> */}
-    </SafeAreaView>
+    <ContainerWrapper style={{ paddingHorizontal: 10 }}>
+      {!!data?.length ? <View style={styles.section}>
+        <FlatList
+          data={data}
+          renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
+          keyExtractor={item => item.id}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+        />
+      </View> : <SearchLoader msg={t('no_records')} />}
+    </ContainerWrapper>
   );
 };
 export default MyRidePage;

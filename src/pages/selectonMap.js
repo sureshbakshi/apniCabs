@@ -107,54 +107,52 @@ const SelectOnPage = () => {
         navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })
     }
     return (
-        <SafeAreaView style={[FindRideStyles.container]}>
-            <ContainerWrapper>
-                <MapView
-                    ref={mapRef}
-                    style={{ height: getScreen().screenHeight - 350 }}
-                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
-                    initialRegion={region}
-                    onRegionChangeComplete={onRegionChange}>
-                    {/* Marker-free selection: use a centered pin overlay and map center as selection */}
-                </MapView>
+        <ContainerWrapper>
+            <MapView
+                ref={mapRef}
+                style={{ height: getScreen().screenHeight - 350 }}
+                provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+                initialRegion={region}
+                onRegionChangeComplete={onRegionChange}>
+                {/* Marker-free selection: use a centered pin overlay and map center as selection */}
+            </MapView>
 
-                {/* Centered pin overlay */}
-                <View pointerEvents="none" style={{ position: 'absolute', top: (getScreen().screenHeight - 350) / 2 - 20, alignSelf: 'center', zIndex: 10 }}>
-                    <ImageView source={images.pin} style={{ width: 40, height: 40 }} />
-                </View>
+            {/* Centered pin overlay */}
+            <View pointerEvents="none" style={{ position: 'absolute', top: (getScreen().screenHeight - 350) / 2 - 20, alignSelf: 'center', zIndex: 10 }}>
+                <ImageView source={images.pin} style={{ width: 40, height: 40 }} />
+            </View>
 
-                <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
-                    <View style={[CommonStyles.p15]}>
-                        <View style={[CommonStyles.shadow, { position: 'absolute', top: -50, left: 20 }]}>
-                            <HeaderBackButton />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Text style={{ color: COLORS.text_dark, fontSize: 17, fontWeight: 600 }}>{`Select ${MAPS_LABELS[focusKey]} location`}</Text>
-                            <CustomButton
-                                onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
-                                label={t('change_btn')}
-                                styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
-                                textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
-                                isLowerCase
-                            />
-                        </View>
+            <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
+                <View style={[CommonStyles.p15]}>
+                    <View style={[CommonStyles.shadow, { position: 'absolute', top: -50, left: 20 }]}>
+                        <HeaderBackButton />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{ color: COLORS.text_dark, fontSize: 17, fontWeight: 600 }}>{`Select ${MAPS_LABELS[focusKey]} location`}</Text>
                         <CustomButton
-                            iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
-                            isLoading={isEmpty(address)}
-                            styles={{ maxHeight: 70, backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
-                            textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
-                            label={address?.formatted_address}
-                        />
-                        <CustomButton
-                            onClick={onConfirmSelection}
-                            styles={{ backgroundColor: COLORS.brand_yellow, borderRadius: 20, height: 50 }}
-                            textStyles={{ fontSize: 16, fontWeight: 'bold', lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
-                            label={t('select_pickup_btn')}
+                            onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
+                            label={t('change_btn')}
+                            styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
+                            textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
+                            isLowerCase
                         />
                     </View>
+                    <CustomButton
+                        iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
+                        isLoading={isEmpty(address)}
+                        styles={{ maxHeight: 70, backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
+                        textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
+                        label={address?.formatted_address}
+                    />
+                    <CustomButton
+                        onClick={onConfirmSelection}
+                        styles={{ backgroundColor: COLORS.brand_yellow, borderRadius: 20, height: 50 }}
+                        textStyles={{ fontSize: 16, fontWeight: 'bold', lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
+                        label={t('select_pickup_btn')}
+                    />
                 </View>
-            </ContainerWrapper>
-        </SafeAreaView>
+            </View>
+        </ContainerWrapper>
     );
 };
 export default SelectOnPage;
