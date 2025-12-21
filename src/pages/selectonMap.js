@@ -17,6 +17,8 @@ import config from '../util/config';
 import { useAppContext } from '../context/App.context';
 import { useTranslation } from 'react-i18next';
 import { getScreen } from '../util';
+import { useSelector } from 'react-redux';
+import { getPlaceDetailsFromCoordinates } from '../util/location';
 
 const initial_region = {
     latitude: 17.5184667,
@@ -32,7 +34,8 @@ const SelectOnPage = () => {
     const route = useRoute();
     const [region, setRegionChange] = useState(initial_region);
     const [address, setAddress] = useState(null)
-    const { currentLocation, getCurrentLocation } = useGetCurrentLocation();
+    const { getUserCoordinates } = useGetCurrentLocation();
+    const { userLocation } = useSelector((state) => state.user);
     const { focusKey } = route?.params;
     const { location, updateLocation } = useAppContext();
 
@@ -42,17 +45,20 @@ const SelectOnPage = () => {
             setRegionChange({ ...initial_region, latitude: lat, longitude: lng });
             setAddress(location[focusKey]);
         } else {
-            const { latitude, longitude } = currentLocation || {};
+            const { latitude, longitude } = userLocation || {};
             if (latitude) {
                 setRegionChange({ ...initial_region, latitude, longitude });
-                getAddress(currentLocation);
+                setMarkerCoordinate({ latitude, longitude });
+                getAddressInfo({ latitude, longitude });
             }
         }
-    }, [location, currentLocation])
+    }, [location, userLocation])
 
     useEffect(() => {
-        getCurrentLocation();
-    }, [])
+        if (!userLocation?.latitude) {
+            getUserCoordinates();
+        }
+    }, [userLocation])
 
     const areRegionsEqual = (region1, region2, tolerance = 0.00001) => {
         return (
@@ -74,25 +80,21 @@ const SelectOnPage = () => {
         }
     }, [region]);
 
-    const getAddress = async (targetRegion = region) => {
-        const apiKey = config.GOOGLE_PLACES_KEY;
+    const getAddressInfo = async (targetRegion = region) => {
         const { latitude, longitude } = targetRegion || {};
-        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=${apiKey}`;
-        await fetch(url)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.results.length > 0) {
-                    const address = responseJson.results[0];
-                    setAddress(address);
-                    return responseJson.results[0];
-                }
-                return responseJson;
-            }).catch((error) => {
-                console.log('error=> ' + error);
-            });
+        if (!latitude || !longitude) return;
 
+        const details = await getPlaceDetailsFromCoordinates(latitude, longitude);
+        setAddress(details);
     }
     const onRegionChange = (newRegion) => {
+        setMarkerCoordinate({
+            latitude: newRegion.latitude,
+            longitude: newRegion.longitude
+        });
+    }
+
+    const onRegionChangeComplete = (newRegion) => {
         const normalized = {
             latitude: newRegion?.latitude ?? region.latitude,
             longitude: newRegion?.longitude ?? region.longitude,
@@ -100,8 +102,17 @@ const SelectOnPage = () => {
             longitudeDelta: newRegion?.longitudeDelta ?? region.longitudeDelta ?? initial_region.longitudeDelta,
         };
         setRegionChange(normalized);
-        getAddress(normalized);
+        setMarkerCoordinate({ latitude: normalized.latitude, longitude: normalized.longitude });
+        getAddressInfo(normalized);
     }
+
+    const onMarkerDragEnd = (e) => {
+        const { latitude, longitude } = e.nativeEvent.coordinate;
+        setMarkerCoordinate({ latitude, longitude });
+        setRegionChange(prev => ({ ...prev, latitude, longitude }));
+        getAddressInfo({ latitude, longitude });
+    }
+
     const onConfirmSelection = () => {
         updateLocation(focusKey, address)
         navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })
@@ -113,8 +124,19 @@ const SelectOnPage = () => {
                 style={{ height: getScreen().screenHeight - 350 }}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
                 initialRegion={region}
-                onRegionChangeComplete={onRegionChange}>
-                {/* Marker-free selection: use a centered pin overlay and map center as selection */}
+                onRegionChange={onRegionChange}
+                onRegionChangeComplete={onRegionChangeComplete}
+                zoomEnabled={true}
+                scrollEnabled={true}
+            >
+                <Marker
+                    coordinate={markerCoordinate}
+                    draggable={true}
+                    onDragEnd={onMarkerDragEnd}
+                    image={images.pin_medium}
+                    style={{ height: 50, width: 50 }}
+                    imageStyle={{ height: 50, width: 50 }}
+                />
             </MapView>
 
             {/* Centered pin overlay */}

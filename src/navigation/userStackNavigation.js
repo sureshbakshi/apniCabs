@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
@@ -34,12 +35,24 @@ export default function UserStackNavigator({ navigation, route }) {
   const status = activeRequestInfo?.status;
   const isActiveRide = [RideStatus.ONRIDE, RideStatus.ACCEPTED].includes(status);
   const isActiveRequest = [RideStatus.INITIATED, RideStatus.REQUESTED].includes(status);
+  useEffect(() => {
+    if (isActiveRide) {
+      navigation.navigate(ROUTES_NAMES.activeRide);
+    } else if (isActiveRequest) {
+      navigation.navigate(ROUTES_NAMES.findCaptain);
+    } else {
+      console.log('navigating to searchRide');
+      navigation.navigate(ROUTES_NAMES.searchRide);
+    }
+  }, [isActiveRide, isActiveRequest, navigation]);
 
   // console.log('isActiveRequest', { activeRequestInfo }, isActiveRide)
   // console.log('isActiveRide', activeRequestInfo)
   return (
     <Stack.Navigator
+      initialRouteName={isActiveRide ? ROUTES_NAMES.activeRide : isActiveRequest ? ROUTES_NAMES.findCaptain : ROUTES_NAMES.searchRide}
       screenOptions={{
+        contentStyle: { backgroundColor: COLORS.white },
         headerStyle: {
           backgroundColor: COLORS.primary,
         },
@@ -54,12 +67,33 @@ export default function UserStackNavigator({ navigation, route }) {
         options={{ title: 'Maps' }}
         component={ActiveMapPage}
       /> */}
-      {isActiveRide ? <>
-        <Stack.Screen
+      <Stack.Screen
+        name={ROUTES_NAMES.searchRide}
+        options={{ title: '', headerShown: false }}
+        component={SearchRidePageContainer}
+      />
+      <Stack.Screen
+        name={ROUTES_NAMES.findCaptain}
+        options={{
+          title: 'Captains',
+          headerBackVisible: false,
+          headerRight: () => {
+            return <CustomButton
+              onClick={requestAlertHandler}
+              styles={{ paddingRight: 0, width: 'auto' }}
+              textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
+              label={t('cancel_all_btn')}
+              isLowerCase={true}
+            />
+          }
+        }}
+        component={FindCaptain}
+      />
+      <Stack.Screen
         name={ROUTES_NAMES.activeRide}
         options={{ title: t('active_ride') }}
         component={ActiveRidePage}
-      /> 
+      />
       <Stack.Screen
         name={ROUTES_NAMES.chat}
         options={{
@@ -69,30 +103,6 @@ export default function UserStackNavigator({ navigation, route }) {
         }}
         component={ChatUI}
       />
-      </>:
-        isActiveRequest ?
-          <Stack.Screen
-            name={ROUTES_NAMES.findCaptain}
-            options={{
-              title: 'Captains',
-              headerBackVisible: false,
-              headerRight: () => {
-                return <CustomButton
-                  onClick={requestAlertHandler}
-                  styles={{ paddingRight: 0, width: 'auto' }}
-                  textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
-                  label={t('cancel_all_btn')}
-                  isLowerCase={true}
-                />
-              }
-            }}
-            component={FindCaptain}
-          /> : <Stack.Screen
-            name={ROUTES_NAMES.searchRide}
-            options={{ title: '', headerShown: false }}
-            component={SearchRidePageContainer}
-          />
-      }
       <Stack.Screen
         name={ROUTES_NAMES.selectonMap}
         component={SelectOnPage}

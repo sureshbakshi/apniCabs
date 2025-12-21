@@ -20,7 +20,6 @@ export default () => {
   return (
     <View style={[GettingStartedStyles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
-
       <View style={GettingStartedStyles.section}>
         <ImageBackground
           resizeMode='contain'

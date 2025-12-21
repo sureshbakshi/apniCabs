@@ -43,13 +43,13 @@ export default useGetDriverDetails = (options, isCb = false) => {
 }
 
 export const useUpdateDriverStatus = () => {
-    const { getCurrentLocation } = useGetCurrentLocation();
+    const { getDriverCoordinates } = useGetCurrentLocation();
     const navigation = useNavigation();
     const [_updateDriverStatus] = useUpdateDriverStatusMutation();
     const dispatch = useDispatch();
 
     const updateDriverStatus = async (isOnline, cb) => {
-        const { latitude, longitude } = await getCurrentLocation(null, true) || {};
+        const { latitude, longitude } = await getDriverCoordinates() || {};
         if ((!latitude || !longitude) && isOnline) {
             return;
         }

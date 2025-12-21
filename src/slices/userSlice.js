@@ -67,12 +67,16 @@ const initialState = {
   recentSearchHistory: { from: [], to: [] },
   otherContactList: [mySelf],
   selectedOtherContact: mySelf,
-  activeVehicleTypes: []
+  activeVehicleTypes: [],
+  userLocation: null
 }
 const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
+    setUserLocation: (state, action) => {
+      state.userLocation = action.payload;
+    },
     setActiveTabs: (state, action) => {
       const { id, vehicleTypes, status } = action.payload;
       if (id) {
@@ -188,7 +192,8 @@ export const {
   setOtherContactList,
   setSelectedOtherContact,
   clearUserRideState,
-  setActiveTabs
+  setActiveTabs,
+  setUserLocation
 } = userSlice.actions;
 
 export default userSlice.reducer;

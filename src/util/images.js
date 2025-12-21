@@ -19,6 +19,7 @@ export default {
     referBg: require('../assets/images/refer_bg.png'),
     referGiftBox: require('../assets/images/refer_gift_box.png'),
     pin: require('../assets/images/pin.png'),
+    pin_medium: require('../assets/images/pin_med.png'),
     carYellow: require('../assets/images/car.png'),
     google: require('../assets/images/google.png'),
     captain: require('../assets/images/captain_icon.png'),

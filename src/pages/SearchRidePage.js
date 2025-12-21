@@ -136,7 +136,7 @@ const SearchRidePage = () => {
   }
 
   return (
-    <ContainerWrapper style={{ paddingHorizontal: 10 }}>
+    <ContainerWrapper style={{padding: 10}}>
       {isSocketConnected ? <View style={SearchRideStyles.section}>
         <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
           <Timeline data={['', '']} height={25} />

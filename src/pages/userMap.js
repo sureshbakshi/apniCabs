@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getVehicleImage } from '../util';
 import images from '../util/images';
 import get  from 'lodash/get';
@@ -8,19 +8,20 @@ import { useSelector } from 'react-redux';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 
 const UserMap = ({ activeRequestInfo }) => {
-    const { driverLocation } = useSelector((state) => state.user)
-    const { getCurrentLocation, currentLocation } = useGetCurrentLocation()
+    const { driverLocation, userLocation } = useSelector((state) => state.user)
+    const { getUserCoordinates } = useGetCurrentLocation()
     const isAccepted = activeRequestInfo.status === RideStatus.ACCEPTED
     const vehicleCode = get(activeRequestInfo, 'driver_details.vehicle.code', null);
 
     useEffect(() => {
-        if (!driverLocation?.latitude || !currentLocation) {
-            getCurrentLocation()
+        if (!driverLocation?.latitude && !userLocation) {
+            getUserCoordinates()
         }
-    }, [])
+    }, [driverLocation?.latitude, userLocation])
 
-    const from_lat = driverLocation?.latitude || currentLocation?.latitude
-    const from_long = driverLocation?.longitude || currentLocation?.longitude
+    const locationToUse = driverLocation?.latitude ? driverLocation : userLocation;
+    const from_lat = locationToUse?.latitude
+    const from_long = locationToUse?.longitude
     const from_details = {
         latitude: from_lat ? Number(from_lat) : null,
         longitude: from_long ? Number(from_long) : null,

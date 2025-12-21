@@ -1,27 +1,49 @@
-import React, { useEffect } from 'react';
-import { Pressable, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-navigator.geolocation = require('react-native-geolocation-service');
+import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
 import { isEmpty } from "lodash";
 import config from '../util/config';
 import { cleanFormattedAddress } from '../util';
+import { getPlaceDetailsFromCoordinates } from '../util/location';
 
 
 const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDetails, textContainerStyles, locationKey, onSelection, currentLocation }) => {
     const ref = React.useRef();
+    const [listViewDisplayed, setListViewDisplayed] = useState('auto');
+    const [isLoading, setIsLoading] = useState(false);
+    const [textSelection, setTextSelection] = useState({ start: 0 });
+    const { getCoordinates } = useGetCurrentLocation();
 
-    const getLocation = () => {
-        if (ref) {
-            ref.current.getCurrentLocation();
-            ref.current.focus()
+    const getLocation = async () => {
+        setIsLoading(true);
+        const coords = await getCoordinates();
+        if (coords) {
+            const { latitude, longitude } = coords;
+            const details = await getPlaceDetailsFromCoordinates(latitude, longitude);
+            if (details) {
+                const address = cleanFormattedAddress(details.formatted_address);
+                ref.current?.setAddressText(address);
+                ref.current?.blur();
+                Keyboard.dismiss();
+                onSelection(locationKey, details);
+            }
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {
         ref.current?.setAddressText(cleanFormattedAddress(locationDetails?.formatted_address || ''));
+        setTextSelection({ start: 0 });
     }, [locationDetails]);
+
+    // useEffect(() => {
+    //     if (currentLocation && isEmpty(locationDetails)) {
+    //         getLocation();
+    //     }
+    // }, []);
 
     return (
         <>
@@ -30,8 +52,11 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                 placeholder={placeholder}
                 debounce={250}
                 keepResultsAfterBlur={false}
-                isRowScrollable={true}
                 onPress={(data, details = null) => {
+                    console.log('GooglePlaces onPress details', locationKey, details);
+                    setListViewDisplayed(false);
+                    ref.current?.blur();
+                    Keyboard.dismiss();
                     return onSelection(locationKey, details)
                 }
                 }
@@ -47,8 +72,12 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                 disableScroll={false}
                 textInputProps={{
                     InputComp: TextInput,
-                    // selection: {start: 0},
-                    onFocus: () => onInputFocus(locationKey),
+                    selection: textSelection,
+                    onSelectionChange: (event) => setTextSelection(event.nativeEvent.selection),
+                    onFocus: () => {
+                        setListViewDisplayed('auto');
+                        onInputFocus(locationKey);
+                    },
                     onChange: (event) => {
                         const { value } = event.nativeEvent;
                         if (isEmpty(value)) {
@@ -57,7 +86,8 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                     },
                     selectTextOnFocus: true
                 }}
-                listViewDisplayed={false}
+                listViewDisplayed={listViewDisplayed}
+                keyboardShouldPersistTaps="handled"
                 autoSelectFirstResult={true}
                 enablePoweredByContainer={false}
                 styles={{
@@ -109,7 +139,9 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                     },
                 }}
             />
-            {currentLocation ? <Pressable onPress={getLocation} style={{ margin: 10, padding: 5, position: 'absolute', zIndex: 3, right: 0, top: -10 }}><Icon name="crosshairs-gps" size="large" color={COLORS.primary} /></Pressable> : null}
+            {currentLocation ? <Pressable onPress={getLocation} style={{ margin: 10, padding: 5, position: 'absolute', zIndex: 3, right: 0, top: -10 }}>
+                {isLoading ? <ActivityIndicator size="small" color={COLORS.primary} /> : <Icon name="crosshairs-gps" size="large" color={COLORS.primary} />}
+            </Pressable> : null}
         </>
     );
 };

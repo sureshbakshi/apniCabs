@@ -29,13 +29,13 @@ export default function DriverTabNavigator() {
   useAppStateListner(onRefresh)
   useLocationWatcher()
   useGetDriverDetails()
-  const { getCurrentLocation } = useGetCurrentLocation()
+  const { updateCurrentDriverLocationDetails } = useGetCurrentLocation()
   const { t } = useTranslation()
   const { driverInfo } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (driverInfo?.Vehicle) {
-      getCurrentLocation(undefined, true)
+      updateCurrentDriverLocationDetails()
     }
   }, [driverInfo])
   return (

@@ -197,15 +197,15 @@ export const RideDetailsView = ({ isRideHistory = false, activeRequestInfo, isDr
 }
 const getFromLocation = (location = currentLocation) => {
     return {
-        Long: location.longitude + '' || 'NA',
-        Lat: location.latitude + '' || 'NA',
-        City: location.city || 'NA',
-        location: location.address || 'NA'
+        Long: location?.longitude + '' || 'NA',
+        Lat: location?.latitude + '' || 'NA',
+        City: location?.city || 'NA',
+        location: location?.address || 'NA'
     }
 }
 export const RenderOTP = ({ activeRequestInfo }) => {
     const { t } = useTranslation()
-    const { getCurrentLocation } = useGetCurrentLocation()
+    const { getCoordinates } = useGetCurrentLocation()
     const [otp, setOtp] = useState('');
     const [rideRequest, { data: rideRequestData, error: rideRequestError, isLoading: isSubmitOtpLoading }] =
         useRideRequestMutation();
@@ -228,7 +228,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
         if (isEmpty(otp)) {
             showErrorMessage(t('error_otp'))
         } else {
-            getCurrentLocation(otpSubmitHandler, true)
+            getCoordinates(otpSubmitHandler, true)
         }
 
     }
@@ -274,7 +274,7 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 
 export default ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
-    const { getCurrentLocation } = useGetCurrentLocation()
+    const { getCoordinates } = useGetCurrentLocation()
     const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
 
     const dispatch = useDispatch()
@@ -311,7 +311,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             {(isDriverOnRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 <OpenMapButton route={{ start: fromLocation, end: activeRequestInfo.to, navigate: true }} />
                 <CustomButton
-                    onClick={() => getCurrentLocation(completeRideHandler, true)}
+                    onClick={() => getCoordinates(completeRideHandler, true)}
                     disabled={isCompleteRideLoading}
                     styles={
                         { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }

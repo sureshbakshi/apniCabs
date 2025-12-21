@@ -44,15 +44,11 @@ export const checkAndroidPermissions = async () => {
 
 export const getLocation = async (coords, cb) => {
     try {
-        const apiKey = config.GOOGLE_PLACES_KEY;
         const { latitude, longitude } = coords;
-        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+        const result = await getPlaceDetailsFromCoordinates(latitude, longitude);
 
-        const {
-            data: { status, results },
-        } = await axios.get(url);
-        if (status == 'OK') {
-            const { address_components, formatted_address } = results[0] || {};
+        if (result) {
+            const { address_components, formatted_address } = result;
             const address = filter(address_components, {
                 types: ['locality'],
             });
@@ -68,11 +64,24 @@ export const getLocation = async (coords, cb) => {
                 return location
             }
         } else {
-            // return new Error('Distance calculation error');
-            bugLogger({ status, results, gk: apiKey })
-            showErrorMessage(`Error while location request ${status}`)
+            showErrorMessage(`Error while location request`)
         }
     } catch (error) {
         showErrorMessage('Error while fetching location')
+    }
+};
+
+export const getPlaceDetailsFromCoordinates = async (latitude, longitude) => {
+    try {
+        const apiKey = config.GOOGLE_PLACES_KEY;
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+        const { data } = await axios.get(url);
+        if (data.status === 'OK' && data.results && data.results.length > 0) {
+            return data.results[0];
+        }
+        return null;
+    } catch (error) {
+        console.log('Error fetching place details:', error);
+        return null;
     }
 };

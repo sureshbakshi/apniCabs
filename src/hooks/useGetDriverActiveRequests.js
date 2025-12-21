@@ -11,7 +11,6 @@ export default () => {
     const isOffline  = _isDriverOffline();
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useDriverActiveRideMutation({}, { skip: isOffline, refetchOnMountOrArgChange: true });
     useGetDriverWallet(undefined, true)
-    // const { getCurrentLocation } = useGetCurrentLocation();
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {

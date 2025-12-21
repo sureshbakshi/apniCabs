@@ -23,13 +23,17 @@ const socket = getSocketInstance()
 const ActiveRidePage = () => {
   const { t } = useTranslation();
   const isDriverLogged = isDriver();
-  const { getCurrentLocation } = useGetCurrentLocation();
+  const { updateCurrentDriverLocationDetails, getUserCoordinates } = useGetCurrentLocation();
   const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
   isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
   const { screenHeight } = getScreen()
   useEffect(() => {
-    getCurrentLocation()
-  }, [])
+    if(isDriverLogged) {
+      updateCurrentDriverLocationDetails()
+    } else{
+      getUserCoordinates()
+    }
+  }, [isDriverLogged])
 
 
   const detailsObj = {

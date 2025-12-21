@@ -46,7 +46,6 @@ export default () => {
                         if (position?.coords) {
                             const { latitude, longitude } = position.coords
                             console.log('watchPosition', position)
-
                             dispatch(setDriverLocation({ latitude, longitude }))
                             debouncedUpdateDriverLocationToServer({ latitude, longitude })
 

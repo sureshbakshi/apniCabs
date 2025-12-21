@@ -29,6 +29,7 @@ export default function DriverStackNavigator({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
+        contentStyle: { backgroundColor: COLORS.white },
         headerStyle: {
         },
         headerShown: false,

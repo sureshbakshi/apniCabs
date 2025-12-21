@@ -16,6 +16,7 @@ export default function RideStackNavigation({ navigation, route }) {
     return (
         <Stack.Navigator
             screenOptions={{
+                contentStyle: { backgroundColor: COLORS.white },
                 headerTintColor: COLORS.black,
                 headerTitleStyle: {
                     ...CommonStyles.headerFont
