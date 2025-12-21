@@ -4,9 +4,10 @@ import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
 import { isEmpty } from 'lodash'
 import { setDriverStatus } from "../slices/driverSlice"
-import { DriverAvailableStatus } from "../constants"
+import { DriverAvailableStatus, ROUTES_NAMES } from "../constants"
 import { isDriver, isOwner } from "../util"
 import useGetCurrentLocation from "./useGetCurrentLocation"
+import { useNavigation } from "@react-navigation/native"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -43,6 +44,7 @@ export default useGetDriverDetails = (options, isCb = false) => {
 
 export const useUpdateDriverStatus = () => {
     const { getCurrentLocation } = useGetCurrentLocation();
+    const navigation = useNavigation();
     const [_updateDriverStatus] = useUpdateDriverStatusMutation();
     const dispatch = useDispatch();
 
@@ -51,9 +53,15 @@ export const useUpdateDriverStatus = () => {
         if ((!latitude || !longitude) && isOnline) {
             return;
         }
-        _updateDriverStatus({ is_available: isOnline ? 1 : 0, }).unwrap().then((res) => {
+        _updateDriverStatus({ is_available: isOnline ? 1 : 0, latitude, longitude }).unwrap().then((res) => {
             dispatch(setDriverStatus({ is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE }))
-        }).catch(() => cb?.(!isOnline))
+        }).catch((err) => {
+            cb?.(!isOnline);
+            if (err.status === 404) {
+                navigation.navigate(ROUTES_NAMES.serviceUnavailable);
+            }
+        }
+        )
     }
     return updateDriverStatus
 }
