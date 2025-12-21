@@ -65,7 +65,7 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}
-                currentLocation={currentLocation}
+                currentLocation={false}
                 currentLocationLabel={'Get Current Location'} // add a simple label
                 nearbyPlacesAPI='GoogleReverseGeocoding'
                 minLength={3}

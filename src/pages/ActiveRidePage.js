@@ -25,12 +25,12 @@ const ActiveRidePage = () => {
   const isDriverLogged = isDriver();
   const { updateCurrentDriverLocationDetails, getUserCoordinates } = useGetCurrentLocation();
   const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
-  isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests()
+  isDriverLogged ? useGetDriverActiveRequests() : useGetUserActiveRequests(500)
   const { screenHeight } = getScreen()
   useEffect(() => {
-    if(isDriverLogged) {
+    if (isDriverLogged) {
       updateCurrentDriverLocationDetails()
-    } else{
+    } else {
       getUserCoordinates()
     }
   }, [isDriverLogged])

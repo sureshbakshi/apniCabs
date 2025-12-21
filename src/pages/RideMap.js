@@ -135,6 +135,9 @@ const RideMap = ({ from_details, to_details }) => {
             debouncedFocusMap();
         }
     }, [from_details.latitude, from_details.longitude, to_details.latitude, to_details.longitude]);
+    if (!from_details.latitude || !to_details.longitude) {
+        return null;
+    }
     return (
         <View style={styles.container}>
             <MapView

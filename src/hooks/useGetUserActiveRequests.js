@@ -6,13 +6,18 @@ import { useFocusEffect } from "@react-navigation/native";
 
 // pickaride, search ride - always
 //active page = active ride & drive, active page + user
-export default () => {
+export default (delay = 0) => {
     const dispatch = useDispatch()
-    const [refetch, { data: activeUserRideDetails, error: isUserError }] = useLazyUserActiveRideQuery({}, { refetchOnMountOrArgChange: true });
+    const [refetch, { data: activeUserRideDetails, error: isUserError }] = useLazyUserActiveRideQuery({}, { refetchOnMountOrArgChange: true, });
+
+    const delayedRefetch = useCallback(async (params = {}) => {
+        await new Promise(resolve => setTimeout(resolve, delay)); // 500ms delay
+        return await refetch(params).unwrap();
+    }, [refetch]);
 
     useFocusEffect(
         useCallback(() => {
-            refetch?.({}, false)
+            delayedRefetch?.({}, false)
         }, [])
     );
 

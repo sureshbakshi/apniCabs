@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import FindRideStyles from '../styles/FindRidePageStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import { Platform, Text, View } from 'react-native';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
@@ -38,6 +38,10 @@ const SelectOnPage = () => {
     const { userLocation } = useSelector((state) => state.user);
     const { focusKey } = route?.params;
     const { location, updateLocation } = useAppContext();
+    const [markerCoordinate, setMarkerCoordinate] = useState({
+        latitude: initial_region.latitude,
+        longitude: initial_region.longitude
+    });
 
     useEffect(() => {
         if (!isEmpty(location[focusKey]?.geometry)) {
@@ -139,10 +143,7 @@ const SelectOnPage = () => {
                 />
             </MapView>
 
-            {/* Centered pin overlay */}
-            <View pointerEvents="none" style={{ position: 'absolute', top: (getScreen().screenHeight - 350) / 2 - 20, alignSelf: 'center', zIndex: 10 }}>
-                <ImageView source={images.pin} style={{ width: 40, height: 40 }} />
-            </View>
+
 
             <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
                 <View style={[CommonStyles.p15]}>
