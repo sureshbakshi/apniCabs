@@ -103,6 +103,7 @@ const userSlice = createSlice({
       } else if (action.payload?.id) {
         state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
+        state.activeVehicleTypes = action.payload?.vehicle_types || [];
       }
       state.activeRequestDrivers = null;
     },

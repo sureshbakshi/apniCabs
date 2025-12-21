@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
-import { COLORS, DEFAULT_VEHICLE_TYPES, VEHICLE_TYPES } from '../../../constants';
+import { COLORS } from '../../../constants';
 import { Capitalize, debounceHandler } from '../../../util';
 import CaptainsCard from './CaptainsCard';
 import { useDispatch, useSelector } from 'react-redux';

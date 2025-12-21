@@ -181,17 +181,9 @@ export const getVehicleImage = (type) => {
   return type ? (VEHICLE_IMAGES[type] || images.car) : images.car
 }
 
-export const getVehicleImageById = (id) => {
-  const { vehicleTypes } = store.getState().auth
-  const types = vehicleTypes || DEFAULT_VEHICLE_TYPES
-  const vehicleCode = types.filter((item) => item.id === id)
-  const code = vehicleCode?.length ? vehicleCode[0].code : null
-  return getVehicleImage(code)
-}
 
 export const formatRideRequest = (newRequest, oldRequests) => {
-  console.log({ newRequest, oldRequests })
-  const index = oldRequests?.findIndex((item) => item.id === newRequest.id)
+  const index = oldRequests?.findIndex((item) => item.request_id === newRequest.request_id)
   if (index > -1) {
     oldRequests[index] = newRequest
   } else {

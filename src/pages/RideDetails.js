@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { View, SafeAreaView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, RIDE_CANCEL_INFO, RIDE_HISTOY_DETAILS, SUPPORT, USER_DETAILS } from '../constants';
-import { getVehicleImageById } from '../util';
 import VehicleCard from '../components/VehicleCard';
 import CardWrapper from '../components/CardWrapper';
 import { AvatarInfo, RideDetailsView } from '../components/common/RideDetailsCards';
@@ -18,15 +17,8 @@ import CommonStyles from '../styles/commonStyles';
 
 
 export default ({ route }) => {
-    // let type = null
     const id = route.params?.id
     const { data: rideDetails, isLoading } = useGetRideDetailsQuery(id);
-    // useEffect(() => {
-    //     if (id) {
-    //         type = getVehicleImageById(rideDetails?.request?.ride?.driver.vehicle.type)
-    //     }
-    // }, [rideDetails])
-
     if (isLoading) {
         return <ActivityIndicator />
     }
