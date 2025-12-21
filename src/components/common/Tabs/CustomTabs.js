@@ -19,7 +19,6 @@ const CustomTabs = ({ extraProps, data }) => {
   const [index, setIndex] = useState(0);
   const { activeVehicleTypes: vehicleList } = useSelector(state => state.user);
   // const vehicleList = vehicleTypes?.filter(v => v?.is_active === 1) || [];
-
   const dispatch = useDispatch();
   const { activeRequestDrivers: driverListByCategory, activeRequestId: request_id } = useSelector(state => state.user);
   const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery();
@@ -36,7 +35,7 @@ const CustomTabs = ({ extraProps, data }) => {
   useFocusEffect(
     useCallback(() => {
       if (request_id && vehicleList?.[index]?.id) {
-        refetch({ request_id, category: vehicleList[index].id });
+        refetch({ request_id, category: vehicleList[index].id});
       }
     }, [request_id, index, vehicleList])
   );
@@ -73,7 +72,7 @@ const CustomTabs = ({ extraProps, data }) => {
   const handleIndexChange = useCallback((i) => {
     setIndex(i);
     if (vehicleList[i]?.id && request_id) {
-      refetch({ request_id, category: vehicleList[i].id });
+      refetch({ request_id, category: vehicleList[i].id});
     }
   }, [vehicleList, request_id, refetch]);
 

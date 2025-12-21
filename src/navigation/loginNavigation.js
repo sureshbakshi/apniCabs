@@ -13,6 +13,9 @@ export default function LoginNavigator({navigation, route}) {
   return (
     <Stack.Navigator
       screenOptions={{
+        contentStyle: { backgroundColor: COLORS.white },
+        statusBarTranslucent: true,
+        statusBarColor: 'transparent',
         headerTransparent: true,
         headerTintColor: '#fff',
         headerStyle: {

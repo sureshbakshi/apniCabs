@@ -1,13 +1,11 @@
 import React from 'react';
 import { CustomTabs } from '../components/common';
-import FindRideStyles from '../styles/FindRidePageStyles';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../constants';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import CustomButton from '../components/common/CustomButton';
 import { useRequestAlertHandler } from '../hooks/useActiveRequestBackHandler';
 import CommonStyles from '../styles/commonStyles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 const FindCaptainPage = () => {

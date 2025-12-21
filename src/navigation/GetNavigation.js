@@ -9,8 +9,9 @@ import useNotifications from '../hooks/useNotifications';
 import useLogout from '../hooks/useLogout';
 import { ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { USER_ROLES } from '../constants';
+import { COLORS, USER_ROLES } from '../constants';
 import OwnerTabNavigator from './ownerTabNavigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
 const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
@@ -45,14 +46,15 @@ export const GetAuthRoutes = () => {
 }
 export default () => {
     const { access_token } = useSelector(state => state.auth);
-
-    useNotifications();
+    useNotifications()
 
     let route = null
     if (isEmpty(access_token)) {
         route = <LoginNavigator />;
     } else {
-        route = <GetAuthRoutes />
+        route = <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }} edges={['top', 'left', 'right']}>
+            <GetAuthRoutes />
+         </SafeAreaView>
     }
     return route
 };

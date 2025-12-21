@@ -4,15 +4,14 @@ import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 
 export default () => {
-    const { currentLocation, getCurrentLocation } = useGetCurrentLocation();
+    const { updateCurrentDriverLocationDetails } = useGetCurrentLocation();
     const { driverLocation: watchedLocation } = useSelector(state => state.driver);
 
     useEffect(() => {
-        if (isEmpty(currentLocation?.latitude)) {
-            getCurrentLocation(null, true)
+        if (isEmpty(watchedLocation?.latitude)) {
+            updateCurrentDriverLocationDetails()
         }
-    }, [currentLocation?.latitude])
+    }, [watchedLocation?.latitude])
 
-    const location = (watchedLocation?.latitude) ? watchedLocation : currentLocation;
-    return location
+    return watchedLocation
 }

@@ -27,6 +27,7 @@ export default function MoreNavigator({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
+        contentStyle: { backgroundColor: COLORS.white },
         headerTintColor: COLORS.black,
         headerTitleAlign: 'center',
         headerLeft: () => <HeaderBackButton />,

@@ -32,9 +32,7 @@ function AppWithProvider() {
         <AuthProvider>
           <SafeAreaProvider>
             {/* <StrictMode> */}
-            <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }} edges={['top', 'left', 'right']}>
-              <App />
-            </SafeAreaView>
+            <App />
             {/* </StrictMode> */}
           </SafeAreaProvider>
         </AuthProvider>

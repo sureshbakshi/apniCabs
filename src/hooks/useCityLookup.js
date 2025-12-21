@@ -15,12 +15,12 @@ const useCityLookup = () => {
     const navigation = useNavigation();
     const [updateCityLookup] = useCityLookupMutation();
     const updateDriverStatus = useUpdateDriverStatus();
-    const { getCurrentLocation } = useGetCurrentLocation();
+    const { getDriverCoordinates } = useGetCurrentLocation();
 
 
     const onRefresh = useCallback(
         async () => {
-            const { latitude, longitude } = await getCurrentLocation(null, true) || {};
+            const { latitude, longitude } = await getDriverCoordinates() || {};
             if (!latitude || !longitude || !vehicleTypeId) {
                 return;
             }

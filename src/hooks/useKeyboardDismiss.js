@@ -1,12 +1,12 @@
 import React from 'react';
-import { Keyboard, TextInput, InteractionManager } from 'react-native';
+import { Keyboard, TextInput } from 'react-native';
 
 // Hook that returns a dismiss function and a HiddenInput component for fallback blur
 export default function useKeyboardDismiss() {
     const hiddenRef = React.useRef(null);
 
     const dismiss = React.useCallback(() => {
-        InteractionManager.runAfterInteractions(() => {
+        requestIdleCallback(() => {
             try {
                 Keyboard.dismiss();
                 const currentlyFocused = TextInput.State && (TextInput.State.currentlyFocusedInput ? TextInput.State.currentlyFocusedInput() : TextInput.State.currentlyFocusedField ? TextInput.State.currentlyFocusedField() : null);

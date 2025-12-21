@@ -22,7 +22,6 @@ import { extractKeys, showErrorMessage } from '../util';
 import config from '../util/config';
 import Dropdown from './common/Dropdown';
 import { useLazyGetCitiesQuery } from '../slices/apiSlice';
-import { InteractionManager } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
@@ -38,14 +37,14 @@ export default ({ heading, successHandler, formFields, formSchema, formMutation,
     const [triggerGetCities, { data: cities, error: citiesError, isFetching: citiesFetching, isLoading: citiesLoading }] = useLazyGetCitiesQuery();
 
     useEffect(() => {
-        const task = InteractionManager.runAfterInteractions(() => {
+        const handle = requestIdleCallback(() => {
             try {
                 triggerGetCities({}, { refetchOnMountOrArgChange: true });
             } catch (e) {
                 console.log('triggerGetCities error', e);
             }
         });
-        return () => task && task.cancel && task.cancel();
+        return () => cancelIdleCallback(handle);
     }, [triggerGetCities]);
 
     const [otpInfo, setOTPInfo] = useState(null)

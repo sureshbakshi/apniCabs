@@ -5,6 +5,7 @@ import { checkAndroidPermissions, defaultOptions, getLocation } from "../util/lo
 import useUpdateDriverLocation from "./useUpdateDriverLocation";
 import { useDispatch } from "react-redux";
 import { setDriverLocation } from "../slices/driverSlice";
+import { setUserLocation } from "../slices/userSlice";
 
 export const defaultCurrentLocationOptions = {
     enableHighAccuracy: true,
@@ -29,7 +30,7 @@ export default () => {
     const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation()
     const dispatch = useDispatch()
 
-    const getCurrentLocation = async (cb, isDriver = false) => {
+    const getCoordinates = async (cb) => {
         try {
             const granted = await checkAndroidPermissions();
             if (!granted) {
@@ -37,20 +38,12 @@ export default () => {
                 return null;
             }
 
-            return new Promise(async (resolve, reject) => {
-                await Geolocation.getCurrentPosition(
-                    async (position) => {
+            return new Promise((resolve, reject) => {
+                Geolocation.getCurrentPosition(
+                    (position) => {
                         if (position?.coords) {
-                            const details = await getLocation(position.coords, setLocation);
-                            cb?.(details);
-                            if (isDriver) {
-                                debouncedUpdateDriverLocationToServer(details);
-                                const { latitude, longitude } = details;
-                                if (latitude && longitude) {
-                                    dispatch(setDriverLocation({ latitude, longitude }));
-                                }
-                            }
-                            resolve(details);
+                             cb?.(position.coords);
+                            resolve(position.coords);
                         } else {
                             reject(new Error('No coordinates found'));
                         }
@@ -64,13 +57,69 @@ export default () => {
                 );
             });
         } catch (error) {
-            console.error('getCurrentLocation error:', error);
+            console.error('getCoordinates error:', error);
             return null;
         }
     };
 
-    useEffect(() => {
-        // getCurrentLocation()
-    }, [])
-    return { getCurrentLocation, currentLocation }
-}
+
+    const dispatchUserLocation = (coords) => {
+        const { latitude, longitude } = coords;
+        if (latitude && longitude) {
+            dispatch(setUserLocation({ latitude, longitude }));
+        }
+    }
+
+    const dispatchDriverLocation = (coords) => {
+        const { latitude, longitude } = coords;
+        if (latitude && longitude) {
+            dispatch(setDriverLocation({ latitude, longitude }));
+        }
+    }
+
+    const getUserCoordinates = async () => {
+        const coords = await getCoordinates();
+        dispatchUserLocation(coords);
+        return coords;
+    };
+
+    const getDriverCoordinates = async () => {
+        const coords = await getCoordinates();
+        dispatchDriverLocation(coords);
+        return coords;
+    }
+        
+
+    const getAddress = async (coords) => {
+        try {
+            return await getLocation(coords, setLocation);
+        } catch (error) {
+            console.error('getAddress error:', error);
+            return null;
+        }
+    };
+
+    const updateDriverLocation = (details) => {
+        if (!details) return;
+        debouncedUpdateDriverLocationToServer(details);
+        dispatchDriverLocation(details);
+    };
+
+    const getCurrentLocationDetails = async (cb) => {
+        const coords = await getCoordinates();
+        if (coords) {
+            const details = await getAddress(coords);
+            if (details) {
+                cb?.(details);
+                return details;
+            }
+        }
+        return null;
+    }
+
+    const updateCurrentDriverLocationDetails = async () => {
+        await getCoordinates(updateDriverLocation)
+    };
+    
+    return { getCoordinates, getAddress, updateDriverLocation, getCurrentLocationDetails, updateCurrentDriverLocationDetails, currentLocation, getUserCoordinates, getDriverCoordinates }
+}   

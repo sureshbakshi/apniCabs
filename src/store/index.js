@@ -47,6 +47,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
+      immutableCheck: false,
     }).concat(apiSlice.middleware),
   // Add middleware, devTools, etc., as needed
 });

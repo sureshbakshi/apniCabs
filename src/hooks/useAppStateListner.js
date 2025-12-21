@@ -1,10 +1,9 @@
 import { AppState } from "react-native";
 import { useEffect } from "react";
-import useGetCurrentLocation from "./useGetCurrentLocation";
+// import useGetCurrentLocation from "./useGetCurrentLocation";
 let appStateListener = undefined;
 
 export default (activeCb) => {
-  const { getCurrentLocation } = useGetCurrentLocation();
 
   useEffect(() => {
     if(appStateListener === undefined) {
@@ -13,7 +12,6 @@ export default (activeCb) => {
         nextAppState => {
           if (nextAppState === 'active') {
             activeCb?.();
-            getCurrentLocation(undefined, true)
           }
           console.log('Next AppState is: ', nextAppState);
         },
