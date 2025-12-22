@@ -12,7 +12,7 @@ import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
 import { useTranslation } from 'react-i18next';
 import useLocationWatcher from '../hooks/useLocationWatcher';
-import { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { useSelector } from 'react-redux';
 import useGetDriverDetails from '../hooks/useGetDriverDetails';
@@ -22,24 +22,39 @@ const Tab = createBottomTabNavigator();
 
 setBugsnagUserInfo()
 
-
-export default function DriverTabNavigator() {
+// This component will re-render on data changes, but it returns null, so it's cheap.
+const DriverDataManager = React.memo(() => {
   const { onRefresh } = useCityLookup();
-  useDriverSocketEvents()
-  useAppStateListner(onRefresh)
-  useLocationWatcher()
-  useGetDriverDetails()
-  const { updateCurrentDriverLocationDetails } = useGetCurrentLocation()
-  const { t } = useTranslation()
-  const { driverInfo } = useSelector(state => state.auth);
+  useDriverSocketEvents();
+  useAppStateListner(onRefresh);
+  useGetDriverDetails();
+  const { updateCurrentDriverLocationDetails } = useGetCurrentLocation();
+  const hasVehicle = useSelector(state => !!state.auth.driverInfo?.Vehicle);
 
   useEffect(() => {
-    if (driverInfo?.Vehicle) {
-      updateCurrentDriverLocationDetails()
+    if (hasVehicle) {
+      console.log('Driver has vehicle, updating location details');
+      updateCurrentDriverLocationDetails();
     }
-  }, [driverInfo])
+  }, [hasVehicle]);
+
+  return <LocationWatcherComponent />;
+});
+
+const LocationWatcherComponent = React.memo(() => {
+  useLocationWatcher();
+  return null;
+});
+
+
+
+export default function DriverTabNavigator() {
+  const { t } = useTranslation()
+  const renderTabBar = useCallback((props) => <MyTabBar {...props} />, []);
+  console.log('Rendering DriverTabNavigator');
   return (
     <AppProvider>
+      <DriverDataManager />
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -51,7 +66,7 @@ export default function DriverTabNavigator() {
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
         })}
-        tabBar={(props) => <MyTabBar {...props} />}
+        tabBar={renderTabBar}
 
       >
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: t('home') }} component={DriverStackNavigator}

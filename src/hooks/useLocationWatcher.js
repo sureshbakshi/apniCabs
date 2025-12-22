@@ -11,16 +11,18 @@ let watchId = undefined;
 
 export const defaultOptions = {
     enableHighAccuracy: true,
-    maximumAge: 10 * 1000,
+    maximumAge: 20 * 1000,
     timeout: 60 * 1000,
-    forceRequestLocation: true,
-    interval: 60 * 1000,
-    fastestInterval: 50 * 1000,
-    useSignificantChanges: false,
     distanceFilter: 0,
+    // Android-specific options
     showLocationDialog: true,
-    forceRequestLocation: true
-}
+    forceRequestLocation: true,
+    interval: 30 * 1000,
+    fastestInterval: 25 * 1000, 
+    // iOS-specific options
+    useSignificantChanges: false,
+    showsBackgroundLocationIndicator: false, 
+};
 
 export default () => {
     const dispatch = useDispatch();
@@ -28,6 +30,7 @@ export default () => {
     const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation()
 
     const watchPosition = async () => {
+        console.log('Starting location watch with id:', watchId);
         let granted = false;
         if (Platform.OS === 'ios') {
             await Geolocation.setRNConfiguration({
@@ -45,7 +48,7 @@ export default () => {
                         //    getLocation(position.coords, setLocation);
                         if (position?.coords) {
                             const { latitude, longitude } = position.coords
-                            console.log('watchPosition', position)
+                            console.log('LocationWatcher: debouncedUpdateDriverLocationToServer', position, watchId)
                             dispatch(setDriverLocation({ latitude, longitude }))
                             debouncedUpdateDriverLocationToServer({ latitude, longitude })
 
@@ -72,6 +75,7 @@ export default () => {
 
 
     useEffect(() => {
+        console.log('useLocationWatcher: driverStatus changed to', driverStatus, ' Current watchId:', watchId);
         if (driverStatus === DriverAvailableStatus.OFFLINE) {
             clearWatch()
         } else if (!watchId) {

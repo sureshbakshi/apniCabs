@@ -3,7 +3,7 @@ import { getVehicleImage } from '../util';
 import images from '../util/images';
 import get  from 'lodash/get';
 import { RideStatus } from '../constants';
-import RideMap from './RideMap';
+import RideMap from '../components/RideMap';
 import { useSelector } from 'react-redux';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 

@@ -4,7 +4,7 @@ import MyRidePage from "../MyRidesPage"
 import { useFocusEffect } from '@react-navigation/native';
 import { mergeObjectsWithoutDuplicates } from "../../util";
 
-const PageSize = 6;
+const PageSize = 20;
 
 
 export default () => {

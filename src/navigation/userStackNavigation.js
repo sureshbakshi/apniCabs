@@ -62,11 +62,6 @@ export default function UserStackNavigator({ navigation, route }) {
         },
         headerShown: false,
       }}>
-      {/* <Stack.Screen
-        name={ROUTES_NAMES.activeMap}
-        options={{ title: 'Maps' }}
-        component={ActiveMapPage}
-      /> */}
       <Stack.Screen
         name={ROUTES_NAMES.searchRide}
         options={{ title: '', headerShown: false }}

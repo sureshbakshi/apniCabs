@@ -59,7 +59,6 @@ const ActiveRidePage = () => {
   }
 
   useEffect(() => {
-    console.log('activeRequestId', activeRequestInfo)
     if (socket && activeRequestInfo?.id) {
       console.log('activeRequestId', activeRequestInfo.id)
       socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestInfo.id);  // Replace with the actual rideId
