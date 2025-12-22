@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useCancelAllRequest from './useCancelAllRequest';
 import { setDialogStatus } from '../slices/authSlice';
 import { store } from '../store';
-import debounce from 'lodash/debounce';
 
 let backButtonListener = undefined;
 
@@ -35,12 +34,12 @@ export function useRequestAlertHandler(title = 'Alert!', message = `You currentl
                 },
             ]);
         } else {
-            if(typeof cb === 'function'){
+            if (typeof cb === 'function') {
                 cb?.()
             }
             // BackHandler.exitApp()
         }
-       
+
         return true;
     }
     const requestAlertHandler = requestAlert //debounce(requestAlert, 150)

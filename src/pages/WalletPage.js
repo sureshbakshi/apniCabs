@@ -9,7 +9,7 @@ import ActivityIndicator from '../components/common/ActivityIndicator';
 import SearchLoader from '../components/common/SearchLoader';
 import { formattedDate, getScreen } from '../util';
 import { useFocusEffect } from '@react-navigation/native';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import FindRideStyles from '../styles/FindRidePageStyles';

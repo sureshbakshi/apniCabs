@@ -6,7 +6,7 @@ import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { formattedDate, getRandomNumber } from '../util';
-import { get } from 'lodash'
+import get from 'lodash/get';
 import SearchLoader from '../components/common/SearchLoader';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';

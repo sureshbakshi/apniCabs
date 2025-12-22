@@ -7,7 +7,7 @@ import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
 import { COLORS, RideStatus, ROUTES_NAMES, SOCKET_EVENTS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideRequestMutation } from '../../slices/apiSlice';
 import { updateRideStatus, setActiveRide } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';

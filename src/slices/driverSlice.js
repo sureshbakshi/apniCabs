@@ -1,6 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import { ClearRideStatus, RideStatus } from '../constants';
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty';
 import { formatRideRequest } from '../util';
 
 const initialState = {

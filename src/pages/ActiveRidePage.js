@@ -4,7 +4,7 @@ import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, SOCKET_EVENTS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { getScreen, isDriver } from '../util';
 import RideDetailsCards from '../components/common/RideDetailsCards';
 import ContainerWrapper from '../components/common/ContainerWrapper';

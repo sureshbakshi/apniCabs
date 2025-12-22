@@ -4,7 +4,6 @@ import { ImageView, Text } from '..';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import styles from '../../../styles/MyRidePageStyles';
 import images from '../../../util/images';
-import _ from 'lodash';
 import { COLORS, RideStatus } from '../../../constants';
 import { useCancelRequestMutation, useSendRequestMutation } from '../../../slices/apiSlice';
 import { useDispatch } from 'react-redux';

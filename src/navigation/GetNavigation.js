@@ -1,7 +1,7 @@
 import { lazy, Suspense, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isUser, showErrorMessage } from '../util';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 // import UserTabNavigator from './userTabNavigation';
 // import DriverTabNavigator from './driverTabNavigation';
 import LoginNavigator from './loginNavigation';

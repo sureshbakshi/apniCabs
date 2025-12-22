@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ActiveRidePage from '../pages/ActiveRidePage';
 import { COLORS, ROUTES_NAMES } from '../constants';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import AppContainer from '../components/AppContainer';
 import { PickARide } from '../pages/PickARide';
 import { useSelector } from 'react-redux';

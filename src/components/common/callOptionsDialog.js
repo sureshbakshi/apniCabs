@@ -11,6 +11,19 @@ import { COLORS } from '../../constants';
 import { setDialogStatus, setDriverCallOptionsDialogStatus } from '../../slices/authSlice'; // adjust if you use separate action for call driver dialog
 import { isDriver } from '../../util';
 
+const driverJson = {
+    title: 'contact_user',
+    contact_label: 'contact_user',
+    toll_free_number: '3338132188',
+    toll_free_label: 'toll_free'
+}
+const userJson = {
+    title: 'contact_driver',
+    contact_label: 'contact_driver',
+    toll_free_number: '3338132188',
+    toll_free_label: 'toll_free'
+}
+
 const CallOptionsDialog = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -19,7 +32,6 @@ const CallOptionsDialog = () => {
     const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const key = isDriverLogged ? 'user_details' : 'driver_details';
 
-    const tollFreeNumber = '3338132188';
     const driverPhoneNumber = activeRequestInfo?.[key]?.phone;
 
     const closeModal = () => dispatch(setDriverCallOptionsDialogStatus(false));
@@ -33,11 +45,12 @@ const CallOptionsDialog = () => {
         iconStyles: { paddingBottom: 10 },
         contentContainerStyles: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10 }
     }
+    const contactInfo = isDriverLogged ? driverJson : userJson;
 
     return (
         <CustomDialog
             openDialog={isCallDriverDialogOpen}
-            title={t('contact_driver')}
+            title={t(contactInfo.title)}
             actions={<DialogButtons canShowSubmit={false} closeModal={closeModal} />}
             containerStyles={{
                 alignItems: 'flex-end',
@@ -54,8 +67,8 @@ const CallOptionsDialog = () => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 12 }}>
                 <View style={{ flex: 1 }}>
                     <CustomButton
-                        label={t('toll_free')}
-                        onClick={() => callNumber(tollFreeNumber)}
+                        label={t(contactInfo.toll_free_label)}
+                        onClick={() => callNumber(contactInfo.toll_free_number)}
                         styles={{ backgroundColor: COLORS.button_blue_bg }}
                         iconLeft={{ name: 'cellphone', size: 'extraLarge' }}
                         {...defaultStyles}
@@ -64,7 +77,7 @@ const CallOptionsDialog = () => {
                 </View>
                 {driverPhoneNumber && <View style={{ flex: 1 }}>
                     <CustomButton
-                        label={t('call_driver')}
+                        label={t(contactInfo.contact_label)}
                         onClick={() => callNumber(driverPhoneNumber)}
                         styles={{ backgroundColor: COLORS.button_blue_bg }}
                         iconLeft={{ name: 'phone', size: 'extraLarge' }}

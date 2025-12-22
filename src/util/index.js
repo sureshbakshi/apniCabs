@@ -3,15 +3,14 @@ import axios from 'axios';
 import Config from "../util/config";
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { DEFAULT_VEHICLE_TYPES, DriverAvailableStatus, RIDE_STATUS_LABELS, ROUTES_NAMES, USER_ROLES, VEHICLE_IMAGES, VEHICLE_TYPES, VerificationStatus, colorsNBg } from '../constants';
+import { DriverAvailableStatus, RIDE_STATUS_LABELS, ROUTES_NAMES, USER_ROLES, VEHICLE_IMAGES, VEHICLE_TYPES, VerificationStatus, colorsNBg } from '../constants';
 import { store } from '../store';
 import images from './images';
 import { Notifications } from 'react-native-notifications';
 import { navigate } from './navigationService';
-import { set, get } from 'lodash';
 import Bugsnag from '@bugsnag/react-native'
 import config from '../util/config';
-import { isEmpty, debounce } from 'lodash';
+import { set, get, isEmpty, debounce } from 'lodash';
 
 
 export const getRandomNumber = (min = 0, max = 4) => {

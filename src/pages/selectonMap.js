@@ -12,7 +12,7 @@ import { ImageView } from '../components/common';
 import images from '../util/images';
 import { COLORS, MAPS_LABELS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import config from '../util/config';
 import { useAppContext } from '../context/App.context';
 import { useTranslation } from 'react-i18next';

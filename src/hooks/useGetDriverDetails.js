@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useGetDriverDetailsMutation, useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty';
 import { setDriverStatus } from "../slices/driverSlice"
 import { DriverAvailableStatus, ROUTES_NAMES } from "../constants"
 import { isDriver, isOwner } from "../util"

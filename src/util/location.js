@@ -3,7 +3,7 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
-import { filter } from 'lodash'
+import filter from 'lodash/filter'
 import config from './config';
 
 
