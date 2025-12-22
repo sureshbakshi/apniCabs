@@ -299,7 +299,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
     const isOnRide = (activeRequestInfo.status === RideStatus.ONRIDE)
     const isDriverOnRide = (isOnRide && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
-    const fromLocation = driverCurrentLocation || activeRequestInfo.from
+    const fromLocation = driverCurrentLocation || activeRequestInfo.from;
     return (
         <>
             <View style={[FindRideStyles.card]}>

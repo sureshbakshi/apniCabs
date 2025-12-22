@@ -34,9 +34,9 @@ const RideMap = ({ from_details, to_details }) => {
         if (mapRef.current && fromCoordinate.latitude && toCoordinate.latitude) {
             mapRef.current.fitToCoordinates([fromCoordinate, toCoordinate], {
                 edgePadding: {
-                    top: 360,
+                    top: 100,
                     right: 100,
-                    bottom: 150,
+                    bottom: 100,
                     left: 100
                 },
                 animated: true,
@@ -77,9 +77,9 @@ const RideMap = ({ from_details, to_details }) => {
                     title={to_details.title}
                     description={to_details.description}
                 >
-                    <ImageView 
+                    <ImageView
                         source={to_details.image}
-                        style={styles.markerImageSmall} 
+                        style={styles.markerImageSmall}
                     />
                 </Marker>
             </MapView>

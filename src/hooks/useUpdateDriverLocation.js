@@ -1,11 +1,13 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
 import { isDriver, isDriverBusy, _isDriverOnline } from '../util';
 import { DriverAvailableStatus, ROUTES_NAMES } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useRef, useCallback, useEffect } from 'react';
+import { setServiceUnavailable } from "../slices/driverSlice";
 
 export default () => {
+    const dispatch = useDispatch();
     const { userInfo: profile, driverInfo } = useSelector(state => state.auth);
     const [updateDriverLocation] = useUpdateDriverLocationMutation();
     const isDriverLogged = isDriver();
@@ -35,10 +37,11 @@ export default () => {
             console.log('calling driver location api with payload:', location);
             const response = updateDriverLocation(location.payload);
             await response.unwrap();
+            dispatch(setServiceUnavailable(false))
             lastProcessedRef.current = now;
         } catch (err) {
             if (err.status === 404) {
-                navigation.navigate(ROUTES_NAMES.serviceUnavailable);
+                dispatch(setServiceUnavailable(true))
             } else {
                 console.log('Error updating location:', err);
                 // Re-queue failed update
