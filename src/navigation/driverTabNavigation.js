@@ -8,13 +8,11 @@ import useDriverSocketEvents from '../hooks/useDriverSocketEvents';
 import useAppStateListner from '../hooks/useAppStateListner';
 import RideStackNavigation from './RideStackNavigation';
 import WalletStackNavigator from './walletNavigationStack';
-import { setBugsnagUserInfo } from '../util';
+import { debounceHandler, setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
 import { useTranslation } from 'react-i18next';
 import useLocationWatcher from '../hooks/useLocationWatcher';
-import React, { useCallback, useEffect } from 'react';
-import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
 import useGetDriverDetails from '../hooks/useGetDriverDetails';
 import useCityLookup from '../hooks/useCityLookup';
 
@@ -24,34 +22,45 @@ setBugsnagUserInfo()
 
 // This component will re-render on data changes, but it returns null, so it's cheap.
 const DriverDataManager = React.memo(() => {
-  const { onRefresh } = useCityLookup();
-  useDriverSocketEvents();
-  useAppStateListner(onRefresh);
-  useGetDriverDetails();
-  const { updateCurrentDriverLocationDetails } = useGetCurrentLocation();
-  const hasVehicle = useSelector(state => !!state.auth.driverInfo?.Vehicle);
+  // const { updateCurrentDriverLocationDetails } = useGetCurrentLocation();
+  // const hasVehicle = useSelector(state => !!state.auth.driverInfo?.Vehicle);
 
-  useEffect(() => {
-    if (hasVehicle) {
-      console.log('Driver has vehicle, updating location details');
-      updateCurrentDriverLocationDetails();
-    }
-  }, [hasVehicle]);
+  // useEffect(() => {
+  //   if (hasVehicle) {
+  //     console.log('Driver has vehicle, updating location details');
+  //     updateCurrentDriverLocationDetails();
+  //   }
+  // }, [hasVehicle]);
 
-  return <LocationWatcherComponent />;
+  return <><LocationWatcherComponent />
+    <AppStateComponent />
+    <SocketComponent />
+    <GetDriverDetailsComponent />
+  </>;
 });
 
 const LocationWatcherComponent = React.memo(() => {
   useLocationWatcher();
   return null;
 });
-
+const GetDriverDetailsComponent = React.memo(() => {
+  useGetDriverDetails();
+  return null;
+});
+const SocketComponent = React.memo(() => {
+  useDriverSocketEvents();
+  return null;
+});
+const AppStateComponent = React.memo(() => {
+  const { onRefresh } = useCityLookup();
+  useAppStateListner(debounceHandler(onRefresh, 10000));
+  return null;
+});
 
 
 export default function DriverTabNavigator() {
   const { t } = useTranslation()
   const renderTabBar = useCallback((props) => <MyTabBar {...props} />, []);
-  console.log('Rendering DriverTabNavigator');
   return (
     <AppProvider>
       <DriverDataManager />

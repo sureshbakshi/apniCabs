@@ -18,15 +18,16 @@ export const defaultOptions = {
     showLocationDialog: true,
     forceRequestLocation: true,
     interval: 30 * 1000,
-    fastestInterval: 25 * 1000, 
+    fastestInterval: 25 * 1000,
     // iOS-specific options
     useSignificantChanges: false,
-    showsBackgroundLocationIndicator: false, 
+    showsBackgroundLocationIndicator: false,
 };
 
 export default () => {
     const dispatch = useDispatch();
     const driverStatus = useSelector((state) => state.driver.onlineStatus);
+    const serviceUnavailable = useSelector((state) => state.driver.serviceUnavailable);
     const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation()
 
     const watchPosition = async () => {
@@ -76,7 +77,7 @@ export default () => {
 
     useEffect(() => {
         console.log('useLocationWatcher: driverStatus changed to', driverStatus, ' Current watchId:', watchId);
-        if (driverStatus === DriverAvailableStatus.OFFLINE) {
+        if (driverStatus === DriverAvailableStatus.OFFLINE || serviceUnavailable) {
             clearWatch()
         } else if (!watchId) {
             watchPosition()

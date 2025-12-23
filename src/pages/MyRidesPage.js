@@ -83,19 +83,22 @@ const Card = ({ item, keys }) => {
   </Pressable>
 }
 const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  if (!data?.length) {
+    return <SearchLoader msg={t('no_records')} />
+  }
   return (
     <ContainerWrapper style={{ paddingHorizontal: 10 }}>
-      {!!data?.length ? <View style={styles.section}>
+      <View style={styles.section}>
         <FlatList
           data={data}
-          renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
-          keyExtractor={item => item.id}
+          renderItem={({ item }) => <Card item={item} keys={keys} />}
+          keyExtractor={item => item.id?.toString()}  // ✅ Stable keys
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
         />
-      </View> : <SearchLoader msg={t('no_records')} />}
+      </View>
     </ContainerWrapper>
   );
 };

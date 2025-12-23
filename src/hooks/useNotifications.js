@@ -5,7 +5,6 @@ import { Notifications } from 'react-native-notifications';
 import { scheduleLocalNotification, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
 import { setDeviceToken } from '../slices/authSlice';
-import useRegisterDeviceToken from './useRegisterDeviceToken';
 import useHandleDeeplinks from './useHandleDeeplinks';
 let isInitialized = false;
 const notificationKey = 'gcm.notification'
@@ -89,7 +88,7 @@ export default () => {
         console.log('registerNotificationReceivedBackground:', remoteNotification);
         // Handle notification click or deep link here
         triggerNotfication(remoteNotification)
-        completion({alert: true, sound: true, badge: false});
+        completion({ alert: true, sound: true, badge: false });
       });
 
       Notifications.events().registerRemoteNotificationsRegistered((event) => {

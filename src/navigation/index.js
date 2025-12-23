@@ -25,8 +25,8 @@ const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation')
 const BugsnagNavigationContainer = createNavigationContainer(NavigationContainer)
 const ErrorView = () => <SomethingWentWrong />
 function App() {
-    const { i18n } = useTranslation();
-    const {selectedLanguage} = useSelector(state => state.auth);
+  const { i18n } = useTranslation();
+  const selectedLanguage = useSelector(state => state.auth.selectedLanguage);
 
   useEffect(() => {
     SplashScreen.hide();

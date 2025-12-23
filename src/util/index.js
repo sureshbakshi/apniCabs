@@ -289,6 +289,8 @@ export const mergeObjectsWithoutDuplicates = (array1, array2, key) => {
  * @param {number} delay - The debounce delay in milliseconds.
  * @returns {Function} - A debounced version of the handler.
  */
-export const debounceHandler = (handler, delay = 1000) => {
-  return debounce(handler, delay);
+export const debounceHandler = (handler, delay = 10000) => {
+  return debounce((...args) => {
+    handler(...args);
+  }, delay);
 };
