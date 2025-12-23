@@ -1,5 +1,6 @@
-import { KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native';
 import React from 'react';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ScreenContainer = props => {
   const { children } = props;

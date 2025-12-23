@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { SafeAreaView, Alert } from 'react-native';
+import {  Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { goBack } from './util/navigationService';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PaymentScreen = ({ navigation, route }) => {
   const gateway_request = route.params?.gateway_request
