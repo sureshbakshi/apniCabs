@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Platform, PermissionsAndroid } from 'react-native';
 import { RESULTS } from 'react-native-permissions';
 import { Notifications } from 'react-native-notifications';
-import { scheduleLocalNotification, unflattenObj } from '../util';
+import { scheduleLocalNotification, showSuccessMessage, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
 import { setDeviceToken } from '../slices/authSlice';
 import useHandleDeeplinks from './useHandleDeeplinks';
@@ -81,8 +81,10 @@ export default () => {
       getInitialNotification()
       Notifications.events().registerNotificationReceivedForeground((remoteNotification, completion) => {
         console.log('Local Notification received in foreground:', remoteNotification);
+        const { payload } = remoteNotification;
         // Handle foreground notifications
-        triggerNotfication(remoteNotification)
+        // triggerNotfication(remoteNotification)
+        if (payload?.['gcm.notification.body']) showSuccessMessage(payload?.['gcm.notification.body'], 'top')
         completion({ alert: true, sound: true, badge: false });
       });
 

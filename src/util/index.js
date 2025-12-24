@@ -51,14 +51,14 @@ export const showErrorMessage = (obj) => {
   });
 }
 
-export const showSuccessMessage = (msg) => {
+export const showSuccessMessage = (msg, position = 'bottom') => {
   const success = {
     type: 'success',
     text1: msg || 'Success!',
   }
   Toast.show({
     ...success,
-    position: 'bottom',
+    position: position,
   })
 }
 

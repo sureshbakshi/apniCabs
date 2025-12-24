@@ -28,10 +28,19 @@ const getStyles = (loginUserId, senderId) => (loginUserId === senderId) ? myStyl
 const formatHistoryChat = (data) => {
     if (!data?.messages || !Array.isArray(data.messages)) return [];
 
-    return data.messages.map(msg => ({
-        message: msg.message,
-        ...getStyles(data.loginUserId || '', msg.userId || msg.senderId || '')
-    }));
+    const formattedMessages = data.messages
+        .map(msg => ({
+            id: msg.id || msg.timestamp || Math.random().toString(36).substr(2, 9),
+            message: msg.message,
+            timestamp: msg.timestamp,
+            userId: msg.userId || msg.senderId,
+            ...getStyles(data.loginUserId || '', msg.userId || msg.senderId || '')
+        }))
+        .sort((a, b) => {
+            return new Date(a.timestamp) - new Date(b.timestamp);
+        });
+
+    return formattedMessages;
 };
 
 
