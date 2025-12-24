@@ -76,7 +76,7 @@ export default function DriverStackNavigator({ navigation, route }) {
       />
       <Stack.Screen
         name={ROUTES_NAMES.activeRide}
-        options={{ title: t('active_ride'), headerShown: true }}
+        options={{ title: t('active_ride'), headerShown: false }}
         component={ActiveRidePageContainer}
       />
       <Stack.Screen

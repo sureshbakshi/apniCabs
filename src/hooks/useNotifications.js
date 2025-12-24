@@ -6,10 +6,12 @@ import { scheduleLocalNotification, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
 import { setDeviceToken } from '../slices/authSlice';
 import useHandleDeeplinks from './useHandleDeeplinks';
+import { useNotificationNavigation } from './useNotificationNavigation';
 let isInitialized = false;
 const notificationKey = 'gcm.notification'
 export default () => {
   const dispatch = useDispatch()
+  const handleNotificationOpen = useNotificationNavigation();
   // useRegisterDeviceToken()
   useHandleDeeplinks()
 
@@ -56,7 +58,7 @@ export default () => {
 
   const getInitialNotification = async () => {
     const notification = await Notifications.getInitialNotification();
-    console.log({ getInitialNotification: notification })
+    handleNotificationOpen(notification, undefined, 2000)
   }
 
   const triggerNotfication = (remoteNotification) => {
@@ -99,11 +101,7 @@ export default () => {
         }
       });
 
-      Notifications.events().registerNotificationOpened((notification, completion) => {
-        console.log('Local Notification opened:', notification);
-        // Handle notification click or deep link here
-        completion();
-      });
+      Notifications.events().registerNotificationOpened(handleNotificationOpen);
 
       Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
         console.error({ registerRemoteNotificationsRegistrationFailed: event });

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { COLORS, SOCKET_EVENTS } from "../constants";
-import { setRideChats } from "../slices/authSlice";
+import { setRideChatHistory, setRideChats } from "../slices/authSlice";
 
 const otherUserStyle = {
     bg_style: {
@@ -23,6 +23,18 @@ const myStyle = {
     }
 }
 
+const getStyles = (loginUserId, senderId) => (loginUserId === senderId) ? myStyle : otherUserStyle;
+
+const formatHistoryChat = (data) => {
+    if (!data?.messages || !Array.isArray(data.messages)) return [];
+
+    return data.messages.map(msg => ({
+        message: msg.message,
+        ...getStyles(data.loginUserId || '', msg.userId || msg.senderId || '')
+    }));
+};
+
+
 const useChatMessage = () => {
     const { userInfo } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
@@ -33,27 +45,46 @@ const useChatMessage = () => {
 
         const handler = (data) => {
             // If a rideId is provided, ensure the incoming message belongs to the active ride
-            if (rideId && data?.ride_id && String(data.ride_id) !== String(rideId)) return;
-            const styles = (userInfo?.id === data.userId) ? myStyle : otherUserStyle;
+            if (!rideId || !userInfo?.id) return;
+
             dispatch(setRideChats({
-                ride_id: data?.ride_id || '',
-                message: { message: data?.message, ...styles }
+                ride_id: rideId || '',
+                message: { message: data?.message, ...getStyles(userInfo.id, data.userId) }
+            }));
+        };
+
+        const historyHandler = (data) => {
+            if (!rideId || !userInfo?.id) return;
+            // Format the entire history array
+            const formattedHistory = formatHistoryChat({
+                ...data,
+                loginUserId: userInfo.id,
+                messages: data.messages
+            });
+
+            // Dispatch formatted history messages
+            dispatch(setRideChatHistory({
+                ride_id: rideId || '',
+                messageHistory: formattedHistory
             }));
         };
 
         // Ensure we don't multiply listeners: remove existing listeners for this event first
         try {
             socket.off(SOCKET_EVENTS.newMessage);
+            socket.off(SOCKET_EVENTS.messageHistory, historyHandler)
         } catch (e) {
             // ignore if socket.off not available or throws
         }
 
         socket.on(SOCKET_EVENTS.newMessage, handler);
+        socket.on(SOCKET_EVENTS.messageHistory, historyHandler)
 
         // Return cleanup to remove this handler
         return () => {
             try {
                 socket.off(SOCKET_EVENTS.newMessage, handler);
+                socket.off(SOCKET_EVENTS.messageHistory, historyHandler)
             } catch (e) {
                 // ignore
             }

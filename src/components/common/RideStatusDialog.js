@@ -6,7 +6,6 @@ import CustomDialog from "./CustomDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDriverRideStatus } from "../../slices/driverSlice";
 import { clearUserRideState, setActiveRequest } from "../../slices/userSlice";
-import delay from 'lodash/delay';
 import { isDriver } from "../../util";
 import StarRating from "./StarRating";
 import { useUpdateRatingMutation } from "../../slices/apiSlice";

@@ -566,4 +566,5 @@ export const SOCKET_EVENTS = {
   sendMessage: 'send-message',
   joinRoom: 'join-room',
   newMessage: 'new-message',
+  messageHistory: 'message-history'
 }
