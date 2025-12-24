@@ -66,7 +66,9 @@ export default function useUserSocketEvents() {
                         playSound(audio.booking);
                     }
                     if (ClearRideStatus.includes(status)) {
-                        socket.emit(SOCKET_EVENTS.rideCompleted);
+                        console.log('emitting socket event for rideCompleted with request_id:', updatedRequest?.request_id, socket.id);
+
+                        socket.emit(SOCKET_EVENTS.rideCompleted, {rideId: updatedRequest?.request_id});
                         dispatch(clearRideChats());
                     }
                 }

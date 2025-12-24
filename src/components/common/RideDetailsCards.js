@@ -291,7 +291,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             console.log(res)
             dispatch(updateRideStatus({ status: RideStatus.COMPLETED }));
             dispatch(clearRideChats());
-            socket.emit(SOCKET_EVENTS.rideCompleted)
+            socket.emit(SOCKET_EVENTS.rideCompleted, {rideId: activeRequestInfo?.id})
         }).catch((err) => {
             console.log(err)
         })

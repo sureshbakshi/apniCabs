@@ -68,7 +68,7 @@ export default function useDriverSocketEvents() {
                     } else {
                         dispatch(updateRideStatus(request));
                         dispatch(clearRideChats());
-                        socket?.emit(SOCKET_EVENTS.rideCompleted);
+                        socket.emit(SOCKET_EVENTS.rideCompleted, {rideId: request?.request_id});
                     }
                 } else {
                     dispatch(updateRideRequest(request));
