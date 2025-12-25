@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchRidePage from '../pages/SearchRidePage';
 import FindCaptain from '../pages/FindCaptainPage';
@@ -15,6 +15,7 @@ import CommonStyles from '../styles/commonStyles';
 import SelectOnPage from '../pages/selectonMap';
 import { useTranslation } from 'react-i18next';
 import ChatUI from '../components/common/chat';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -35,19 +36,22 @@ export default function UserStackNavigator({ navigation, route }) {
   const status = activeRequestInfo?.status;
   const isActiveRide = [RideStatus.ONRIDE, RideStatus.ACCEPTED].includes(status);
   const isActiveRequest = [RideStatus.INITIATED, RideStatus.REQUESTED].includes(status);
-  useEffect(() => {
-    if (isActiveRide) {
-      navigation.navigate(ROUTES_NAMES.activeRide);
-    } else if (isActiveRequest) {
-      navigation.navigate(ROUTES_NAMES.findCaptain);
-    } else {
-      console.log('navigating to searchRide');
-      navigation.navigate(ROUTES_NAMES.searchRide);
-    }
-  }, [isActiveRide, isActiveRequest, navigation]);
 
-  // console.log('isActiveRequest', { activeRequestInfo }, isActiveRide)
-  // console.log('isActiveRide', activeRequestInfo)
+  useFocusEffect(
+    useCallback(() => {
+      const state = navigation.getState();
+      const currentRoute = state.routes[state.index]?.name;
+      if (isActiveRide && currentRoute !== ROUTES_NAMES.activeRide) {
+        navigation.navigate(ROUTES_NAMES.activeRide);
+      } else if (isActiveRequest && currentRoute !== ROUTES_NAMES.findCaptain) {
+        navigation.navigate(ROUTES_NAMES.findCaptain);
+      } else if (!isActiveRide && !isActiveRequest && currentRoute !== ROUTES_NAMES.searchRide) {
+        navigation.navigate(ROUTES_NAMES.searchRide);
+      }
+    }, [isActiveRide, isActiveRequest, navigation])
+  );
+
+
   return (
     <Stack.Navigator
       initialRouteName={isActiveRide ? ROUTES_NAMES.activeRide : isActiveRequest ? ROUTES_NAMES.findCaptain : ROUTES_NAMES.searchRide}
@@ -102,7 +106,7 @@ export default function UserStackNavigator({ navigation, route }) {
         name={ROUTES_NAMES.selectonMap}
         component={SelectOnPage}
       />
-      
+
 
     </Stack.Navigator>
   );

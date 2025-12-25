@@ -10,7 +10,7 @@ import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
 import { COLORS } from "../../constants";
 import { Icon } from "./Icon";
 import delay from 'lodash/delay';
-import { setDialogStatus } from "../../slices/authSlice";
+import { clearRideChats, setDialogStatus } from "../../slices/authSlice";
 import { isDriver, showErrorMessage } from "../../util";
 import { useTranslation } from "react-i18next";
 import DialogButtons from "./DialogButtons";
@@ -58,6 +58,7 @@ export const CancelReasonDialog = () => {
 
   const closeAndClearRequest = () => {
     closeModal();
+    dispatch(clearRideChats())
     delay(() => {
       dispatch(isDriverLogged ? updateRideStatus(cancelAcceptedRequestData) : setActiveRequest())
     }, 10)

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ActiveRidePage from '../pages/ActiveRidePage';
 import { COLORS, ROUTES_NAMES } from '../constants';
@@ -15,6 +15,7 @@ import CommonStyles from '../styles/commonStyles';
 import ChatUI from '../components/common/chat';
 import { useTranslation } from 'react-i18next';
 import ServiceUnavailableScreen from '../pages/ServiceUnavailableScreen';
+import { useFocusEffect } from '@react-navigation/native';
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -32,17 +33,23 @@ export default function DriverStackNavigator({ navigation, route }) {
   const needsVerification = !isEmpty(driverInfo) &&
     (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle));
 
-  useEffect(() => {
-    if (serviceUnavailable) {
-      navigation.navigate(ROUTES_NAMES.serviceUnavailable);
-    } else if (hasActiveRequest) {
-      navigation.navigate(ROUTES_NAMES.activeRide);
-    } else if (needsVerification) {
-      navigation.navigate(ROUTES_NAMES.messageInfo);
-    } else {
-      navigation.navigate(ROUTES_NAMES.searchRide);
-    }
-  }, [hasActiveRequest, needsVerification, navigation, serviceUnavailable]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const state = navigation.getState();
+      const currentRoute = state.routes[state.index]?.name;
+      if (serviceUnavailable && currentRoute !== ROUTES_NAMES.serviceUnavailable) {
+        navigation.navigate(ROUTES_NAMES.serviceUnavailable);
+      } else if (hasActiveRequest && currentRoute !== ROUTES_NAMES.activeRide) {
+        navigation.navigate(ROUTES_NAMES.activeRide);
+      } else if (needsVerification && currentRoute !== ROUTES_NAMES.messageInfo) {
+        navigation.navigate(ROUTES_NAMES.messageInfo);
+      } else if (!serviceUnavailable && !hasActiveRequest && !needsVerification &&
+        currentRoute !== ROUTES_NAMES.searchRide) {
+        navigation.navigate(ROUTES_NAMES.searchRide);
+      }
+    }, [hasActiveRequest, needsVerification, navigation, serviceUnavailable])
+  );
 
   // Determine initial route (matches UserStack pattern)
   const initialRouteName = serviceUnavailable
