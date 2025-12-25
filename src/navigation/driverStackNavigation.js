@@ -15,7 +15,7 @@ import CommonStyles from '../styles/commonStyles';
 import ChatUI from '../components/common/chat';
 import { useTranslation } from 'react-i18next';
 import ServiceUnavailableScreen from '../pages/ServiceUnavailableScreen';
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 const PickARidePageContainer = AppContainer(PickARide);
 const ActiveRidePageContainer = AppContainer(ActiveRidePage);
 
@@ -24,34 +24,42 @@ const Stack = createNativeStackNavigator();
 export default function DriverStackNavigator({ navigation, route }) {
   const { activeRequestInfo, serviceUnavailable } = useSelector(state => state.driver);
   const { driverInfo } = useSelector(state => state.auth);
+  const isFocused = useIsFocused(); // ✅ stack focus
   const { t } = useTranslation();
   useGetDriverActiveRequests();
 
-
-  // Same conditional logic, now in useEffect
   const hasActiveRequest = !!activeRequestInfo?.id;
-  const needsVerification = !isEmpty(driverInfo) &&
+  const needsVerification =
+    driverInfo &&
     (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle));
 
+  useEffect(() => {
+    if (!isFocused) return;
+    const stackState = navigation.getState();
+    const currentRoute = stackState.routes[stackState.index]?.name;
+    if (serviceUnavailable && currentRoute !== ROUTES_NAMES.serviceUnavailable) {
+      navigation.navigate(ROUTES_NAMES.serviceUnavailable);
+    } else if (hasActiveRequest && currentRoute !== ROUTES_NAMES.activeRide) {
+      navigation.navigate(ROUTES_NAMES.activeRide);
+    } else if (needsVerification && currentRoute !== ROUTES_NAMES.messageInfo) {
+      navigation.navigate(ROUTES_NAMES.messageInfo);
+    }
+    else if (
+      !serviceUnavailable &&
+      !hasActiveRequest &&
+      !needsVerification &&
+      currentRoute !== ROUTES_NAMES.searchRide
+    ) {
+      navigation.navigate(ROUTES_NAMES.searchRide);
+    }
+  }, [
+    isFocused,
+    serviceUnavailable,
+    hasActiveRequest,
+    needsVerification,
+    navigation,
+  ]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const state = navigation.getState();
-      const currentRoute = state.routes[state.index]?.name;
-      if (serviceUnavailable && currentRoute !== ROUTES_NAMES.serviceUnavailable) {
-        navigation.navigate(ROUTES_NAMES.serviceUnavailable);
-      } else if (hasActiveRequest && currentRoute !== ROUTES_NAMES.activeRide) {
-        navigation.navigate(ROUTES_NAMES.activeRide);
-      } else if (needsVerification && currentRoute !== ROUTES_NAMES.messageInfo) {
-        navigation.navigate(ROUTES_NAMES.messageInfo);
-      } else if (!serviceUnavailable && !hasActiveRequest && !needsVerification &&
-        currentRoute !== ROUTES_NAMES.searchRide) {
-        navigation.navigate(ROUTES_NAMES.searchRide);
-      }
-    }, [hasActiveRequest, needsVerification, navigation, serviceUnavailable])
-  );
-
-  // Determine initial route (matches UserStack pattern)
   const initialRouteName = serviceUnavailable
     ? ROUTES_NAMES.serviceUnavailable
     : hasActiveRequest

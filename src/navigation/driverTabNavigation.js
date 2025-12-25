@@ -74,8 +74,22 @@ export default function DriverTabNavigator() {
           tabBarInactiveTintColor: COLORS.gray,
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
+          tabBarHideOnKeyboard: true,
         })}
         tabBar={renderTabBar}
+        screenListeners={({ navigation, route }) => ({
+          tabPress: e => {
+            // 👇 prevent default behavior (pop to first screen)
+            e.preventDefault();
+
+            // Manually navigate to tab root WITHOUT resetting stack
+            if (route.name === ROUTES_NAMES.pickRide) {
+              navigation.navigate(ROUTES_NAMES.pickRide);
+            } else {
+              navigation.navigate(route.name);
+            }
+          },
+        })}
 
       >
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: t('home') }} component={DriverStackNavigator}
