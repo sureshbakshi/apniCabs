@@ -104,6 +104,7 @@ const userSlice = createSlice({
       if (isEmpty(action.payload)) {
         state.activeRequestId = null;
         state.activeRequestInfo = null;
+        state.activeVehicleTypes = [];
       } else if (action.payload?.id) {
         state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
