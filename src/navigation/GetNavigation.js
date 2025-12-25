@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { COLORS, USER_ROLES } from '../constants';
 import OwnerTabNavigator from './ownerTabNavigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppInfo } from '../hooks/useAppInfo';
+import { mustForceUpdate } from '../hooks/useForceUpdate';
+import ForceUpdateModal from '../pages/ForceUpdate';
 
 const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
 const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
@@ -24,7 +27,6 @@ export const GetAuthRoutes = () => {
         const isDriverLogged = roles.includes(USER_ROLES.DRIVER);
         const isOwnerLogged = roles.includes(USER_ROLES.OWNER);
         const isUserLogged = roles.includes(USER_ROLES.USER);
-
         if (isDriverLogged) {
             return (
                 <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
@@ -54,8 +56,26 @@ export const GetAuthRoutes = () => {
 };
 
 export default () => {
-    const access_token = useSelector(state => state.auth.access_token);
     useNotifications();
+
+    const { appInfo } = useAppInfo();
+
+    const access_token = useSelector(state => state.auth.access_token);
+    const { requiredVersion, currentVersion, shouldUpdate } = mustForceUpdate({ appInfo });
+
+
+    if (shouldUpdate) {
+        return (
+            <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+                <ForceUpdateModal
+                    visible={!shouldUpdate}
+                    currentVersion={currentVersion}
+                    newVersion={requiredVersion?.appVersion}
+                    storeUrl={requiredVersion?.store_url}
+                />
+            </Suspense>
+        );
+    }
 
     const route = useMemo(() => {
         if (isEmpty(access_token)) {

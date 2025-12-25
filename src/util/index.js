@@ -294,3 +294,21 @@ export const debounceHandler = (handler, delay = 10000) => {
     handler(...args);
   }, delay);
 };
+
+// "1.2.5" vs "1.3.0" -> -1 (left is smaller)
+// returns -1, 0, 1
+export const compareVersion = (a, b) => {
+  const pa = a.split('.').map(n => parseInt(n, 10));
+  const pb = b.split('.').map(n => parseInt(n, 10));
+  const len = Math.max(pa.length, pb.length);
+
+  for (let i = 0; i < len; i++) {
+    const na = pa[i] != null ? pa[i] : 0;
+    const nb = pb[i] != null ? pb[i] : 0;
+    if (na > nb) return 1;
+    if (na < nb) return -1;
+  }
+  return 0;
+};
+
+
