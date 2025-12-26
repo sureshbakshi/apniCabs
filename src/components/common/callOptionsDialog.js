@@ -10,17 +10,16 @@ import DialogButtons from './DialogButtons';
 import { COLORS } from '../../constants';
 import { setDialogStatus, setDriverCallOptionsDialogStatus } from '../../slices/authSlice'; // adjust if you use separate action for call driver dialog
 import { isDriver } from '../../util';
+import { useAppInfo } from '../../hooks/useAppInfo';
 
 const driverJson = {
     title: 'contact_user',
     contact_label: 'contact_user',
-    toll_free_number: '3338132188',
     toll_free_label: 'toll_free'
 }
 const userJson = {
     title: 'contact_driver',
     contact_label: 'contact_driver',
-    toll_free_number: '3338132188',
     toll_free_label: 'toll_free'
 }
 
@@ -28,17 +27,19 @@ const CallOptionsDialog = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const isDriverLogged = isDriver();
+    const { appInfo } = useAppInfo();
     const { isCallDriverDialogOpen } = useSelector((state) => state.auth);
     const { activeRequestInfo } = useSelector((state) => isDriverLogged ? state.driver : state.user);
     const key = isDriverLogged ? 'user_details' : 'driver_details';
-
+    const tollFreeNumberKey = isDriverLogged ? 'user_toll_free' : 'driver_toll_free';
     const driverPhoneNumber = activeRequestInfo?.[key]?.phone;
+    const toll_free_number = appInfo?.[tollFreeNumberKey];
 
     const closeModal = () => dispatch(setDriverCallOptionsDialogStatus(false));
 
-    const callNumber = (number) => {
+    const callNumber = (number, code) => {
         if (number) {
-            RNImmediatePhoneCall.immediatePhoneCall(`+91${number}`);
+            RNImmediatePhoneCall.immediatePhoneCall(`${code ?? ''}${number}`);
         }
     };
     const defaultStyles = {
@@ -65,20 +66,20 @@ const CallOptionsDialog = () => {
             }}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 12 }}>
-                <View style={{ flex: 1 }}>
+                {toll_free_number && <View style={{ flex: 1 }}>
                     <CustomButton
                         label={t(contactInfo.toll_free_label)}
-                        onClick={() => callNumber(contactInfo.toll_free_number)}
+                        onClick={() => callNumber(toll_free_number)}
                         styles={{ backgroundColor: COLORS.button_blue_bg }}
                         iconLeft={{ name: 'cellphone', size: 'extraLarge' }}
                         {...defaultStyles}
                         isLowerCase
                     />
-                </View>
+                </View>}
                 {driverPhoneNumber && <View style={{ flex: 1 }}>
                     <CustomButton
                         label={t(contactInfo.contact_label)}
-                        onClick={() => callNumber(driverPhoneNumber)}
+                        onClick={() => callNumber(driverPhoneNumber, '+91')}
                         styles={{ backgroundColor: COLORS.button_blue_bg }}
                         iconLeft={{ name: 'phone', size: 'extraLarge' }}
 

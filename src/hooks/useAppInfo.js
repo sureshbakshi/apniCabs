@@ -3,7 +3,10 @@ import { useGetAppInfoQuery } from "../slices/apiSlice";
 
 
 export const useAppInfo = () => {
-    const { data: appInfo, error: appInfoError } = useGetAppInfoQuery();
+    const { data: appInfo, error: appInfoError } = useGetAppInfoQuery(undefined, {
+        refetchOnMountOrArgChange: true, // 👈 Fresh data on mount
+        keepUnusedDataFor: 1, // 1 second cache
+    });
 
     useEffect(() => {
         if (appInfoError) {

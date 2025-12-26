@@ -1,4 +1,5 @@
-import { lazy, Suspense, useMemo } from 'react';
+// ✅ Simplified GetAuthRoutes - No callback prop needed
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { showErrorMessage } from '../util';
 import isEmpty from 'lodash/isEmpty';
@@ -16,78 +17,76 @@ import ForceUpdateModal from '../pages/ForceUpdate';
 
 const DriverTabNavigator = lazy(() => (import('./driverTabNavigation')));
 const UserTabNavigator = lazy(() => (import('./userTabNavigation')));
-
-export const GetAuthRoutes = () => {
-    const { driverInfo, userInfo } = useSelector(state => state.auth);
-    const { logOut } = useLogout();
-    const { t } = useTranslation();
-
+export const GetAuthRoutes = ({ driverInfo, userInfo }) => {
     const route = useMemo(() => {
         const roles = driverInfo?.DriverRoles || userInfo?.roles || [];
         const isDriverLogged = roles.includes(USER_ROLES.DRIVER);
         const isOwnerLogged = roles.includes(USER_ROLES.OWNER);
         const isUserLogged = roles.includes(USER_ROLES.USER);
         if (isDriverLogged) {
-            return (
-                <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
-                    <DriverTabNavigator />
-                </Suspense>
-            );
+            return <DriverTabNavigator />;
         } else if (isUserLogged) {
-            return (
-                <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
-                    <UserTabNavigator />
-                </Suspense>
-            );
+            return <UserTabNavigator />;
         } else if (isOwnerLogged) {
-            return (
-                <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
-                    <OwnerTabNavigator />
-                </Suspense>
-            );
-        } else {
-            logOut();
-            showErrorMessage(t('login_permission_error'));
-            return <LoginNavigator />;
+            return <OwnerTabNavigator />;
         }
-    }, [driverInfo, userInfo, logOut, t]);
+        return <LoginNavigator />;
+    }, [driverInfo, userInfo]);
 
-    return route;
+    return (
+        <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+            {route}
+        </Suspense>
+    );
 };
 
+// ✅ Main component stays the same, simpler props
 export default () => {
+    // All hooks first ✅
     useNotifications();
-
     const { appInfo } = useAppInfo();
-
     const access_token = useSelector(state => state.auth.access_token);
+    const { driverInfo, userInfo } = useSelector(state => state.auth);
+    const { logOut } = useLogout();
+    const { t } = useTranslation();
+
+    // Computations ✅
     const { requiredVersion, currentVersion, shouldUpdate } = mustForceUpdate({ appInfo });
 
+    // Handle invalid roles ✅
+    useEffect(() => {
+        const roles = driverInfo?.DriverRoles || userInfo?.roles || [];
+        if (!roles.length && access_token) {
+            logOut();
+            showErrorMessage(t('login_permission_error'));
+        }
+    }, [driverInfo, userInfo, access_token, logOut, t]);
 
+    console.log('requiredVersion', requiredVersion)
+
+    // Force update ✅
     if (shouldUpdate) {
         return (
-            <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
-                <ForceUpdateModal
-                    visible={!shouldUpdate}
-                    currentVersion={currentVersion}
-                    newVersion={requiredVersion?.appVersion}
-                    storeUrl={requiredVersion?.store_url}
-                />
-            </Suspense>
+            <ForceUpdateModal
+                visible={true}
+                currentVersion={currentVersion}
+                newVersion={requiredVersion?.appVersion}
+                storeUrl={requiredVersion?.store_url}
+            />
         );
     }
 
+    // Final route ✅
     const route = useMemo(() => {
         if (isEmpty(access_token)) {
             return <LoginNavigator />;
-        } else {
-            return (
-                <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }} edges={['top', 'left', 'right']}>
-                    <GetAuthRoutes />
-                </SafeAreaView>
-            );
         }
-    }, [access_token]);
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }} edges={['top', 'left', 'right']}>
+                <GetAuthRoutes driverInfo={driverInfo} userInfo={userInfo} />
+            </SafeAreaView>
+        );
+    }, [access_token, driverInfo, userInfo]);
 
     return route;
 };

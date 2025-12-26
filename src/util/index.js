@@ -185,7 +185,7 @@ export const formatRideRequest = (newRequest, oldRequests) => {
   const index = oldRequests?.findIndex((item) => item.request_id === newRequest.request_id)
   if (index > -1) {
     oldRequests[index] = newRequest
-  } else {
+  } else if (newRequest?.request_id) {
     oldRequests = [newRequest, ...(oldRequests || [])];
   }
   return oldRequests;
