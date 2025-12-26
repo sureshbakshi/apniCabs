@@ -137,7 +137,7 @@ const SelectOnPage = () => {
                     coordinate={markerCoordinate}
                     draggable={true}
                     onDragEnd={onMarkerDragEnd}
-                    image={images.pin_medium}
+                    image={images.pin}
                     style={{ height: 50, width: 50 }}
                     imageStyle={{ height: 50, width: 50 }}
                 />
