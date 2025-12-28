@@ -41,8 +41,8 @@ android {
         user {
             dimension "user_type"
             applicationId appId
-            versionCode 36
-            versionName "2.1.4"
+            versionCode 38
+            versionName "2.2.5"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
         }
