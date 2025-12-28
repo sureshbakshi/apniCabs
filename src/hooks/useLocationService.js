@@ -1,6 +1,7 @@
+import { Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { showErrorMessage } from "../util";
-import { checkAndroidPermissions } from "../util/location";
+import { showErrorMessage } from '../util';
+import { checkAndroidPermissions, requestIosLocationPermissions } from '../util/location';
 
 export const defaultCurrentLocationOptions = {
     enableHighAccuracy: true,
@@ -12,12 +13,20 @@ export const defaultCurrentLocationOptions = {
     useSignificantChanges: false,
     distanceFilter: 0,
     showLocationDialog: true,
-}
+};
 
 const useLocationService = () => {
     const getCoordinates = async (cb) => {
         try {
-            const granted = await checkAndroidPermissions();
+            let granted = false;
+
+            if (Platform.OS === 'ios') {
+                await requestIosLocationPermissions();
+                granted = true;
+            } else {
+                granted = await checkAndroidPermissions();
+            }
+
             if (!granted) {
                 showErrorMessage('Location permission denied');
                 return null;
@@ -38,7 +47,7 @@ const useLocationService = () => {
                         showErrorMessage('Please enable GPS');
                         reject(error);
                     },
-                    defaultCurrentLocationOptions
+                    defaultCurrentLocationOptions,
                 );
             });
         } catch (error) {

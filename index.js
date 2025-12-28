@@ -8,16 +8,17 @@ import { name as appName } from './app.json';
 import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { COLORS, toastConfig } from './src/constants';
+import { toastConfig } from './src/constants';
 import { PersistGate } from 'redux-persist/integration/react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { foreGroundService } from './src/util/foregroundLocationService';
 import './i18n';
-import { StrictMode } from 'react';
+// import { StrictMode } from 'react';
 
 if (!__DEV__) {
   console.log = () => { };
 }
+foreGroundService();
 
 function AppWithProvider() {
 

@@ -43,6 +43,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.9.22",
     "@reduxjs/toolkit": "^2.2.1",
+    "@supersami/rn-foreground-service": "^2.2.5",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.6.8",
     "i18next": "^24.2.0",

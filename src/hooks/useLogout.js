@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { clearAuthData } from "../slices/authSlice";
 import { disconnectSocket } from '../sockets/socketConfig'
+import { stopForegroundLocation } from "../util/foregroundLocationService";
 // import { isDriver } from '../util';
 export default useLogout = () => {
   // const isDriverLogged = isDriver()
@@ -8,7 +9,8 @@ export default useLogout = () => {
   // const { requestAlertHandler } = useRequestAlertHandler();
 
   const logOutHandler = async () => {
-    disconnectSocket()
+    disconnectSocket();
+    stopForegroundLocation();
     dispatch(clearAuthData());
   }
 

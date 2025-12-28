@@ -1,24 +1,23 @@
-
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
-import filter from 'lodash/filter'
+import filter from 'lodash/filter';
 import config from './config';
 
 
 export const requestIosLocationPermissions = async () => {
     await Geolocation.setRNConfiguration({
-        authorizationLevel: 'always' //always,whenInUse
-    })
-    await Geolocation.requestAuthorization('always')
-}
+        authorizationLevel: 'always', // always,whenInUse
+    });
+    await Geolocation.requestAuthorization('always');
+};
 
 export const checkAndroidPermissions = async () => {
     try {
         if (Platform.OS === 'ios') {
-            requestIosLocationPermissions()
-            return true
+            requestIosLocationPermissions();
+            return true;
         }
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -32,15 +31,40 @@ export const checkAndroidPermissions = async () => {
             return true;
         } else {
             await checkAndroidPermissions();
-            return false
+            return false;
         }
     } catch (err) {
         console.warn(err);
         await checkAndroidPermissions();
-        return false
+        return false;
     }
 };
 
+// ✅ NEW: request background permission on Android (for foreground service)
+export const requestAndroidBackgroundPermission = async () => {
+    try {
+        if (Platform.OS !== 'android') return true;
+
+        // 1. Request Notification Permission first (Android 13+)
+        if (Platform.Version >= 33) {
+            await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS');
+        }
+
+        // 2. Request Fine Location
+        const fine = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        if (fine !== 'granted') return false;
+
+        // 3. Request Background Location
+        if (Platform.Version >= 29) {
+            const bg = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION);
+            return bg === 'granted';
+        }
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
 
 export const getLocation = async (coords, cb) => {
     try {
@@ -61,13 +85,13 @@ export const getLocation = async (coords, cb) => {
                     city,
                 };
                 cb?.(location);
-                return location
+                return location;
             }
         } else {
-            showErrorMessage(`Error while location request`)
+            showErrorMessage('Error while location request');
         }
     } catch (error) {
-        showErrorMessage('Error while fetching location')
+        showErrorMessage('Error while fetching location');
     }
 };
 
@@ -84,4 +108,30 @@ export const getPlaceDetailsFromCoordinates = async (latitude, longitude) => {
         console.log('Error fetching place details:', error);
         return null;
     }
+};
+
+// ✅ NEW: simple helper for foreground service to fetch coords once
+export const getCurrentCoordsOnce = () => {
+    return new Promise((resolve) => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                if (position?.coords) {
+                    const { latitude, longitude } = position.coords;
+                    resolve({ latitude, longitude });
+                } else {
+                    resolve(null);
+                }
+            },
+            (error) => {
+                console.log('getCurrentCoordsOnce error:', error);
+                resolve(null);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000,
+                distanceFilter: 0,
+            },
+        );
+    });
 };
