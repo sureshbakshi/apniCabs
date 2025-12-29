@@ -30,7 +30,7 @@ android {
     splits {
         abi {
             reset()
-            enable true
+            enable false
             universalApk false
             include(*reactNativeArchitectures())
         }
@@ -49,8 +49,8 @@ android {
         driver {
             dimension "user_type"
             applicationId appId
-            versionCode 38
-            versionName "2.1.4"
+            versionCode 39
+            versionName "2.2.5"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
         }

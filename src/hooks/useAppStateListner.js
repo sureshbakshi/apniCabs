@@ -3,7 +3,7 @@ import { useEffect } from "react";
 // import useGetCurrentLocation from "./useGetCurrentLocation";
 let appStateListener = undefined;
 
-export default (activeCb) => {
+export default (activeCb, backgroundCb) => {
 
   useEffect(() => {
     if(appStateListener === undefined) {
@@ -12,6 +12,9 @@ export default (activeCb) => {
         nextAppState => {
           if (nextAppState === 'active') {
             activeCb?.();
+          } 
+          if(nextAppState === 'background') {
+            backgroundCb?.();
           }
           console.log('Next AppState is: ', nextAppState);
         },

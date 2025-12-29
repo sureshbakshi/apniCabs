@@ -26,7 +26,6 @@ export const startForegroundLocation = async () => {
         autoCancel: false,      // Notification stays even after clicking
         setOnlyAlertOnce: true, // Stops the phone from vibrating/beeping every 10 seconds
     };
-
     ReactNativeForegroundService.start(startConfig);
 };
 
@@ -38,8 +37,8 @@ export const foreGroundService = () => {
     ReactNativeForegroundService.register({
         config: {
             alert: true,
-            onServiceErrorCallBack: () => {
-                console.error("Foreground service error occurred");
+            onServiceErrorCallBack: (err) => {
+                console.error("Foreground service error occurred", err);
             },
             serviceType: 8,
         }

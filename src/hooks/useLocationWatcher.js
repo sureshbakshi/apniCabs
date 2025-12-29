@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Platform } from "react-native";
+import { useEffect, useRef } from "react";
+import { Platform, AppState } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { showErrorMessage } from "../util";
 import { checkAndroidPermissions } from "../util/location";
@@ -83,6 +83,48 @@ export default () => {
         }
     };
 
+    const appState = useRef(AppState.currentState);
+
+    useEffect(() => {
+        const handleAppStateChange = (nextAppState) => {
+            const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
+
+            if (
+                appState.current.match(/inactive|background/) &&
+                nextAppState === 'active'
+            ) {
+                console.log('App has come to the foreground!');
+                if (isOnline) {
+                    if (Platform.OS === 'android') {
+                        stopForegroundLocation();
+                    }
+                    watchPosition();
+                }
+            }
+
+            if (
+                appState.current === 'active' &&
+                nextAppState.match(/inactive|background/)
+            ) {
+                console.log('App has gone to the background!', isOnline);
+                if (isOnline) {
+                    clearWatch();
+                    if (Platform.OS === 'android') {
+                        startForegroundLocation();
+                    }
+                }
+            }
+
+            appState.current = nextAppState;
+        };
+
+        const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+        return () => {
+            subscription.remove();
+        };
+    }, [driverStatus, serviceUnavailable]);
+
     useEffect(() => {
         console.log(
             "useLocationWatcher: driverStatus changed to",
@@ -94,27 +136,28 @@ export default () => {
         const isOnline =
             driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
 
-        if (Platform.OS === "android") {
-            if (isOnline) {
-                // startForegroundLocation();
+        if (isOnline) {
+            if (appState.current === 'active') {
+                if (Platform.OS === 'android') {
+                    stopForegroundLocation();
+                }
+                if (!watchId) {
+                    watchPosition();
+                }
             } else {
+                if (Platform.OS === 'android') {
+                    startForegroundLocation();
+                }
+            }
+        } else {
+            clearWatch();
+            if (Platform.OS === 'android') {
                 stopForegroundLocation();
             }
         }
 
-        if (isOnline) {
-            if (!watchId) {
-                watchPosition();
-            }
-        } else {
-            clearWatch();
-        }
-
         return () => {
             clearWatch();
-            // if (Platform.OS === "android") {
-            //     stopForegroundLocation();
-            // }
         };
     }, [driverStatus, serviceUnavailable]);
 

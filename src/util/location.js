@@ -1,4 +1,4 @@
-import { PermissionsAndroid, Platform } from 'react-native';
+import { PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
@@ -28,7 +28,7 @@ export const checkAndroidPermissions = async () => {
             },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            return true;
+            return await requestAndroidBackgroundPermission();
         } else {
             await checkAndroidPermissions();
             return false;
@@ -57,7 +57,19 @@ export const requestAndroidBackgroundPermission = async () => {
         // 3. Request Background Location
         if (Platform.Version >= 29) {
             const bg = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION);
-            return bg === 'granted';
+            if (bg === 'granted') {
+                return true;
+            } else {
+                Alert.alert(
+                    'Background Location Required',
+                    'To track your rides efficiently, please allow "Allow all the time" location access in settings.',
+                    [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+                    ],
+                );
+                return false;
+            }
         }
 
         return true;
