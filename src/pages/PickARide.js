@@ -145,9 +145,6 @@ export const PickARide = () => {
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
 
   const hasActiveRequest = !!activeRequestInfo?.id && rideRequests.length <= 0;
-  if (hasActiveRequest) {
-    navigation.navigate(ROUTES_NAMES.activeRide);
-  }
   return (
     <ContainerWrapper>
       <View>

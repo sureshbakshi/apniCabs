@@ -7,7 +7,7 @@ const initialState = {
   rideRequests: [],
   activeRequestInfo: null,
   isOnline: true,
-  onlineStatus: 'ONLINE',
+  onlineStatus: 'OFFLINE',
   rideStatusUpdate: null,
   walletInfo: null,
   driverLocation: null,

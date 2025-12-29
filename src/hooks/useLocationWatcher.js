@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { Platform, AppState } from "react-native";
+import { Platform, AppState, PermissionsAndroid } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { showErrorMessage } from "../util";
-import { checkAndroidPermissions } from "../util/location";
+import { checkAndroidPermissions, requestAndroidBackgroundPermission } from "../util/location";
 import { useDispatch, useSelector } from "react-redux";
 import { setDriverLocation } from "../slices/driverSlice";
 import useUpdateDriverLocation from "./useUpdateDriverLocation";
@@ -50,7 +50,8 @@ export default () => {
         }
 
         if (granted) {
-            if (watchId === undefined) {
+            const grantedBackground = await requestAndroidBackgroundPermission();
+            if (grantedBackground && watchId === undefined) {
                 watchId = Geolocation.watchPosition(
                     async (position) => {
                         if (position?.coords) {

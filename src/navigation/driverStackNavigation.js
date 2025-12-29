@@ -20,14 +20,19 @@ import { isDriverVerified } from '../util';
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 
 const Stack = createNativeStackNavigator();
-const PickARidePageContainer = AppContainer(PickARide);
-const ActiveRidePageContainer = AppContainer(ActiveRidePage);
+
+const DriverHome = (props) => {
+  const { activeRequestInfo } = useSelector((state) => state.driver);
+  const hasActiveRequest = !!activeRequestInfo?.id;
+  return hasActiveRequest ? <ActiveRidePage {...props} /> : <PickARide {...props} />;
+};
+
+const DriverHomePageContainer = AppContainer(DriverHome);
 
 export default function DriverStackNavigator({ navigation }) {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
-
-  const { activeRequestInfo, serviceUnavailable } = useSelector(
+  const { serviceUnavailable } = useSelector(
     (state) => state.driver,
   );
   const { driverInfo } = useSelector((state) => state.auth);
@@ -35,7 +40,6 @@ export default function DriverStackNavigator({ navigation }) {
   // Keep this hook – it populates activeRequestInfo / serviceUnavailable
   useGetDriverActiveRequests();
 
-  const hasActiveRequest = !!activeRequestInfo?.id;
   const needsVerification =
     !!driverInfo &&
     (!isDriverVerified(driverInfo) || isEmpty(driverInfo?.Vehicle));
@@ -44,11 +48,9 @@ export default function DriverStackNavigator({ navigation }) {
   const initialRouteName =
     serviceUnavailable
       ? ROUTES_NAMES.serviceUnavailable
-      : hasActiveRequest
-        ? ROUTES_NAMES.activeRide
-        : needsVerification
-          ? ROUTES_NAMES.messageInfo
-          : ROUTES_NAMES.searchRide;
+      : needsVerification
+        ? ROUTES_NAMES.messageInfo
+        : ROUTES_NAMES.searchRide;
 
   // ✅ On focus, correct route if flags changed
   useEffect(() => {
@@ -60,18 +62,15 @@ export default function DriverStackNavigator({ navigation }) {
     console.log('DriverStack focus:', {
       currentRoute,
       serviceUnavailable,
-      hasActiveRequest,
       needsVerification,
     });
 
     const target =
       serviceUnavailable
         ? ROUTES_NAMES.serviceUnavailable
-        : hasActiveRequest
-          ? ROUTES_NAMES.activeRide
-          : needsVerification
-            ? ROUTES_NAMES.messageInfo
-            : ROUTES_NAMES.searchRide;
+        : needsVerification
+          ? ROUTES_NAMES.messageInfo
+          : ROUTES_NAMES.searchRide;
 
     if (target && target !== currentRoute) {
       // @ts-ignore
@@ -81,7 +80,6 @@ export default function DriverStackNavigator({ navigation }) {
     isFocused,
     navigation,
     serviceUnavailable,
-    hasActiveRequest,
     needsVerification,
   ]);
 
@@ -98,18 +96,13 @@ export default function DriverStackNavigator({ navigation }) {
     >
       <Stack.Screen
         name={ROUTES_NAMES.searchRide}
-        component={PickARidePageContainer}
+        component={DriverHomePageContainer}
         options={{ title: null, headerShown: false }}
       />
       <Stack.Screen
         name={ROUTES_NAMES.messageInfo}
         component={MessageInfo}
         options={{ title: t('notification'), headerShown: true }}
-      />
-      <Stack.Screen
-        name={ROUTES_NAMES.activeRide}
-        component={ActiveRidePageContainer}
-        options={{ title: t('active_ride'), headerShown: false }}
       />
       <Stack.Screen
         name={ROUTES_NAMES.chat}

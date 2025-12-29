@@ -28,7 +28,7 @@ export const checkAndroidPermissions = async () => {
             },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            return await requestAndroidBackgroundPermission();
+            return true;
         } else {
             await checkAndroidPermissions();
             return false;
