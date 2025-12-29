@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import {
     View,
     Platform,
@@ -8,6 +8,7 @@ import { getScreen } from '../util';
 import { ImageView } from './common';
 import { mapStyle } from '../styles/googleMapStyle';
 import { styles } from '../styles/RideMapStyles';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { screenWidth, screenHeight } = getScreen();
 const ASPECT_RATIO = screenWidth / (screenHeight - 530);
@@ -17,6 +18,8 @@ const SPACE = 0.00;
 
 const RideMap = ({ from_details, to_details }) => {
     const mapRef = useRef(null);
+    const isMapReady = useRef(false);
+
 
     // Memoize coordinates
     const fromCoordinate = useMemo(() => ({
@@ -29,20 +32,35 @@ const RideMap = ({ from_details, to_details }) => {
         longitude: Number(to_details.longitude) - SPACE,
     }), [to_details.latitude, to_details.longitude]);
 
-    // Use fitToCoordinates for smoother updates without marker ID dependencies
-    useEffect(() => {
-        if (mapRef.current && fromCoordinate.latitude && toCoordinate.latitude) {
+
+
+    // ✅ Stable key prevents MapView recreation
+    const mapKey = useMemo(() =>
+        `${from_details.latitude}-${from_details.longitude}-${to_details.latitude}-${to_details.longitude}`,
+        [from_details.latitude, from_details.longitude, to_details.latitude, to_details.longitude]);
+
+    const fitToMarkers = useCallback(() => {
+        if (mapRef.current) {
             mapRef.current.fitToCoordinates([fromCoordinate, toCoordinate], {
-                edgePadding: {
-                    top: 100,
-                    right: 100,
-                    bottom: 100,
-                    left: 100
-                },
-                animated: true,
+                edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+                animated: false,  // No animation on tab switch
             });
         }
     }, [fromCoordinate, toCoordinate]);
+
+    const handleMapReady = useCallback(() => {
+        isMapReady.current = true;
+        setTimeout(fitToMarkers, 100);
+    }, [fitToMarkers]);
+
+    // ✅ Refit when tab gains focus
+    useFocusEffect(
+        useCallback(() => {
+            if (isMapReady.current) {
+                setTimeout(fitToMarkers, 150);
+            }
+        }, [fitToMarkers])
+    );
 
     if (!from_details.latitude || !to_details.longitude) {
         return null;
@@ -51,6 +69,7 @@ const RideMap = ({ from_details, to_details }) => {
     return (
         <View style={styles.container}>
             <MapView
+                key={mapKey}
                 style={styles.map}
                 ref={mapRef}
                 initialRegion={{
@@ -61,6 +80,7 @@ const RideMap = ({ from_details, to_details }) => {
                 }}
                 customMapStyle={mapStyle}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+                onMapReady={handleMapReady}
             >
                 <Marker
                     coordinate={fromCoordinate}

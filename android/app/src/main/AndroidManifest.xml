@@ -33,7 +33,7 @@
             android:value="Sticky Description." />
         <meta-data
             android:name="com.supersami.foregroundservice.notification_color"
-            android:resource="@color/blue" />
+            android:resource="@color/white" />
 
         <!-- Foreground service declarations -->
        <service 

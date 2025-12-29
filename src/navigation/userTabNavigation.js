@@ -35,7 +35,10 @@ export default function UserTabNavigator() {
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
           tabBarHideOnKeyboard: true,
+          lazy: false
         })}
+
+        detachInactiveScreens={false}
         tabBar={(props) => <MyTabBar {...props} />}
         screenListeners={({ navigation, route }) => ({
           tabPress: e => {

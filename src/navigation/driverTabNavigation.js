@@ -75,6 +75,7 @@ export default function DriverTabNavigator() {
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
           tabBarHideOnKeyboard: true,
+          lazy: false
         })}
         tabBar={renderTabBar}
         screenListeners={({ navigation, route }) => ({
@@ -83,7 +84,7 @@ export default function DriverTabNavigator() {
             navigation.navigate(route.name);
           },
         })}
-
+        detachInactiveScreens={false}
       >
         <Tab.Screen name={ROUTES_NAMES.pickRide} options={{ title: t('home') }} component={DriverStackNavigator}
         />
