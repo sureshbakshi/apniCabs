@@ -13,9 +13,12 @@ const useCityLookup = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const { driverInfo } = useSelector(state => state.auth);
+    const { activeRequestInfo } = useSelector((state) => state.driver);
     const vehicleTypeId = driverInfo?.Vehicle?.type;
     const navigation = useNavigation();
-    const [updateCityLookup] = useCityLookupMutation();
+    const hasActiveRequest = !!activeRequestInfo?.id;
+
+    const [updateCityLookup] = useCityLookupMutation({ skip: hasActiveRequest });
     const updateDriverStatus = useUpdateDriverStatus();
     const { getDriverCoordinates } = useGetCurrentLocation();
 
