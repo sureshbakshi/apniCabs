@@ -185,6 +185,7 @@ export const ROUTES_NAMES = {
   chat: 'Chat',
   contacts: 'Contacts',
   serviceUnavailable: 'ServiceUnavailableScreen',
+  paymentWebView: 'paymentWebView',
 }
 
 export const RideStatus = {

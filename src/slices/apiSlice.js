@@ -99,7 +99,7 @@ const api_urls = {
   cancelAllRequest: 'cancel-all',
   sosAdd: 'add',
   device: 'device',
-  order: 'order',
+  createOrder: 'payment/create',
   payment: 'payment',
   wallet: 'wallet',
   create: 'create',
@@ -474,11 +474,20 @@ export const apiSlice = createApi({
     createOrder: builder.mutation({
       query: (body) => ({
         method: 'POST',
-        url: api_path.payment(api_urls.order),
+        url: api_path.payment(api_urls.createOrder),
         body: body
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+    }),
+    verifyPayment: builder.mutation({
+      query: ({ order_id, ...body }) => ({
+        method: 'PUT',
+        url: api_path.payment(`payment/${order_id}`),
+        body: body
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
     }),
     //payment end
     //appLinks
@@ -565,6 +574,7 @@ export const {
   useGetDriverWalletMutation,
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
+  useVerifyPaymentMutation,
   useLazyGetAppLinksQuery,
   useLazyGetCitiesQuery,
   useUpdateRatingMutation,

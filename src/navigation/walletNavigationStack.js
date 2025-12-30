@@ -1,19 +1,21 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { COLORS, ROUTES_NAMES } from '../constants';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import WalletPage from '../pages/WalletPage';
 import SubscriptionPlans from '../pages/MyPlans';
+import PaymentPage from '../pages/PaymentPage';
 import CommonStyles from '../styles/commonStyles'
 import HeaderBackButton from '../components/common/HeaderBackButton';
 import { useTranslation } from 'react-i18next';
 const Stack = createNativeStackNavigator();
-const tabHiddenRoutes = [ROUTES_NAMES.myPlans, ROUTES_NAMES.payment];
+const tabHiddenRoutes = [ROUTES_NAMES.myPlans, ROUTES_NAMES.payment, ROUTES_NAMES.webView];
 
 export default function WalletStackNavigator({ navigation, route }) {
   const {t} = useTranslation()
-  useEffect(() => {
-    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (tabHiddenRoutes.includes(routeName)) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
     } else {
       navigation.setOptions({ tabBarStyle: { display: 'flex' } });
@@ -30,7 +32,6 @@ export default function WalletStackNavigator({ navigation, route }) {
         headerTitleStyle:{
           ...CommonStyles.headerFont
         }
-        // headerTransparent: true
       }}
       >
       <Stack.Screen name="My Wallet" component={WalletPage} options={{ headerShown: false }} c />
@@ -39,10 +40,11 @@ export default function WalletStackNavigator({ navigation, route }) {
         options={{ title: t('subscription_plans') }}
         component={SubscriptionPlans}
       />
-      {/* <Stack.Screen
-        name={ROUTES_NAMES.payment}
-        component={PaymentScreen}
-      /> */}
+      <Stack.Screen
+        name={ROUTES_NAMES.paymentWebView}
+        component={PaymentPage}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
