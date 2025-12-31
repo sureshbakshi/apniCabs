@@ -18,13 +18,18 @@ const useCityLookup = () => {
     const navigation = useNavigation();
     const hasActiveRequest = !!activeRequestInfo?.id;
 
-    const [updateCityLookup] = useCityLookupMutation({ skip: hasActiveRequest });
+
+    const [updateCityLookup] = useCityLookupMutation();
     const updateDriverStatus = useUpdateDriverStatus();
     const { getDriverCoordinates } = useGetCurrentLocation();
 
 
     const onRefresh = useCallback(
         async () => {
+            if (hasActiveRequest) {
+                dispatch(setServiceUnavailable(false))
+                return;
+            }
             const { latitude, longitude } = await getDriverCoordinates() || {};
             if (!latitude || !longitude || !vehicleTypeId) {
                 return;
@@ -42,7 +47,6 @@ const useCityLookup = () => {
                 if (!isEmpty(response?.data)) {
                     setIsLoading(false);
                     updateDriverStatus(Boolean(DriverAvailableStatus.ONLINE));
-                    navigation.navigate(ROUTES_NAMES.searchRide);
                     dispatch(setServiceUnavailable(false))
                 }
             } catch (error) {
@@ -54,10 +58,10 @@ const useCityLookup = () => {
                 }
             }
         },
-        [navigation, updateCityLookup, updateDriverStatus]
+        [navigation, updateCityLookup, updateDriverStatus, vehicleTypeId, getDriverCoordinates, hasActiveRequest, dispatch]
     );
 
-    return { onRefresh, updateDriverStatus, isLoading };
+    return { onRefresh, updateDriverStatus, isLoading};
 };
 
 export default useCityLookup;

@@ -6,7 +6,7 @@ import { setAndroidDeviceCode } from '../slices/authSlice';
 import { Text } from './common';
 import useKeyboardDismiss from '../hooks/useKeyboardDismiss';
 
-export default ({ route, data, callbackFunctions, scrollRef }) => {
+const OTPAutoFill = ({ route, data, callbackFunctions, scrollRef }) => {
     const otpInfo = route?.params?.data || data
 
     const dispatch = useDispatch()
@@ -62,6 +62,8 @@ export default ({ route, data, callbackFunctions, scrollRef }) => {
         </>
     );
 }
+
+export default React.memo(OTPAutoFill);
 
 const styles = StyleSheet.create({
     container: {

@@ -2,6 +2,9 @@ import { Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { showErrorMessage } from '../util';
 import { checkAndroidPermissions, requestIosLocationPermissions } from '../util/location';
+import { useCallback } from 'react';
+import { Alert } from 'react-native';
+import { Linking } from 'react-native';
 
 export const defaultCurrentLocationOptions = {
     enableHighAccuracy: true,
@@ -16,7 +19,7 @@ export const defaultCurrentLocationOptions = {
 };
 
 const useLocationService = () => {
-    const getCoordinates = async (cb) => {
+    const getCoordinates = useCallback(async (cb) => {
         try {
             let granted = false;
 
@@ -28,8 +31,16 @@ const useLocationService = () => {
             }
 
             if (!granted) {
-                showErrorMessage('Location permission denied');
-                return null;
+                // showErrorMessage('Location permission denied');
+                Alert.alert(
+                    'Location Required',
+                    'To track your rides efficiently, please allow "Allow all the time" location access in settings.',
+                    [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+                    ],
+                );
+                return false;
             }
 
             return new Promise((resolve, reject) => {
@@ -43,8 +54,7 @@ const useLocationService = () => {
                         }
                     },
                     (error) => {
-                        console.error('Geolocation error:', error);
-                        showErrorMessage('Please enable GPS');
+                        showErrorMessage('getCoordinates: Please enable GPS');
                         reject(error);
                     },
                     defaultCurrentLocationOptions,
@@ -54,7 +64,7 @@ const useLocationService = () => {
             console.error('getCoordinates error:', error);
             return null;
         }
-    };
+    }, []);
 
     return { getCoordinates };
 };

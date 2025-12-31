@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Pressable,
@@ -11,13 +11,11 @@ import { useDispatch } from 'react-redux';
 import {
   updateUserCheck,
 } from '../slices/authSlice';
-import { useGetLoginOTPMutation, useLoginMutation, useUserCheckMutation, useVerifyOTPMutation } from '../slices/apiSlice';
+import { useGetLoginOTPMutation, useVerifyOTPMutation } from '../slices/apiSlice';
 import isEmpty from 'lodash/isEmpty';
 import ScreenContainer from '../components/ScreenContainer';
 import { navigate } from '../util/navigationService';
 import config from '../util/config';
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from '../schema';
 import OTPForm from '../components/OTPForm';
 import HeaderImage from '../components/common/HeaderImage';
@@ -27,52 +25,23 @@ const initialState = {
   mobile: '',
 }
 
+const PHONE_KEYS = ['phone'];
+
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const [login, { data: logindata, error: loginError, isLoginLoading }] =
-    useLoginMutation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isEmpty(logindata)) {
-      dispatch(updateUserCheck(logindata));
-    }
-  }, [logindata]);
-
-
-  const {
-    watch,
-    handleSubmit,
-    control,
-    formState: { errors, isDirty },
-    ...methods
-  } = useForm({
-    mode: "onSubmit",
-    defaultValues: initialState,
-    resolver: yupResolver(signInSchema),
-  });
-
-  const onSubmit = (data) => {
-    console.log('data', data)
-    const { email, password } = data;
-
-    let payload = {
-      email,
-      password
-    };
-    login(payload);
-  };
-  const successHandler = (logindata) => {
+  const successHandler = React.useCallback((logindata) => {
     console.log('otp info', logindata)
     if (!isEmpty(logindata)) {
       dispatch(updateUserCheck(logindata));
     }
-  }
+  }, [dispatch]);
 
-  const additionalOTPPayload = {
+  const additionalOTPPayload = React.useMemo(() => ({
     isDriver: config.ROLE === USER_ROLES.DRIVER
-  }
+  }), []);
 
   return (
     <View style={LoginStyles.container}>
@@ -89,9 +58,9 @@ const LoginPage = () => {
             initialState={initialState}
             additionalOTPPayload={additionalOTPPayload}
             additionalVerifyOTPPayload={additionalOTPPayload}
-            getOTPPayloadKeys={['phone']}
+            getOTPPayloadKeys={PHONE_KEYS}
             verifyOTPMutation={useVerifyOTPMutation}
-            formPayloadKeys={['phone']}
+            formPayloadKeys={PHONE_KEYS}
             submitBtnLabel={'Get OTP'}
             heading={'Sign In'}
           />

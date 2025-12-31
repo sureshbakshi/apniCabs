@@ -30,20 +30,37 @@ export const checkAndroidPermissions = async () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             return true;
         } else {
-            await checkAndroidPermissions();
             return false;
         }
     } catch (err) {
         console.warn(err);
-        await checkAndroidPermissions();
         return false;
     }
 };
 
+const showSettingsAlert = () => {
+    Alert.alert(
+        'Location Required',
+        'To track your rides efficiently, please allow "Allow all the time" location access in settings.',
+        [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+        ],
+    );
+};
+
 // ✅ NEW: request background permission on Android (for foreground service)
+let lastBackgroundRequestTime = 0;
 export const requestAndroidBackgroundPermission = async () => {
     try {
         if (Platform.OS !== 'android') return true;
+
+        // Prevent loop: if requested recently, don't ask again immediately
+        const now = Date.now();
+        if (now - lastBackgroundRequestTime < 2000) {
+            return false;
+        }
+        lastBackgroundRequestTime = now;
 
         // 1. Request Notification Permission first (Android 13+)
         if (Platform.Version >= 33) {
@@ -51,8 +68,12 @@ export const requestAndroidBackgroundPermission = async () => {
         }
 
         // 2. Request Fine Location
-        const fine = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-        if (fine !== 'granted') return false;
+        // const fine = await checkAndroidPermissions();
+        // if (fine !== 'granted') {
+        //     console.log('Background location request: fine location not granted');
+        //     showSettingsAlert();
+        //     return false;
+        // }
 
         // 3. Request Background Location
         if (Platform.Version >= 29) {
@@ -60,14 +81,8 @@ export const requestAndroidBackgroundPermission = async () => {
             if (bg === 'granted') {
                 return true;
             } else {
-                Alert.alert(
-                    'Background Location Required',
-                    'To track your rides efficiently, please allow "Allow all the time" location access in settings.',
-                    [
-                        { text: 'Cancel', style: 'cancel' },
-                        { text: 'Open Settings', onPress: () => Linking.openSettings() },
-                    ],
-                );
+                console.log('Background location request: background location not granted');
+                showSettingsAlert();
                 return false;
             }
         }
