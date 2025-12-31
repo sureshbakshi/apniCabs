@@ -182,7 +182,6 @@ export const ROUTES_NAMES = {
   gettingStartedPage: 'GettingStartedPage',
   selectonMap: 'SelectonMap',
   language: 'Language',
-  chat: 'Chat',
   contacts: 'Contacts',
   serviceUnavailable: 'ServiceUnavailableScreen',
   paymentWebView: 'paymentWebView',

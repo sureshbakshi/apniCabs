@@ -60,7 +60,19 @@ const AppStateComponent = React.memo(() => {
 
 export default function DriverTabNavigator() {
   const { t } = useTranslation()
-  const renderTabBar = useCallback((props) => <MyTabBar {...props} />, []);
+  const renderTabBar = useCallback((props) => {
+    const state = props.navigation.getState();
+    const currentRoute = state.routes[state.index];
+    // Check wallet tab nested screens
+    if (currentRoute.name === ROUTES_NAMES.wallet && currentRoute.state) {
+      const walletFocusedScreen = currentRoute.state.routes[currentRoute.state.index]?.name;
+      if (walletFocusedScreen === ROUTES_NAMES.paymentWebView || walletFocusedScreen === ROUTES_NAMES.myPlans) {
+        return null;
+      }
+    }
+
+    return <MyTabBar {...props} />;
+  }, []);
   return (
     <AppProvider>
       <DriverDataManager />
