@@ -275,7 +275,6 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 export default ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { getCoordinates } = useGetCurrentLocation()
-    const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
 
     const dispatch = useDispatch()
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
@@ -299,7 +298,6 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
     const isOnRide = (activeRequestInfo.status === RideStatus.ONRIDE)
     const isDriverOnRide = (isOnRide && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
-    const fromLocation = driverCurrentLocation || activeRequestInfo.from;
     return (
         <>
             <View style={[FindRideStyles.card]}>
@@ -309,7 +307,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                 </ScreenContainer>
             </View>
             {(isDriverOnRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
-                <OpenMapButton route={{ start: fromLocation, end: activeRequestInfo.to, navigate: true }} />
+                <OpenMapButton activeRequestInfo={activeRequestInfo} isDriverLogged={isDriverLogged} />
                 <CustomButton
                     onClick={() => getCoordinates(completeRideHandler, true)}
                     disabled={isCompleteRideLoading}

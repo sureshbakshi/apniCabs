@@ -15,12 +15,12 @@ import {
 export const defaultOptions = {
     enableHighAccuracy: true,
     maximumAge: 0,             // Don't accept cached locations
-    timeout: 15000,
-    distanceFilter: 20,        // Increased to 20 meters to reduce jitter
+    timeout: 30000,
+    distanceFilter: 0,         // Set to 0 to receive updates even when stationary
     showLocationDialog: true,
     forceRequestLocation: true,
-    interval: 5000,            // Update every 5 seconds
-    fastestInterval: 5000,     // Match interval to prevent rapid updates
+    interval: 7000,            // Update every 15 seconds
+    fastestInterval: 7000,     // Match interval to prevent rapid updates
     useSignificantChanges: false,
     showsBackgroundLocationIndicator: true,
 };
@@ -39,6 +39,8 @@ export default () => {
     const isRequestingPermission = useRef(false);
     const lastPermissionDenialTime = useRef(0);
     const appState = useRef(AppState.currentState);
+    const lastPositionRef = useRef(null);
+    const lastUpdateTimeRef = useRef(0);
 
     // Helper to clear watch safely
     const clearWatch = useCallback(() => {
@@ -80,6 +82,24 @@ export default () => {
                         (position) => {
                             if (position?.coords) {
                                 const { latitude, longitude, heading } = position.coords;
+                                console.log("New watcher before position:", latitude, longitude, heading, watchIdRef.current);
+                                
+                                const now = Date.now();
+                                const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
+
+                                // Prevent duplicate updates
+                                if (lastPositionRef.current &&
+                                    lastPositionRef.current.latitude === latitude &&
+                                    lastPositionRef.current.longitude === longitude &&
+                                    lastPositionRef.current.heading === heading &&
+                                    timeSinceLastUpdate < 10000 // Allow update if > 15s has passed
+                                ) {
+                                    return;
+                                }
+                                lastPositionRef.current = { latitude, longitude, heading };
+                                lastUpdateTimeRef.current = now;
+
+                                console.log("New watcher position:", latitude, longitude, heading, watchIdRef.current);
                                 dispatch(setDriverLocation({ latitude, longitude, heading }));
                                 debouncedUpdateDriverLocationToServer({ latitude, longitude, heading });
                             }
@@ -152,6 +172,7 @@ export default () => {
 
         if (isOnline) {
             if (appState.current === 'active') {
+                stopForegroundLocation();
                 watchPosition();
             } 
         } else {

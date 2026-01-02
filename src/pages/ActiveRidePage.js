@@ -29,6 +29,7 @@ const ActiveRidePage = () => {
   const { screenHeight } = getScreen()
   useEffect(() => {
     if (isDriverLogged) {
+      console.log("Fetching driver location on ActiveRidePage mount");
       updateCurrentDriverLocationDetails()
     } else {
       getUserCoordinates()

@@ -55,6 +55,8 @@ const RideMap = ({ from_details, to_details }) => {
     const rotation = useRef(new Animated.Value(from_details.heading || 0)).current;
 
 
+    const lastUpdateTime = useRef(Date.now());
+
     // Use AnimatedRegion for smooth animation
     const fromCoordinate = useRef(new AnimatedRegion({
         latitude: Number(from_details.latitude) + SPACE,
@@ -74,7 +76,8 @@ const RideMap = ({ from_details, to_details }) => {
     useEffect(() => {
         const newLat = Number(from_details.latitude) + SPACE;
         const newLng = Number(from_details.longitude) + SPACE;
-        const duration = 5000; // Match interval
+        const now = Date.now();
+        const timeDiff = now - lastUpdateTime.current;
 
         // Calculate rotation
         let newHeading = from_details.heading;
@@ -88,7 +91,7 @@ const RideMap = ({ from_details, to_details }) => {
                 );
             }
         }
-console.log('Animating to:', newLat, newLng, 'Heading:', newHeading);
+
         if (newHeading !== undefined) {
             const dist = getDistance(
                 prevFromDetails.current.latitude,
@@ -97,31 +100,44 @@ console.log('Animating to:', newLat, newLng, 'Heading:', newHeading);
                 from_details.longitude
             );
 
-            let headingDiff = Math.abs(newHeading - lastHeading.current);
-            if (headingDiff > 180) headingDiff = 360 - headingDiff;
-                console.log('Distance moved:', dist, 'Heading change:', headingDiff);
+            // Calculate shortest rotation path
+            let diff = newHeading - lastHeading.current;
+            while (diff > 180) diff -= 360;
+            while (diff < -180) diff += 360;
+            const headingDiff = Math.abs(diff);
 
-            // If distance is small (< 50m) and direction is reversed (> 45 deg), ignore update
-            if (dist < 50 && headingDiff > 45) {
-                console.log('Ignoring minor position update with large heading change');
+            // Update criteria:
+            // 1. Significant distance (> 10m)
+            // 2. Significant heading change (> 30deg)
+            // 3. Time interval (> 2000ms) to ensure eventual consistency
+            const isSignificantMove = dist > 10;
+            const isSignificantTurn = headingDiff > 30;
+            const isTimeThreshold = timeDiff > 2000;
+
+            if (!isSignificantMove && !isSignificantTurn && !isTimeThreshold) {
+                // Skip update to prevent jitter from small GPS noise
                 return;
             }
 
-            lastHeading.current = newHeading;
+            console.log('Updating position. Dist:', dist, 'HeadingDiff:', headingDiff, 'TimeDiff:', timeDiff);
+
+            const animateTo = lastHeading.current + diff;
+            lastHeading.current = animateTo;
 
             Animated.timing(rotation, {
-                toValue: newHeading,
+                toValue: animateTo,
                 duration: 500,
                 useNativeDriver: false,
             }).start();
         }
         
+        lastUpdateTime.current = now;
         prevFromDetails.current = from_details;
 
         fromCoordinate.timing({
             latitude: newLat,
             longitude: newLng,
-            duration: duration,
+            duration: 10000, // Smooth transition over 2s
             easing: Easing.linear,
             useNativeDriver: false,
         }).start();
@@ -220,6 +236,7 @@ const arePropsEqual = (prevProps, nextProps) => {
     return (
         prevProps.from_details.latitude === nextProps.from_details.latitude &&
         prevProps.from_details.longitude === nextProps.from_details.longitude &&
+        prevProps.from_details.heading === nextProps.from_details.heading &&
         prevProps.to_details.latitude === nextProps.to_details.latitude &&
         prevProps.to_details.longitude === nextProps.to_details.longitude
     );

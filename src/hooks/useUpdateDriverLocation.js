@@ -62,7 +62,7 @@ export default () => {
         const { company, model, colour, type, id: vehicleId } = driverInfo.Vehicle;
         const payload = {
             "driverId": profile.id,
-            "location": { latitude: location.latitude, longitude: location.longitude },
+            "location": { latitude: location.latitude, longitude: location.longitude},
             "category": driverInfo?.Vehicle?.VehicleType?.code,
             "status": isBusy ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
             "driver": {

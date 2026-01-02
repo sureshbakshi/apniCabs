@@ -12,6 +12,7 @@ import RideStackNavigation from './RideStackNavigation';
 import { setBugsnagUserInfo } from '../util';
 import MyTabBar from './TabBar';
 import { useTranslation } from 'react-i18next';
+import { useCallback } from 'react';
 setBugsnagUserInfo()
 
 const Tab = createBottomTabNavigator();
@@ -20,7 +21,14 @@ export default function UserTabNavigator() {
   useActiveRequestBackHandler();
 
   const { validateRequestExpiry } = useValidateRequestExpiry();
-  useAppStateListner(validateRequestExpiry)
+  
+  const handleAppStateChange = useCallback((nextAppState) => {
+    if (nextAppState === 'active') {
+      validateRequestExpiry();
+    }
+  }, [validateRequestExpiry]);
+
+  useAppStateListner(handleAppStateChange)
   const { t } = useTranslation()
   return (
     <AppProvider>
