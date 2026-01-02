@@ -33,7 +33,7 @@ export default function WalletStackNavigator({ navigation, route }) {
       <Stack.Screen
         name={ROUTES_NAMES.paymentWebView}
         component={PaymentPage}
-        options={{ headerShown: false }}
+        options={{ headerShown: false , title: t('payment') }}
       />
     </Stack.Navigator>
   );

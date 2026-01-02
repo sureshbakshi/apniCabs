@@ -32,13 +32,6 @@ const RideMap = ({ from_details, to_details }) => {
         longitude: Number(to_details.longitude) - SPACE,
     }), [to_details.latitude, to_details.longitude]);
 
-
-
-    // ✅ Stable key prevents MapView recreation
-    const mapKey = useMemo(() =>
-        `${from_details.latitude}-${from_details.longitude}-${to_details.latitude}-${to_details.longitude}`,
-        [from_details.latitude, from_details.longitude, to_details.latitude, to_details.longitude]);
-
     const fitToMarkers = useCallback(() => {
         if (mapRef.current) {
             mapRef.current.fitToCoordinates([fromCoordinate, toCoordinate], {
@@ -69,7 +62,6 @@ const RideMap = ({ from_details, to_details }) => {
     return (
         <View style={styles.container}>
             <MapView
-                key={mapKey}
                 style={styles.map}
                 ref={mapRef}
                 initialRegion={{

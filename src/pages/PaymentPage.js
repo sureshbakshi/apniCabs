@@ -27,8 +27,8 @@ const PaymentPage = ({ navigation, route }) => {
     const { data } = event.nativeEvent;
     try {
       const parsedData = JSON.parse(data);
-      if (parsedData.type === 'payment_success' || parsedData.type === 'payment_failure') {
-        updateTransactionStatus(parsedData.message);
+      if (parsedData?.type === 'payment_success' || parsedData?.type === 'payment_failure') {
+        updateTransactionStatus(parsedData?.message);
       }
     } catch (error) {
       console.error('Failed to parse message from WebView', error);

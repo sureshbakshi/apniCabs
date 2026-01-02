@@ -111,5 +111,6 @@
    "ride_details": "Ride Details",
    "my_rides": "My Rides",
    "login_permission_error": "You don't have enough permission to login.",
-   "subscription_plans": "Subscription Plans"
+   "subscription_plans": "Subscription Plans",
+   "payment": "Payment"
 }

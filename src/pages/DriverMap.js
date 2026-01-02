@@ -33,12 +33,15 @@ const DriverMap = React.memo(({ activeRequestInfo }) => {
     activeRequestInfo?.to_latitude, activeRequestInfo?.to_longitude,
     activeRequestInfo?.from, activeRequestInfo?.to, isAccepted]);
 
-    return (activeRequestInfo?.from_longitude && activeRequestInfo?.to_longitude)
+    return (from_details?.latitude && to_details?.latitude)
         ? <RideMap from_details={from_details} to_details={to_details} />
         : null;
 }, (prev, next) => {
     // Custom equality - only re-render if coordinates actually changed
-    return prev.activeRequestInfo?.id === next.activeRequestInfo?.id &&
+    return prev.activeRequestInfo?.from_latitude === next.activeRequestInfo?.from_latitude &&
+        prev.activeRequestInfo?.from_longitude === next.activeRequestInfo?.from_longitude &&
+        prev.activeRequestInfo?.to_latitude === next.activeRequestInfo?.to_latitude &&
+        prev.activeRequestInfo?.to_longitude === next.activeRequestInfo?.to_longitude &&
         prev.activeRequestInfo?.status === next.activeRequestInfo?.status;
 });
 
