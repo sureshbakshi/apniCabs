@@ -12,8 +12,8 @@ export const styles = StyleSheet.create({
     markerImageLarge: {
         minHeight: 5,
         minWidth: 5,
-        height: 40,
-        width: 40
+        height: 75,
+        width: 50,
     },
     markerImageSmall: {
         minHeight: 5,

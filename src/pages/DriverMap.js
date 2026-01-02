@@ -18,10 +18,11 @@ const DriverMap = React.memo(({ activeRequestInfo }) => {
     const from_details = useMemo(() => ({
         latitude: Number(location?.latitude) || 0,
         longitude: Number(location?.longitude) || 0,
+        heading: Number(location?.heading) || 0,
         title: 'You are here',
         description: isAccepted ? '' : activeRequestInfo?.from,
         image: getVehicleImage(vehicleCode) || images.pin
-    }), [location?.latitude, location?.longitude, isAccepted, activeRequestInfo?.from, vehicleCode]);
+    }), [location?.latitude, location?.longitude, location?.heading, isAccepted, activeRequestInfo?.from, vehicleCode]);
 
     const to_details = useMemo(() => ({
         latitude: isAccepted ? Number(activeRequestInfo?.from_latitude) : Number(activeRequestInfo?.to_latitude),

@@ -14,15 +14,15 @@ import {
 
 export const defaultOptions = {
     enableHighAccuracy: true,
-    maximumAge: 20 * 1000,
-    timeout: 60 * 1000,
-    distanceFilter: 0,
+    maximumAge: 0,             // Don't accept cached locations
+    timeout: 15000,
+    distanceFilter: 20,        // Increased to 20 meters to reduce jitter
     showLocationDialog: true,
     forceRequestLocation: true,
-    interval: 30 * 1000,
-    fastestInterval: 25 * 1000,
+    interval: 5000,            // Update every 5 seconds
+    fastestInterval: 5000,     // Match interval to prevent rapid updates
     useSignificantChanges: false,
-    showsBackgroundLocationIndicator: false,
+    showsBackgroundLocationIndicator: true,
 };
 
 export default () => {
@@ -79,9 +79,9 @@ export default () => {
                     watchIdRef.current = Geolocation.watchPosition(
                         (position) => {
                             if (position?.coords) {
-                                const { latitude, longitude } = position.coords;
-                                dispatch(setDriverLocation({ latitude, longitude }));
-                                debouncedUpdateDriverLocationToServer({ latitude, longitude });
+                                const { latitude, longitude, heading } = position.coords;
+                                dispatch(setDriverLocation({ latitude, longitude, heading }));
+                                debouncedUpdateDriverLocationToServer({ latitude, longitude, heading });
                             }
                         },
                         (error) => {

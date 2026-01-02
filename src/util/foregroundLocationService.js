@@ -86,7 +86,7 @@ export const foreGroundService = () => {
             console.log('Task running but no coords found');
         }
     }, {
-        delay: 30000,
+        delay: 5000,
         onLoop: true,
         taskId: taskId,
         onError: (e) => console.log('Error in task:', e),

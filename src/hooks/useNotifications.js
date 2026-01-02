@@ -77,8 +77,6 @@ export default () => {
     console.log({ Notifications })
     // Notifications.registerLocalNotifications();
     if (!isInitialized) {
-      registerRemoteNotifications()
-      getInitialNotification()
       Notifications.events().registerNotificationReceivedForeground((remoteNotification, completion) => {
         console.log('Local Notification received in foreground:', remoteNotification);
         const { payload } = remoteNotification;
@@ -111,6 +109,9 @@ export default () => {
       Notifications.events().registerRemoteNotificationsRegistrationDenied((event) => {
         console.error({ registerRemoteNotificationsRegistrationDenied: event });
       });
+
+      registerRemoteNotifications()
+      getInitialNotification()
       isInitialized = true
 
     }

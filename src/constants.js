@@ -328,9 +328,9 @@ export const toastConfig = {
 
 
 export const VEHICLE_IMAGES = {
-  BIKE: images.BIKE,
-  AUTO: images.AUTO,
-  CAR: images.carYellow
+  BIKE: images.BIKE_1,
+  AUTO: images.AUTO_1,
+  CAR: images.CAR_1
 }
 
 export const VEHICLE_TYPES = {

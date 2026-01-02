@@ -21,7 +21,7 @@ export default () => {
             if (!isOffline) {
                 delayedRefetch?.({}, false)
             }
-        }, [])
+        }, [isOffline, delayedRefetch])
     );
     useEffect(() => {
         if (isDriverError) {

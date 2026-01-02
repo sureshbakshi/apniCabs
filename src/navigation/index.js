@@ -13,6 +13,20 @@ import { useSelector } from 'react-redux';
 import SomethingWentWrong from '../components/common/Error';
 import RideStatusDialog from '../components/common/RideStatusDialog';
 import CallOptionsDialog from '../components/common/callOptionsDialog';
+import { ROUTES_NAMES } from '../constants';
+
+const linking = {
+  prefixes: ['pikbike://'],
+  config: {
+    screens: {
+      [ROUTES_NAMES.wallet]: {
+        screens: {
+          [ROUTES_NAMES.paymentWebView]: 'payment-result',
+        },
+      },
+    },
+  },
+};
 
 Bugsnag.start({
   plugins: [new BugsnagPluginReactNavigation()],
@@ -37,6 +51,7 @@ function App() {
     <>
       <ErrorBoundary FallbackComponent={ErrorView}>
         <BugsnagNavigationContainer
+          linking={linking}
           ref={navigationRef}
           fallback={<ActivityIndicator color="blue" size="large" />}>
           <GetNavigation />

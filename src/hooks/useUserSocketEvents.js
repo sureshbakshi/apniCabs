@@ -77,6 +77,7 @@ export default function useUserSocketEvents() {
         };
 
         const handleDriverLocationUpdate = (updatedLocation) => {
+            console.log('Log time:', new Date().toISOString());
             console.log('Received DriverLocationSocket event:', updatedLocation);
             if (updatedLocation?.latitude) {
                 dispatch(updateDriverLocation(updatedLocation));

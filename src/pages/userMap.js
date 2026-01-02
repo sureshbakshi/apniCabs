@@ -64,11 +64,13 @@ const UserMap = React.memo(({ activeRequestInfo }) => {
     }
 
     return <RideMap from_details={from_details} to_details={to_details} />;
-}, (prevProps, nextProps) => {
+}, (prev, next) => {
     // ✅ Custom equality - only re-render if ride ID or status changes
-    return (
-        prevProps.activeRequestInfo?.id === nextProps.activeRequestInfo?.id &&
-        prevProps.activeRequestInfo?.status === nextProps.activeRequestInfo?.status
+    return (prev.activeRequestInfo?.from_latitude === next.activeRequestInfo?.from_latitude &&
+        prev.activeRequestInfo?.from_longitude === next.activeRequestInfo?.from_longitude &&
+        prev.activeRequestInfo?.to_latitude === next.activeRequestInfo?.to_latitude &&
+        prev.activeRequestInfo?.to_longitude === next.activeRequestInfo?.to_longitude &&
+        prev.activeRequestInfo?.status === next.activeRequestInfo?.status
     );
 });
 
