@@ -16,7 +16,7 @@ import CallOptionsDialog from '../components/common/callOptionsDialog';
 import { ROUTES_NAMES } from '../constants';
 
 const linking = {
-  prefixes: ['pikbike://'],
+  prefixes: ['pikbikedriver://'],
   config: {
     screens: {
       [ROUTES_NAMES.wallet]: {

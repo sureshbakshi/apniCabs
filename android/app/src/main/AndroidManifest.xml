@@ -70,7 +70,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="pikbike" />
+                <data android:scheme="pikbikedriver" />
             </intent-filter>
         </activity>
       <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.

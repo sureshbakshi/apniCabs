@@ -1,29 +1,49 @@
-import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
-import { Alert, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { goBack } from '../util/navigationService';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../constants';
 import { Icon } from '../components/common';
-import { useVerifyPaymentMutation } from '../slices/apiSlice';
 
-const PaymentPage = ({ navigation, route }) => {
-  const { url, order_id, order_key } = route.params || {};
+const PaymentPage = ({ route }) => {
+  const { url } = route.params || {};
   const [transactionStatus, setTransactionStatus] = useState(null); // 'success' | 'failure' | null
-  const [verifyPayment] = useVerifyPaymentMutation();
   const webviewRef = useRef(null);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    if (route.params?.txnId) {
-      setTransactionStatus('success');
-    } else if (!url) {
+    let timer;
+    if (transactionStatus === 'success' || transactionStatus === 'failure') {
+      timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [transactionStatus]);
+
+  useEffect(() => {
+    if (countdown === 0) {
       goBack();
     }
-  }, [route.params?.txnId, url]);
+  }, [countdown]);
+
+  useEffect(() => {
+    if (route.params?.txnId && route.params?.status === "Success") {
+      setTransactionStatus('success');
+    } else if (!url) {
+      setTransactionStatus('failure');
+    }
+  }, [route.params?.txnId, route.params?.status, url]);
 
   const updateTransactionStatus = async (transactionInfo) => {
     try {
-      await verifyPayment({ order_id, order_key, txnResponse: transactionInfo }).unwrap();
       setTransactionStatus('success');
     } catch (error) {
       console.error('Error fetching payment status:', error);
@@ -35,11 +55,12 @@ const PaymentPage = ({ navigation, route }) => {
     const { data } = event.nativeEvent;
     try {
       const parsedData = JSON.parse(data);
-      if (parsedData?.type === 'payment_success' || parsedData?.type === 'payment_failure') {
-        updateTransactionStatus(parsedData?.message);
+      if (parsedData?.message?.status === 111) {
+        setTransactionStatus('failure');
       }
     } catch (error) {
       console.error('Failed to parse message from WebView', error);
+      setTransactionStatus('failure');
     }
   };
 
@@ -50,6 +71,7 @@ const PaymentPage = ({ navigation, route }) => {
           <Icon name="check-circle" size={'doubleLarge'} color={COLORS.green} />
           <Text style={styles.title}>Payment Successful!</Text>
           <Text style={styles.message}>Your transaction has been completed successfully.</Text>
+          <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
           <TouchableOpacity style={styles.button} onPress={() => goBack()}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
@@ -65,6 +87,7 @@ const PaymentPage = ({ navigation, route }) => {
           <Icon name="alert-circle" size={'doubleLarge'} color={COLORS.red} />
           <Text style={styles.title}>Payment Failed</Text>
           <Text style={styles.message}>Something went wrong with your transaction. Please try again.</Text>
+          <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
           <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.red }]} onPress={() => goBack()}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
@@ -127,6 +150,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.text_gray,
     marginBottom: 30,
+  },
+  redirectMessage: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: COLORS.text_gray,
+    marginBottom: 20,
+    fontStyle: 'italic',
   },
   button: {
     backgroundColor: COLORS.green,
