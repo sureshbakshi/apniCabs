@@ -59,11 +59,11 @@ export default function DriverStackNavigator({ navigation }) {
     const state = navigation.getState();
     const currentRoute = state.routes[state.index]?.name;
 
-    console.log('DriverStack focus:', {
-      currentRoute,
-      serviceUnavailable,
-      needsVerification,
-    });
+    // console.log('DriverStack focus:', {
+    //   currentRoute,
+    //   serviceUnavailable,
+    //   needsVerification,
+    // });
 
     const target =
       serviceUnavailable

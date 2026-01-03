@@ -6,7 +6,7 @@ import { checkAndroidPermissions, requestAndroidBackgroundPermission } from "../
 import { useDispatch, useSelector } from "react-redux";
 import { setDriverLocation } from "../slices/driverSlice";
 import useUpdateDriverLocation from "./useUpdateDriverLocation";
-import { DriverAvailableStatus } from "../constants";
+import { DriverAvailableStatus, LOCATION_CONFIG } from "../constants";
 import {
     startForegroundLocation,
     stopForegroundLocation,
@@ -15,12 +15,12 @@ import {
 export const defaultOptions = {
     enableHighAccuracy: true,
     maximumAge: 0,             // Don't accept cached locations
-    timeout: 30000,
+    timeout: LOCATION_CONFIG.WATCHER_TIMEOUT,
     distanceFilter: 0,         // Set to 0 to receive updates even when stationary
     showLocationDialog: true,
     forceRequestLocation: true,
-    interval: 7000,            // Update every 15 seconds
-    fastestInterval: 7000,     // Match interval to prevent rapid updates
+    interval: LOCATION_CONFIG.WATCHER_INTERVAL,
+    fastestInterval: LOCATION_CONFIG.WATCHER_FASTEST_INTERVAL,
     useSignificantChanges: false,
     showsBackgroundLocationIndicator: true,
 };
@@ -31,9 +31,9 @@ export default () => {
     const serviceUnavailable = useSelector(
         (state) => state.driver.serviceUnavailable
     );
-    
+
     const debouncedUpdateDriverLocationToServer = useUpdateDriverLocation();
-    
+
     // 1. FIX: Move watchId to useRef so it is scoped to this hook instance
     const watchIdRef = useRef(null);
     const isRequestingPermission = useRef(false);
@@ -45,7 +45,7 @@ export default () => {
     // Helper to clear watch safely
     const clearWatch = useCallback(() => {
         if (watchIdRef.current !== null) {
-            console.log("Clearing watch ID:", watchIdRef.current);
+            // console.log("Clearing watch ID:", watchIdRef.current);
             Geolocation.clearWatch(watchIdRef.current);
             watchIdRef.current = null;
         }
@@ -61,7 +61,7 @@ export default () => {
             return;
         }
 
-        console.log("Starting location watch...");
+        // console.log("Starting location watch...");
         isRequestingPermission.current = true;
         let granted = false;
 
@@ -82,9 +82,9 @@ export default () => {
                         (position) => {
                             if (position?.coords) {
                                 const { latitude, longitude, heading } = position.coords;
-                                console.log("New watcher before position:", latitude, longitude, heading, watchIdRef.current);
-                                
                                 const now = Date.now();
+                                // console.log("watcher called at:", new Date(now).toLocaleString());
+                                // console.log("New watcher before position:", latitude, longitude, heading, watchIdRef.current);
                                 const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
 
                                 // Prevent duplicate updates
@@ -92,13 +92,13 @@ export default () => {
                                     lastPositionRef.current.latitude === latitude &&
                                     lastPositionRef.current.longitude === longitude &&
                                     lastPositionRef.current.heading === heading &&
-                                    timeSinceLastUpdate < 10000 // Allow update if > 15s has passed
+                                    timeSinceLastUpdate < LOCATION_CONFIG.WATCHER_INTERVAL // Allow update if > 5s has passed
                                 ) {
                                     return;
                                 }
                                 lastPositionRef.current = { latitude, longitude, heading };
                                 lastUpdateTimeRef.current = now;
-
+                                console.log("API called at:", new Date().toLocaleString());
                                 console.log("New watcher position:", latitude, longitude, heading, watchIdRef.current);
                                 dispatch(setDriverLocation({ latitude, longitude, heading }));
                                 debouncedUpdateDriverLocationToServer({ latitude, longitude, heading });
@@ -107,13 +107,13 @@ export default () => {
                         (error) => {
                             console.log("watchPosition error:", error);
                             // Only show error if it's not a permission error we already handled
-                            if (error.code !== 1) { 
+                            if (error.code !== 1) {
                                 showErrorMessage("GPS Error: " + error.message);
                             }
                         },
                         defaultOptions
                     );
-                    console.log("Watch started with ID:", watchIdRef.current);
+                    // console.log("Watch started with ID:", watchIdRef.current);
                 }
             } else {
                 lastPermissionDenialTime.current = Date.now();
@@ -130,7 +130,7 @@ export default () => {
     useEffect(() => {
         const handleAppStateChange = (nextAppState) => {
             const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
-            
+
             // 3. FIX: CRITICAL - If we are currently requesting permission, 
             // IGNORE AppState changes. The OS dialog causes Background/Active 
             // transitions that trigger the infinite loop.
@@ -167,14 +167,14 @@ export default () => {
     // This handles the initial start or when the user toggles the switch
     useEffect(() => {
         const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
-        
-        console.log("Driver Status Changed. Online:", isOnline, "AppState:", appState.current,"watchIdRef:" , watchIdRef.current);
+
+        // console.log("Driver Status Changed. Online:", isOnline, "AppState:", appState.current, "watchIdRef:", watchIdRef.current);
 
         if (isOnline) {
             if (appState.current === 'active') {
                 stopForegroundLocation();
                 watchPosition();
-            } 
+            }
         } else {
             // Offline
             clearWatch();

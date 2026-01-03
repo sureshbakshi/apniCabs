@@ -2,16 +2,23 @@
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { getCurrentCoordsOnce, requestAndroidBackgroundPermission } from '../util/location';
 import { store } from '../store';
-import { DriverAvailableStatus } from '../constants';
-export const taskId = 'driver_tracking_task';
+import { DriverAvailableStatus, LOCATION_CONFIG } from '../constants';
+export const taskId = LOCATION_CONFIG.BG_TASK_ID;
 
 const locationTask = async () => {
-    console.log('[BG TASK] Running even if app is closed!');
+    // console.log('[BG TASK] Running even if app is closed!');
     const coords = await getCurrentCoordsOnce();
+    console.log('[BG TASK] Got coords:', coords);
     if (coords) {
-        const { latitude, longitude } = coords;
+        const { latitude, longitude, timestamp } = coords;
+        const isFresh = (Date.now() - timestamp) < LOCATION_CONFIG.BG_LOCATION_FRESHNESS_THRESHOLD;
+        
+        if (!isFresh) {
+            console.log('Ignoring stale background location (timestamp too old)');
+            return;
+        }
         const state = store.getState();
-        console.log('state', state)
+        // console.log('state', state)
         const { driverInfo, access_token, device_token, userInfo: profile } = state.auth
         const { company, model, colour, type } = driverInfo.Vehicle;
         const payload = {
@@ -33,7 +40,7 @@ const locationTask = async () => {
             }
         };
 
-        console.log('BG Task - calling driver location api with payload:', payload);
+        // console.log('BG Task - calling driver location api with payload:', payload.location);
         try {
             const res = await fetch('https://api.dev.pikbike.com/location/location', {
                 method: 'PUT',
@@ -41,7 +48,7 @@ const locationTask = async () => {
                 body: JSON.stringify(payload),
             });
             const data = res.json();
-            console.log(data)
+            // console.log(data)
         } catch (e) { console.error("API Error", e); }
     } else {
         console.log('Task running but no coords found');
@@ -72,7 +79,7 @@ export const startForegroundLocation = async () => {
     
     // Ensure task is added and running
     ReactNativeForegroundService.add_task(locationTask, {
-        delay: 7000,
+        delay: LOCATION_CONFIG.BG_TASK_DELAY,
         onLoop: true,
         taskId: taskId,
         onError: (e) => console.log('Error in task:', e),
@@ -80,7 +87,7 @@ export const startForegroundLocation = async () => {
 };
 
 export const stopForegroundLocation = () => {
-    console.log("Stopping foreground location service");
+    // console.log("Stopping foreground location service");
     ReactNativeForegroundService.stopAll(); // Stops service and the background task
     // ReactNativeForegroundService.remove_task(taskId); // Stops service and the background task
 
@@ -99,7 +106,7 @@ export const foreGroundService = () => {
     
     // Register task initially as well
     ReactNativeForegroundService.add_task(locationTask, {
-        delay: 7000,
+        delay: LOCATION_CONFIG.BG_TASK_DELAY,
         onLoop: true,
         taskId: taskId,
         onError: (e) => console.log('Error in task:', e),

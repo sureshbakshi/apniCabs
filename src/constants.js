@@ -5,6 +5,29 @@ import { styles } from './navigation/TabBar';
 
 export const TAB_BAR_HEIGHT = 65;
 
+export const LOCATION_CONFIG = {
+  // Map Animation & Rendering
+  LATITUDE_DELTA: 0.012,
+  SPACE: 0.00,
+  ANIMATION_DURATION: 6000,
+  ROTATION_DURATION: 1000,
+
+  // Movement Thresholds for Map Updates
+  MIN_DISTANCE_FOR_UPDATE: 5, // meters
+  MIN_HEADING_CHANGE: 10,     // degrees
+  MIN_TIME_BETWEEN_UPDATES: 2000, // ms
+
+  // Location Service / Watcher
+  WATCHER_INTERVAL: 5000,
+  WATCHER_FASTEST_INTERVAL: 5000,
+  WATCHER_TIMEOUT: 30000,
+
+  // Background Task
+  BG_TASK_ID: 'driver_tracking_task',
+  BG_TASK_DELAY: 5000,
+  BG_LOCATION_FRESHNESS_THRESHOLD: 6000,
+};
+
 
 export const ELEMENTS = {
   select: "select",

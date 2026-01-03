@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { goBack } from '../util/navigationService';
+import { goBack, navigate } from '../util/navigationService';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '../constants';
+import { COLORS, ROUTES_NAMES } from '../constants';
 import { Icon } from '../components/common';
 
 const PaymentPage = ({ route }) => {
@@ -30,7 +30,7 @@ const PaymentPage = ({ route }) => {
 
   useEffect(() => {
     if (countdown === 0) {
-      goBack();
+      navigate(ROUTES_NAMES.wallet);
     }
   }, [countdown]);
 
@@ -41,15 +41,6 @@ const PaymentPage = ({ route }) => {
       setTransactionStatus('failure');
     }
   }, [route.params?.txnId, route.params?.status, url]);
-
-  const updateTransactionStatus = async (transactionInfo) => {
-    try {
-      setTransactionStatus('success');
-    } catch (error) {
-      console.error('Error fetching payment status:', error);
-      setTransactionStatus('failure');
-    }
-  }
 
   const handleWebViewMessage = (event) => {
     const { data } = event.nativeEvent;
@@ -72,7 +63,7 @@ const PaymentPage = ({ route }) => {
           <Text style={styles.title}>Payment Successful!</Text>
           <Text style={styles.message}>Your transaction has been completed successfully.</Text>
           <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
-          <TouchableOpacity style={styles.button} onPress={() => goBack()}>
+          <TouchableOpacity style={styles.button} onPress={() => navigate(ROUTES_NAMES.wallet)}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
         </View>
@@ -88,7 +79,7 @@ const PaymentPage = ({ route }) => {
           <Text style={styles.title}>Payment Failed</Text>
           <Text style={styles.message}>Something went wrong with your transaction. Please try again.</Text>
           <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
-          <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.red }]} onPress={() => goBack()}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.red }]} onPress={() => navigate(ROUTES_NAMES.wallet)}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
         </View>

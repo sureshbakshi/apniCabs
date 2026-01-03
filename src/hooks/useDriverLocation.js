@@ -44,7 +44,7 @@ const useDriverLocation = () => {
     }, [getCoordinates, dispatchDriverLocation]);
 
     const updateCurrentDriverLocationDetails = useCallback(async () => {
-        console.log('useDriverLocation: Fetching current driver location details');
+        // console.log('useDriverLocation: Fetching current driver location details');
         await getCoordinates(updateDriverLocation);
     }, [getCoordinates, updateDriverLocation]);
 

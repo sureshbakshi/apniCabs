@@ -24,7 +24,7 @@ export default function WalletStackNavigator({ navigation, route }) {
         }
       }}
     >
-      <Stack.Screen name="My Wallet" component={WalletPage} options={{ headerShown: false }} c />
+      <Stack.Screen name={ROUTES_NAMES.wallet} options={{ headerShown: false }} component={WalletPage} />
       <Stack.Screen
         name={ROUTES_NAMES.myPlans}
         options={{ title: t('subscription_plans') }}

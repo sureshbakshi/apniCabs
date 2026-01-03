@@ -62,7 +62,7 @@ export default () => {
         }
     }, [driverInfo, userInfo, access_token, logOut, t]);
 
-    console.log('requiredVersion', requiredVersion)
+    // console.log('requiredVersion', requiredVersion)
 
     // Force update ✅
     if (shouldUpdate) {

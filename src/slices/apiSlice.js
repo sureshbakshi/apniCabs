@@ -30,10 +30,10 @@ const baseQuery = fetchBaseQuery({
   },
 });
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  console.log(JSON.stringify(args))
+  // console.log(JSON.stringify(args))
 
   let result = await baseQuery(args, api, extraOptions);
-  console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
+  // console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
   const err = result?.error?.data?.error || result?.error
   if (err) {
     showErrorMessage(err)

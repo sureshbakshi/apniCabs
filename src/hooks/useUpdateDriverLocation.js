@@ -34,7 +34,7 @@ export default () => {
         const location = queueRef.current.shift();
 
         try {
-            console.log('calling driver location api with payload:', location);
+            // console.log('calling driver location api with payload:', location);
             const response = updateDriverLocation(location.payload);
             await response.unwrap();
             dispatch(setServiceUnavailable(false))

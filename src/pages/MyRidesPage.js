@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Pressable, FlatList, SafeAreaView } from 'react-native';
+import { View, Pressable, FlatList, SafeAreaView, RefreshControl, ScrollView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, ROUTES_NAMES, RideStatus, colorsNBg } from '../constants';
 import { Icon, ImageView, Text } from '../components/common';
@@ -82,10 +82,34 @@ const Card = ({ item, keys }) => {
     </View> */}
   </Pressable>
 }
-const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
+const MyRidePage = ({ data, keys, loadMore, isFetching, onRefresh }) => {
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const handleRefresh = React.useCallback(async () => {
+    if (onRefresh) {
+      setRefreshing(true);
+      await onRefresh();
+      setRefreshing(false);
+    }
+  }, [onRefresh]);
+
   if (!data?.length) {
-    return <SearchLoader msg={t('no_records')} />
+    return (
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <SearchLoader msg={t('no_records')} />
+      </ScrollView>
+    );
   }
   return (
     <ContainerWrapper style={{ paddingHorizontal: 10 }}>
@@ -97,6 +121,14 @@ const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              colors={[COLORS.primary]}
+              tintColor={COLORS.primary}
+            />
+          }
         />
       </View>
     </ContainerWrapper>

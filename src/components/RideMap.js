@@ -11,12 +11,13 @@ import { ImageView } from './common';
 import { mapStyle } from '../styles/googleMapStyle';
 import { styles } from '../styles/RideMapStyles';
 import { useFocusEffect } from '@react-navigation/native';
+import { LOCATION_CONFIG } from '../constants';
 
 const { screenWidth, screenHeight } = getScreen();
 const ASPECT_RATIO = screenWidth / (screenHeight - 530);
-const LATITUDE_DELTA = 0.012;
+const LATITUDE_DELTA = LOCATION_CONFIG.LATITUDE_DELTA;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.00;
+const SPACE = LOCATION_CONFIG.SPACE;
 
 const getBearing = (startLat, startLng, destLat, destLng) => {
     const startLatRad = (startLat * Math.PI) / 180;
@@ -107,26 +108,25 @@ const RideMap = ({ from_details, to_details }) => {
             const headingDiff = Math.abs(diff);
 
             // Update criteria:
-            // 1. Significant distance (> 10m)
-            // 2. Significant heading change (> 30deg)
+            // 1. Significant distance (> 5m)
+            // 2. Significant heading change (> 10deg)
             // 3. Time interval (> 2000ms) to ensure eventual consistency
-            const isSignificantMove = dist > 10;
-            const isSignificantTurn = headingDiff > 30;
-            const isTimeThreshold = timeDiff > 2000;
+            const isSignificantMove = dist > LOCATION_CONFIG.MIN_DISTANCE_FOR_UPDATE;
+            const isSignificantTurn = headingDiff > LOCATION_CONFIG.MIN_HEADING_CHANGE;
+            const isTimeThreshold = timeDiff > LOCATION_CONFIG.MIN_TIME_BETWEEN_UPDATES;
 
             if (!isSignificantMove && !isSignificantTurn && !isTimeThreshold) {
                 // Skip update to prevent jitter from small GPS noise
                 return;
             }
 
-            console.log('Updating position. Dist:', dist, 'HeadingDiff:', headingDiff, 'TimeDiff:', timeDiff);
 
             const animateTo = lastHeading.current + diff;
             lastHeading.current = animateTo;
 
             Animated.timing(rotation, {
                 toValue: animateTo,
-                duration: 500,
+                duration: LOCATION_CONFIG.ROTATION_DURATION,
                 useNativeDriver: false,
             }).start();
         }
@@ -137,7 +137,7 @@ const RideMap = ({ from_details, to_details }) => {
         fromCoordinate.timing({
             latitude: newLat,
             longitude: newLng,
-            duration: 10000, // Smooth transition over 2s
+            duration: LOCATION_CONFIG.ANIMATION_DURATION,
             easing: Easing.linear,
             useNativeDriver: false,
         }).start();

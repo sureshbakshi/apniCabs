@@ -4,7 +4,7 @@ import MyRidePage from "../MyRidesPage"
 import { useFocusEffect } from '@react-navigation/native';
 import { mergeObjectsWithoutDuplicates } from "../../util";
 
-const PageSize = 20;
+const PageSize = 10;
 
 
 export default () => {
@@ -85,6 +85,13 @@ export default () => {
         avatar: '',       // ✅ Driver photo URL
         fare: 'RequestRides.fare'      // ✅ Total fare
     }
+
+    const handleRefresh = useCallback(async () => {
+        setPage(1);
+        setHasMore(true);
+        await refetchHistory(1);
+    }, [refetchHistory]);
+
     return (
         <MyRidePage
             data={rides}
@@ -92,6 +99,7 @@ export default () => {
             loadMore={loadMore}
             isFetching={isFetching}
             hasMore={hasMore}
+            onRefresh={handleRefresh}
         />
     );
 };

@@ -4,6 +4,7 @@ import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
 import filter from 'lodash/filter';
 import config from './config';
+import { LOCATION_CONFIG } from '../constants';
 
 
 export const requestIosLocationPermissions = async () => {
@@ -142,9 +143,10 @@ export const getCurrentCoordsOnce = () => {
     return new Promise((resolve) => {
         Geolocation.getCurrentPosition(
             (position) => {
-                if (position?.coords) {
+                if (position?.coords && position?.timestamp) {
                     const { latitude, longitude } = position.coords;
-                    resolve({ latitude, longitude });
+                    console.log('getCurrentCoordsOnce got coords:', latitude, longitude, position.timestamp);
+                    resolve({ latitude, longitude, timestamp: position.timestamp });
                 } else {
                     resolve(null);
                 }
@@ -155,8 +157,8 @@ export const getCurrentCoordsOnce = () => {
             },
             {
                 enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 10000,
+                timeout: LOCATION_CONFIG.WATCHER_TIMEOUT,
+                maximumAge: 0,
                 distanceFilter: 0,
             },
         );
