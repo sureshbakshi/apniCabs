@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateDriverLocationMutation } from "../slices/apiSlice";
 import { isDriver, isDriverBusy, _isDriverOnline } from '../util';
-import { DriverAvailableStatus, ROUTES_NAMES } from "../constants";
-import { useNavigation } from "@react-navigation/native";
-import { useRef, useCallback, useEffect } from 'react';
+import { DriverAvailableStatus } from "../constants";
+import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { setServiceUnavailable } from "../slices/driverSlice";
 
 export default () => {
@@ -13,81 +12,106 @@ export default () => {
     const isDriverLogged = isDriver();
     const isBusy = isDriverBusy();
     const isOnline = _isDriverOnline();
-    const navigation = useNavigation();
-    const is_available = isBusy || isOnline;
+    const isAvailable = isBusy || isOnline;
 
+    const shouldUpdate = useMemo(() =>
+        Boolean(profile?.id && driverInfo?.Vehicle && isDriverLogged && isAvailable),
+        [profile?.id, driverInfo?.Vehicle, isDriverLogged, isAvailable]
+    );
 
-    // Debounce refs - shared across all calls
-    const queueRef = useRef([]);
+    // Single latest location ref (no queue)
+    const latestLocationRef = useRef(null);
+    const timeoutRef = useRef(null);
     const isProcessingRef = useRef(false);
     const lastProcessedRef = useRef(0);
-    const MIN_INTERVAL = 4000; // 4 seconds
+    const MIN_INTERVAL = 5000; // 10 seconds
+    const DEBOUNCE_DELAY = 10; // 10ms for burst handling
 
-    const processQueue = useCallback(async () => {
+    const sendLatestLocation = useCallback(async () => {
         const now = Date.now();
-        if (isProcessingRef.current || queueRef.current.length === 0 ||
-            (now - lastProcessedRef.current < MIN_INTERVAL)) {
+
+        // Rate limit: skip if too soon
+        if (now - lastProcessedRef.current < MIN_INTERVAL) {
+            return;
+        }
+
+        // No location to send
+        if (!latestLocationRef.current) {
             return;
         }
 
         isProcessingRef.current = true;
-        const location = queueRef.current.shift();
+        const locationData = latestLocationRef.current;
 
         try {
-            console.log('calling driver location api with payload:', new Date().toLocaleString() , '--', location?.payload?.location);
-            const response = updateDriverLocation(location.payload);
-            await response.unwrap();
-            dispatch(setServiceUnavailable(false))
+            console.log("updateDriverLocation", new Date().toLocaleString(), locationData.payload.location);
+            await updateDriverLocation(locationData.payload).unwrap();
+            dispatch(setServiceUnavailable(false));
             lastProcessedRef.current = now;
         } catch (err) {
-            if (err.status === 404) {
-                dispatch(setServiceUnavailable(true))
+            if (err?.status === 404) {
+                dispatch(setServiceUnavailable(true));
             } else {
-                console.log('Error updating location:', err);
-                // Re-queue failed update
-                queueRef.current.unshift(location);
+                console.error('Location update failed:', err);
+                // Don't retry - wait for next valid location
             }
         } finally {
             isProcessingRef.current = false;
-            // Process next after interval
-            setTimeout(processQueue, MIN_INTERVAL);
+            latestLocationRef.current = null; // Clear after processing
         }
-    }, [updateDriverLocation, navigation]);
+    }, [updateDriverLocation, dispatch]);
 
     const debouncedUpdateDriverLocationToServer = useCallback((location) => {
-        if (!Boolean(location?.latitude) || !isDriverLogged || !is_available || !driverInfo?.Vehicle) {
+        if (!location?.latitude || !shouldUpdate) {
             return;
         }
 
-        const { company, model, colour, type, id: vehicleId } = driverInfo.Vehicle;
+        const vehicle = driverInfo.Vehicle;
         const payload = {
-            "driverId": profile.id,
-            "location": { latitude: location.latitude, longitude: location.longitude , heading: location.heading , timestamp: location.timestamp },
-            "category": driverInfo?.Vehicle?.VehicleType?.code,
-            "status": isBusy ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
-            "driver": {
-                "name": driverInfo?.name,
-                ...(driverInfo?.email ? { email: driverInfo?.email } : {})
+            driverId: profile.id,
+            location: {
+                latitude: location.latitude,
+                longitude: location.longitude,
+                heading: location.heading,
+                timestamp: location.timestamp
             },
-            "vehicle": {
-                company,
-                model,
-                colour,
-                type: driverInfo?.Vehicle?.VehicleType?.code,
-                registrationNumber: driverInfo?.Vehicle?.registration_number,
-                type_id: type
+            category: vehicle?.VehicleType?.code,
+            status: isBusy ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
+            driver: {
+                name: driverInfo?.name,
+                ...(driverInfo?.email && { email: driverInfo?.email })
+            },
+            vehicle: {
+                company: vehicle.company,
+                model: vehicle.model,
+                colour: vehicle.colour,
+                type: vehicle?.VehicleType?.code,
+                registrationNumber: vehicle.registration_number,
+                type_id: vehicle.type
             }
         };
 
-        // Queue the update (prevents duplicates)
-        queueRef.current.push({ payload, timestamp: Date.now() });
-        processQueue();
-    }, [profile.id, driverInfo, isDriverLogged, is_available, isBusy, processQueue]);
+        // **ALWAYS replace with latest** - discard previous
+        latestLocationRef.current = { payload };
 
-    // Cleanup on unmount
+        // Cancel previous timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Schedule send after 10ms debounce (handles 10 requests in 10ms burst)
+        timeoutRef.current = setTimeout(() => {
+            sendLatestLocation();
+        }, DEBOUNCE_DELAY);
+    }, [profile.id, driverInfo, shouldUpdate, isBusy, sendLatestLocation]);
+
+    // Cleanup timeouts on unmount
     useEffect(() => {
         return () => {
-            queueRef.current = [];
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            latestLocationRef.current = null;
             isProcessingRef.current = false;
         };
     }, []);

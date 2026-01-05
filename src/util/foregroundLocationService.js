@@ -53,7 +53,7 @@ const locationTask = async () => {
             }
         };
 
-        // console.log('BG Task - calling driver location api with payload:', payload.location, `${api_url}/location/location`);
+        //console.log('BG Task - calling driver location api with payload:', payload.location, `${api_url}/location/location`);
         try {
             const res = await fetch(`${api_url}/location/location`, {
                 method: 'PUT',
@@ -69,7 +69,7 @@ const locationTask = async () => {
 };
 
 export const startForegroundLocation = async () => {
-    if (Platform.OS !== 'android') return; 
+    if (Platform.OS !== 'android') return;
     const granted = await requestAndroidBackgroundPermission();
     if (!granted) return;
 
@@ -92,12 +92,15 @@ export const startForegroundLocation = async () => {
     ReactNativeForegroundService.start(startConfig);
 
     // Ensure task is added and running
-    ReactNativeForegroundService.add_task(locationTask, {
-        delay: LOCATION_CONFIG.BG_TASK_DELAY,
-        onLoop: true,
-        taskId: taskId,
-        onError: (e) => console.log('Error in task:', e),
-    });
+    // console.log("Starting foreground location service add_task", ReactNativeForegroundService.get_all_tasks());
+    if (!ReactNativeForegroundService.is_task_running(taskId)) {
+        ReactNativeForegroundService.add_task(locationTask, {
+            delay: LOCATION_CONFIG.BG_TASK_DELAY,
+            onLoop: true,
+            taskId: taskId,
+            onError: (e) => console.log('Error in task:', e),
+        });
+    }
 };
 
 export const stopForegroundLocation = () => {

@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useGetDriverDetailsMutation, useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
+import { useGetDriverDetailsMutation, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import isEmpty from 'lodash/isEmpty';
 import { setDriverStatus, setServiceUnavailable } from "../slices/driverSlice"
-import { DriverAvailableStatus, ROUTES_NAMES } from "../constants"
+import { DriverAvailableStatus } from "../constants"
 import { isDriver, isOwner } from "../util"
 import useGetCurrentLocation from "./useGetCurrentLocation"
-import { useNavigation } from "@react-navigation/native"
 
 export const useDisptachDriverDetails = (details) => {
     const dispatch = useDispatch()
@@ -44,25 +43,35 @@ export default useGetDriverDetails = (options, isCb = false) => {
 
 export const useUpdateDriverStatus = () => {
     const { getDriverCoordinates } = useGetCurrentLocation();
-    const navigation = useNavigation();
     const [_updateDriverStatus] = useUpdateDriverStatusMutation();
     const dispatch = useDispatch();
 
-    const updateDriverStatus = async (isOnline, cb) => {
+    const updateDriverStatus = useCallback(async (isOnline, cb) => {
         const { latitude, longitude } = await getDriverCoordinates() || {};
         if ((!latitude || !longitude) && isOnline) {
-            return;
+            return false;
         }
-        _updateDriverStatus({ is_available: isOnline ? 1 : 0, latitude, longitude }).unwrap().then((res) => {
-            dispatch(setServiceUnavailable(false))
-            dispatch(setDriverStatus({ is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE }))
-        }).catch((err) => {
-            cb?.(!isOnline);
-            if (err.status === 404) {
-                dispatch(setServiceUnavailable(true))
+        try {
+            await _updateDriverStatus({
+                is_available: isOnline ? 1 : 0,
+                latitude,
+                longitude
+            }).unwrap();
+
+            dispatch(setServiceUnavailable(false));
+            dispatch(setDriverStatus({
+                is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE
+            }));
+            cb?.(isOnline); // Success callback
+            return true;
+        } catch (err) {
+            cb?.(!isOnline); // Revert on error
+            if (err?.status === 404) {
+                dispatch(setServiceUnavailable(true));
             }
+            return false;
         }
-        )
-    }
-    return updateDriverStatus
-}
+    }, [_updateDriverStatus, dispatch, getDriverCoordinates]);
+
+    return updateDriverStatus;
+};

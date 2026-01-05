@@ -129,12 +129,24 @@ export const PickARide = () => {
   const { t } = useTranslation();
   useGetDriverDetails({ refetchOnMountOrArgChange: true })
   const updateDriverStatus = useUpdateDriverStatus();
+  const [isLoading, setIsLoading] = useState(false);
 
 
-  const toggleSwitch = () => {
-    toggleDriveStatus(!isOnline)
-    updateDriverStatus(!isOnline, toggleDriveStatus)
-  }
+  const toggleSwitch = async () => {
+    if (isLoading) return; // Prevent double clicks
+
+    const newStatus = !isOnline;
+    setIsLoading(true); // 👈 Show loader
+
+    try {
+      const success = await updateDriverStatus(newStatus, toggleDriveStatus);
+      if (!success) {
+        toggleDriveStatus(isOnline); // Revert if failed
+      }
+    } finally {
+      setIsLoading(false); // 👈 Hide loader
+    }
+  };
 
   // useEffect(() => {
   //   if (is_available !== isOnline) {
@@ -183,13 +195,16 @@ export const PickARide = () => {
       </View>
       {(showStatusButton) && <View style={{ position: 'absolute', bottom: insets.bottom + 15, right: 15, zIndex: 2, }}>
         <CustomButton
-          label={isOnline ? 'Online' : 'Offline'}
-          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
+          label={isLoading ? '' : (isOnline ? 'Online' : 'Offline')}
+          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange }}
           textStyles={{ fontSize: 12, lineHeight: 12, textAlign: 'center', marginTop: 2 }}
           contentContainerStyles={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          indicatorProps={{ color: COLORS.white, alignItems: 'center', justifyContent: 'center', size: 'small' }}
           isLowerCase
           iconLeft={{ name: 'account-circle-outline', size: 'large' }}
           iconStyles={{ paddingRight: 0 }}
+          disabled={isLoading}
+          isLoading={isLoading}
           onClick={toggleSwitch}
         />
       </View>}
