@@ -44,7 +44,7 @@ export default () => {
         const locationData = latestLocationRef.current;
 
         try {
-            console.log("updateDriverLocation", new Date().toLocaleString(), locationData.payload.location);
+            // console.log("updateDriverLocation", new Date().toLocaleString(), locationData.payload.location);
             await updateDriverLocation(locationData.payload).unwrap();
             dispatch(setServiceUnavailable(false));
             lastProcessedRef.current = now;

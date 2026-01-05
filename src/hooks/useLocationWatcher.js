@@ -100,7 +100,7 @@ export default () => {
                                 lastPositionRef.current = { latitude, longitude, heading };
                                 lastUpdateTimeRef.current = now;
                                 // console.log("API called at:", new Date().toLocaleString());
-                                console.log("New watcher position:", new Date().toLocaleString() , '--', latitude, longitude, heading,timestamp, watchIdRef.current);
+                                // console.log("New watcher position:", new Date().toLocaleString() , '--', latitude, longitude, heading,timestamp, watchIdRef.current);
                                 dispatch(setDriverLocation({ latitude, longitude, heading }));
                                 debouncedUpdateDriverLocationToServer({ latitude, longitude, heading, timestamp });
                             }

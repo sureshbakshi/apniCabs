@@ -10,7 +10,7 @@ export const LOCATION_CONFIG = {
   LATITUDE_DELTA: 0.012,
   SPACE: 0.00,
   ANIMATION_DURATION: 6000,
-  ROTATION_DURATION: 500,
+  ROTATION_DURATION: 1000,
 
   // Movement Thresholds for Map Updates
   MIN_DISTANCE_FOR_UPDATE: 5, // meters

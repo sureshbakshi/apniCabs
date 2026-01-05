@@ -95,7 +95,7 @@ export default function useUserSocketEvents() {
 
         const handleDriverLocationUpdate = (updatedLocation) => {
             console.log('Log time:', new Date().toLocaleString());
-            console.log('Received DriverLocationSocket event:', updatedLocation);
+            // console.log('Received DriverLocationSocket event:', updatedLocation);
             
             if (updatedLocation?.latitude && updatedLocation?.longitude) {
                 // 1. Basic Validation: Ignore (0,0) or invalid coords
