@@ -4,6 +4,7 @@ import { getCurrentCoordsOnce, requestAndroidBackgroundPermission } from '../uti
 import { store } from '../store';
 import { DriverAvailableStatus, LOCATION_CONFIG } from '../constants';
 import config from './config';
+import { Platform } from 'react-native';
 export const taskId = LOCATION_CONFIG.BG_TASK_ID;
 
 let lastProcessedTimestamp = 0; // Add this variable to track the last sent location
@@ -13,7 +14,7 @@ const locationTask = async () => {
     const coords = await getCurrentCoordsOnce();
     // console.log('[BG TASK] Got coords:', coords);
     if (coords) {
-        const { latitude, longitude, timestamp , heading} = coords;
+        const { latitude, longitude, timestamp, heading } = coords;
         if (timestamp === lastProcessedTimestamp) {
             // console.log('Skipping duplicate location timestamp');
             return;
@@ -28,10 +29,14 @@ const locationTask = async () => {
         const state = store.getState();
         // console.log('state', state)
         const { driverInfo, access_token, device_token, userInfo: profile } = state.auth
+        if (!driverInfo || !driverInfo?.Vehicle) {
+            console.log('Background Task: Driver info missing, skipping update.');
+            return;
+        }
         const { company, model, colour, type } = driverInfo.Vehicle;
         const payload = {
             "driverId": profile.id,
-            "location": { latitude, longitude, heading , timestamp },
+            "location": { latitude, longitude, heading, timestamp },
             "category": driverInfo?.Vehicle?.VehicleType?.code,
             "status": DriverAvailableStatus.ONLINE,
             "driver": {
@@ -55,7 +60,7 @@ const locationTask = async () => {
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}`, 'app-token': device_token },
                 body: JSON.stringify(payload),
             });
-            const data = res.json();
+            // const data = res.json();
             // console.log(data)
         } catch (e) { console.error("API Error", e); }
     } else {
@@ -64,6 +69,7 @@ const locationTask = async () => {
 };
 
 export const startForegroundLocation = async () => {
+    if (Platform.OS !== 'android') return; 
     const granted = await requestAndroidBackgroundPermission();
     if (!granted) return;
 
@@ -84,7 +90,7 @@ export const startForegroundLocation = async () => {
         setOnlyAlertOnce: true, // Stops the phone from vibrating/beeping every 10 seconds
     };
     ReactNativeForegroundService.start(startConfig);
-    
+
     // Ensure task is added and running
     ReactNativeForegroundService.add_task(locationTask, {
         delay: LOCATION_CONFIG.BG_TASK_DELAY,
@@ -111,7 +117,7 @@ export const foreGroundService = () => {
             serviceType: 8,
         }
     });
-    
+
     // Register task initially as well
     ReactNativeForegroundService.add_task(locationTask, {
         delay: LOCATION_CONFIG.BG_TASK_DELAY,
