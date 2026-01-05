@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, RefreshControl } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import { COLORS } from '../../../constants';
@@ -61,13 +61,24 @@ const CustomTabs = ({ extraProps, data }) => {
 
   const renderScene = ({ route }) => (
     <View style={[FindRideStyles.section, { paddingHorizontal: 10 }]}>
-      <ScrollView showsVerticalScrollIndicator={true}>
+      <ScrollView
+        showsVerticalScrollIndicator={true}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={() => fetchData(route.id)}
+            colors={[COLORS.blue]}
+            tintColor={COLORS.blue}
+          />
+        }
+      >
         {!isLoading && (
           <CaptainsCard
             keyProp={route.key}
             extraProps={{ ...extraProps, request_id, category: route.id }}
             driversList={driverListByCategory?.[route.id] || []}
             isFetching={isFetching}
+            onRefresh={() => fetchData(route.id)}
           />
         )}
       </ScrollView>

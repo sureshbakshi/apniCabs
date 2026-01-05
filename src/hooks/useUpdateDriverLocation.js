@@ -21,7 +21,7 @@ export default () => {
     const queueRef = useRef([]);
     const isProcessingRef = useRef(false);
     const lastProcessedRef = useRef(0);
-    const MIN_INTERVAL = 10000; // 10 seconds
+    const MIN_INTERVAL = 4000; // 4 seconds
 
     const processQueue = useCallback(async () => {
         const now = Date.now();
@@ -34,7 +34,7 @@ export default () => {
         const location = queueRef.current.shift();
 
         try {
-            // console.log('calling driver location api with payload:', location);
+            console.log('calling driver location api with payload:', new Date().toLocaleString() , '--', location?.payload?.location);
             const response = updateDriverLocation(location.payload);
             await response.unwrap();
             dispatch(setServiceUnavailable(false))
@@ -62,7 +62,7 @@ export default () => {
         const { company, model, colour, type, id: vehicleId } = driverInfo.Vehicle;
         const payload = {
             "driverId": profile.id,
-            "location": { latitude: location.latitude, longitude: location.longitude},
+            "location": { latitude: location.latitude, longitude: location.longitude , heading: location.heading , timestamp: location.timestamp },
             "category": driverInfo?.Vehicle?.VehicleType?.code,
             "status": isBusy ? DriverAvailableStatus.BUSY : DriverAvailableStatus.ONLINE,
             "driver": {

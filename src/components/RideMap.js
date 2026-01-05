@@ -126,7 +126,8 @@ const RideMap = ({ from_details, to_details }) => {
 
             Animated.timing(rotation, {
                 toValue: animateTo,
-                duration: LOCATION_CONFIG.ROTATION_DURATION,
+                duration: LOCATION_CONFIG.ANIMATION_DURATION,
+                easing: Easing.linear,
                 useNativeDriver: false,
             }).start();
         }
@@ -170,14 +171,14 @@ const RideMap = ({ from_details, to_details }) => {
 
     const handleMapReady = useCallback(() => {
         isMapReady.current = true;
-        setTimeout(fitToMarkers, 150);
+        setTimeout(fitToMarkers, 500);
     }, [fitToMarkers]);
 
     // ✅ Refit when tab gains focus
     useFocusEffect(
         useCallback(() => {
             if (isMapReady.current) {
-                setTimeout(fitToMarkers, 150);
+                setTimeout(fitToMarkers, 500);
             }
         }, [fitToMarkers])
     );

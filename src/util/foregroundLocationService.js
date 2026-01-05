@@ -3,16 +3,17 @@ import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { getCurrentCoordsOnce, requestAndroidBackgroundPermission } from '../util/location';
 import { store } from '../store';
 import { DriverAvailableStatus, LOCATION_CONFIG } from '../constants';
+import config from './config';
 export const taskId = LOCATION_CONFIG.BG_TASK_ID;
 
 const locationTask = async () => {
     // console.log('[BG TASK] Running even if app is closed!');
     const coords = await getCurrentCoordsOnce();
-    console.log('[BG TASK] Got coords:', coords);
+    // console.log('[BG TASK] Got coords:', coords);
     if (coords) {
-        const { latitude, longitude, timestamp } = coords;
+        const { latitude, longitude, timestamp , heading} = coords;
         const isFresh = (Date.now() - timestamp) < LOCATION_CONFIG.BG_LOCATION_FRESHNESS_THRESHOLD;
-        
+        const api_url = config.BASE_URL
         if (!isFresh) {
             console.log('Ignoring stale background location (timestamp too old)');
             return;
@@ -23,7 +24,7 @@ const locationTask = async () => {
         const { company, model, colour, type } = driverInfo.Vehicle;
         const payload = {
             "driverId": profile.id,
-            "location": { latitude, longitude },
+            "location": { latitude, longitude, heading , timestamp },
             "category": driverInfo?.Vehicle?.VehicleType?.code,
             "status": DriverAvailableStatus.ONLINE,
             "driver": {
@@ -40,9 +41,9 @@ const locationTask = async () => {
             }
         };
 
-        // console.log('BG Task - calling driver location api with payload:', payload.location);
+        // console.log('BG Task - calling driver location api with payload:', payload.location, `${api_url}/location/location`);
         try {
-            const res = await fetch('https://api.dev.pikbike.com/location/location', {
+            const res = await fetch(`${api_url}/location/location`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}`, 'app-token': device_token },
                 body: JSON.stringify(payload),
@@ -87,7 +88,7 @@ export const startForegroundLocation = async () => {
 };
 
 export const stopForegroundLocation = () => {
-    // console.log("Stopping foreground location service");
+    console.log("Stopping foreground location service");
     ReactNativeForegroundService.stopAll(); // Stops service and the background task
     // ReactNativeForegroundService.remove_task(taskId); // Stops service and the background task
 

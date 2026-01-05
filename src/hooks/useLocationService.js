@@ -8,7 +8,7 @@ import { Linking } from 'react-native';
 
 export const defaultCurrentLocationOptions = {
     enableHighAccuracy: true,
-    maximumAge: 10 * 1000,
+    maximumAge: 0,
     timeout: 30 * 1000,
     forceRequestLocation: true,
     interval: 5 * 1000,
@@ -47,7 +47,7 @@ const useLocationService = () => {
                 Geolocation.getCurrentPosition(
                     (position) => {
                         if (position?.coords) {
-                            cb?.(position.coords);
+                            cb?.({...position.coords, timestamp: position.timestamp});
                             resolve(position.coords);
                         } else {
                             reject(new Error('No coordinates found'));

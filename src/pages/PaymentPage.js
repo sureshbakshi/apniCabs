@@ -30,7 +30,7 @@ const PaymentPage = ({ route }) => {
 
   useEffect(() => {
     if (countdown === 0) {
-      navigate(ROUTES_NAMES.wallet);
+      navigate(ROUTES_NAMES.transactions);
     }
   }, [countdown]);
 
@@ -63,7 +63,7 @@ const PaymentPage = ({ route }) => {
           <Text style={styles.title}>Payment Successful!</Text>
           <Text style={styles.message}>Your transaction has been completed successfully.</Text>
           <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigate(ROUTES_NAMES.wallet)}>
+          <TouchableOpacity style={styles.button} onPress={() => navigate(ROUTES_NAMES.transactions)}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
         </View>
@@ -79,7 +79,7 @@ const PaymentPage = ({ route }) => {
           <Text style={styles.title}>Payment Failed</Text>
           <Text style={styles.message}>Something went wrong with your transaction. Please try again.</Text>
           <Text style={styles.redirectMessage}>You will be redirected to subscription page in {countdown} seconds.</Text>
-          <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.red }]} onPress={() => navigate(ROUTES_NAMES.wallet)}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.red }]} onPress={() => navigate(ROUTES_NAMES.transactions)}>
             <Text style={styles.buttonText}>Go Back</Text>
           </TouchableOpacity>
         </View>

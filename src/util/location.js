@@ -144,9 +144,9 @@ export const getCurrentCoordsOnce = () => {
         Geolocation.getCurrentPosition(
             (position) => {
                 if (position?.coords && position?.timestamp) {
-                    const { latitude, longitude } = position.coords;
-                    console.log('getCurrentCoordsOnce got coords:', latitude, longitude, position.timestamp);
-                    resolve({ latitude, longitude, timestamp: position.timestamp });
+                    const { latitude, longitude , heading} = position.coords;
+                    // console.log('getCurrentCoordsOnce got coords:', latitude, longitude, position.timestamp);
+                    resolve({ latitude, longitude, heading, timestamp: position.timestamp });
                 } else {
                     resolve(null);
                 }

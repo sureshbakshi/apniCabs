@@ -6,6 +6,7 @@ import { RideStatus } from '../constants';
 import RideMap from '../components/RideMap';
 import { useSelector } from 'react-redux';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
+import { head } from 'lodash';
 
 const UserMap = React.memo(({ activeRequestInfo }) => {
     const { driverLocation, userLocation } = useSelector((state) => state.user);
@@ -26,6 +27,7 @@ const UserMap = React.memo(({ activeRequestInfo }) => {
     const from_details = useMemo(() => ({
         latitude: locationToUse?.latitude ? Number(locationToUse.latitude) : null,
         longitude: locationToUse?.longitude ? Number(locationToUse.longitude) : null,
+        heading: locationToUse?.heading ? Number(locationToUse.heading) : 0,
         title: 'Your Driver is here',
         description: isAccepted ? '' : activeRequestInfo?.from,
         image: getVehicleImage(vehicleCode) || images.pin
