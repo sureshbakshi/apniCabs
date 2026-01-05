@@ -6,12 +6,19 @@ import { DriverAvailableStatus, LOCATION_CONFIG } from '../constants';
 import config from './config';
 export const taskId = LOCATION_CONFIG.BG_TASK_ID;
 
+let lastProcessedTimestamp = 0; // Add this variable to track the last sent location
+
 const locationTask = async () => {
     // console.log('[BG TASK] Running even if app is closed!');
     const coords = await getCurrentCoordsOnce();
     // console.log('[BG TASK] Got coords:', coords);
     if (coords) {
         const { latitude, longitude, timestamp , heading} = coords;
+        if (timestamp === lastProcessedTimestamp) {
+            // console.log('Skipping duplicate location timestamp');
+            return;
+        }
+        lastProcessedTimestamp = timestamp;
         const isFresh = (Date.now() - timestamp) < LOCATION_CONFIG.BG_LOCATION_FRESHNESS_THRESHOLD;
         const api_url = config.BASE_URL
         if (!isFresh) {
