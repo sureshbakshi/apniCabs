@@ -2,14 +2,14 @@ import React, { createContext, useContext, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { calculateDistance, showErrorMessage } from '../util';
 
-export const AppContext = createContext(null);
+export const RideSearchContext = createContext(null);
 
 const initialState = {
   location: { from: null, to: null },
   route: { distance: null, duration: null }
 }
 
-export const AppProvider = (props) => {
+export const RideSearchProvider = (props) => {
   const [location, setLocation] = useState(initialState.location);
   const [route, setRoute] = useState(initialState.route)
   const [noOfSeats, setNoOfSeats] = useState(null)
@@ -47,11 +47,11 @@ export const AppProvider = (props) => {
   }
 
 
-  return (<AppContext.Provider value={{ location, route, updateLocation, getDistance, setNoOfSeats, resetState, noOfSeats }}>
+  return (<RideSearchContext.Provider value={{ location, route, updateLocation, getDistance, setNoOfSeats, resetState, noOfSeats }}>
     {props.children}
-  </AppContext.Provider>);
+  </RideSearchContext.Provider>);
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext)
+export const useRideSearchContext = () => {
+  return useContext(RideSearchContext)
 }

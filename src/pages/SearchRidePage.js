@@ -4,7 +4,7 @@ import SearchRideStyles from '../styles/SearchRidePageStyles';
 import { navigate } from '../util/navigationService';
 import GooglePlaces from '../components/GooglePlaces';
 import Timeline from '../components/common/timeline/Timeline';
-import { useAppContext } from '../context/App.context';
+import { useRideSearchContext } from '../context/RideSearch.context';
 import isEmpty from 'lodash/isEmpty';
 import { COLORS, DEFAULT_VEHICLE_TYPES, ROUTES_NAMES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,7 @@ const SearchRidePage = () => {
   const { selectedOtherContact } = useSelector((state) => state.user);
   const { isVisible, openModal, closeModal } = useModal();
   const searchHistory = useSelector(state => state.user.recentSearchHistory);
-  const { location, updateLocation, getDistance, resetState } = useAppContext();
+  const { location, updateLocation, getDistance, resetState } = useRideSearchContext();
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
 
   const [focusKey, setFocuskey] = useState('from');

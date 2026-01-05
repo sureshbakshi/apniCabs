@@ -10,7 +10,7 @@ import images from '../util/images';
 import { COLORS, MAPS_LABELS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import isEmpty from 'lodash/isEmpty';
-import { useAppContext } from '../context/App.context';
+import { useRideSearchContext } from '../context/RideSearch.context';
 import { useTranslation } from 'react-i18next';
 import { getScreen } from '../util';
 import { useSelector } from 'react-redux';
@@ -33,7 +33,7 @@ const SelectOnPage = () => {
     const { getUserCoordinates } = useGetCurrentLocation();
     const { userLocation } = useSelector((state) => state.user);
     const { focusKey } = route?.params;
-    const { location, updateLocation } = useAppContext();
+    const { location, updateLocation } = useRideSearchContext();
     const [markerCoordinate, setMarkerCoordinate] = useState({
         latitude: initial_region.latitude,
         longitude: initial_region.longitude

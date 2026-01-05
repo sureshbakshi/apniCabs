@@ -16,6 +16,7 @@ import SelectOnPage from '../pages/selectonMap';
 import { useTranslation } from 'react-i18next';
 import ChatUI from '../components/common/chat';
 import { useIsFocused } from '@react-navigation/native';
+import { RideSearchProvider } from '../context/RideSearch.context';
 
 const SearchRidePageContainer = AppContainer(SearchRidePage);
 const Stack = createNativeStackNavigator();
@@ -53,61 +54,63 @@ export default function UserStackNavigator({ navigation, route }) {
 
 
   return (
-    <Stack.Navigator
-      initialRouteName={isActiveRide ? ROUTES_NAMES.activeRide : isActiveRequest ? ROUTES_NAMES.findCaptain : ROUTES_NAMES.searchRide}
-      screenOptions={{
-        contentStyle: { backgroundColor: COLORS.white },
-        headerStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          ...CommonStyles.headerFont
-        },
-        headerShown: false,
-      }}>
-      <Stack.Screen
-        name={ROUTES_NAMES.searchRide}
-        options={{ title: '', headerShown: false }}
-        component={SearchRidePageContainer}
-      />
-      <Stack.Screen
-        name={ROUTES_NAMES.findCaptain}
-        options={{
-          title: 'Captains',
-          headerBackVisible: false,
-          headerRight: () => {
-            return <CustomButton
-              onClick={requestAlertHandler}
-              styles={{ paddingRight: 0, width: 'auto' }}
-              textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
-              label={t('cancel_all_btn')}
-              isLowerCase={true}
-            />
-          }
-        }}
-        component={FindCaptain}
-      />
-      <Stack.Screen
-        name={ROUTES_NAMES.activeRide}
-        options={{ title: t('active_ride') }}
-        component={ActiveRidePage}
-      />
-      <Stack.Screen
-        name={ROUTES_NAMES.chat}
-        options={{
-          title: 'Chat with driver',
-          // headerLeft: () => <HeaderBackButton />,
-          headerShown: true
-        }}
-        component={ChatUI}
-      />
-      <Stack.Screen
-        name={ROUTES_NAMES.selectonMap}
-        component={SelectOnPage}
-      />
+    <RideSearchProvider>
+      <Stack.Navigator
+        initialRouteName={isActiveRide ? ROUTES_NAMES.activeRide : isActiveRequest ? ROUTES_NAMES.findCaptain : ROUTES_NAMES.searchRide}
+        screenOptions={{
+          contentStyle: { backgroundColor: COLORS.white },
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            ...CommonStyles.headerFont
+          },
+          headerShown: false,
+        }}>
+        <Stack.Screen
+          name={ROUTES_NAMES.searchRide}
+          options={{ title: '', headerShown: false }}
+          component={SearchRidePageContainer}
+        />
+        <Stack.Screen
+          name={ROUTES_NAMES.findCaptain}
+          options={{
+            title: 'Captains',
+            headerBackVisible: false,
+            headerRight: () => {
+              return <CustomButton
+                onClick={requestAlertHandler}
+                styles={{ paddingRight: 0, width: 'auto' }}
+                textStyles={{ color: COLORS.brand_yellow, fontSize: 18 }}
+                label={t('cancel_all_btn')}
+                isLowerCase={true}
+              />
+            }
+          }}
+          component={FindCaptain}
+        />
+        <Stack.Screen
+          name={ROUTES_NAMES.activeRide}
+          options={{ title: t('active_ride') }}
+          component={ActiveRidePage}
+        />
+        <Stack.Screen
+          name={ROUTES_NAMES.chat}
+          options={{
+            title: 'Chat with driver',
+            // headerLeft: () => <HeaderBackButton />,
+            headerShown: true
+          }}
+          component={ChatUI}
+        />
+        <Stack.Screen
+          name={ROUTES_NAMES.selectonMap}
+          component={SelectOnPage}
+        />
 
 
-    </Stack.Navigator>
+      </Stack.Navigator>
+    </RideSearchProvider>
   );
 }
