@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, SOCKET_EVENTS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
@@ -10,7 +9,6 @@ import RideDetailsCards from '../components/common/RideDetailsCards';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { Text } from '../components/common';
 import Timeline from '../components/common/timeline/Timeline';
-import { SafeAreaView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
@@ -19,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { getSocketInstance } from '../sockets/socketConfig';
 import DriverMap from './DriverMap';
 import UserMap from './userMap';
+
 const socket = getSocketInstance()
 const ActiveRidePage = () => {
   const { t } = useTranslation();

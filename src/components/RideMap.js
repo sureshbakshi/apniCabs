@@ -11,7 +11,8 @@ import { ImageView } from './common';
 import { mapStyle } from '../styles/googleMapStyle';
 import { styles } from '../styles/RideMapStyles';
 import { useFocusEffect } from '@react-navigation/native';
-import { LOCATION_CONFIG } from '../constants';
+import { COLORS, LOCATION_CONFIG } from '../constants';
+import OpenMapButton from './common/OpenMapButton';
 
 const { screenWidth, screenHeight } = getScreen();
 const ASPECT_RATIO = screenWidth / (screenHeight - 530);
@@ -65,10 +66,10 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
     return R * c;
 };
 
-const RideMap = ({ from_details, to_details }) => {
+const RideMap = ({ from_details, to_details, isDriver = false }) => {
     const mapRef = useRef(null);
     const fromMarkerRef = useRef(null);
-    
+
     const latestFromDetails = useRef(from_details);
     const latestToDetails = useRef(to_details);
     latestFromDetails.current = from_details;
@@ -182,7 +183,7 @@ const RideMap = ({ from_details, to_details }) => {
                 useNativeDriver: false,
             }).start();
         }
-        
+
         lastUpdateTime.current = now;
         prevFromDetails.current = from_details;
 
@@ -284,6 +285,20 @@ const RideMap = ({ from_details, to_details }) => {
                     />
                 </Marker.Animated>
             </MapView>
+            {isDriver && <View style={{ position: 'absolute', bottom: 10, right: 10, zIndex: 1000 }}>
+                <OpenMapButton title=''
+                    buttonStyles={{
+                        height: 40, width: 40, borderRadius: 20,
+                        minWidth: 'auto', backgroundColor: COLORS.secondary_blue,
+                        padding: 0,
+                        paddingVertical: 0,
+                        paddingHorizontal: 0,
+                    }}
+                    contentContainerStyles={{ padding: 0 }}
+                    iconStyles={{ paddingRight: 0 }}
+                    fromLocation={from_details}
+                    toLocation={to_details} />
+            </View>}
         </View>
     );
 };

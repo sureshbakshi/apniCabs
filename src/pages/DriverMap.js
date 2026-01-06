@@ -35,7 +35,7 @@ const DriverMap = React.memo(({ activeRequestInfo }) => {
     activeRequestInfo?.from, activeRequestInfo?.to, isAccepted]);
 
     return (from_details?.latitude && to_details?.latitude)
-        ? <RideMap from_details={from_details} to_details={to_details} />
+        ? <RideMap from_details={from_details} to_details={to_details} isDriver={true}/>
         : null;
 }, (prev, next) => {
     // Custom equality - only re-render if coordinates actually changed
