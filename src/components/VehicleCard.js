@@ -6,7 +6,7 @@ import FindRideStyles from "../styles/FindRidePageStyles";
 import { Icon, ImageView } from "./common";
 import { COLORS, RideProxyNumber } from "../constants";
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
-import { get } from 'lodash';
+import get from 'lodash/get';;
 import { getVehicleImage } from "../util";
 
 export default ({ activeRequestInfo, details, avatar, showOtp = false, isonRide = true, vehicleImageUri }) => {

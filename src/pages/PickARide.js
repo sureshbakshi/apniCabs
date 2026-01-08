@@ -17,6 +17,7 @@ import CommonStyles from '../styles/commonStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
@@ -117,9 +118,10 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const isSocketConnected = useSelector((state) => state.auth.isSocketConnected);
-  const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
+  const { activeRequestInfo, rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
   const feeQuery = useGetFeeQuery({}, { refetchOnMountOrArgChange: true });
   const { data: fees, error: feeError, isLoading: feeLoading, isSuccess: feeSuccess } = feeQuery;
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
@@ -141,6 +143,11 @@ export const PickARide = () => {
   // }, [is_available, isOnline]);
 
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
+
+  const hasActiveRequest = !!activeRequestInfo?.id && rideRequests.length <= 0;
+  if (hasActiveRequest) {
+    navigation.navigate(ROUTES_NAMES.activeRide);
+  }
   return (
     <ContainerWrapper>
       <View>

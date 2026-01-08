@@ -9,6 +9,8 @@ export default {
   GOOGLE_MAPS_KEY: Config.GOOGLE_MAPS_KEY,
   ROLE: Config.ROLE,
   BASE_URL: Config.BASE_URL,
+  ANDROID_STORE_URL: Config.ANDROID_STORE_URL,
+  IOS_STORE_URL: Config.IOS_STORE_URL,
 }
 
 export const openUrl = async (uri) => {

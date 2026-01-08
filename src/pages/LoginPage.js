@@ -12,7 +12,7 @@ import {
   updateUserCheck,
 } from '../slices/authSlice';
 import { useGetLoginOTPMutation, useLoginMutation, useUserCheckMutation, useVerifyOTPMutation } from '../slices/apiSlice';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import ScreenContainer from '../components/ScreenContainer';
 import { navigate } from '../util/navigationService';
 import config from '../util/config';
@@ -77,7 +77,7 @@ const LoginPage = () => {
   return (
     <View style={LoginStyles.container}>
       <StatusBar translucent backgroundColor="transparent" />
-      <HeaderImage/>
+      <HeaderImage />
 
       <ScreenContainer>
         <View style={LoginStyles.section}>
@@ -151,14 +151,14 @@ const LoginPage = () => {
                 onPress={GoogleSignIn}
               /> */}
 
-              <View style={[LoginStyles.signUpSection,{ marginTop: 20}]}>
-                <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold'}]}>{t('no_account')}</Text>
-                <Pressable
-                  android_ripple={{ color: '#fff' }}
-                  onPress={ () => navigate(ROUTES_NAMES.signUp)}>
-                  <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign Up</Text>
-                </Pressable>
-              </View>
+            <View style={[LoginStyles.signUpSection, { marginTop: 20 }]}>
+              <Text style={[LoginStyles.headerText, { color: COLORS.text_light_gray, fontWeight: 'bold' }]}>{t('no_account')}</Text>
+              <Pressable
+                android_ripple={{ color: '#fff' }}
+                onPress={() => navigate(ROUTES_NAMES.signUp)}>
+                <Text style={{ color: COLORS.primary_blue, fontWeight: 'bold' }}> Sign Up</Text>
+              </Pressable>
+            </View>
             {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Pressable
                   onPress={GoogleSignIn}

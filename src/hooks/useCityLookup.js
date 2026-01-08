@@ -5,10 +5,12 @@ import { useCityLookupMutation } from '../slices/apiSlice';
 import { DriverAvailableStatus, ROUTES_NAMES } from '../constants';
 import { useUpdateDriverStatus } from './useGetDriverDetails';
 import useGetCurrentLocation from './useGetCurrentLocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { setServiceUnavailable } from '../slices/driverSlice';
 
 const useCityLookup = () => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const { driverInfo } = useSelector(state => state.auth);
     const vehicleTypeId = driverInfo?.Vehicle?.type;
@@ -38,11 +40,12 @@ const useCityLookup = () => {
                     setIsLoading(false);
                     updateDriverStatus(Boolean(DriverAvailableStatus.ONLINE));
                     navigation.navigate(ROUTES_NAMES.searchRide);
+                    dispatch(setServiceUnavailable(false))
                 }
             } catch (error) {
                 setIsLoading(false);
                 if (error.status === 404) {
-                    navigation.navigate(ROUTES_NAMES.serviceUnavailable)
+                    dispatch(setServiceUnavailable(true))
                 } else {
                     console.log('Error updating location:', error);
                 }

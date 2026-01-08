@@ -72,7 +72,8 @@ const api_path = {
   links: path => `user/links?${path}`,
   location: path => `location/location${path ? `/${path}` : ''}`,
   wallet: path => `payment/wallet/${path}`,
-  city: path => `location/city/${path ? `${path}` : ''}`
+  city: path => `location/city/${path ? `${path}` : ''}`,
+  appInfo: path => `user/links/${path}`,
 };
 const api_urls = {
   login: 'login',
@@ -512,6 +513,15 @@ export const apiSlice = createApi({
       transformResponse: (response) => response,
       transformErrorResponse: (response) => response,
     }),
+
+    getAppInfo: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.appInfo(`app-info`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
+    }),
   }),
 
   tagTypes: ['Token', 'RideComplete', "FARE", 'RideStatus', 'AppLinks', 'VehicleType', 'ActiveRide'],
@@ -559,5 +569,6 @@ export const {
   useLazyGetCitiesQuery,
   useUpdateRatingMutation,
   useLazyGetShareLinkQuery,
-  useCityLookupMutation
+  useCityLookupMutation,
+  useGetAppInfoQuery
 } = apiSlice;

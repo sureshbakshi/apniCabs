@@ -4,7 +4,7 @@ import { COLORS, ExpiryStatus, SUPPORT } from '../../constants';
 import FindRideStyles from '../../styles/FindRidePageStyles';
 import { Text } from './Text';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import useGetDriverDetails, { } from '../../hooks/useGetDriverDetails';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButton from './CustomButton';

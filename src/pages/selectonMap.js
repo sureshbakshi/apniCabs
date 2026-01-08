@@ -12,7 +12,7 @@ import { ImageView } from '../components/common';
 import images from '../util/images';
 import { COLORS, MAPS_LABELS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import config from '../util/config';
 import { useAppContext } from '../context/App.context';
 import { useTranslation } from 'react-i18next';
@@ -137,7 +137,7 @@ const SelectOnPage = () => {
                     coordinate={markerCoordinate}
                     draggable={true}
                     onDragEnd={onMarkerDragEnd}
-                    image={images.pin_medium}
+                    image={images.pin}
                     style={{ height: 50, width: 50 }}
                     imageStyle={{ height: 50, width: 50 }}
                 />

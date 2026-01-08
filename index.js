@@ -12,7 +12,6 @@ import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import { COLORS, toastConfig } from './src/constants';
-import { AuthProvider } from './src/context/Auth.context';
 import { PersistGate } from 'redux-persist/integration/react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -29,13 +28,11 @@ function AppWithProvider() {
 
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AuthProvider>
-          <SafeAreaProvider>
-            {/* <StrictMode> */}
-            <App />
-            {/* </StrictMode> */}
-          </SafeAreaProvider>
-        </AuthProvider>
+        <SafeAreaProvider>
+          {/* <StrictMode> */}
+          <App />
+          {/* </StrictMode> */}
+        </SafeAreaProvider>
       </PersistGate>
       <Toast config={toastConfig} />
     </Provider>

@@ -5,12 +5,12 @@ import { navigate } from '../util/navigationService';
 import GooglePlaces from '../components/GooglePlaces';
 import Timeline from '../components/common/timeline/Timeline';
 import { useAppContext } from '../context/App.context';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { COLORS, DEFAULT_VEHICLE_TYPES, ROUTES_NAMES } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import SocketStatus from '../components/common/SocketStatus';
 import { useGetRideRequestMutation } from '../slices/apiSlice';
-import { filter } from 'lodash';
+import filter from 'lodash/filter';
 import { requestInfo, setActiveTabs, setRecentSearchHistory } from '../slices/userSlice';
 import CustomButton from '../components/common/CustomButton';
 import SearchLoader from '../components/common/SearchLoader';
@@ -21,7 +21,6 @@ import RecentSearchHistory from '../components/RecentSearchHistory';
 import BottomModal from '../components/common/BottomModal';
 import useModal from '../hooks/useModal';
 import { useTranslation } from 'react-i18next';
-import { debounceHandler } from '../util';
 
 const SearchRidePage = () => {
   const { t } = useTranslation();
@@ -34,6 +33,7 @@ const SearchRidePage = () => {
   const [getRideRequest, { data: rideList, error, isLoading }] = useGetRideRequestMutation();
 
   const [focusKey, setFocuskey] = useState('from');
+  const [isPreparing, setIsPreparing] = useState(false);
   useEffect(() => {
     if (error) {
       console.log({ error });
@@ -103,7 +103,8 @@ const SearchRidePage = () => {
   }
 
   const searchHandler = async () => {
-    if (!isLoading) {
+    if (!isLoading && !isPreparing) {
+      setIsPreparing(true);
       try {
         const { distance, duration } = await getDistance();
         const { from, to } = location;
@@ -116,16 +117,18 @@ const SearchRidePage = () => {
           });
           findDrivers({ from, to, fromCity, toCity, distance, duration });
           updateSearchHistory({ from, to, fromCity, toCity })
+          resetState();
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setIsPreparing(false);
       }
     }
   }
 
-  const debouncedSearchHandler = debounceHandler(searchHandler, 500);
   const isSearchDisabled = () => {
-    return isEmpty(location.from) || isEmpty(location.to) || isLoading
+    return isEmpty(location.from) || isEmpty(location.to) || isLoading || isPreparing
   }
 
   const navigateToSelectOnMapPage = () => {
@@ -136,7 +139,7 @@ const SearchRidePage = () => {
   }
 
   return (
-    <ContainerWrapper style={{padding: 10}}>
+    <ContainerWrapper style={{ padding: 10 }}>
       {isSocketConnected ? <View style={SearchRideStyles.section}>
         <View style={{ position: 'absolute', zIndex: 3, top: 10, left: 2 }}>
           <Timeline data={['', '']} height={25} />
@@ -169,17 +172,7 @@ const SearchRidePage = () => {
             onClick={openModal}
           />
         </View>
-
-
         <View style={{ marginTop: 5 }}>
-          {/* <Pressable
-              style={isSearchDisabled() ? [SearchRideStyles.button, { backgroundColor: COLORS.gray }] : [SearchRideStyles.button]}
-              android_ripple={{ color: '#fff' }}
-              disabled={isSearchDisabled()}
-              onPress={searchHandler}
-              >
-              <Text style={SearchRideStyles.text}>{'Find Captain'}</Text>
-            </Pressable> */}
           <CustomButton
             styles={isSearchDisabled() ? { backgroundColor: COLORS.gray } : {}}
             disabled={isSearchDisabled()}
@@ -187,7 +180,7 @@ const SearchRidePage = () => {
             isLowerCase
             isLoading={isLoading}
             indicatorProps={{ size: 'small', style: { paddingRight: 10 } }}
-            onClick={debouncedSearchHandler}
+            onClick={searchHandler}
           />
         </View>
         {!isEmpty(searchHistory[focusKey]) ? <View>

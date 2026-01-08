@@ -11,8 +11,7 @@ export default (delay = 0) => {
     const [refetch, { data: activeUserRideDetails, error: isUserError }] = useLazyUserActiveRideQuery({}, { refetchOnMountOrArgChange: true, });
 
     const delayedRefetch = useCallback(async (params = {}) => {
-        await new Promise(resolve => setTimeout(resolve, delay)); // 500ms delay
-        return await refetch(params).unwrap();
+        const res = await refetch({ ...params, timestamp: new Date().getTime() }).unwrap();
     }, [refetch]);
 
     useFocusEffect(

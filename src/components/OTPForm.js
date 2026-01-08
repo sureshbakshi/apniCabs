@@ -13,7 +13,7 @@ import CommonStyles from '../styles/commonStyles';
 import { Text } from '../components/common';
 import { COLORS, ELEMENTS, GENDER_TYPES, SELECT_OPTIONS_KEYS, USER_ROLES } from '../constants';
 import { useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomButton from '../components/common/CustomButton';

@@ -3,7 +3,7 @@ import { getVehicleImage } from '../util';
 import images from '../util/images';
 import { RideStatus } from '../constants';
 import useGetDriverLocation from '../hooks/useGetDriverLocation';
-import RideMap from './RideMap';
+import RideMap from '../components/RideMap';
 import { useSelector } from 'react-redux';
 
 const DriverMap = ({ activeRequestInfo }) => {

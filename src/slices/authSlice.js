@@ -51,6 +51,10 @@ const authSlice = createSlice({
         state.rideChats = { messages: [copyMessage], ride_id };
       }
     },
+    setRideChatHistory: (state, action) => {
+      const { messageHistory, ride_id } = action.payload;
+      state.rideChats = { messages: messageHistory, ride_id };
+    },
     clearRideChats: (state, action) => {
       state.rideChats = authInitialState.rideChats
     }
@@ -69,6 +73,7 @@ export const {
   setAndroidDeviceCode,
   setSelectedLanguage,
   setRideChats,
-  clearRideChats
+  clearRideChats,
+  setRideChatHistory
 } = authSlice.actions;
 export default authSlice.reducer;

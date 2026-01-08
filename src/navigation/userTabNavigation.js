@@ -21,7 +21,7 @@ export default function UserTabNavigator() {
 
   const { validateRequestExpiry } = useValidateRequestExpiry();
   useAppStateListner(validateRequestExpiry)
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   return (
     <AppProvider>
       <Tab.Navigator
@@ -33,10 +33,23 @@ export default function UserTabNavigator() {
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: COLORS.gray,
           headerShown: false,
-          tabBarLabelStyle: { fontSize: 12 }
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarHideOnKeyboard: true,
         })}
         tabBar={(props) => <MyTabBar {...props} />}
+        screenListeners={({ navigation, route }) => ({
+          tabPress: e => {
+            // 👇 prevent default behavior (pop to first screen)
+            e.preventDefault();
 
+            // Manually navigate to tab root WITHOUT resetting stack
+            if (route.name === ROUTES_NAMES.findRide) {
+              navigation.navigate(ROUTES_NAMES.findRide);
+            } else {
+              navigation.navigate(route.name);
+            }
+          },
+        })}
       >
         <Tab.Screen
           name={ROUTES_NAMES.findRide}

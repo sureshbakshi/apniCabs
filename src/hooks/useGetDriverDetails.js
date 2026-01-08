@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { useGetDriverDetailsMutation, useLazyGetDriverDetailsQuery, useUpdateDriverStatusMutation } from "../slices/apiSlice"
 import { setDriverDetails } from "../slices/authSlice"
 import { useEffect } from "react"
-import { isEmpty } from 'lodash'
-import { setDriverStatus } from "../slices/driverSlice"
+import isEmpty from 'lodash/isEmpty';
+import { setDriverStatus, setServiceUnavailable } from "../slices/driverSlice"
 import { DriverAvailableStatus, ROUTES_NAMES } from "../constants"
 import { isDriver, isOwner } from "../util"
 import useGetCurrentLocation from "./useGetCurrentLocation"
@@ -54,11 +54,12 @@ export const useUpdateDriverStatus = () => {
             return;
         }
         _updateDriverStatus({ is_available: isOnline ? 1 : 0, latitude, longitude }).unwrap().then((res) => {
+            dispatch(setServiceUnavailable(false))
             dispatch(setDriverStatus({ is_available: isOnline ? DriverAvailableStatus.ONLINE : DriverAvailableStatus.OFFLINE }))
         }).catch((err) => {
             cb?.(!isOnline);
             if (err.status === 404) {
-                navigation.navigate(ROUTES_NAMES.serviceUnavailable);
+                dispatch(setServiceUnavailable(true))
             }
         }
         )

@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // or any icon lib
-import { COLORS, DriverAvailableStatus } from '../constants';
+import { COLORS } from '../constants';
 import { useRoute } from '@react-navigation/native';
 import useCityLookup from '../hooks/useCityLookup';
 
 const ServiceUnavailableScreen = () => {
     const route = useRoute();
     const { location, vehicleId } = route.params || {};
-    const { onRefresh, updateDriverStatus, isLoading } = useCityLookup();
+    const { onRefresh, isLoading } = useCityLookup();
     const handleRefresh = async () => {
         onRefresh({ location, vehicleId })
     };
 
 
-    useEffect(() => {
-        updateDriverStatus(false);
-    }, []);
+
     return (
         <View style={styles.container}>
             <View style={styles.iconWrapper}>
