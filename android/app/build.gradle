@@ -41,8 +41,8 @@ android {
         user {
             dimension "user_type"
             applicationId appId
-            versionCode 38
-            versionName "2.2.5"
+            versionCode 40
+            versionName "2.2.6"
             versionNameSuffix "-user"
             resValue "string", "build_config_package", "com.apnicabi"
             manifestPlaceholders = [urlScheme: "pikbike"]
@@ -50,8 +50,8 @@ android {
         driver {
             dimension "user_type"
             applicationId appId
-            versionCode 39
-            versionName "2.2.5"
+            versionCode 40
+            versionName "2.2.6"
             versionNameSuffix "-driver"
             resValue "string", "build_config_package", "com.apnicabi"
             manifestPlaceholders = [urlScheme: "pikbikedriver"]
