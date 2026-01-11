@@ -53,7 +53,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is needed to provide accurate pick-up and drop-off locations, find nearby drivers, and ensure a smooth and efficient ride experience.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>We need your location to track rides even when the app is minimized.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to find nearby drivers, provide accurate pick-up and drop-off locations, and ensure a smooth and efficient ride experience while using the app.</string>
 	<key>RCTNewArchEnabled</key>

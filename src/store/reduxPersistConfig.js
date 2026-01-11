@@ -1,9 +1,8 @@
 import hardSet from 'redux-persist/es/stateReconciler/hardSet';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import KeychainStorage from './KeychainStorage';
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: KeychainStorage,
   safelist: [],
   stateReconciler: hardSet,
 };

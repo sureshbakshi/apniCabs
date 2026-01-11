@@ -130,29 +130,6 @@ export const bugLogger = (info) => {
   }
 }
 
-export const fakeLogin = () => {
-  axios
-    .post(
-      'https://www.apnicabi.com/api/login',
-      {
-        phone: '9885098850',
-        password: '9885098850',
-      },
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': '*',
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-    .then((response) => {
-      console.log('fakeLogin data:', response);
-    }).catch((err) => {
-      console.log('fakeLogin error:', err);
-    });
-}
-
 export const formattedDate = (dateString, isDateOnly = false) => {
   const originalDate = new Date(dateString)
   const format = isDateOnly ? {
