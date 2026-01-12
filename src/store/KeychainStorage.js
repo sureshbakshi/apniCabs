@@ -1,13 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
-import { Platform } from 'react-native';
 
-const SENSITIVE_KEYS = ['persist:root', 'persist:auth'];
+const AUTH_KEYS = ['persist:auth'];  // 👈 Only auth slice
 const IS_DEV = __DEV__;
 
 const KeychainStorage = {
     async getItem(key, callback) {
-        if (SENSITIVE_KEYS.includes(key) && !IS_DEV) {  // 👈 Skip keychain in dev
+        if (AUTH_KEYS.includes(key) && !IS_DEV) {
             try {
                 const credentials = await Keychain.getGenericPassword({ service: key });
                 if (credentials?.password) {
@@ -15,22 +14,24 @@ const KeychainStorage = {
                 }
             } catch { }
         }
-        // Always fallback to AsyncStorage
+        // All other slices → AsyncStorage
         return AsyncStorage.getItem(key, callback);
     },
 
     async setItem(key, value, callback) {
-        if (SENSITIVE_KEYS.includes(key) && !IS_DEV) {
+        if (AUTH_KEYS.includes(key) && !IS_DEV) {
             try {
                 await Keychain.setGenericPassword('user', value, { service: key });
                 return callback?.(null);
             } catch { }
+            return;
         }
+        // user/driver/api → AsyncStorage
         return AsyncStorage.setItem(key, value, callback);
     },
 
     async removeItem(key, callback) {
-        if (SENSITIVE_KEYS.includes(key) && !IS_DEV) {
+        if (AUTH_KEYS.includes(key) && !IS_DEV) {
             try {
                 await Keychain.resetGenericPassword({ service: key });
             } catch { }
