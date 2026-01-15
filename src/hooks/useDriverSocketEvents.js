@@ -39,7 +39,7 @@ export default function useDriverSocketEvents() {
         const socket = getSocketInstance();
         if (isDriverOnline && isLoggedIn && !socket?.connected) {
             createSocketInstance(
-                { userId: userInfo.id, token: access_token },
+                { userId: userInfo?.id, token: access_token ? `Bearer ${access_token}` : null},
                 handleSocketConnected
             );
         } else if ((!isLoggedIn || !isDriverOnline)) {
