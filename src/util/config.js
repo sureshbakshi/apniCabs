@@ -4,8 +4,6 @@ console.log('Config', Config);
 
 export default {
   SOCKET_URL: Config.SOCKET_URL,
-  SOCKET_USER_NAME: Config.SOCKET_USER_NAME,
-  SOCKET_PASSWORD: Config.SOCKET_PASSWORD,
   GOOGLE_PLACES_KEY: Config.GOOGLE_PLACES_KEY,
   GOOGLE_MAPS_KEY: Config.GOOGLE_MAPS_KEY,
   ROLE: Config.ROLE,
