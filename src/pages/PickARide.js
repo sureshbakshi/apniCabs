@@ -224,7 +224,8 @@ export const PickARide = () => {
         </>
       ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
         <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-          You are currently offline. Turn on your availability to receive ride requests.</Text>
+          {t('offline_availability_msg')}
+        </Text>
       </View>}
       {walletInfo?.amount < (fees?.wallet_min || 20) && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
         <Pressable

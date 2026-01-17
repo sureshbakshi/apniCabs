@@ -12,6 +12,7 @@ import { toastConfig } from './src/constants';
 import { PersistGate } from 'redux-persist/integration/react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { foreGroundService } from './src/util/foregroundLocationService';
+import { NetworkOverlay } from './src/components/common';
 import './i18n';
 // import { StrictMode } from 'react';
 
@@ -30,6 +31,7 @@ function AppWithProvider() {
         <SafeAreaProvider>
           {/* <StrictMode> */}
           <App />
+          <NetworkOverlay />
           {/* </StrictMode> */}
         </SafeAreaProvider>
       </PersistGate>

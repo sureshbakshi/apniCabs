@@ -1,5 +1,7 @@
 // src/util/foregroundLocationService.js
+import React from 'react';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+import NetInfo from "@react-native-community/netinfo";
 import { getCurrentCoordsOnce, requestAndroidBackgroundPermission } from '../util/location';
 import { store } from '../store';
 import { DriverAvailableStatus, LOCATION_CONFIG } from '../constants';
@@ -10,6 +12,11 @@ export const taskId = LOCATION_CONFIG.BG_TASK_ID;
 let lastProcessedTimestamp = 0; // Add this variable to track the last sent location
 
 const locationTask = async () => {
+    const netState = await NetInfo.fetch();
+    if (netState.isConnected === false) {
+        console.log('[BG TASK] No internet connection, skipping location update.');
+        return;
+    }
     // console.log('[BG TASK] Running even if app is closed!');
     const coords = await getCurrentCoordsOnce();
     // console.log('[BG TASK] Got coords:', coords);

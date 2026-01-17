@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import { Platform, AppState } from "react-native";
 import Geolocation from "react-native-geolocation-service";
+import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
 import { showErrorMessage } from "../util";
 import { checkAndroidPermissions, requestAndroidBackgroundPermission } from "../util/location";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,7 @@ export const defaultOptions = {
 
 export default () => {
     const dispatch = useDispatch();
+    const { isConnected } = useNetInfo();
     const driverStatus = useSelector((state) => state.driver.onlineStatus);
     const serviceUnavailable = useSelector(
         (state) => state.driver.serviceUnavailable
@@ -130,7 +132,7 @@ export default () => {
     // 2. FIX: Consolidated Effect for AppState
     useEffect(() => {
         const handleAppStateChange = (nextAppState) => {
-            const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
+            const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable && isConnected !== false;
 
             // 3. FIX: CRITICAL - If we are currently requesting permission, 
             // IGNORE AppState changes. The OS dialog causes Background/Active 
@@ -162,12 +164,12 @@ export default () => {
 
         const subscription = AppState.addEventListener('change', handleAppStateChange);
         return () => subscription.remove();
-    }, [driverStatus, serviceUnavailable, watchPosition, clearWatch]);
+    }, [driverStatus, serviceUnavailable, isConnected, watchPosition, clearWatch]);
 
     // 4. FIX: Consolidated Effect for Driver Status
     // This handles the initial start or when the user toggles the switch
     useEffect(() => {
-        const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable;
+        const isOnline = driverStatus !== DriverAvailableStatus.OFFLINE && !serviceUnavailable && isConnected !== false;
 
         // console.log("Driver Status Changed. Online:", isOnline, "AppState:", appState.current, "watchIdRef:", watchIdRef.current);
 
@@ -185,7 +187,7 @@ export default () => {
         return () => {
             clearWatch();
         };
-    }, [driverStatus, serviceUnavailable, watchPosition, clearWatch]);
+    }, [driverStatus, serviceUnavailable, isConnected, watchPosition, clearWatch]);
 
     return { watchPosition, watchId: watchIdRef.current, clearWatch };
 };

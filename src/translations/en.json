@@ -114,5 +114,7 @@
    "my_rides": "My Rides",
    "login_permission_error": "You don't have enough permission to login.",
    "subscription_plans": "Subscription Plans",
-   "payment": "Payment"
+   "payment": "Payment",
+   "network_error_msg": "We can't reach our network right now. Please check your connection.",
+   "offline_availability_msg": "You are currently offline. Turn on your availability to receive ride requests."
 }

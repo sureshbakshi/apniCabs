@@ -4,6 +4,7 @@ import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { showErrorMessage } from '../util';
 import { disconnectSocket } from '../sockets/socketConfig'
+import NetInfo from "@react-native-community/netinfo";
 
 import { Platform } from 'react-native';
 import config from '../util/config';
@@ -30,6 +31,18 @@ const baseQuery = fetchBaseQuery({
   },
 });
 const baseQueryWithReauth = async (args, api, extraOptions) => {
+  // Check for network connection
+  const netState = await NetInfo.fetch();
+  if (netState.isConnected === false) {
+    return {
+      error: {
+        status: 'FETCH_ERROR',
+        error: 'No Internet Connection',
+        data: { error: 'No Internet Connection' }
+      }
+    };
+  }
+
   // console.log(JSON.stringify(args))
 
   let result = await baseQuery(args, api, extraOptions);
