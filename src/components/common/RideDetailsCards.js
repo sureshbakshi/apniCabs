@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
 import { getSocketInstance } from '../../sockets/socketConfig';
+import { useAppInfo } from '../../hooks/useAppInfo';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 const socket = getSocketInstance()
 
 const ShareButton = ({ activeRequestInfo, label }) => {
@@ -67,8 +69,18 @@ const ShareButton = ({ activeRequestInfo, label }) => {
 
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
-    const { access_token } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
+    const { appInfo } = useAppInfo();
+    const tollFreeNumberKey = isDriverLogged ? 'user_toll_free' : 'driver_toll_free';
+    const toll_free_number = appInfo?.[tollFreeNumberKey];
+
+
+    const makePhonecall = () => {
+        if(!toll_free_number) {
+            showErrorMessage(t("error_occcured_while_fetching_contact_number"))
+        }
+        RNImmediatePhoneCall.immediatePhoneCall(`${toll_free_number}`);
+    }
 
     return <View style={{ flexDirection: 'row', gap: 10, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
@@ -83,7 +95,7 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
             isLowerCase
         />
         <CustomButton
-            onClick={() => dispatch(setDriverCallOptionsDialogStatus(true))}
+            onClick={makePhonecall}
             styles={
                 { ...FindRideStyles.button, backgroundColor: COLORS.green, height: 40 }
             }

@@ -116,5 +116,6 @@
    "subscription_plans": "Subscription Plans",
    "payment": "Payment",
    "network_error_msg": "We can't reach our network right now. Please check your connection.",
-   "offline_availability_msg": "You are currently offline. Turn on your availability to receive ride requests."
+   "offline_availability_msg": "You are currently offline. Turn on your availability to receive ride requests.",
+   "error_occcured_while_fetching_contact_number": "Error occurred while fetching contact details"
 }

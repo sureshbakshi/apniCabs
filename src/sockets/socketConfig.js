@@ -1,6 +1,5 @@
 // socketConfig.js
 import io from 'socket.io-client';
-import { store } from "../store";
 import config from '../util/config';
 
 // URI for the socket server
@@ -31,8 +30,7 @@ export const createSocketInstance = (auth = {}, onConnect) => {
     extraHeaders: {
 
     },
-    // transports: ['websocket'],
-    // path: '/ws/'
+    transports: ['websocket'],
   });
   console.log('Socket instance created:', socket?.connected);
   socket.on('connect', () => {
