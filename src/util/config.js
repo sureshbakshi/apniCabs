@@ -10,6 +10,7 @@ export default {
   BASE_URL: Config.BASE_URL,
   ANDROID_STORE_URL: Config.ANDROID_STORE_URL,
   IOS_STORE_URL: Config.IOS_STORE_URL,
+  ENV: Config.ENV
 }
 
 export const openUrl = async (uri) => {
