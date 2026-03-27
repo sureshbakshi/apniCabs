@@ -4,7 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import { Icon } from '../components/common';
 import { COLORS } from '../constants';
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import config from '../util/config';
 import { cleanFormattedAddress } from '../util';
 import { getPlaceDetailsFromCoordinates } from '../util/location';
@@ -79,7 +79,9 @@ const GooglePlaces = ({ placeholder, onInputFocus, containerStyles, locationDeta
                         onInputFocus(locationKey);
                     },
                     onChange: (event) => {
+                        setListViewDisplayed('auto');
                         const { value } = event.nativeEvent;
+                        console.log('GooglePlaces onChange', locationKey, value);
                         if (isEmpty(value)) {
                             return onSelection(locationKey, null)
                         }

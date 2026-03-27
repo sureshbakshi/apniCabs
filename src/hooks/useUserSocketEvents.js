@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearRideChats, updatedSocketConnectionStatus } from "../slices/authSlice";
 import { updateDriverLocation, updateDriversRequest } from "../slices/userSlice";
@@ -8,6 +8,22 @@ import useChatMessage from "./useChatMessage";
 import audio from "../assets/audio";
 import { RideStatus, ClearRideStatus, SOCKET_EVENTS } from "../constants";
 import isEmpty from "lodash/isEmpty";
+
+// Helper to calculate distance (Haversine)
+const getDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+};
 
 const USER_SOCKET_EVENTS = {
     request_status: 'UserRequestSocket',
@@ -22,6 +38,7 @@ export default function useUserSocketEvents() {
     const [socketReady, setSocketReady] = useState(false);
     const { playSound } = useNotificationSound();
     const isLoggedIn = !!userInfo?.id && !!access_token;
+    const lastDriverLocation = useRef(null); // Track last valid location to prevent jumps
 
     const updateUserSocketId = useCallback(() => {
         const socket = getSocketInstance();
@@ -66,7 +83,9 @@ export default function useUserSocketEvents() {
                         playSound(audio.booking);
                     }
                     if (ClearRideStatus.includes(status)) {
-                        socket.emit(SOCKET_EVENTS.rideCompleted);
+                        console.log('emitting socket event for rideCompleted with request_id:', updatedRequest?.request_id, socket.id);
+
+                        socket.emit(SOCKET_EVENTS.rideCompleted, {rideId: updatedRequest?.request_id});
                         dispatch(clearRideChats());
                     }
                 }
@@ -75,8 +94,31 @@ export default function useUserSocketEvents() {
         };
 
         const handleDriverLocationUpdate = (updatedLocation) => {
-            console.log('Received DriverLocationSocket event:', updatedLocation);
-            if (updatedLocation?.latitude) {
+            console.log('Log time:', new Date().toLocaleString());
+            // console.log('Received DriverLocationSocket event:', updatedLocation);
+            
+            if (updatedLocation?.latitude && updatedLocation?.longitude) {
+                // 1. Basic Validation: Ignore (0,0) or invalid coords
+                if (updatedLocation.latitude === 0 || updatedLocation.longitude === 0) return;
+
+                // 2. Jitter Filter: If we have a previous location, check distance
+                if (lastDriverLocation.current) {
+                    // const dist = getDistance(
+                    //     lastDriverLocation.current.latitude,
+                    //     lastDriverLocation.current.longitude,
+                    //     updatedLocation.latitude,
+                    //     updatedLocation.longitude
+                    // );
+
+                    // If distance is HUGE (> 2km in 5 seconds) it's likely a GPS jump/error
+                    // Unless it's the very first update, we might want to ignore "teleportation"
+                    // But for "to-and-fro" (small jumps), we usually trust the latest unless it's very old timestamp.
+                    
+                    // 3. Timestamp Check (if available in payload)
+                    if (updatedLocation.timestamp && updatedLocation.timestamp < lastDriverLocation.current.timestamp) return;
+                }
+
+                lastDriverLocation.current = updatedLocation;
                 dispatch(updateDriverLocation(updatedLocation));
             }
         };

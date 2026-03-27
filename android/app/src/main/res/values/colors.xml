@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <item name="white" type="color">#ffffff</item>
+  <integer-array name="androidcolors">
+    <item>@color/white</item>
+  </integer-array>
+
     <color name="primary_dark">#000000</color>
      <color name="colorAccent">#C60C30</color>
 </resources>

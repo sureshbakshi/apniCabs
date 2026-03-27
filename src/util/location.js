@@ -1,24 +1,24 @@
-
-import { PermissionsAndroid, Platform } from 'react-native';
+import { PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { bugLogger, getConfig, showErrorMessage } from '.';
 import axios from 'axios';
-import { filter } from 'lodash'
+import filter from 'lodash/filter';
 import config from './config';
+import { LOCATION_CONFIG } from '../constants';
 
 
 export const requestIosLocationPermissions = async () => {
     await Geolocation.setRNConfiguration({
-        authorizationLevel: 'always' //always,whenInUse
-    })
-    await Geolocation.requestAuthorization('always')
-}
+        authorizationLevel: 'always', // always,whenInUse
+    });
+    await Geolocation.requestAuthorization('always');
+};
 
 export const checkAndroidPermissions = async () => {
     try {
         if (Platform.OS === 'ios') {
-            requestIosLocationPermissions()
-            return true
+            requestIosLocationPermissions();
+            return true;
         }
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -31,16 +31,68 @@ export const checkAndroidPermissions = async () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             return true;
         } else {
-            await checkAndroidPermissions();
-            return false
+            return false;
         }
     } catch (err) {
         console.warn(err);
-        await checkAndroidPermissions();
-        return false
+        return false;
     }
 };
 
+const showSettingsAlert = () => {
+    Alert.alert(
+        'Location Required',
+        'To track your rides efficiently, please allow "Allow all the time" location access in settings.',
+        [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+        ],
+    );
+};
+
+// ✅ NEW: request background permission on Android (for foreground service)
+let lastBackgroundRequestTime = 0;
+export const requestAndroidBackgroundPermission = async () => {
+    try {
+        if (Platform.OS !== 'android') return true;
+
+        // Prevent loop: if requested recently, don't ask again immediately
+        const now = Date.now();
+        if (now - lastBackgroundRequestTime < 2000) {
+            return false;
+        }
+        lastBackgroundRequestTime = now;
+
+        // 1. Request Notification Permission first (Android 13+)
+        if (Platform.Version >= 33) {
+            await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS');
+        }
+
+        // 2. Request Fine Location
+        // const fine = await checkAndroidPermissions();
+        // if (fine !== 'granted') {
+        //     console.log('Background location request: fine location not granted');
+        //     showSettingsAlert();
+        //     return false;
+        // }
+
+        // 3. Request Background Location
+        if (Platform.Version >= 29) {
+            const bg = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION);
+            if (bg === 'granted') {
+                return true;
+            } else {
+                console.log('Background location request: background location not granted');
+                showSettingsAlert();
+                return false;
+            }
+        }
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
 
 export const getLocation = async (coords, cb) => {
     try {
@@ -61,13 +113,13 @@ export const getLocation = async (coords, cb) => {
                     city,
                 };
                 cb?.(location);
-                return location
+                return location;
             }
         } else {
-            showErrorMessage(`Error while location request`)
+            showErrorMessage('Error while location request');
         }
     } catch (error) {
-        showErrorMessage('Error while fetching location')
+        showErrorMessage('Error while fetching location');
     }
 };
 
@@ -84,4 +136,31 @@ export const getPlaceDetailsFromCoordinates = async (latitude, longitude) => {
         console.log('Error fetching place details:', error);
         return null;
     }
+};
+
+// ✅ NEW: simple helper for foreground service to fetch coords once
+export const getCurrentCoordsOnce = () => {
+    return new Promise((resolve) => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                if (position?.coords && position?.timestamp) {
+                    const { latitude, longitude , heading} = position.coords;
+                    // console.log('getCurrentCoordsOnce got coords:', latitude, longitude, position.timestamp);
+                    resolve({ latitude, longitude, heading, timestamp: position.timestamp });
+                } else {
+                    resolve(null);
+                }
+            },
+            (error) => {
+                console.log('getCurrentCoordsOnce error:', error);
+                resolve(null);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: LOCATION_CONFIG.WATCHER_TIMEOUT,
+                maximumAge: 0,
+                distanceFilter: 0,
+            },
+        );
+    });
 };

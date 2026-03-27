@@ -39,7 +39,7 @@ export default function useDriverSocketEvents() {
         const socket = getSocketInstance();
         if (isDriverOnline && isLoggedIn && !socket?.connected) {
             createSocketInstance(
-                { userId: userInfo.id, token: access_token },
+                { userId: userInfo?.id, token: access_token || null},
                 handleSocketConnected
             );
         } else if ((!isLoggedIn || !isDriverOnline)) {
@@ -68,7 +68,7 @@ export default function useDriverSocketEvents() {
                     } else {
                         dispatch(updateRideStatus(request));
                         dispatch(clearRideChats());
-                        socket?.emit(SOCKET_EVENTS.rideCompleted);
+                        socket.emit(SOCKET_EVENTS.rideCompleted, {rideId: request?.request_id});
                     }
                 } else {
                     dispatch(updateRideRequest(request));

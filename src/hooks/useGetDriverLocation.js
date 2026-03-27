@@ -8,7 +8,8 @@ export default () => {
     const { driverLocation: watchedLocation } = useSelector(state => state.driver);
 
     useEffect(() => {
-        if (isEmpty(watchedLocation?.latitude)) {
+        if (!watchedLocation?.latitude) {
+            console.log("useGetDriverLocation: watchedLocation changed:", watchedLocation);
             updateCurrentDriverLocationDetails()
         }
     }, [watchedLocation?.latitude])

@@ -17,6 +17,7 @@ import CommonStyles from '../styles/commonStyles';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Card = ({ item, handleAcceptRequest, handleDeclineRequest, isLoading }) => {
@@ -117,9 +118,10 @@ const DriverCard = ({ list }) => {
 };
 
 export const PickARide = () => {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const isSocketConnected = useSelector((state) => state.auth.isSocketConnected);
-  const { rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
+  const { activeRequestInfo, rideRequests, onlineStatus: driverStatus, walletInfo } = useSelector(state => state.driver);
   const feeQuery = useGetFeeQuery({}, { refetchOnMountOrArgChange: true });
   const { data: fees, error: feeError, isLoading: feeLoading, isSuccess: feeSuccess } = feeQuery;
   const is_available = driverStatus === DriverAvailableStatus.ONLINE || driverStatus === DriverAvailableStatus.BUSY
@@ -127,12 +129,24 @@ export const PickARide = () => {
   const { t } = useTranslation();
   useGetDriverDetails({ refetchOnMountOrArgChange: true })
   const updateDriverStatus = useUpdateDriverStatus();
+  const [isLoading, setIsLoading] = useState(false);
 
 
-  const toggleSwitch = () => {
-    toggleDriveStatus(!isOnline)
-    updateDriverStatus(!isOnline, toggleDriveStatus)
-  }
+  const toggleSwitch = async () => {
+    if (isLoading) return; // Prevent double clicks
+
+    const newStatus = !isOnline;
+    setIsLoading(true); // 👈 Show loader
+
+    try {
+      const success = await updateDriverStatus(newStatus, toggleDriveStatus);
+      if (!success) {
+        toggleDriveStatus(isOnline); // Revert if failed
+      }
+    } finally {
+      setIsLoading(false); // 👈 Hide loader
+    }
+  };
 
   // useEffect(() => {
   //   if (is_available !== isOnline) {
@@ -141,6 +155,8 @@ export const PickARide = () => {
   // }, [is_available, isOnline]);
 
   const showStatusButton = (rideRequests?.length < 1 || !isSocketConnected)
+
+  const hasActiveRequest = !!activeRequestInfo?.id && rideRequests.length <= 0;
   return (
     <ContainerWrapper>
       <View>
@@ -179,13 +195,16 @@ export const PickARide = () => {
       </View>
       {(showStatusButton) && <View style={{ position: 'absolute', bottom: insets.bottom + 15, right: 15, zIndex: 2, }}>
         <CustomButton
-          label={isOnline ? 'Online' : 'Offline'}
-          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange, }}
+          label={isLoading ? '' : (isOnline ? 'Online' : 'Offline')}
+          styles={{ width: 63, height: 63, borderRadius: 100, paddingHorizontal: 5, backgroundColor: isOnline ? COLORS.green : COLORS.orange }}
           textStyles={{ fontSize: 12, lineHeight: 12, textAlign: 'center', marginTop: 2 }}
           contentContainerStyles={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          indicatorProps={{ color: COLORS.white, alignItems: 'center', justifyContent: 'center', size: 'small' }}
           isLowerCase
           iconLeft={{ name: 'account-circle-outline', size: 'large' }}
           iconStyles={{ paddingRight: 0 }}
+          disabled={isLoading}
+          isLoading={isLoading}
           onClick={toggleSwitch}
         />
       </View>}
@@ -205,7 +224,8 @@ export const PickARide = () => {
         </>
       ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, }}>
         <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
-          You are currently offline. Turn on your availability to receive ride requests.</Text>
+          {t('offline_availability_msg')}
+        </Text>
       </View>}
       {walletInfo?.amount < (fees?.wallet_min || 20) && <View style={{ width: showStatusButton ? '80%' : '100%' }}>
         <Pressable

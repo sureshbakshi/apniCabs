@@ -5,6 +5,29 @@ import { styles } from './navigation/TabBar';
 
 export const TAB_BAR_HEIGHT = 65;
 
+export const LOCATION_CONFIG = {
+  // Map Animation & Rendering
+  LATITUDE_DELTA: 0.012,
+  SPACE: 0.00,
+  ANIMATION_DURATION: 6000,
+  ROTATION_DURATION: 1000,
+
+  // Movement Thresholds for Map Updates
+  MIN_DISTANCE_FOR_UPDATE: 5, // meters
+  MIN_HEADING_CHANGE: 10,     // degrees
+  MIN_TIME_BETWEEN_UPDATES: 2000, // ms
+
+  // Location Service / Watcher
+  WATCHER_INTERVAL: 5000,
+  WATCHER_FASTEST_INTERVAL: 5000,
+  WATCHER_TIMEOUT: 30000,
+
+  // Background Task
+  BG_TASK_ID: 'driver_tracking_task',
+  BG_TASK_DELAY: 5000,
+  BG_LOCATION_FRESHNESS_THRESHOLD: 6000,
+};
+
 
 export const ELEMENTS = {
   select: "select",
@@ -166,6 +189,7 @@ export const ROUTES_NAMES = {
   myPlans: 'MyPlans',
   payment: 'Payment',
   wallet: 'Wallet',
+  transactions: 'Transactions',
   profile: 'Profile',
   moreDetails: 'MoreDetails',
   terms: 'Terms',
@@ -182,9 +206,9 @@ export const ROUTES_NAMES = {
   gettingStartedPage: 'GettingStartedPage',
   selectonMap: 'SelectonMap',
   language: 'Language',
-  chat: 'Chat',
   contacts: 'Contacts',
   serviceUnavailable: 'ServiceUnavailableScreen',
+  paymentWebView: 'paymentWebView',
 }
 
 export const RideStatus = {
@@ -328,9 +352,9 @@ export const toastConfig = {
 
 
 export const VEHICLE_IMAGES = {
-  BIKE: images.bike,
-  AUTO: images.auto,
-  CAR: images.carYellow
+  BIKE: images.BIKE_1,
+  AUTO: images.AUTO_1,
+  CAR: images.CAR_1
 }
 
 export const VEHICLE_TYPES = {
@@ -566,4 +590,5 @@ export const SOCKET_EVENTS = {
   sendMessage: 'send-message',
   joinRoom: 'join-room',
   newMessage: 'new-message',
+  messageHistory: 'message-history'
 }

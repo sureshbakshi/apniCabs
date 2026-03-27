@@ -1,20 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import FindRideStyles from '../styles/FindRidePageStyles';
+import React, { useEffect, useRef, useState } from 'react';
 import ContainerWrapper from '../components/common/ContainerWrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import HeaderBackButton from '../components/common/HeaderBackButton';
-import { Platform, Text, View } from 'react-native';
+import { Platform, ScrollView, Text, View } from 'react-native';
 import useGetCurrentLocation from '../hooks/useGetCurrentLocation';
 import CommonStyles from '../styles/commonStyles';
 import CustomButton from '../components/common/CustomButton';
-import { ImageView } from '../components/common';
 import images from '../util/images';
 import { COLORS, MAPS_LABELS, ROUTES_NAMES } from '../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { isEmpty } from 'lodash';
-import config from '../util/config';
-import { useAppContext } from '../context/App.context';
+import isEmpty from 'lodash/isEmpty';
+import { useRideSearchContext } from '../context/RideSearch.context';
 import { useTranslation } from 'react-i18next';
 import { getScreen } from '../util';
 import { useSelector } from 'react-redux';
@@ -37,7 +33,7 @@ const SelectOnPage = () => {
     const { getUserCoordinates } = useGetCurrentLocation();
     const { userLocation } = useSelector((state) => state.user);
     const { focusKey } = route?.params;
-    const { location, updateLocation } = useAppContext();
+    const { location, updateLocation } = useRideSearchContext();
     const [markerCoordinate, setMarkerCoordinate] = useState({
         latitude: initial_region.latitude,
         longitude: initial_region.longitude
@@ -47,6 +43,7 @@ const SelectOnPage = () => {
         if (!isEmpty(location[focusKey]?.geometry)) {
             const { lat, lng } = location[focusKey]?.geometry?.location;
             setRegionChange({ ...initial_region, latitude: lat, longitude: lng });
+            setMarkerCoordinate({ latitude: lat, longitude: lng });
             setAddress(location[focusKey]);
         } else {
             const { latitude, longitude } = userLocation || {};
@@ -122,10 +119,10 @@ const SelectOnPage = () => {
         navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })
     }
     return (
-        <ContainerWrapper>
+        <ContainerWrapper style={{ flex: 1 }}>
             <MapView
                 ref={mapRef}
-                style={{ height: getScreen().screenHeight - 350 }}
+                style={{ flex: 3 }}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
                 initialRegion={region}
                 onRegionChange={onRegionChange}
@@ -137,43 +134,57 @@ const SelectOnPage = () => {
                     coordinate={markerCoordinate}
                     draggable={true}
                     onDragEnd={onMarkerDragEnd}
-                    image={images.pin_medium}
+                    image={images.pin}
                     style={{ height: 50, width: 50 }}
                     imageStyle={{ height: 50, width: 50 }}
                 />
             </MapView>
 
+            <View style={[{ flex: 1 }]}>
+                <View style={[CommonStyles.shadow, { position: 'absolute', top: -50, left: 20 }]}>
+                    <HeaderBackButton />
+                </View>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingBottom: 20,
+                        paddingTop: 20,
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        backgroundColor: COLORS.white // 👈 Ensure background
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <View style={[CommonStyles.p15]}>
 
-
-            <View style={[{ borderTopLeftRadius: 20, borderTopRightRadius: 20, height: 250 }]}>
-                <View style={[CommonStyles.p15]}>
-                    <View style={[CommonStyles.shadow, { position: 'absolute', top: -50, left: 20 }]}>
-                        <HeaderBackButton />
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={{ color: COLORS.text_dark, fontSize: 17, fontWeight: 600 }}>{`Select ${MAPS_LABELS[focusKey]} location`}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Text style={{ color: COLORS.text_dark, fontSize: 17, fontWeight: 600 }}>{`Select ${MAPS_LABELS[focusKey]} location`}</Text>
+                            <CustomButton
+                                onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
+                                label={t('change_btn')}
+                                styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
+                                textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
+                                isLowerCase
+                            />
+                        </View>
                         <CustomButton
-                            onClick={() => navigation.navigate(ROUTES_NAMES.searchRide, { address, focusKey })}
-                            label={t('change_btn')}
-                            styles={{ borderWidth: 1, borderRadius: 20, borderColor: COLORS.bg_secondary, backgroundColor: COLORS.white, height: 40 }}
-                            textStyles={{ color: COLORS.text_dark, fontWeight: 600, fontSize: 14, lineHeight: 18 }}
-                            isLowerCase
+                            iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
+                            isLoading={isEmpty(address)}
+                            styles={{ maxHeight: 70, backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10, paddingHorizontal: 10 }}
+                            textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize', width: getScreen().screenWidth - 100 }}
+                            label={address?.formatted_address}
+                            disabled={true}
+                        />
+                        <CustomButton
+                            onClick={onConfirmSelection}
+                            styles={{ backgroundColor: COLORS.brand_yellow, borderRadius: 20, height: 50 }}
+                            textStyles={{ fontSize: 16, fontWeight: 'bold', lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
+                            label={t('select_pickup_btn')}
                         />
                     </View>
-                    <CustomButton
-                        iconLeft={{ name: 'map-marker-circle', size: 'large', color: 'green' }}
-                        isLoading={isEmpty(address)}
-                        styles={{ maxHeight: 70, backgroundColor: COLORS.sepator_line, borderRadius: 20, marginBottom: 30, marginTop: 20, borderWidth: 1, borderColor: COLORS.bg_secondary, paddingHorizontal: 10, marginVertical: 10 }}
-                        textStyles={{ fontSize: 12, fontWeight: "400", lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
-                        label={address?.formatted_address}
-                    />
-                    <CustomButton
-                        onClick={onConfirmSelection}
-                        styles={{ backgroundColor: COLORS.brand_yellow, borderRadius: 20, height: 50 }}
-                        textStyles={{ fontSize: 16, fontWeight: 'bold', lineHeight: 16, color: COLORS.black, textTransform: 'capitalize' }}
-                        label={t('select_pickup_btn')}
-                    />
-                </View>
+                </ScrollView>
             </View>
         </ContainerWrapper>
     );

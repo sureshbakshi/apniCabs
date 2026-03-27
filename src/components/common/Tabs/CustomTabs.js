@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, RefreshControl } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import FindRideStyles from '../../../styles/FindRidePageStyles';
 import { COLORS } from '../../../constants';
@@ -23,6 +23,17 @@ const CustomTabs = ({ extraProps, data }) => {
   const { activeRequestDrivers: driverListByCategory, activeRequestId: request_id } = useSelector(state => state.user);
   const [refetch, { data: categoryResponse, error: rideHistoryError, isFetching, isLoading }] = useLazyGetRequestsByCategoryQuery();
 
+  const fetchData = useCallback(async (catId) => {
+    if (request_id && catId) {
+      try {
+        const res = await refetch({ request_id, category: catId }).unwrap();
+        dispatch(setActiveRequestDrivers(res));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [request_id, refetch, dispatch]);
+
   // Initial load effect (runs once when both ready)
   useEffect(() => {
     if (request_id && vehicleList?.length > 0) {
@@ -31,19 +42,13 @@ const CustomTabs = ({ extraProps, data }) => {
     }
   }, [request_id, vehicleList?.length]);
 
-  // Keep useFocusEffect for tab switches
   useFocusEffect(
     useCallback(() => {
-      if (request_id && vehicleList?.[index]?.id) {
-        refetch({ request_id, category: vehicleList[index].id});
+      if (vehicleList?.[index]?.id) {
+        fetchData(vehicleList[index].id);
       }
-    }, [request_id, index, vehicleList])
+    }, [index, vehicleList, fetchData])
   );
-  useEffect(() => {
-    if (categoryResponse) {
-      dispatch(setActiveRequestDrivers(categoryResponse))
-    }
-  }, [categoryResponse]);
 
 
   const routes = vehicleList?.map((vehicle, i) => ({
@@ -56,13 +61,24 @@ const CustomTabs = ({ extraProps, data }) => {
 
   const renderScene = ({ route }) => (
     <View style={[FindRideStyles.section, { paddingHorizontal: 10 }]}>
-      <ScrollView showsVerticalScrollIndicator={true}>
+      <ScrollView
+        showsVerticalScrollIndicator={true}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={() => fetchData(route.id)}
+            colors={[COLORS.blue]}
+            tintColor={COLORS.blue}
+          />
+        }
+      >
         {!isLoading && (
           <CaptainsCard
             keyProp={route.key}
             extraProps={{ ...extraProps, request_id, category: route.id }}
             driversList={driverListByCategory?.[route.id] || []}
             isFetching={isFetching}
+            onRefresh={() => fetchData(route.id)}
           />
         )}
       </ScrollView>
@@ -71,10 +87,7 @@ const CustomTabs = ({ extraProps, data }) => {
 
   const handleIndexChange = useCallback((i) => {
     setIndex(i);
-    if (vehicleList[i]?.id && request_id) {
-      refetch({ request_id, category: vehicleList[i].id});
-    }
-  }, [vehicleList, request_id, refetch]);
+  }, []);
 
   const renderTabBar = useCallback(props => (
     <View style={styles.tabBar}>

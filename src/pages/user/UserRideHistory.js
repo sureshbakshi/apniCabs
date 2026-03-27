@@ -4,7 +4,7 @@ import MyRidePage from "../MyRidesPage"
 import { useFocusEffect } from '@react-navigation/native';
 import { mergeObjectsWithoutDuplicates } from "../../util";
 
-const PageSize = 6;
+const PageSize = 10;
 
 export default () => {
     const [page, setPage] = useState(1);
@@ -56,7 +56,19 @@ export default () => {
         avatar: '',
         fare: 'RequestRides.fare'
     }
+
+    const handleRefresh = useCallback(async () => {
+        setPage(1);
+        await refetchHistory(1);
+    }, [refetchHistory]);
+
     return (
-        <MyRidePage data={rides || []} keys={rideHistoryKeys} loadMore={loadMore} isFetching={isFetching} />
+        <MyRidePage 
+            data={rides || []} 
+            keys={rideHistoryKeys} 
+            loadMore={loadMore} 
+            isFetching={isFetching} 
+            onRefresh={handleRefresh}
+        />
     )
 }

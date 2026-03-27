@@ -1,16 +1,17 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import { ClearRideStatus, RideStatus } from '../constants';
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty';
 import { formatRideRequest } from '../util';
 
 const initialState = {
   rideRequests: [],
   activeRequestInfo: null,
   isOnline: true,
-  onlineStatus: 'ONLINE',
+  onlineStatus: 'OFFLINE',
   rideStatusUpdate: null,
   walletInfo: null,
   driverLocation: null,
+  serviceUnavailable: false
 }
 
 const driverSlice = createSlice({
@@ -84,10 +85,13 @@ const driverSlice = createSlice({
     },
     setDriverLocation: (state, action) => {
       state.driverLocation = action.payload
+    },
+    setServiceUnavailable: (state, action) => {
+      state.serviceUnavailable = action.payload
     }
   },
 });
 
-export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState, clearDriverRideStatus, setDriverWallet, setDriverLocation } = driverSlice.actions;
+export const { updateRideRequest, setActiveRide, setDriverStatus, setRideRequest, updateRideStatus, clearDriverState, clearDriverRideStatus, setDriverWallet, setDriverLocation, setServiceUnavailable } = driverSlice.actions;
 
 export default driverSlice.reducer;

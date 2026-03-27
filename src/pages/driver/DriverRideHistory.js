@@ -4,7 +4,7 @@ import MyRidePage from "../MyRidesPage"
 import { useFocusEffect } from '@react-navigation/native';
 import { mergeObjectsWithoutDuplicates } from "../../util";
 
-const PageSize = 6;
+const PageSize = 10;
 
 
 export default () => {
@@ -23,38 +23,50 @@ export default () => {
     // ✅ Reset on screen focus - proper sequence
     useFocusEffect(
         useCallback(() => {
-            // ✅ Fire async function IMMEDIATELY inside sync callback
             const resetAndFetch = async () => {
+                // ✅ ONLY reset page/hasMore, KEEP existing rides
                 setPage(1);
-                setRides([]);
+                // ❌ Remove: setRides([]);
                 setHasMore(true);
-                await refetchHistory(1);
+
+                // Fetch fresh data but don't clear UI
+                try {
+                    await refetchHistory(1);
+                } catch (error) {
+                    console.log('Refetch failed:', error);
+                }
             };
 
-            resetAndFetch(); // ✅ Call async inside sync wrapper
+            resetAndFetch();
 
-            // ✅ Return cleanup function
             return () => {
                 setPage(1);
-                setRides([]);
                 setHasMore(true);
+                // ✅ Don't clear rides on unmount either
             };
         }, [refetchHistory])
     );
 
-    // ✅ Merge ONLY on successful data change (not isFetching)
+
     useEffect(() => {
         if (rideHistory?.rows) {
             setRides((prevRides) => {
+                // ✅ For page 1: REPLACE completely (no merge)
+                if (page === 1) {
+                    const newRides = rideHistory.rows;
+                    setHasMore(rideHistory.count > newRides.length);
+                    return newRides;
+                }
+
+                // ✅ For subsequent pages: MERGE
                 const newRides = mergeObjectsWithoutDuplicates(prevRides, rideHistory.rows, 'id');
-                // ✅ Update hasMore based on current response
                 setHasMore(rideHistory.count > newRides.length);
                 return newRides;
             });
         }
-    }, [rideHistory]); // ✅ Only rideHistory, not isFetching
+    }, [rideHistory, page]); // ✅ Add page dependency
 
-    // ✅ Fixed loadMore - wait for current page to complete
+
     const loadMore = useCallback(async () => {
         if (!isFetching && hasMore && rides.length > 0) {
             const nextPage = page + 1;
@@ -73,6 +85,13 @@ export default () => {
         avatar: '',       // ✅ Driver photo URL
         fare: 'RequestRides.fare'      // ✅ Total fare
     }
+
+    const handleRefresh = useCallback(async () => {
+        setPage(1);
+        setHasMore(true);
+        await refetchHistory(1);
+    }, [refetchHistory]);
+
     return (
         <MyRidePage
             data={rides}
@@ -80,6 +99,7 @@ export default () => {
             loadMore={loadMore}
             isFetching={isFetching}
             hasMore={hasMore}
+            onRefresh={handleRefresh}
         />
     );
 };

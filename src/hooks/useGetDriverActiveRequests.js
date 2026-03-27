@@ -7,16 +7,21 @@ import { _isDriverOffline } from "../util";
 import useGetDriverWallet from "./useGetDriverWallet";
 export default () => {
     const dispatch = useDispatch();
-    const {driverInfo} = useSelector(state => state.auth );
-    const isOffline  = _isDriverOffline();
+    const isOffline = _isDriverOffline();
     const [refetch, { data: activeDriverRideDetails, error: isDriverError }] = useDriverActiveRideMutation({}, { skip: isOffline, refetchOnMountOrArgChange: true });
     useGetDriverWallet(undefined, true)
+
+
+    const delayedRefetch = useCallback(async (params = {}) => {
+        const res = await refetch({ ...params, timestamp: new Date().getTime() }).unwrap();
+    }, [refetch]);
+
     useFocusEffect(
         useCallback(() => {
             if (!isOffline) {
-                refetch?.() // workaround to force refetch
+                delayedRefetch?.({}, false)
             }
-        }, [])
+        }, [isOffline, delayedRefetch])
     );
     useEffect(() => {
         if (isDriverError) {

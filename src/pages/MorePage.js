@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, ScrollView, Linking, StatusBar } from 'react-native';
+import { View, Pressable, ScrollView } from 'react-native';
 import MoreStyles from '../styles/MorePageStyles';
 import { navigate } from '../util/navigationService';
 import { Icon, Text } from '../components/common';
@@ -7,12 +7,11 @@ import { COLORS, ROUTES_NAMES } from '../constants';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../components/common/ProfileImage';
 import { openOwnerPortal } from '../util/config';
-import { getScreen, isDriver } from '../util';
+import { isDriver } from '../util';
 import useLogout from '../hooks/useLogout';
 import SupportLinks from '../components/SupportLinks';
 import useGetDriverDetails from '../hooks/useGetDriverDetails';
 import ContainerWrapper from '../components/common/ContainerWrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
 import { useTranslation } from 'react-i18next';
 

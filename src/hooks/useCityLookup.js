@@ -5,14 +5,20 @@ import { useCityLookupMutation } from '../slices/apiSlice';
 import { DriverAvailableStatus, ROUTES_NAMES } from '../constants';
 import { useUpdateDriverStatus } from './useGetDriverDetails';
 import useGetCurrentLocation from './useGetCurrentLocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { setServiceUnavailable } from '../slices/driverSlice';
 
 const useCityLookup = () => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const { driverInfo } = useSelector(state => state.auth);
+    const { activeRequestInfo } = useSelector((state) => state.driver);
     const vehicleTypeId = driverInfo?.Vehicle?.type;
     const navigation = useNavigation();
+    const hasActiveRequest = !!activeRequestInfo?.id;
+
+
     const [updateCityLookup] = useCityLookupMutation();
     const updateDriverStatus = useUpdateDriverStatus();
     const { getDriverCoordinates } = useGetCurrentLocation();
@@ -20,6 +26,10 @@ const useCityLookup = () => {
 
     const onRefresh = useCallback(
         async () => {
+            if (hasActiveRequest) {
+                dispatch(setServiceUnavailable(false))
+                return;
+            }
             const { latitude, longitude } = await getDriverCoordinates() || {};
             if (!latitude || !longitude || !vehicleTypeId) {
                 return;
@@ -37,21 +47,21 @@ const useCityLookup = () => {
                 if (!isEmpty(response?.data)) {
                     setIsLoading(false);
                     updateDriverStatus(Boolean(DriverAvailableStatus.ONLINE));
-                    navigation.navigate(ROUTES_NAMES.searchRide);
+                    dispatch(setServiceUnavailable(false))
                 }
             } catch (error) {
                 setIsLoading(false);
                 if (error.status === 404) {
-                    navigation.navigate(ROUTES_NAMES.serviceUnavailable)
+                    dispatch(setServiceUnavailable(true))
                 } else {
                     console.log('Error updating location:', error);
                 }
             }
         },
-        [navigation, updateCityLookup, updateDriverStatus]
+        [navigation, updateCityLookup, updateDriverStatus, vehicleTypeId, getDriverCoordinates, hasActiveRequest, dispatch]
     );
 
-    return { onRefresh, updateDriverStatus, isLoading };
+    return { onRefresh, updateDriverStatus, isLoading};
 };
 
 export default useCityLookup;

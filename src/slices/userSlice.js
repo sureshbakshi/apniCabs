@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
+import { set, isEmpty, cloneDeep } from 'lodash';
 import { ClearRideStatus, RideStatus } from '../constants';
 
 // const updateStatusByDriverId = (drivers, driver_id, status) => {
-//   _.forEach(drivers, item => {
-//     const driverToUpdate = _.find(item.drivers, { 'driver_id': driver_id });
+//   forEach(drivers, item => {
+//     const driverToUpdate = find(item.drivers, { 'driver_id': driver_id });
 //     if (driverToUpdate) {
-//       _.set(driverToUpdate, 'status', status);
+//       set(driverToUpdate, 'status', status);
 //     }
 //   });
 //   return updatedData;
@@ -18,7 +18,7 @@ function updateStatusByDriverId(drivers, driver_id, status) {
 
   // If the object is found, update its properties
   if (driverToUpdate) {
-    _.set(driverToUpdate, 'status', status); // Update the object with new values
+    set(driverToUpdate, 'status', status); // Update the object with new values
   }
 
   // Return the updated array (the array is mutated)
@@ -101,9 +101,10 @@ const userSlice = createSlice({
     },
     setActiveRequest: (state, action) => {
       // on active request api response
-      if (_.isEmpty(action.payload)) {
+      if (isEmpty(action.payload)) {
         state.activeRequestId = null;
         state.activeRequestInfo = null;
+        state.activeVehicleTypes = [];
       } else if (action.payload?.id) {
         state.activeRequestId = action.payload?.id;
         state.activeRequestInfo = action.payload;
@@ -136,7 +137,7 @@ const userSlice = createSlice({
       const { id: driver_id, status, category } = action.payload;
       const drivers = state.activeRequestDrivers?.[category];
       if (drivers?.length) {
-        const existingDrivers = _.cloneDeep(drivers); // Ensure you're working with a copy
+        const existingDrivers = cloneDeep(drivers); // Ensure you're working with a copy
         const updateDrivers = updateStatusByDriverId(existingDrivers, driver_id, status);
         if (updateDrivers?.length) {
           state.activeRequestDrivers[category] = updateDrivers;
@@ -158,7 +159,7 @@ const userSlice = createSlice({
         // for active request drivers - captain card
         const activeRequestDrivers = state.activeRequestDrivers;
         if (activeRequestDrivers) {
-          const clonedDrivers = _.cloneDeep(activeRequestDrivers); // Ensure you're working with a copy
+          const clonedDrivers = cloneDeep(activeRequestDrivers); // Ensure you're working with a copy
           if (clonedDrivers[category]) {
             clonedDrivers[category] = updateStatusByDriverId(clonedDrivers[category], driver_id, status);
           }

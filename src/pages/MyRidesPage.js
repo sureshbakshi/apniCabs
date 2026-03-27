@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View, Pressable, FlatList, SafeAreaView } from 'react-native';
+import { View, Pressable, FlatList, SafeAreaView, RefreshControl, ScrollView } from 'react-native';
 import styles from '../styles/MyRidePageStyles';
 import { COLORS, ROUTES_NAMES, RideStatus, colorsNBg } from '../constants';
 import { Icon, ImageView, Text } from '../components/common';
 import images from '../util/images';
 import Timeline from '../components/common/timeline/Timeline';
 import { formattedDate, getRandomNumber } from '../util';
-import { get } from 'lodash'
+import get from 'lodash/get';
 import SearchLoader from '../components/common/SearchLoader';
 import { navigate } from '../util/navigationService';
 import ContainerWrapper from '../components/common/ContainerWrapper';
@@ -82,20 +82,55 @@ const Card = ({ item, keys }) => {
     </View> */}
   </Pressable>
 }
-const MyRidePage = ({ data, keys, loadMore, isFetching }) => {
-  const { t } = useTranslation()
+const MyRidePage = ({ data, keys, loadMore, isFetching, onRefresh }) => {
+  const { t } = useTranslation();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const handleRefresh = React.useCallback(async () => {
+    if (onRefresh) {
+      setRefreshing(true);
+      await onRefresh();
+      setRefreshing(false);
+    }
+  }, [onRefresh]);
+
+  if (!data?.length) {
+    return (
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <SearchLoader msg={t('no_records')} />
+      </ScrollView>
+    );
+  }
   return (
     <ContainerWrapper style={{ paddingHorizontal: 10 }}>
-      {!!data?.length ? <View style={styles.section}>
+      <View style={styles.section}>
         <FlatList
           data={data}
-          renderItem={({ item, i }) => <Card item={item} key={i} keys={keys} />}
-          keyExtractor={item => item.id}
+          renderItem={({ item }) => <Card item={item} keys={keys} />}
+          keyExtractor={item => item.id?.toString()}  // ✅ Stable keys
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              colors={[COLORS.primary]}
+              tintColor={COLORS.primary}
+            />
+          }
         />
-      </View> : <SearchLoader msg={t('no_records')} />}
+      </View>
     </ContainerWrapper>
   );
 };

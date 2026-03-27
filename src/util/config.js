@@ -1,14 +1,16 @@
 import { Linking } from "react-native";
 import Config from "react-native-config";
+console.log('Config', Config);
 
 export default {
   SOCKET_URL: Config.SOCKET_URL,
-  SOCKET_USER_NAME: Config.SOCKET_USER_NAME,
-  SOCKET_PASSWORD: Config.SOCKET_PASSWORD,
   GOOGLE_PLACES_KEY: Config.GOOGLE_PLACES_KEY,
   GOOGLE_MAPS_KEY: Config.GOOGLE_MAPS_KEY,
   ROLE: Config.ROLE,
   BASE_URL: Config.BASE_URL,
+  ANDROID_STORE_URL: Config.ANDROID_STORE_URL,
+  IOS_STORE_URL: Config.IOS_STORE_URL,
+  ENV: Config.ENV
 }
 
 export const openUrl = async (uri) => {

@@ -25,6 +25,7 @@
    "reason_to_cancel": "Reason to Cancel",
    "reason_for_cancel": "Reason for Cancellation",
    "contact_driver": "Contact Driver",
+   "contact_user": "Contact User",
    "toll_free": "Toll Free",
    "call_driver": "Call Driver",
    "distance": "Distance",
@@ -57,7 +58,9 @@
    "error_message_des": "Oops! An unexpected error occurred. Please try again later.",
    "error_retry": "Something went wrong. Please retry again.",
    "cancel_request": "'Cancel!', `Would you like to cancel it? If you click 'Yes', your request will be cancelled.`",
-   "driver_not_found": "Drivers not found at the moment. Please try later!",
+   "search_again": "Search Again",
+   "driver_not_found_title": "Drivers Not Found",
+   "driver_not_found": "We couldn't find any available drivers nearby. Please try again.",
    "activate_account_title": "To activate your Pik Bike account, you need:",
    "activate_vehicle_number": "Vehicle number",
    "activate_license_number": "Driving license number",
@@ -110,5 +113,9 @@
    "ride_details": "Ride Details",
    "my_rides": "My Rides",
    "login_permission_error": "You don't have enough permission to login.",
-   "subscription_plans": "Subscription Plans"
+   "subscription_plans": "Subscription Plans",
+   "payment": "Payment",
+   "network_error_msg": "We can't reach our network right now. Please check your connection.",
+   "offline_availability_msg": "You are currently offline. Turn on your availability to receive ride requests.",
+   "error_occcured_while_fetching_contact_number": "Error occurred while fetching contact details"
 }

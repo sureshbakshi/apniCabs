@@ -6,7 +6,6 @@ import CustomDialog from "./CustomDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDriverRideStatus } from "../../slices/driverSlice";
 import { clearUserRideState, setActiveRequest } from "../../slices/userSlice";
-import { delay } from 'lodash';
 import { isDriver } from "../../util";
 import StarRating from "./StarRating";
 import { useUpdateRatingMutation } from "../../slices/apiSlice";
@@ -61,7 +60,7 @@ export default () => {
         }
     }
 
-    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} canShowSubmit={canShowRating}/>
+    const actions = <DialogButtons handleSubmit={onSubmit} closeModal={clearRideState} canShowSubmit={canShowRating} />
     const DialogComponent = useMemo(() => {
         return (
             rideStatusModalInfo ? <>

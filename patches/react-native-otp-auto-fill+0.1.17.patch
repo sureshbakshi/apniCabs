@@ -1,4 +1,56 @@
-diff --git a/node_modules/react-native-otp-auto-fill/android/.idea/.npmignore b/node_modules/react-native-otp-auto-fill/android/.idea/.gitignore
-similarity index 100%
-rename from node_modules/react-native-otp-auto-fill/android/.idea/.npmignore
-rename to node_modules/react-native-otp-auto-fill/android/.idea/.gitignore
+diff --git a/node_modules/react-native-otp-auto-fill/android/.project b/node_modules/react-native-otp-auto-fill/android/.project
+new file mode 100644
+index 0000000..68c3df5
+--- /dev/null
++++ b/node_modules/react-native-otp-auto-fill/android/.project
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>react-native-otp-auto-fill</name>
++	<comment>Project react-native-otp-auto-fill created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1761395851152</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/react-native-otp-auto-fill/android/build.gradle b/node_modules/react-native-otp-auto-fill/android/build.gradle
+index fa31c78..0ab3758 100644
+--- a/node_modules/react-native-otp-auto-fill/android/build.gradle
++++ b/node_modules/react-native-otp-auto-fill/android/build.gradle
+@@ -2,7 +2,7 @@ buildscript {
+     if (project == rootProject) {
+         repositories {
+             google()
+-            jcenter()
++            mavenCentral()
+         }
+ 
+         dependencies {
+@@ -49,7 +49,7 @@ repositories {
+         url("$rootDir/../node_modules/react-native/android")
+     }
+     google()
+-    jcenter()
++    mavenCentral()
+ }
+ 
+ dependencies {

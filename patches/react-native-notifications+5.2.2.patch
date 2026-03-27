@@ -1,0 +1,78 @@
+diff --git a/node_modules/react-native-notifications/lib/android/app/.project b/node_modules/react-native-notifications/lib/android/app/.project
+new file mode 100644
+index 0000000..0fe690d
+--- /dev/null
++++ b/node_modules/react-native-notifications/lib/android/app/.project
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>react-native-notifications</name>
++	<comment>Project react-native-notifications created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1761395851151</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/fcm/FcmToken.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/fcm/FcmToken.java
+index fb1aba4..0fdfd39 100644
+--- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/fcm/FcmToken.java
++++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/fcm/FcmToken.java
+@@ -88,13 +88,23 @@ public class FcmToken implements IFcmToken {
+     }
+ 
+     protected void sendTokenToJS() {
+-        final ReactInstanceManager instanceManager = ((ReactApplication) mAppContext).getReactNativeHost().getReactInstanceManager();
+-        ReactContext reactContext = instanceManager.getCurrentReactContext();
+-
+-        if (reactContext == null) {
++        ReactContext reactContext = null;
++        try {
+             // If the react context is not available, try to get the current context from the react host (RN0.76).
+             reactContext = ((ReactApplication) mAppContext).getReactHost().getCurrentReactContext();
++        } catch (Exception e) {
++            // ignore
+         }
++
++        if (reactContext == null) {
++            try {
++                final ReactInstanceManager instanceManager = ((ReactApplication) mAppContext).getReactNativeHost().getReactInstanceManager();
++                reactContext = instanceManager.getCurrentReactContext();
++            } catch (Exception e) {
++                // ignore
++            }
++        }
++
+         // Note: Cannot assume react-context exists cause this is an async dispatched service.
+         if (reactContext != null && reactContext.hasActiveReactInstance()) {
+             Bundle tokenMap = new Bundle();
+diff --git a/node_modules/react-native-notifications/react-native.config.js b/node_modules/react-native-notifications/react-native.config.js
+index d246b0c..3ac395a 100644
+--- a/node_modules/react-native-notifications/react-native.config.js
++++ b/node_modules/react-native-notifications/react-native.config.js
+@@ -5,6 +5,7 @@ module.exports = {
+       android: {
+         sourceDir: './lib/android/app',
+         packageInstance: 'new RNNotificationsPackage(reactNativeHost.getApplication())',
++        packageInstance: 'new RNNotificationsPackage(getApplication())',
+       }
+     },
+   },

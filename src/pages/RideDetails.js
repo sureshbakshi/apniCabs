@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, SafeAreaView } from 'react-native';
-import styles from '../styles/MyRidePageStyles';
-import { COLORS, RIDE_CANCEL_INFO, RIDE_HISTOY_DETAILS, SUPPORT, USER_DETAILS } from '../constants';
-import VehicleCard from '../components/VehicleCard';
-import CardWrapper from '../components/CardWrapper';
-import { AvatarInfo, RideDetailsView } from '../components/common/RideDetailsCards';
+import React from 'react';
+import { View } from 'react-native';
+import { COLORS} from '../constants';
+import { RideDetailsView } from '../components/common/RideDetailsCards';
 import FindRideStyles from '../styles/FindRidePageStyles';
-import CustomButton from '../components/common/CustomButton';
-import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import { useGetRideDetailsQuery } from '../slices/apiSlice';
 import ActivityIndicator from '../components/common/ActivityIndicator';
 import ContainerWrapper from '../components/common/ContainerWrapper';
-import { ImageView, Text } from '../components/common';
-import images from '../util/images';
-import CommonStyles from '../styles/commonStyles';
+import { Text } from '../components/common';
 
 
 export default ({ route }) => {
@@ -28,7 +21,7 @@ export default ({ route }) => {
         details: rideDetails?.RequestRides?.driver_details
     }
     return (
-        <ContainerWrapper>
+        <ContainerWrapper style={{ paddingHorizontal: 10 }}>
             {/* <View style={[FindRideStyles.card, { backgroundColor: COLORS.white, borderRadius: 24, padding: 15 }]}>
                         <Text style={{ fontSize: 14, fontWeight: 700, lineHeight: 18, marginBottom: 10 }}>User Details</Text>
                         <AvatarInfo dp={avatar} name={name} avatarContainerStyles={{alignItems: 'center'}}/>

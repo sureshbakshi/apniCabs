@@ -1,26 +1,26 @@
 import { AppState } from "react-native";
-import { useEffect } from "react";
-// import useGetCurrentLocation from "./useGetCurrentLocation";
-let appStateListener = undefined;
+import { useEffect, useRef } from "react";
 
-export default (activeCb) => {
+export default (onAppStateChange) => {
+  const onAppStateChangeRef = useRef(onAppStateChange);
 
   useEffect(() => {
-    if(appStateListener === undefined) {
-      appStateListener = AppState.addEventListener(
-        'change',
-        nextAppState => {
-          if (nextAppState === 'active') {
-            activeCb?.();
-          }
-          console.log('Next AppState is: ', nextAppState);
-        },
-      );
-    }
+    onAppStateChangeRef.current = onAppStateChange;
+  }, [onAppStateChange]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      'change',
+      nextAppState => {
+        console.log('Next AppState is: ', nextAppState);
+        if (onAppStateChangeRef.current) {
+            onAppStateChangeRef.current(nextAppState);
+        }
+      },
+    );
     
     return () => {
-      appStateListener?.remove();
-      appStateListener = undefined
+      subscription.remove();
     };
   }, []);
 }

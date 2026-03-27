@@ -4,6 +4,7 @@ import { ROUTES_NAMES } from '../constants';
 import { clearAuthData } from './authSlice';
 import { showErrorMessage } from '../util';
 import { disconnectSocket } from '../sockets/socketConfig'
+import NetInfo from "@react-native-community/netinfo";
 
 import { Platform } from 'react-native';
 import config from '../util/config';
@@ -30,10 +31,22 @@ const baseQuery = fetchBaseQuery({
   },
 });
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  console.log(JSON.stringify(args))
+  // Check for network connection
+  const netState = await NetInfo.fetch();
+  if (netState.isConnected === false) {
+    return {
+      error: {
+        status: 'FETCH_ERROR',
+        error: 'No Internet Connection',
+        data: { error: 'No Internet Connection' }
+      }
+    };
+  }
+
+  // console.log(JSON.stringify(args))
 
   let result = await baseQuery(args, api, extraOptions);
-  console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
+  // console.log({ response: result?.data, uri: result?.meta?.response?.url, result })
   const err = result?.error?.data?.error || result?.error
   if (err) {
     showErrorMessage(err)
@@ -72,7 +85,8 @@ const api_path = {
   links: path => `user/links?${path}`,
   location: path => `location/location${path ? `/${path}` : ''}`,
   wallet: path => `payment/wallet/${path}`,
-  city: path => `location/city/${path ? `${path}` : ''}`
+  city: path => `location/city/${path ? `${path}` : ''}`,
+  appInfo: path => `user/links/${path}`,
 };
 const api_urls = {
   login: 'login',
@@ -98,7 +112,7 @@ const api_urls = {
   cancelAllRequest: 'cancel-all',
   sosAdd: 'add',
   device: 'device',
-  order: 'order',
+  createOrder: 'payment/create',
   payment: 'payment',
   wallet: 'wallet',
   create: 'create',
@@ -473,11 +487,20 @@ export const apiSlice = createApi({
     createOrder: builder.mutation({
       query: (body) => ({
         method: 'POST',
-        url: api_path.payment(api_urls.order),
+        url: api_path.payment(api_urls.createOrder),
         body: body
       }),
       transformResponse: response => response,
       transformErrorResponse: response => response,
+    }),
+    verifyPayment: builder.mutation({
+      query: ({ order_id, ...body }) => ({
+        method: 'PUT',
+        url: api_path.payment(`payment/${order_id}`),
+        body: body
+      }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response) => response,
     }),
     //payment end
     //appLinks
@@ -511,6 +534,15 @@ export const apiSlice = createApi({
       }),
       transformResponse: (response) => response,
       transformErrorResponse: (response) => response,
+    }),
+
+    getAppInfo: builder.query({
+      query: () => ({
+        method: 'GET',
+        url: api_path.appInfo(`app-info`),
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: response => response,
     }),
   }),
 
@@ -555,9 +587,11 @@ export const {
   useGetDriverWalletMutation,
   // useLazyCreateOrderQuery
   useCreateOrderMutation,
+  useVerifyPaymentMutation,
   useLazyGetAppLinksQuery,
   useLazyGetCitiesQuery,
   useUpdateRatingMutation,
   useLazyGetShareLinkQuery,
-  useCityLookupMutation
+  useCityLookupMutation,
+  useGetAppInfoQuery
 } = apiSlice;

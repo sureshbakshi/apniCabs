@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import FindRideStyles from '../styles/FindRidePageStyles';
 import { COLORS, SOCKET_EVENTS } from '../constants';
 import ActiveRidePageStyles from '../styles/ActiveRidePageStyles';
 import { useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { getScreen, isDriver } from '../util';
 import RideDetailsCards from '../components/common/RideDetailsCards';
 import ContainerWrapper from '../components/common/ContainerWrapper';
 import { Text } from '../components/common';
 import Timeline from '../components/common/timeline/Timeline';
-import { SafeAreaView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import useGetDriverActiveRequests from '../hooks/useGetDriverActiveRequests';
 import useGetUserActiveRequests from '../hooks/useGetUserActiveRequests';
@@ -19,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { getSocketInstance } from '../sockets/socketConfig';
 import DriverMap from './DriverMap';
 import UserMap from './userMap';
+
 const socket = getSocketInstance()
 const ActiveRidePage = () => {
   const { t } = useTranslation();
@@ -29,6 +28,7 @@ const ActiveRidePage = () => {
   const { screenHeight } = getScreen()
   useEffect(() => {
     if (isDriverLogged) {
+      // console.log("Fetching driver location on ActiveRidePage mount");
       updateCurrentDriverLocationDetails()
     } else {
       getUserCoordinates()
@@ -59,7 +59,6 @@ const ActiveRidePage = () => {
   }
 
   useEffect(() => {
-    console.log('activeRequestId', activeRequestInfo)
     if (socket && activeRequestInfo?.id) {
       console.log('activeRequestId', activeRequestInfo.id)
       socket?.emit(SOCKET_EVENTS.joinRoom, activeRequestInfo.id);  // Replace with the actual rideId

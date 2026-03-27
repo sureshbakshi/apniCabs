@@ -1,6 +1,5 @@
 // socketConfig.js
 import io from 'socket.io-client';
-import { store } from "../store";
 import config from '../util/config';
 
 // URI for the socket server
@@ -14,13 +13,15 @@ export const createSocketInstance = (auth = {}, onConnect) => {
     socket.disconnect();
   }
   // Replace 'YOUR_SERVER_URL' with your actual server URL
-  console.log('Creating socket instance...', socket?.connected);
+  if(!auth?.token){
+    console.log('Auth token provided for socket connection.');
+    return null;
+  }
+    // console.log('Creating socket instance...', socket?.connected, socketUri, auth);
+
   socket = io(socketUri, {
-    auth: {
-      username: config.SOCKET_USER_NAME, // Replace with actual username
-      password: config.SOCKET_PASSWORD,  // Replace with actual password
-      ...auth  // Replace with actual token
-    },
+    path: '/notification/socket',
+    auth: auth,
     autoConnect: true,
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -29,8 +30,7 @@ export const createSocketInstance = (auth = {}, onConnect) => {
     extraHeaders: {
 
     },
-    // transports: ['websocket'],
-    // path: '/ws/'
+    transports: ['websocket'],
   });
   console.log('Socket instance created:', socket?.connected);
   socket.on('connect', () => {

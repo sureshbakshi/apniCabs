@@ -1,9 +1,10 @@
+import React from 'react';
 import { StyleSheet, View } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown';
 import { Icon } from "./Icon";
 import { Text } from "./Text";
 
-export default ({ label, name, options,onChange, ...props }) => {
+const Dropdown = ({ label, name, options,onChange, ...props }) => {
     return <View style={styles.dropdown}>
         <SelectDropdown
             data={options || []}
@@ -34,6 +35,8 @@ export default ({ label, name, options,onChange, ...props }) => {
 
     </View>
 };
+
+export default React.memo(Dropdown);
 
 const styles = StyleSheet.create({
     dropdownButtonStyle: {

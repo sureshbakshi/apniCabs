@@ -1,11 +1,12 @@
+import React from 'react';
 import { Pressable, View } from "react-native"
 import LoginStyles from "../../styles/LoginPageStyles"
-import { upperCase } from 'lodash';
+import upperCase from 'lodash/upperCase';
 import { COLORS } from "../../constants";
 import { Text, Icon } from ".";
 import ActivityIndicator from "./ActivityIndicator";
 
-export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles, containerStyles = {}, indicatorProps,...rest }) => {
+const CustomButton = ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCase = false, contentContainerStyles, iconLeft, iconRight, iconStyles, containerStyles = {}, indicatorProps, ...rest }) => {
     const formattedLabel = isLowerCase ? label : upperCase(label)
 
     const clickHandler = (e) => {
@@ -41,4 +42,6 @@ export default ({ isLoading, onClick, styles = {}, textStyles, label, isLowerCas
         </View>
     )
 }
+
+export default React.memo(CustomButton);
 

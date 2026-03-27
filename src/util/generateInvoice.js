@@ -1,7 +1,8 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { formattedDate } from '.';
 import Share from 'react-native-share';
-
+import { Platform, Alert, PermissionsAndroid } from 'react-native';
+import RNFS from 'react-native-fs';
 
 const getInvoiceHtml = (info) => {
     return `<!DOCTYPE html>
@@ -131,21 +132,50 @@ const getInvoiceHtml = (info) => {
 
 const generateInvoice = async (info) => {
     try {
+        const fileName = `invoice_${info.id}`;
         const options = {
             html: getInvoiceHtml(info),
-            fileName: `invoice_${info.id}`,
+            fileName: fileName,
             directory: 'Documents',
         };
-        const {filePath} = await RNHTMLtoPDF.convert(options);
-        const formattedFilePath = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
-        const shareOptions = {
-            url: formattedFilePath,
-            type: 'application/pdf',
-            title: 'Share Invoice',
-        };
-        await Share.open(shareOptions);
+
+        const { filePath } = await RNHTMLtoPDF.convert(options);
+        
+        if (Platform.OS === 'android') {
+            // On Android, move to Download folder for visibility
+            const downloadDest = `${RNFS.DownloadDirectoryPath}/${fileName}.pdf`;
+            
+            // Request permission for older Android versions if needed
+            if (Platform.Version < 33) {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+                );
+                if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                    Alert.alert('Permission Denied', 'Storage permission is required to save the invoice.');
+                    return;
+                }
+            }
+
+            await RNFS.copyFile(filePath, downloadDest);
+            Alert.alert('Success', `Invoice saved to Downloads:\n${fileName}.pdf`);
+            
+            // Optional: Open the file immediately
+            const formattedPath = `file://${downloadDest}`;
+            Share.open({ url: formattedPath, type: 'application/pdf', title: 'View Invoice' });
+        } else {
+            // On iOS, Share is the standard way to "Save to Files"
+            const formattedFilePath = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
+            const shareOptions = {
+                url: formattedFilePath,
+                type: 'application/pdf',
+                title: 'Save Invoice',
+                saveToFiles: true,
+            };
+            await Share.open(shareOptions);
+        }
     } catch (error) {
-        console.error(error);
+        console.error('Invoice generation error:', error);
+        Alert.alert('Error', 'Failed to generate invoice.');
     }
 };
 

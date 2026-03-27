@@ -7,15 +7,13 @@ import images from '../../util/images';
 import Timeline from '../common/timeline/Timeline';
 import { COLORS, RideStatus, ROUTES_NAMES, SOCKET_EVENTS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useCompleteRideRequestMutation, useLazyGetShareLinkQuery, useRideRequestMutation } from '../../slices/apiSlice';
 import { updateRideStatus, setActiveRide } from '../../slices/driverSlice';
 import { getScreen, showErrorMessage } from '../../util';
 import useGetCurrentLocation from '../../hooks/useGetCurrentLocation';
 import { clearRideChats, setDialogStatus, setDriverCallOptionsDialogStatus } from '../../slices/authSlice';
 import CustomButton from './CustomButton';
-import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
-import OpenMapButton from './OpenMapButton';
 import CommonStyles from '../../styles/commonStyles';
 import { getColorNBg } from '../../pages/MyRidesPage';
 import ScreenContainer from '../ScreenContainer';
@@ -23,7 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { navigate } from '../../util/navigationService';
 import Share from 'react-native-share';
 import { getSocketInstance } from '../../sockets/socketConfig';
-import useGetDriverLocation from '../../hooks/useGetDriverLocation';
+import { useAppInfo } from '../../hooks/useAppInfo';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 const socket = getSocketInstance()
 
 const ShareButton = ({ activeRequestInfo, label }) => {
@@ -70,8 +69,18 @@ const ShareButton = ({ activeRequestInfo, label }) => {
 
 const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
-    const { access_token } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
+    const { appInfo } = useAppInfo();
+    const tollFreeNumberKey = isDriverLogged ? 'user_toll_free' : 'driver_toll_free';
+    const toll_free_number = appInfo?.[tollFreeNumberKey];
+
+
+    const makePhonecall = () => {
+        if(!toll_free_number) {
+            showErrorMessage(t("error_occcured_while_fetching_contact_number"))
+        }
+        RNImmediatePhoneCall.immediatePhoneCall(`${toll_free_number}`);
+    }
 
     return <View style={{ flexDirection: 'row', gap: 10, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
         <CustomButton
@@ -86,9 +95,9 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
             isLowerCase
         />
         <CustomButton
-            onClick={() => dispatch(setDriverCallOptionsDialogStatus(true))}
+            onClick={makePhonecall}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.primary, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.green, height: 40 }
             }
             textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
             // label={'Call up'}
@@ -99,10 +108,10 @@ const CancelRide = ({ activeRequestInfo, isDriverLogged }) => {
         <CustomButton
             onClick={() => dispatch(setDialogStatus(true))}
             styles={
-                { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, height: 40 }
+                { ...FindRideStyles.button, backgroundColor: COLORS.primary, height: 40 }
             }
-            textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
-            iconLeft={{ name: 'close', size: 'medium', color: COLORS.black }}
+            textStyles={{ color: COLORS.white, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
+            iconLeft={{ name: 'close', size: 'medium', color: COLORS.white }}
             iconStyles={{ paddingRight: 0 }}
             // label={t('cancel_btn')}
             isLowerCase
@@ -275,7 +284,6 @@ export const RenderOTP = ({ activeRequestInfo }) => {
 export default ({ activeRequestInfo, isDriverLogged }) => {
     const { t } = useTranslation();
     const { getCoordinates } = useGetCurrentLocation()
-    const driverCurrentLocation = useGetDriverLocation(isDriverLogged)
 
     const dispatch = useDispatch()
     const [completeRideRequest, { data: completeRideRequestData, error: completeRideRequestError, isLoading: isCompleteRideLoading }] =
@@ -291,7 +299,7 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
             console.log(res)
             dispatch(updateRideStatus({ status: RideStatus.COMPLETED }));
             dispatch(clearRideChats());
-            socket.emit(SOCKET_EVENTS.rideCompleted)
+            socket.emit(SOCKET_EVENTS.rideCompleted, { rideId: activeRequestInfo?.id })
         }).catch((err) => {
             console.log(err)
         })
@@ -299,7 +307,6 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
     const isOnRide = (activeRequestInfo.status === RideStatus.ONRIDE)
     const isDriverOnRide = (isOnRide && isDriverLogged)
     const isAccepted = (activeRequestInfo.status === RideStatus.ACCEPTED)
-    const fromLocation = driverCurrentLocation || activeRequestInfo.from
     return (
         <>
             <View style={[FindRideStyles.card]}>
@@ -308,15 +315,14 @@ export default ({ activeRequestInfo, isDriverLogged }) => {
                     {(isAccepted && isDriverLogged) && <RenderOTP {...{ activeRequestInfo }} />}
                 </ScreenContainer>
             </View>
-            {(isDriverOnRide) && <View style={{ flexDirection: 'row', gap: 15, width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
-                <OpenMapButton route={{ start: fromLocation, end: activeRequestInfo.to, navigate: true }} />
+            {(isDriverOnRide) && <View style={{ flexDirection: 'row', width: getScreen().screenWidth - 30, justifyContent: 'center', flex: 1 }}>
                 <CustomButton
                     onClick={() => getCoordinates(completeRideHandler, true)}
                     disabled={isCompleteRideLoading}
                     styles={
-                        { ...FindRideStyles.button, backgroundColor: COLORS.card_bg, minWidth: 160, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }
+                        { ...FindRideStyles.button, ...FindRideStyles.card, backgroundColor: COLORS.primary, width: getScreen().screenWidth - 30, height: 40, opacity: isCompleteRideLoading ? 0.8 : 1 }
                     }
-                    textStyles={{ color: COLORS.black, fontWeight: "400", fontSize: 14, lineHeight: 18 }}
+                    textStyles={{ color: COLORS.white, fontWeight: "bold", fontSize: 14, lineHeight: 18 }}
                     label={t('complete_ride_btn')}
                     isLowerCase
                 />

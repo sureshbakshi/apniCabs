@@ -21,7 +21,7 @@ export default useGetDriverWallet = (options, isCb = false) => {
             if (!isOffline && driverInfo?.id) {
                 fetchWallet()
             }
-        }, [])
+        }, [isOffline, driverInfo?.id])
     );
 
     if (isCb) {

@@ -2,25 +2,24 @@
  * @format
  */
 
-import { AppRegistry, AppState, StatusBar } from 'react-native';
-// Ensure secure random and crypto are available before anything else
-import 'react-native-get-random-values';
-import './src/shims/crypto';
+import { AppRegistry } from 'react-native';
 import App from './src/navigation/index';
 import { name as appName } from './app.json';
 import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { COLORS, toastConfig } from './src/constants';
-import { AuthProvider } from './src/context/Auth.context';
+import { toastConfig } from './src/constants';
 import { PersistGate } from 'redux-persist/integration/react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { foreGroundService } from './src/util/foregroundLocationService';
+import { NetworkOverlay } from './src/components/common';
 import './i18n';
+// import { StrictMode } from 'react';
 
 if (!__DEV__) {
   console.log = () => { };
 }
+foreGroundService();
 
 function AppWithProvider() {
 
@@ -29,13 +28,12 @@ function AppWithProvider() {
 
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AuthProvider>
-          <SafeAreaProvider>
-            {/* <StrictMode> */}
-            <App />
-            {/* </StrictMode> */}
-          </SafeAreaProvider>
-        </AuthProvider>
+        <SafeAreaProvider>
+          {/* <StrictMode> */}
+          <App />
+          <NetworkOverlay />
+          {/* </StrictMode> */}
+        </SafeAreaProvider>
       </PersistGate>
       <Toast config={toastConfig} />
     </Provider>

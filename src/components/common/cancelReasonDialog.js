@@ -9,8 +9,8 @@ import CustomDialog from "./CustomDialog";
 import ActiveRidePageStyles from "../../styles/ActiveRidePageStyles";
 import { COLORS } from "../../constants";
 import { Icon } from "./Icon";
-import { delay } from 'lodash';
-import { setDialogStatus } from "../../slices/authSlice";
+import delay from 'lodash/delay';
+import { clearRideChats, setDialogStatus } from "../../slices/authSlice";
 import { isDriver, showErrorMessage } from "../../util";
 import { useTranslation } from "react-i18next";
 import DialogButtons from "./DialogButtons";
@@ -58,13 +58,14 @@ export const CancelReasonDialog = () => {
 
   const closeAndClearRequest = () => {
     closeModal();
+    dispatch(clearRideChats())
     delay(() => {
       dispatch(isDriverLogged ? updateRideStatus(cancelAcceptedRequestData) : setActiveRequest())
     }, 10)
   }
 
   useEffect(() => {
-    if(cancelAcceptedRequestError) {
+    if (cancelAcceptedRequestError) {
       showErrorMessage()
     } else if (cancelAcceptedRequestData) {
       closeAndClearRequest()
@@ -85,7 +86,7 @@ export const CancelReasonDialog = () => {
     if (selectedMessage.id && activeRequestInfo?.id) {
       let payload = {
         "request_id": activeRequestInfo.id,
-        "driver_id":  isDriverLogged ? driverInfo?.id : activeRequestInfo?.driver_details?.id || activeRequestInfo?.driver_requests.driver_id,
+        "driver_id": isDriverLogged ? driverInfo?.id : activeRequestInfo?.driver_details?.id || activeRequestInfo?.driver_requests.driver_id,
         // "status": isDriverLogged ? RideStatus.DRIVER_CANCELLED : RideStatus.USER_CANCELLED,
         "reason": selectedMessage.message,
       }

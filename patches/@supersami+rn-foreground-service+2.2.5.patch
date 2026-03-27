@@ -1,0 +1,66 @@
+diff --git a/node_modules/@supersami/rn-foreground-service/android/app/src/main/res/values/colors.xml b/node_modules/@supersami/rn-foreground-service/android/app/src/main/res/values/colors.xml
+index 4f7a259..ad3892a 100644
+--- a/node_modules/@supersami/rn-foreground-service/android/app/src/main/res/values/colors.xml
++++ b/node_modules/@supersami/rn-foreground-service/android/app/src/main/res/values/colors.xml
+@@ -8,4 +8,9 @@
+   <integer-array name="androidcolors">
+     <item>@color/blue</item>
+   </integer-array>
++
++  <item name="blue" type="color">#00C4D1</item>
++  <integer-array name="androidcolors">
++    <item>@color/blue</item>
++  </integer-array>
+ </resources>
+\ No newline at end of file
+diff --git a/node_modules/@supersami/rn-foreground-service/android/src/main/java/com/supersami/foregroundservice/ForegroundService.java b/node_modules/@supersami/rn-foreground-service/android/src/main/java/com/supersami/foregroundservice/ForegroundService.java
+index 9d7751d..2204199 100644
+--- a/node_modules/@supersami/rn-foreground-service/android/src/main/java/com/supersami/foregroundservice/ForegroundService.java
++++ b/node_modules/@supersami/rn-foreground-service/android/src/main/java/com/supersami/foregroundservice/ForegroundService.java
+@@ -117,11 +117,11 @@ public class ForegroundService extends Service {
+                 case "connectedDevice":
+                     return 32; // ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+                 case "dataSync":
+-                    return 16; // ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
++                    return 1; // ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                 case "health":
+                     return 64; // ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH
+                 case "location":
+-                    return 1; // ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
++                    return 8; // ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+                 case "mediaPlayback":
+                     return 2; // ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                 case "mediaProjection":
+@@ -139,7 +139,7 @@ public class ForegroundService extends Service {
+                 case "systemExempted":
+                     return 8192; // ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED
+                 default:
+-                    return 1; // Default to location
++                    return 8; // Default to location
+             }
+         }
+         return 0; // This won't be used for Android < 10
+@@ -297,7 +297,22 @@ public class ForegroundService extends Service {
+         }
+ 
+         // service to restart automatically if it's killed
+-        return START_REDELIVER_INTENT;
++        return START_STICKY;
++    }
++
++    @Override
++    public void onTaskRemoved(Intent rootIntent) {
++        Log.d("ForegroundService", "App swiped away, but service is staying alive.");
++        
++        // This prevents the service from being killed along with the app UI
++        // We do NOT call stopSelf() here.
++        
++        // Optional: Re-trigger the notification to ensure it remains visible
++        if (lastNotificationConfig != null) {
++            startService(lastNotificationConfig);
++        }
++
++        super.onTaskRemoved(rootIntent);
+     }
+ 
+     public void runHeadlessTask(Bundle bundle) {

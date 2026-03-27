@@ -2,15 +2,16 @@ import { useEffect } from 'react';
 import { Platform, PermissionsAndroid } from 'react-native';
 import { RESULTS } from 'react-native-permissions';
 import { Notifications } from 'react-native-notifications';
-import { scheduleLocalNotification, unflattenObj } from '../util';
+import { scheduleLocalNotification, showSuccessMessage, unflattenObj } from '../util';
 import { useDispatch } from 'react-redux';
 import { setDeviceToken } from '../slices/authSlice';
-import useRegisterDeviceToken from './useRegisterDeviceToken';
 import useHandleDeeplinks from './useHandleDeeplinks';
+import { useNotificationNavigation } from './useNotificationNavigation';
 let isInitialized = false;
 const notificationKey = 'gcm.notification'
 export default () => {
   const dispatch = useDispatch()
+  const handleNotificationOpen = useNotificationNavigation();
   // useRegisterDeviceToken()
   useHandleDeeplinks()
 
@@ -57,7 +58,7 @@ export default () => {
 
   const getInitialNotification = async () => {
     const notification = await Notifications.getInitialNotification();
-    console.log({ getInitialNotification: notification })
+    handleNotificationOpen(notification, undefined, 2000)
   }
 
   const triggerNotfication = (remoteNotification) => {
@@ -76,12 +77,12 @@ export default () => {
     console.log({ Notifications })
     // Notifications.registerLocalNotifications();
     if (!isInitialized) {
-      registerRemoteNotifications()
-      getInitialNotification()
       Notifications.events().registerNotificationReceivedForeground((remoteNotification, completion) => {
         console.log('Local Notification received in foreground:', remoteNotification);
+        const { payload } = remoteNotification;
         // Handle foreground notifications
-        triggerNotfication(remoteNotification)
+        // triggerNotfication(remoteNotification)
+        if (payload?.['gcm.notification.body']) showSuccessMessage(payload?.['gcm.notification.body'], 'top')
         completion({ alert: true, sound: true, badge: false });
       });
 
@@ -89,7 +90,7 @@ export default () => {
         console.log('registerNotificationReceivedBackground:', remoteNotification);
         // Handle notification click or deep link here
         triggerNotfication(remoteNotification)
-        completion({alert: true, sound: true, badge: false});
+        completion({ alert: true, sound: true, badge: false });
       });
 
       Notifications.events().registerRemoteNotificationsRegistered((event) => {
@@ -100,11 +101,7 @@ export default () => {
         }
       });
 
-      Notifications.events().registerNotificationOpened((notification, completion) => {
-        console.log('Local Notification opened:', notification);
-        // Handle notification click or deep link here
-        completion();
-      });
+      Notifications.events().registerNotificationOpened(handleNotificationOpen);
 
       Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
         console.error({ registerRemoteNotificationsRegistrationFailed: event });
@@ -112,6 +109,9 @@ export default () => {
       Notifications.events().registerRemoteNotificationsRegistrationDenied((event) => {
         console.error({ registerRemoteNotificationsRegistrationDenied: event });
       });
+
+      registerRemoteNotifications()
+      getInitialNotification()
       isInitialized = true
 
     }

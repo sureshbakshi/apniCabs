@@ -6,7 +6,7 @@ import { Pressable, ScrollView } from 'react-native';
 import { useSelector } from "react-redux";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import LoginStyles from "../styles/LoginPageStyles";
